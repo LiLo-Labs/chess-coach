@@ -463,8 +463,6 @@ final class SessionViewModel {
                 opponentCoachingText = text
             }
         }
-
-        await updateEval()
     }
 
     private func buildMoveHistoryString() -> String {
