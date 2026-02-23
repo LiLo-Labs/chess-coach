@@ -3,6 +3,12 @@ import Foundation
 
 /// Service wrapping the Maia 2 Core ML model for human-like move prediction.
 /// Maia 2 predicts what a human at a given ELO would play, not the objectively best move.
+///
+/// Known upstream limitations (CSSLab/maia2):
+/// - En passant probability ~0% due to training data encoding (Issue #7)
+/// - Strange opening moves in some positions (Issue #5)
+/// - Masked softmax bug in original code (PR #9) — mitigated here by
+///   filtering to legal moves before applying softmax (see `predictMove`).
 actor MaiaService {
     private let model: MLModel
     private let moveList: [String] // 1880 UCI moves
@@ -17,6 +23,7 @@ actor MaiaService {
         }
         self.model = try MLModel(contentsOf: url, configuration: config)
         let moves = Self.loadMoveList()
+        assert(moves.count == 1880, "maia2_moves.txt corrupted: expected 1880 moves, got \(moves.count)")
         self.moveList = moves
         var idx: [String: Int] = [:]
         for (i, m) in moves.enumerated() { idx[m] = i }
