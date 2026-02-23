@@ -1,0 +1,13 @@
+# Xcode user data
+xcuserdata/
+*.xcuserstate
+
+# Build products
+DerivedData/
+build/
+
+# ONNX intermediate files
+*.onnx
+
+# OS files
+.DS_Store
