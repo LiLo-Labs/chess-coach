@@ -10,12 +10,14 @@ final class SessionViewModel {
     private let llmService: LLMService
     private let curriculumService: CurriculumService
     private let coachingService: CoachingService
+    private var maiaService: MaiaService?
 
     private(set) var coachingText: String?
     private(set) var isThinking = false
     private(set) var isCoachingLoading = false
     private(set) var sessionComplete = false
-    private(set) var userELO: Int = 600
+    private(set) var userELO: Int = UserDefaults.standard.object(forKey: "user_elo") as? Int ?? 600
+    private(set) var opponentELO: Int = UserDefaults.standard.object(forKey: "opponent_elo") as? Int ?? 1200
 
     var isUserTurn: Bool {
         (opening.color == .white && gameState.isWhiteTurn) ||
@@ -34,6 +36,13 @@ final class SessionViewModel {
     }
 
     func startSession() async {
+        // Try loading Maia 2 for human-like opponent
+        do {
+            maiaService = try MaiaService()
+        } catch {
+            // Fall back to Stockfish if Maia model not available
+            maiaService = nil
+        }
         await stockfish.start()
         await llmService.detectProvider()
 
@@ -88,7 +97,23 @@ final class SessionViewModel {
             return
         }
 
-        // Otherwise use Stockfish as opponent (placeholder for Maia)
+        // Use Maia 2 for human-like opponent, fall back to Stockfish
+        if let maia = maiaService {
+            do {
+                let move = try await maia.sampleMove(
+                    fen: gameState.fen,
+                    legalMoves: gameState.legalMoves.map(\.description),
+                    eloSelf: opponentELO,
+                    eloOppo: userELO
+                )
+                gameState.makeMoveUCI(move)
+                await generateCoaching(forPly: ply, move: move)
+                return
+            } catch {
+                // Fall through to Stockfish
+            }
+        }
+
         if let result = await stockfish.evaluate(fen: gameState.fen, depth: 10) {
             gameState.makeMoveUCI(result.bestMove)
             await generateCoaching(forPly: ply, move: result.bestMove)
