@@ -28,8 +28,9 @@ struct HomeView: View {
                 }
                 .padding()
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color(red: 0.11, green: 0.11, blue: 0.12))
             .navigationTitle("ChessCoach")
+            .preferredColorScheme(.dark)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {

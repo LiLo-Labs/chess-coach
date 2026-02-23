@@ -48,13 +48,6 @@ actor CoachingService {
             return nil
         }
 
-        // For main line moves in learning phase, use pre-written explanations
-        if phase == .learningMainLine,
-           moveCategory == .goodMove,
-           let expected = curriculumService.opening.expectedMove(atPly: ply) {
-            return expected.explanation
-        }
-
         // For deviations, check if it's the opponent deviating
         let isOpponentMove = (ply % 2 == 0 && curriculumService.opening.color == .black) ||
                              (ply % 2 == 1 && curriculumService.opening.color == .white)
