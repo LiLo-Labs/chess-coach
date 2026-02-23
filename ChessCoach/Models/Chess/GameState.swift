@@ -59,6 +59,18 @@ final class GameState: @unchecked Sendable {
         return makeMove(from: from, to: to, promotion: promotion)
     }
 
+    /// Undo the last move by replaying all moves except the last from the start position.
+    @discardableResult
+    func undoLastMove() -> Bool {
+        guard !moveHistory.isEmpty else { return false }
+        let movesToReplay = Array(moveHistory.dropLast())
+        reset()
+        for m in movesToReplay {
+            makeMove(from: m.from, to: m.to)
+        }
+        return true
+    }
+
     func reset(fen: String? = nil) {
         let fenStr = fen ?? "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         let position = FenSerialization.default.deserialize(fen: fenStr)
