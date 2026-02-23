@@ -1,0 +1,68 @@
+import Foundation
+import ChessKit
+
+@Observable
+final class GameState: @unchecked Sendable {
+    private(set) var game: Game
+    private(set) var moveHistory: [(from: String, to: String)] = []
+
+    var fen: String {
+        FenSerialization.default.serialize(position: game.position)
+    }
+
+    var isWhiteTurn: Bool {
+        game.position.state.turn == .white
+    }
+
+    var isCheck: Bool { game.isCheck }
+    var isMate: Bool { game.isMate }
+    var legalMoves: [Move] { game.legalMoves }
+    var plyCount: Int { moveHistory.count }
+
+    init(fen: String? = nil) {
+        if let fen {
+            let position = FenSerialization.default.deserialize(fen: fen)
+            self.game = Game(position: position)
+        } else {
+            let position = FenSerialization.default.deserialize(
+                fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+            )
+            self.game = Game(position: position)
+        }
+    }
+
+    @discardableResult
+    func makeMove(from: String, to: String, promotion: PieceKind? = nil) -> Bool {
+        let move = Move(
+            from: Square(coordinate: from),
+            to: Square(coordinate: to),
+            promotion: promotion
+        )
+        let legal = game.legalMoves
+        guard legal.contains(where: { $0.from == move.from && $0.to == move.to }) else {
+            return false
+        }
+        game.make(move: move)
+        moveHistory.append((from: from, to: to))
+        return true
+    }
+
+    @discardableResult
+    func makeMoveUCI(_ uci: String) -> Bool {
+        let from = String(uci.prefix(2))
+        let to = String(uci.dropFirst(2).prefix(2))
+        var promotion: PieceKind? = nil
+        if uci.count == 5 {
+            let promoChar = uci.last!
+            promotion = Piece(character: Character(promoChar.uppercased()))?.kind
+        }
+        return makeMove(from: from, to: to, promotion: promotion)
+    }
+
+    func reset(fen: String? = nil) {
+        let fenStr = fen ?? "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        let position = FenSerialization.default.deserialize(fen: fenStr)
+        self.game = Game(position: position)
+        self.moveHistory = []
+    }
+}
