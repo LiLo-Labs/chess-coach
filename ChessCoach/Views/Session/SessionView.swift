@@ -260,8 +260,8 @@ struct SessionView: View {
                         .font(.subheadline)
                         .foregroundStyle(.orange)
                     Spacer()
-                    Button(action: { Task { await viewModel.restartSession() } }) {
-                        Text("Retry")
+                    Button(action: { viewModel.retryLastMove() }) {
+                        Text("Undo")
                             .font(.caption.weight(.bold))
                             .foregroundStyle(.orange)
                             .padding(.horizontal, 10)

@@ -164,6 +164,27 @@ final class SessionViewModel {
         }
     }
 
+    /// Undo the user's last move so they can try again from the same position.
+    func retryLastMove() {
+        sessionGeneration += 1
+        // Undo the user's move (and any coaching state for it)
+        gameState.undoLastMove()
+        userCoachingText = nil
+        userExplanation = nil
+        offBookExplanation = nil
+        userExplainContext = nil
+
+        // If user deviated, reset to on-book since we're back before the deviation
+        if case .userDeviated = bookStatus {
+            bookStatus = .onBook
+        }
+
+        // Adjust stats
+        if stats.totalUserMoves > 0 {
+            stats.totalUserMoves -= 1
+        }
+    }
+
     func restartSession() async {
         sessionGeneration += 1
         gameState.reset()
@@ -178,7 +199,9 @@ final class SessionViewModel {
         opponentExplainContext = nil
         sessionComplete = false
         evalScore = 0
-        stats.restarts += 1
+        let restartCount = stats.restarts + 1
+        stats = SessionStats()
+        stats.restarts = restartCount
 
         if opening.color == .black {
             await makeOpponentMove()
@@ -406,9 +429,18 @@ final class SessionViewModel {
         }
     }
 
+    private func updateEval() async {
+        if let result = await stockfish.evaluate(fen: gameState.fen, depth: 12) {
+            evalScore = result.score
+        }
+    }
+
     private func generateCoaching(forPly ply: Int, move: String, isUserMove: Bool) async {
         isCoachingLoading = true
         defer { isCoachingLoading = false }
+
+        // Update eval in parallel with coaching
+        async let evalTask: () = updateEval()
 
         let moveHistoryStr = buildMoveHistoryString()
 
@@ -422,6 +454,9 @@ final class SessionViewModel {
             moveHistory: moveHistoryStr,
             isUserMove: isUserMove
         )
+
+        // Wait for eval to complete
+        await evalTask
 
         if let text {
             if isUserMove {
