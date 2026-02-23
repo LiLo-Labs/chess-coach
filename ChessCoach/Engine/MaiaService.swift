@@ -11,11 +11,11 @@ actor MaiaService {
     init() throws {
         let config = MLModelConfiguration()
         config.computeUnits = .cpuAndNeuralEngine
-        guard let url = Bundle.main.url(forResource: "Maia2Blitz", withExtension: "mlpackage") else {
+        // Xcode compiles .mlpackage → .mlmodelc at build time
+        guard let url = Bundle.main.url(forResource: "Maia2Blitz", withExtension: "mlmodelc") else {
             throw MaiaError.modelNotFound
         }
-        let compiledURL = try MLModel.compileModel(at: url)
-        self.model = try MLModel(contentsOf: compiledURL, configuration: config)
+        self.model = try MLModel(contentsOf: url, configuration: config)
         let moves = Self.loadMoveList()
         self.moveList = moves
         var idx: [String: Int] = [:]

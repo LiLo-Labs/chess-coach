@@ -9,5 +9,8 @@ build/
 # ONNX intermediate files
 *.onnx
 
+# Large model files (download separately, exceeds GitHub 2GB limit)
+*.gguf
+
 # OS files
 .DS_Store

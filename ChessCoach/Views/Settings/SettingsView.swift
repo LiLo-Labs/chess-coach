@@ -14,6 +14,7 @@ struct SettingsView: View {
             Section("LLM Provider") {
                 Picker("Provider", selection: $providerPreference) {
                     Text("Auto-detect").tag("auto")
+                    Text("On-Device (Qwen3-4B)").tag("onDevice")
                     Text("Ollama (Local/DGX)").tag("ollama")
                     Text("Claude API").tag("claude")
                 }
@@ -73,7 +74,7 @@ struct SettingsView: View {
                 HStack {
                     Text("Model")
                     Spacer()
-                    Text("qwen2.5:32b")
+                    Text("qwen2.5:7b")
                         .foregroundStyle(.secondary)
                 }
             }
@@ -82,7 +83,11 @@ struct SettingsView: View {
         .task {
             let config = LLMConfig()
             let provider = await config.detectProvider()
-            detectedProvider = provider == .ollama ? "Ollama" : "Claude"
+            switch provider {
+            case .onDevice: detectedProvider = "On-Device (Qwen3-4B)"
+            case .ollama: detectedProvider = "Ollama"
+            case .claude: detectedProvider = "Claude"
+            }
         }
     }
 }

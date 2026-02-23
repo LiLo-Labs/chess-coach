@@ -26,9 +26,11 @@ struct CoachingContext: Sendable {
     let moveCategory: MoveCategory
     let moveHistory: String
     let isUserMove: Bool
+    let studentColor: String?
 }
 
 enum LLMProvider: Sendable {
+    case onDevice
     case ollama
     case claude
 }
