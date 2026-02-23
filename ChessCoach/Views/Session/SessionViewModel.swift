@@ -109,6 +109,7 @@ final class SessionViewModel {
             maiaService = try MaiaService()
         } catch {
             maiaService = nil
+            print("[ChessCoach] Maia init failed, falling back to Stockfish: \(error)")
         }
         await stockfish.start()
         await llmService.detectProvider()
@@ -386,7 +387,11 @@ final class SessionViewModel {
 
         let elapsed = clock.now - start
         if elapsed < minimumDelay {
-            try? await Task.sleep(for: minimumDelay - elapsed)
+            do {
+                try await Task.sleep(for: minimumDelay - elapsed)
+            } catch {
+                return // Task cancelled (user left session)
+            }
         }
 
         guard gen == sessionGeneration else { return }
