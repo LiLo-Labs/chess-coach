@@ -10,7 +10,10 @@ import Testing
         openingName: "King's Pawn Opening",
         userELO: 600,
         phase: .learningMainLine,
-        moveCategory: .okayMove
+        moveCategory: .okayMove,
+        moveHistory: "1. e4",
+        isUserMove: true,
+        studentColor: "white"
     )
     let prompt = LLMService.buildPrompt(for: context)
     #expect(prompt.contains("e2e4"))
@@ -26,10 +29,13 @@ import Testing
         openingName: "King's Pawn Opening",
         userELO: 600,
         phase: .learningMainLine,
-        moveCategory: .goodMove
+        moveCategory: .goodMove,
+        moveHistory: "1. e4",
+        isUserMove: true,
+        studentColor: "white"
     )
     let result = LLMService.buildPrompt(for: context)
-    #expect(result.contains("Good move"))
+    #expect(result.contains("good move"))
 }
 
 @Test func llmServiceBeginnersGetSimpleLanguage() {
@@ -41,7 +47,10 @@ import Testing
         openingName: "King's Pawn Opening",
         userELO: 500,
         phase: .learningMainLine,
-        moveCategory: .mistake
+        moveCategory: .mistake,
+        moveHistory: "1. e4",
+        isUserMove: true,
+        studentColor: "white"
     )
     let prompt = LLMService.buildPrompt(for: context)
     #expect(prompt.contains("complete beginner"))
