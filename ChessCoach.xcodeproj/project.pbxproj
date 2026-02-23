@@ -466,6 +466,7 @@
 				7E799AFE9B4A3172E5CAFDA4 /* XCRemoteSwiftPackageReference "ChessboardKit" */,
 				4F273E4E0D8A73CA03CFFB34 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 				F54DB98A1845656C61D0A914 /* XCLocalSwiftPackageReference "LocalPackages/chesskit-engine" */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* XCLocalSwiftPackageReference "LocalPackages/ChessKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
@@ -799,6 +800,10 @@
 		F54DB98A1845656C61D0A914 /* XCLocalSwiftPackageReference "LocalPackages/chesskit-engine" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = "LocalPackages/chesskit-engine";
+		};
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* XCLocalSwiftPackageReference "LocalPackages/ChessKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "LocalPackages/ChessKit";
 		};
 /* End XCLocalSwiftPackageReference section */
 
