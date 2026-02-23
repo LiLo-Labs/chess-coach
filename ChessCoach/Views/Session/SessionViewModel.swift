@@ -52,6 +52,7 @@ final class SessionViewModel {
     private(set) var isThinking = false
     private(set) var isCoachingLoading = false
     private(set) var sessionComplete = false
+    private var sessionGeneration = 0
     private(set) var userELO: Int = UserDefaults.standard.object(forKey: "user_elo") as? Int ?? 600
     private(set) var opponentELO: Int = UserDefaults.standard.object(forKey: "opponent_elo") as? Int ?? 1200
 
@@ -164,6 +165,7 @@ final class SessionViewModel {
     }
 
     func restartSession() async {
+        sessionGeneration += 1
         gameState.reset()
         bookStatus = .onBook
         bestResponseHint = nil
@@ -319,6 +321,7 @@ final class SessionViewModel {
         isThinking = true
         defer { isThinking = false }
 
+        let gen = sessionGeneration
         let ply = gameState.plyCount
         let clock = ContinuousClock()
         let minimumDelay = Duration.seconds(Double.random(in: 1.0...10.0))
@@ -341,18 +344,29 @@ final class SessionViewModel {
             }
         }
 
+        // Check if session was restarted while we were awaiting
+        guard gen == sessionGeneration else { return }
+
         if computedMove == nil {
             if let result = await stockfish.evaluate(fen: gameState.fen, depth: 10) {
                 computedMove = result.bestMove
             }
         }
 
-        guard let move = computedMove else { return }
+        // Check again after Stockfish await
+        guard gen == sessionGeneration else { return }
+
+        guard let move = computedMove else {
+            opponentCoachingText = "Opponent couldn't find a move. Try restarting."
+            return
+        }
 
         let elapsed = clock.now - start
         if elapsed < minimumDelay {
             try? await Task.sleep(for: minimumDelay - elapsed)
         }
+
+        guard gen == sessionGeneration else { return }
 
         if isOnBook && opening.isDeviation(atPly: ply, move: move) {
             if let expected = opening.expectedMove(atPly: ply) {
@@ -362,11 +376,17 @@ final class SessionViewModel {
             }
         }
 
-        gameState.makeMoveUCI(move)
+        let moveSucceeded = gameState.makeMoveUCI(move)
+        guard moveSucceeded else {
+            print("[ChessCoach] makeMoveUCI failed for \(move) — position may have changed")
+            return
+        }
 
         if case .opponentDeviated = bookStatus {
             await fetchBestResponseHint()
         }
+
+        guard gen == sessionGeneration else { return }
 
         await generateCoaching(forPly: ply, move: move, isUserMove: false)
 
@@ -390,13 +410,17 @@ final class SessionViewModel {
         isCoachingLoading = true
         defer { isCoachingLoading = false }
 
+        let moveHistoryStr = buildMoveHistoryString()
+
         let text = await coachingService.getCoaching(
             fen: gameState.fen,
             lastMove: move,
             scoreBefore: 0,
             scoreAfter: 0,
             ply: ply,
-            userELO: userELO
+            userELO: userELO,
+            moveHistory: moveHistoryStr,
+            isUserMove: isUserMove
         )
 
         if let text {

@@ -27,14 +27,16 @@ actor CoachingService {
         }
     }
 
-    /// Get coaching text for the user's move.
+    /// Get coaching text for a move.
     func getCoaching(
         fen: String,
         lastMove: String,
         scoreBefore: Int,
         scoreAfter: Int,
         ply: Int,
-        userELO: Int
+        userELO: Int,
+        moveHistory: String = "",
+        isUserMove: Bool = true
     ) async -> String? {
         let moveCategory = curriculumService.categorizeUserMove(
             atPly: ply,
@@ -69,7 +71,9 @@ actor CoachingService {
             openingName: curriculumService.opening.name,
             userELO: userELO,
             phase: phase,
-            moveCategory: category
+            moveCategory: category,
+            moveHistory: moveHistory,
+            isUserMove: isUserMove
         )
 
         do {

@@ -24,6 +24,8 @@ struct CoachingContext: Sendable {
     let userELO: Int
     let phase: LearningPhase
     let moveCategory: MoveCategory
+    let moveHistory: String
+    let isUserMove: Bool
 }
 
 enum LLMProvider: Sendable {

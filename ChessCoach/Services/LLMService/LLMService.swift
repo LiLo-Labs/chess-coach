@@ -41,11 +41,14 @@ actor LLMService {
             categoryInstruction = "The opponent deviated from the expected opening line. Explain what changed and how the player should adapt their plan."
         }
 
+        let whoMoved = context.isUserMove ? "the student's move" : "the opponent's move"
+
         return """
         You are a friendly chess coach teaching a \(level) (ELO ~\(context.userELO)).
         Opening: \(context.openingName)
-        Position (FEN): \(context.fen)
-        Last move: \(context.lastMove)
+        Moves so far: \(context.moveHistory)
+        Position after move (FEN): \(context.fen)
+        Last move played: \(context.lastMove) — this was \(whoMoved)
         Score change: \(change > 0 ? "+" : "")\(change) centipawns
 
         \(categoryInstruction)
