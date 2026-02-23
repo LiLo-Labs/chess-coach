@@ -5,7 +5,15 @@ actor LLMService {
     private var provider: LLMProvider = .claude
 
     func detectProvider() async {
-        provider = await config.detectProvider()
+        let pref = UserDefaults.standard.string(forKey: "llm_provider_preference") ?? "auto"
+        switch pref {
+        case "ollama":
+            provider = .ollama
+        case "claude":
+            provider = .claude
+        default:
+            provider = await config.detectProvider()
+        }
     }
 
     static func buildPrompt(for context: CoachingContext) -> String {
