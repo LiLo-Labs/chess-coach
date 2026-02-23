@@ -6,6 +6,10 @@
 //  This prevents Stockfish from hijacking the process's global stdout/stdin,
 //  so Swift print(), NSLog, os_log, and system messages still work normally.
 //
+//  Fix: Replace readInBackgroundAndNotify (main run loop dependent) with a
+//  dedicated background read thread to avoid hangs when Swift concurrency
+//  blocks main thread notification delivery.
+//
 
 #import "EngineMessenger.h"
 #import "../Engines/AvailableEngines.h"
@@ -64,7 +68,9 @@ public:
     PipeReadBuf(int pipefd) : fd(pipefd) {}
 };
 
-@implementation EngineMessenger : NSObject
+@implementation EngineMessenger : NSObject {
+    BOOL _stopped;
+}
 
 dispatch_queue_t _queue;
 Engine *_engine;
@@ -90,6 +96,7 @@ static std::streambuf *_originalCinBuf = nullptr;
 
   if (self) {
     _lock = [[NSLock alloc] init];
+    _stopped = NO;
     switch (type) {
       case EngineTypeStockfish:
         _engine = new StockfishEngine();
@@ -104,7 +111,6 @@ static std::streambuf *_originalCinBuf = nullptr;
 }
 
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
   _engine->deinitialize();
 
   // Restore original C++ stream buffers
@@ -122,8 +128,9 @@ static std::streambuf *_originalCinBuf = nullptr;
 
 - (void)start {
   [_lock lock];
+  _stopped = NO;
 
-  // --- Output pipe: Stockfish cout → pipe → we read via NSFileHandle ---
+  // --- Output pipe: Stockfish cout → pipe → we read via background thread ---
   _readPipe = [NSPipe pipe];
   _pipeReadHandle = [_readPipe fileHandleForReading];
   int outWriteFd = [[_readPipe fileHandleForWriting] fileDescriptor];
@@ -133,15 +140,27 @@ static std::streambuf *_originalCinBuf = nullptr;
   _coutBuf = new PipeWriteBuf(outWriteFd);
   std::cout.rdbuf(_coutBuf);
 
-  [[NSNotificationCenter defaultCenter]
-   addObserver:self
-   selector:@selector(readStdout:)
-   name:NSFileHandleReadCompletionNotification
-   object:_pipeReadHandle
-  ];
+  // Dedicated background read thread — no main run loop dependency
+  NSFileHandle *readHandle = _pipeReadHandle;
+  __weak typeof(self) weakSelf = self;
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+    while (true) {
+      __strong typeof(weakSelf) strongSelf = weakSelf;
+      if (!strongSelf || strongSelf->_stopped) break;
 
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [_pipeReadHandle readInBackgroundAndNotify];
+      NSData *data = [readHandle availableData];
+      if (data.length == 0) break; // EOF — pipe closed
+
+      NSArray<NSString *> *lines = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"\n"];
+      for (NSString *line in lines) {
+        if (line.length > 0) {
+          __strong typeof(weakSelf) innerSelf = weakSelf;
+          if (innerSelf && !innerSelf->_stopped) {
+            [innerSelf responseHandler](line);
+          }
+        }
+      }
+    }
   });
 
   // --- Input pipe: we write → pipe → Stockfish cin reads ---
@@ -154,8 +173,8 @@ static std::streambuf *_originalCinBuf = nullptr;
   _cinBuf = new PipeReadBuf(inReadFd);
   std::cin.rdbuf(_cinBuf);
 
-  // Create command dispatch queue and start engine
-  _queue = dispatch_queue_create("ck-engine-response-queue", DISPATCH_QUEUE_CONCURRENT);
+  // Create serial command dispatch queue and start engine
+  _queue = dispatch_queue_create("ck-engine-response-queue", DISPATCH_QUEUE_SERIAL);
 
   dispatch_async(_queue, ^{
     _engine->initialize();
@@ -165,6 +184,7 @@ static std::streambuf *_originalCinBuf = nullptr;
 
 - (void)stop {
   [_lock lock];
+  _stopped = YES;
   [_pipeReadHandle closeFile];
   [_pipeWriteHandle closeFile];
 
@@ -173,29 +193,12 @@ static std::streambuf *_originalCinBuf = nullptr;
 
   _writePipe = NULL;
   _pipeWriteHandle = NULL;
-
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [_lock unlock];
 }
 
 - (void)sendCommand: (NSString*) command {
-  dispatch_sync(_queue, ^{
-    const char *cmd = [[command stringByAppendingString:@"\n"] UTF8String];
-    write([_pipeWriteHandle fileDescriptor], cmd, strlen(cmd));
-  });
-}
-
-# pragma mark Private
-
-- (void)readStdout: (NSNotification*) notification {
-  [_pipeReadHandle readInBackgroundAndNotify];
-
-  NSData *data = [[notification userInfo] objectForKey:NSFileHandleNotificationDataItem];
-  NSArray<NSString *> *output = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"\n"];
-
-  [output enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-    [self responseHandler](obj);
-  }];
+  const char *cmd = [[command stringByAppendingString:@"\n"] UTF8String];
+  write([_pipeWriteHandle fileDescriptor], cmd, strlen(cmd));
 }
 
 @end

@@ -20,7 +20,6 @@
 		3FEEF58886C82EC691F900A4 /* ReviewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88367DED4C074D18B8746EC /* ReviewItem.swift */; };
 		451B2F2DF43724C2585B0AEE /* UserProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2DBE99E98075DDBDFF443F /* UserProgress.swift */; };
 		4A7034C003AE7DE4915EB4C1 /* CoachingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AF1BAD455BC18D3532DEB0 /* CoachingService.swift */; };
-		4C48675AB66648B44AB591CC /* qwen3-4b-q4_k_m.gguf in Resources */ = {isa = PBXBuildFile; fileRef = 337050FA4E2A5A796AA9A3E3 /* qwen3-4b-q4_k_m.gguf */; };
 		4DC53487D9B88E1937F0F49E /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A122CCB6DE1BFFF83D93127 /* SessionView.swift */; };
 		5009588C90BC3C56081C1727 /* SpacedRepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC6A2985336BC125CDD2FDF /* SpacedRepTests.swift */; };
 		52D6C103228BC322728622FB /* ChessKitEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 111E24467C545F77B7F648BA /* ChessKitEngine */; };
@@ -80,7 +79,6 @@
 		25353786D741F85FF2823848 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		2A122CCB6DE1BFFF83D93127 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
 		2D38846C538E23A6BABEA968 /* CoachingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachingServiceTests.swift; sourceTree = "<group>"; };
-		337050FA4E2A5A796AA9A3E3 /* qwen3-4b-q4_k_m.gguf */ = {isa = PBXFileReference; path = "qwen3-4b-q4_k_m.gguf"; sourceTree = "<group>"; };
 		3638ABB73F08F5C7040BAA58 /* OpeningCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningCard.swift; sourceTree = "<group>"; };
 		38878C966F69C0C1EC11776A /* Maia2Blitz.mlpackage */ = {isa = PBXFileReference; path = Maia2Blitz.mlpackage; sourceTree = "<group>"; };
 		3A39B17C19E09E33A7E27276 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -145,6 +143,13 @@
 			name = Packages;
 			sourceTree = "<group>";
 		};
+		0C2FE87EF44F1C11EC25A6FE /* Content */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
 		0F24295A6204C41878C7FCAD /* LLMService */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,13 +190,29 @@
 			path = Board;
 			sourceTree = "<group>";
 		};
+		300A45A375358DB84E9B1C86 /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Summary;
+			sourceTree = "<group>";
+		};
+		651F9EFCEC90D37B19F4E15A /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
 		74F1A30766BC552284FEC95E /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				1E558150124FA327AB077FC2 /* Board */,
+				C2CEAE1705097E0053BF06E9 /* Explorer */,
 				7EC270FB1856CD58666A8639 /* Home */,
 				03A9D869EE07FDD99DF1ED67 /* Session */,
 				BCDEE2CE0554327EF3ECA2E4 /* Settings */,
+				300A45A375358DB84E9B1C86 /* Summary */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -257,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				B8C29BA1613ECAC66CAEBEA6 /* ChessCoachTests.swift */,
+				651F9EFCEC90D37B19F4E15A /* Engine */,
 				770D8201EC0ED5937BD506C7 /* Models */,
 				B47587F877E79B7DC121AEDB /* Services */,
 			);
@@ -285,6 +307,7 @@
 			children = (
 				3A39B17C19E09E33A7E27276 /* Assets.xcassets */,
 				A610B1FE8CFF784020706341 /* App */,
+				0C2FE87EF44F1C11EC25A6FE /* Content */,
 				83B396071DAF547C73190501 /* Engine */,
 				7C38B364949C78ED746C7DE5 /* Models */,
 				E3A569EB3DC49F2DD16440BF /* Resources */,
@@ -312,6 +335,13 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		C2CEAE1705097E0053BF06E9 /* Explorer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Explorer;
+			sourceTree = "<group>";
+		};
 		D38E907AD01F15FD1DF2CB08 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,7 +364,6 @@
 			children = (
 				5AF349EACF6870397174001C /* maia2_moves.txt */,
 				38878C966F69C0C1EC11776A /* Maia2Blitz.mlpackage */,
-				337050FA4E2A5A796AA9A3E3 /* qwen3-4b-q4_k_m.gguf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -455,7 +484,6 @@
 			files = (
 				1087FFF77B8FB3ACC95ECECB /* Assets.xcassets in Resources */,
 				5631F07DEDC0C264386395AE /* maia2_moves.txt in Resources */,
-				4C48675AB66648B44AB591CC /* qwen3-4b-q4_k_m.gguf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
