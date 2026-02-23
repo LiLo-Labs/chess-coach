@@ -143,7 +143,6 @@ final class SessionViewModel {
             }
         }
 
-        // Get coaching for the user's move (eval runs inside generateCoaching)
         await generateCoaching(forPly: ply, move: uciMove, isUserMove: true)
 
         // Store context for explain
@@ -444,9 +443,6 @@ final class SessionViewModel {
         isCoachingLoading = true
         defer { isCoachingLoading = false }
 
-        // Update eval in parallel with coaching
-        async let evalTask: () = updateEval()
-
         let moveHistoryStr = buildMoveHistoryString()
 
         let text = await coachingService.getCoaching(
@@ -460,9 +456,6 @@ final class SessionViewModel {
             isUserMove: isUserMove
         )
 
-        // Wait for eval to complete
-        await evalTask
-
         if let text {
             if isUserMove {
                 userCoachingText = text
@@ -470,6 +463,8 @@ final class SessionViewModel {
                 opponentCoachingText = text
             }
         }
+
+        await updateEval()
     }
 
     private func buildMoveHistoryString() -> String {
