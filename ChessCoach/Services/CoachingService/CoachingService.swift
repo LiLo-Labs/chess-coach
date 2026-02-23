@@ -79,6 +79,7 @@ actor CoachingService {
         do {
             return try await llmService.getCoaching(for: context)
         } catch {
+            print("[ChessCoach] LLM coaching failed: \(error)")
             return nil
         }
     }

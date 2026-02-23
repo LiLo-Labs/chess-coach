@@ -116,7 +116,10 @@ actor LLMService {
 
         let (data, _) = try await URLSession.shared.data(for: request)
         let resp = try JSONDecoder().decode(ClaudeResponse.self, from: data)
-        return resp.content.first?.text ?? ""
+        guard let text = resp.content.first?.text, !text.isEmpty else {
+            throw URLError(.cannotParseResponse)
+        }
+        return text
     }
 }
 

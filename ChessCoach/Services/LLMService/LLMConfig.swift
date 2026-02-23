@@ -17,7 +17,9 @@ struct LLMConfig: Sendable {
             if let http = resp as? HTTPURLResponse, http.statusCode == 200 {
                 return .ollama
             }
-        } catch {}
+        } catch {
+            print("[ChessCoach] Ollama not reachable: \(error.localizedDescription)")
+        }
         return .claude
     }
 }
