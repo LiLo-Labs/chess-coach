@@ -2,41 +2,55 @@ import SwiftUI
 
 struct OpeningCard: View {
     let opening: Opening
+    private let progress: OpeningProgress
+
+    init(opening: Opening) {
+        self.opening = opening
+        self.progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
+    }
 
     var body: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 14) {
             // Color indicator
             Circle()
-                .fill(opening.color == .white ? .white : .black)
+                .fill(opening.color == .white ? Color.white : Color(white: 0.35))
                 .frame(width: 32, height: 32)
                 .overlay(
                     Circle()
-                        .strokeBorder(.gray.opacity(0.3), lineWidth: 1)
+                        .strokeBorder(Color.white.opacity(0.15), lineWidth: 1)
                 )
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 3) {
                 Text(opening.name)
                     .font(.headline)
+                    .foregroundStyle(.white)
 
                 Text(opening.description)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
+                    .foregroundStyle(.white.opacity(0.5))
+                    .lineLimit(1)
             }
 
             Spacer()
 
-            // Difficulty stars
-            HStack(spacing: 2) {
-                ForEach(1...5, id: \.self) { star in
-                    Image(systemName: star <= opening.difficulty ? "star.fill" : "star")
+            // Progress indicator
+            VStack(alignment: .trailing, spacing: 2) {
+                if progress.gamesPlayed > 0 {
+                    Text("\(Int(progress.accuracy * 100))%")
+                        .font(.subheadline.monospacedDigit().weight(.bold))
+                        .foregroundStyle(.white.opacity(0.8))
+                    Text("\(progress.gamesPlayed) played")
                         .font(.caption2)
-                        .foregroundStyle(star <= opening.difficulty ? .yellow : .gray.opacity(0.3))
+                        .foregroundStyle(.white.opacity(0.35))
+                } else {
+                    Text("New")
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(.white.opacity(0.4))
                 }
             }
         }
-        .padding()
-        .background(.background, in: RoundedRectangle(cornerRadius: 12))
-        .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .background(Color(white: 0.16), in: RoundedRectangle(cornerRadius: 12))
     }
 }

@@ -30,7 +30,7 @@ actor LLMService {
         let categoryInstruction: String
         switch context.moveCategory {
         case .goodMove:
-            return "Good move! \(context.lastMove) strengthens your position."
+            categoryInstruction = "The player made a good move. Explain WHY it's strong — what does it control, threaten, or set up? Be specific and encouraging."
         case .okayMove:
             categoryInstruction = "The player made an okay but not optimal move. Gently suggest what might be better without being discouraging."
         case .mistake:
@@ -50,18 +50,14 @@ actor LLMService {
 
         \(categoryInstruction)
 
-        Give a brief (1-2 sentence) coaching tip for a beginner. Focus on WHY, not just WHAT.
+        Give ONE short sentence (max 15 words) explaining why this move matters.
         Use simple language. Reference concrete pieces and squares.
         Do not use chess notation symbols. Spell out piece names.
+        Do not start with "This move" or "The move".
         """
     }
 
     func getCoaching(for context: CoachingContext) async throws -> String {
-        // Return pre-built response for good moves (no LLM needed)
-        if context.moveCategory == .goodMove {
-            return Self.buildPrompt(for: context)
-        }
-
         let prompt = Self.buildPrompt(for: context)
         switch provider {
         case .ollama:
@@ -71,7 +67,16 @@ actor LLMService {
         }
     }
 
-    private func callOllama(prompt: String) async throws -> String {
+    func getExplanation(prompt: String) async throws -> String {
+        switch provider {
+        case .ollama:
+            return try await callOllama(prompt: prompt, maxTokens: 500)
+        case .claude:
+            return try await callClaude(prompt: prompt, maxTokens: 500)
+        }
+    }
+
+    private func callOllama(prompt: String, maxTokens: Int = 200) async throws -> String {
         let url = config.ollamaBaseURL.appendingPathComponent("api/chat")
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -79,7 +84,7 @@ actor LLMService {
         request.timeoutInterval = 30
 
         let body: [String: Any] = [
-            "model": "qwen2.5:32b",
+            "model": "qwen2.5:7b",
             "messages": [["role": "user", "content": prompt]],
             "stream": false
         ]
@@ -90,7 +95,7 @@ actor LLMService {
         return resp.message.content
     }
 
-    private func callClaude(prompt: String) async throws -> String {
+    private func callClaude(prompt: String, maxTokens: Int = 200) async throws -> String {
         let url = config.claudeBaseURL.appendingPathComponent("v1/messages")
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -101,7 +106,7 @@ actor LLMService {
 
         let body: [String: Any] = [
             "model": "claude-sonnet-4-20250514",
-            "max_tokens": 200,
+            "max_tokens": maxTokens,
             "messages": [["role": "user", "content": prompt]]
         ]
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
