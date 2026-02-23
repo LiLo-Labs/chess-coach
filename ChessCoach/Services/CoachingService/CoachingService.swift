@@ -36,7 +36,8 @@ actor CoachingService {
         ply: Int,
         userELO: Int,
         moveHistory: String = "",
-        isUserMove: Bool = true
+        isUserMove: Bool = true,
+        studentColor: String? = nil
     ) async -> String? {
         let moveCategory = curriculumService.categorizeUserMove(
             atPly: ply,
@@ -73,7 +74,8 @@ actor CoachingService {
             phase: phase,
             moveCategory: category,
             moveHistory: moveHistory,
-            isUserMove: isUserMove
+            isUserMove: isUserMove,
+            studentColor: studentColor
         )
 
         do {

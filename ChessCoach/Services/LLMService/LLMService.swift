@@ -3,10 +3,13 @@ import Foundation
 actor LLMService {
     private let config = LLMConfig()
     private var provider: LLMProvider = .claude
+    private var onDeviceLLM: OnDeviceLLMService?
 
     func detectProvider() async {
         let pref = UserDefaults.standard.string(forKey: "llm_provider_preference") ?? "auto"
         switch pref {
+        case "onDevice":
+            provider = .onDevice
         case "ollama":
             provider = .ollama
         case "claude":
@@ -14,6 +17,10 @@ actor LLMService {
         default:
             provider = await config.detectProvider()
         }
+
+        // Don't pre-load on-device model — it's loaded lazily on first callProvider()
+        // to avoid blocking session start with a 2.5GB model load.
+        print("[ChessCoach] LLM provider: \(provider)")
     }
 
     static func buildPrompt(for context: CoachingContext) -> String {
@@ -42,9 +49,11 @@ actor LLMService {
         }
 
         let whoMoved = context.isUserMove ? "the student's move" : "the opponent's move"
+        let studentColor = context.studentColor ?? "White"
 
         return """
         You are a friendly chess coach teaching a \(level) (ELO ~\(context.userELO)).
+        The student plays \(studentColor). When you say "you" or "your", always mean the student (\(studentColor)).
         Opening: \(context.openingName)
         Moves so far: \(context.moveHistory)
         Position after move (FEN): \(context.fen)
@@ -62,22 +71,75 @@ actor LLMService {
 
     func getCoaching(for context: CoachingContext) async throws -> String {
         let prompt = Self.buildPrompt(for: context)
-        switch provider {
-        case .ollama:
-            return try await callOllama(prompt: prompt)
-        case .claude:
-            return try await callClaude(prompt: prompt)
-        }
+        return try await callProvider(prompt: prompt, maxTokens: 200, useThinking: false)
     }
 
     func getExplanation(prompt: String) async throws -> String {
-        switch provider {
-        case .ollama:
-            return try await callOllama(prompt: prompt, maxTokens: 500)
-        case .claude:
-            return try await callClaude(prompt: prompt, maxTokens: 500)
+        return try await callProvider(prompt: prompt, maxTokens: 500, useThinking: true)
+    }
+
+    // MARK: - Private
+
+    /// Try the current provider, fall back through the chain: onDevice → ollama → claude
+    private func callProvider(prompt: String, maxTokens: Int, useThinking: Bool) async throws -> String {
+        var lastError: Error?
+
+        // Try on-device first if selected
+        if provider == .onDevice {
+            do {
+                return try await callOnDevice(prompt: prompt, maxTokens: maxTokens, useThinking: useThinking)
+            } catch {
+                print("[ChessCoach] On-device LLM failed, trying Ollama: \(error.localizedDescription)")
+                lastError = error
+            }
+        }
+
+        // Try Ollama
+        if provider == .onDevice || provider == .ollama {
+            do {
+                return try await callOllama(prompt: prompt, maxTokens: maxTokens)
+            } catch {
+                print("[ChessCoach] Ollama failed, trying Claude: \(error.localizedDescription)")
+                lastError = error
+            }
+        }
+
+        // Try Claude
+        do {
+            return try await callClaude(prompt: prompt, maxTokens: maxTokens)
+        } catch {
+            print("[ChessCoach] Claude failed: \(error.localizedDescription)")
+            throw lastError ?? error
         }
     }
+
+    private func loadOnDeviceModel() async {
+        if onDeviceLLM == nil {
+            onDeviceLLM = OnDeviceLLMService()
+        }
+        do {
+            try await onDeviceLLM?.loadModel()
+        } catch {
+            print("[ChessCoach] Failed to load on-device model: \(error.localizedDescription)")
+            provider = .ollama
+            print("[ChessCoach] Falling back to Ollama")
+        }
+    }
+
+    private func callOnDevice(prompt: String, maxTokens: Int, useThinking: Bool) async throws -> String {
+        // Lazy-load the model on first use
+        if onDeviceLLM == nil {
+            onDeviceLLM = OnDeviceLLMService()
+        }
+        guard let onDeviceLLM else {
+            throw OnDeviceLLMError.modelNotLoaded
+        }
+        try await onDeviceLLM.loadModel()
+        return try await onDeviceLLM.generate(prompt: prompt, maxTokens: maxTokens, useThinking: useThinking)
+    }
+
+    /// Current provider for display in settings
+    var currentProvider: LLMProvider { provider }
 
     private func callOllama(prompt: String, maxTokens: Int = 200) async throws -> String {
         let url = config.ollamaBaseURL.appendingPathComponent("api/chat")

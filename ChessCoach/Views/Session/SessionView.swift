@@ -15,10 +15,11 @@ struct SessionView: View {
         GeometryReader { geo in
             let evalWidth: CGFloat = 12
             let evalGap: CGFloat = 4
-            let boardSize = geo.size.width - evalWidth - evalGap
+            let boardSize = max(1, geo.size.width - evalWidth - evalGap)
 
             VStack(spacing: 0) {
                 topBar
+                engineStatusBar
                 opponentBar
 
                 // ── Eval bar + Board ──
@@ -162,6 +163,29 @@ struct SessionView: View {
         .padding(.horizontal, 16)
         .padding(.top, 54)
         .padding(.bottom, 8)
+    }
+
+    // MARK: - Engine Status Bar
+
+    private var engineStatusBar: some View {
+        HStack(spacing: 12) {
+            statusPill(icon: "cpu", label: viewModel.maiaStatus)
+            statusPill(icon: "brain", label: viewModel.llmStatus)
+            statusPill(icon: "gauge.medium", label: viewModel.stockfishStatus)
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 4)
+    }
+
+    private func statusPill(icon: String, label: String) -> some View {
+        HStack(spacing: 3) {
+            Image(systemName: icon)
+                .font(.system(size: 8))
+            Text(label)
+                .font(.system(size: 9, weight: .medium))
+        }
+        .foregroundStyle(.secondary.opacity(0.7))
     }
 
     // MARK: - Player Bars

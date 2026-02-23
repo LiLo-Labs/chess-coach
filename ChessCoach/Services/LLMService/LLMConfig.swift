@@ -8,7 +8,15 @@ struct LLMConfig: Sendable {
         UserDefaults.standard.string(forKey: "claude_api_key") ?? ""
     }
 
+    /// Detect the best available provider, in priority order:
+    /// on-device → Ollama → Claude
     func detectProvider() async -> LLMProvider {
+        #if !targetEnvironment(simulator)
+        if OnDeviceLLMService.isModelAvailable {
+            return .onDevice
+        }
+        #endif
+
         let url = ollamaBaseURL.appendingPathComponent("api/tags")
         var req = URLRequest(url: url)
         req.timeoutInterval = 2.0

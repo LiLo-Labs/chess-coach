@@ -1,6 +1,22 @@
 import Foundation
 import ChessKit
 
+/// Debug log that writes to a file (survives stdout redirect + crash)
+func debugLog(_ message: String) {
+    let dateStr = ISO8601DateFormatter().string(from: Date())
+    let line = "[\(dateStr)] \(message)\n"
+    let tmp = FileManager.default.temporaryDirectory
+    let logFile = tmp.appendingPathComponent("chesscoach_debug.log")
+    if let handle = try? FileHandle(forWritingTo: logFile) {
+        handle.seekToEndOfFile()
+        handle.write(line.data(using: .utf8)!)
+        handle.synchronizeFile()
+        handle.closeFile()
+    } else {
+        try? line.data(using: .utf8)?.write(to: logFile)
+    }
+}
+
 enum BookStatus: Equatable {
     case onBook
     case userDeviated(expected: OpeningMove, atPly: Int)
@@ -104,15 +120,36 @@ final class SessionViewModel {
         self.coachingService = CoachingService(llmService: llmService, curriculumService: curriculumService)
     }
 
+    // Engine status for debug display
+    private(set) var maiaStatus: String = "…"
+    private(set) var llmStatus: String = "…"
+    private(set) var stockfishStatus: String = "…"
+
     func startSession() async {
+        debugLog("startSession() called")
         do {
             maiaService = try MaiaService()
+            maiaStatus = "Maia 2"
+            debugLog("Maia loaded successfully")
         } catch {
             maiaService = nil
+            maiaStatus = "Stockfish (Maia failed)"
+            debugLog("Maia init failed: \(error.localizedDescription)")
             print("[ChessCoach] Maia init failed, falling back to Stockfish: \(error)")
         }
+
+        debugLog("Starting Stockfish...")
         await stockfish.start()
+        stockfishStatus = "Ready"
+        debugLog("Stockfish ready")
+
         await llmService.detectProvider()
+        let provider = await llmService.currentProvider
+        switch provider {
+        case .onDevice: llmStatus = "On-Device (Qwen3-4B)"
+        case .ollama: llmStatus = "Ollama"
+        case .claude: llmStatus = "Claude API"
+        }
 
         if opening.color == .black {
             await makeOpponentMove()
@@ -120,6 +157,7 @@ final class SessionViewModel {
     }
 
     func userMoved(from: String, to: String) async {
+        debugLog("userMoved: \(from)\(to)")
         let ply = gameState.plyCount - 1
         let uciMove = from + to
 
@@ -143,7 +181,11 @@ final class SessionViewModel {
             }
         }
 
+        debugLog("Generating coaching for user move")
         await generateCoaching(forPly: ply, move: uciMove, isUserMove: true)
+        debugLog("Updating eval after user move")
+        await updateEval()
+        debugLog("Eval updated")
 
         // Store context for explain
         userExplainContext = ExplainContext(
@@ -221,10 +263,13 @@ final class SessionViewModel {
         defer { if forUserMove { isExplainingUser = false } else { isExplainingOpponent = false } }
 
         let moveHistoryStr = buildMoveHistoryString()
-        let who = forUserMove ? "the player's own move" : "the opponent's move"
+        let studentColor = opening.color == .white ? "White" : "Black"
+        let who = forUserMove ? "the student's own move (playing \(studentColor))" : "the opponent's move (playing \(studentColor == "White" ? "Black" : "White"))"
 
         let prompt = """
         You are a friendly, encouraging chess coach teaching a beginner (ELO ~\(userELO)).
+        The student plays \(studentColor). When you say "you" or "your", always mean the student (\(studentColor)).
+        Refer to the other side as "your opponent" or "the opponent".
         Opening: \(opening.name)
 
         Moves so far: \(moveHistoryStr)
@@ -269,19 +314,23 @@ final class SessionViewModel {
             playedMove = gameState.moveHistory.last.map { $0.from + $0.to } ?? "?"
             expectedSan = expected.san
             expectedUci = expected.uci
-            who = "You"
+            who = "You (the student)"
         case let .opponentDeviated(expected, played, _):
             playedMove = played
             expectedSan = expected.san
             expectedUci = expected.uci
-            who = "Your opponent"
+            who = "The opponent"
         default:
             return
         }
 
+        let currentFen = gameState.fen
+        let moveHistoryStr = buildMoveHistoryString()
+        let studentColor = opening.color == .white ? "White" : "Black"
+
         // Use Stockfish to evaluate current position
         var evalNote = ""
-        if let result = await stockfish.evaluate(fen: gameState.fen, depth: 12) {
+        if let result = await stockfish.evaluate(fen: currentFen, depth: 12) {
             let pawns = Double(result.score) / 100.0
             if abs(pawns) < 0.3 {
                 evalNote = "The position is roughly equal — the deviation may be fine."
@@ -292,14 +341,13 @@ final class SessionViewModel {
             }
         }
 
-        let moveHistoryStr = buildMoveHistoryString()
-
         let prompt = """
         You are a friendly chess coach teaching a beginner (ELO ~\(userELO)).
+        The student plays \(studentColor). When you say "you" or "your", always mean the student (\(studentColor)).
         Opening: \(opening.name)
 
         Moves so far: \(moveHistoryStr)
-        Current position (FEN): \(gameState.fen)
+        Current position (FEN): \(currentFen)
 
         \(who) played \(playedMove) instead of the book move \(expectedSan) (\(expectedUci)).
         \(evalNote)
@@ -416,6 +464,7 @@ final class SessionViewModel {
         guard gen == sessionGeneration else { return }
 
         await generateCoaching(forPly: ply, move: move, isUserMove: false)
+        await updateEval()
 
         // Store context for explain
         opponentExplainContext = ExplainContext(
@@ -428,13 +477,15 @@ final class SessionViewModel {
     }
 
     private func fetchBestResponseHint() async {
-        if let result = await stockfish.evaluate(fen: gameState.fen, depth: 12) {
+        let currentFen = gameState.fen
+        if let result = await stockfish.evaluate(fen: currentFen, depth: 12) {
             bestResponseHint = result.bestMove
         }
     }
 
     private func updateEval() async {
-        if let result = await stockfish.evaluate(fen: gameState.fen, depth: 12) {
+        let currentFen = gameState.fen
+        if let result = await stockfish.evaluate(fen: currentFen, depth: 12) {
             evalScore = result.score
         }
     }
@@ -453,7 +504,8 @@ final class SessionViewModel {
             ply: ply,
             userELO: userELO,
             moveHistory: moveHistoryStr,
-            isUserMove: isUserMove
+            isUserMove: isUserMove,
+            studentColor: opening.color == .white ? "White" : "Black"
         )
 
         if let text {
