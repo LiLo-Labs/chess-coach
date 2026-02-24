@@ -1,0 +1,35 @@
+{
+  "identifier" : "com.chesscoach.storekit",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "6745230001",
+      "localizations" : [
+        {
+          "description" : "Unlock AI coaching, deep explanations, and on-device model support.",
+          "displayName" : "ChessCoach Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.chesscoach.pro.lifetime",
+      "referenceName" : "ChessCoach Pro (Lifetime)",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6745230000",
+    "_developerTeamID" : "TEAM_ID",
+    "_lastSynchronizedDate" : 1740000000
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

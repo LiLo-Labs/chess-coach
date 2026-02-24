@@ -151,11 +151,13 @@ actor StockfishService {
     }
 
     private func handleResponse(_ response: EngineResponse) {
+        debugLog("[SF] handleResponse: \(response), waitingForReady=\(waitingForReady), waitingForBestMove=\(waitingForBestMove)")
         if waitingForReady {
             if case .readyok = response {
                 waitingForReady = false
                 let cont = pendingContinuation
                 pendingContinuation = nil
+                debugLog("[SF] handleResponse: resuming readyok continuation (cont=\(cont != nil))")
                 cont?.resume()
             }
             return
@@ -167,6 +169,7 @@ actor StockfishService {
                 waitingForBestMove = false
                 let cont = pendingContinuation
                 pendingContinuation = nil
+                debugLog("[SF] handleResponse: resuming bestmove continuation (cont=\(cont != nil))")
                 cont?.resume()
             }
         }
@@ -181,13 +184,15 @@ actor StockfishService {
         collectedResponses = []
         waitingForBestMove = true
 
-        for cmd in commands {
+        for (i, cmd) in commands.enumerated() {
+            debugLog("runSearch: sending cmd[\(i)]: \(cmd)")
             await engine.send(command: cmd)
+            debugLog("runSearch: sent cmd[\(i)] done")
         }
 
         // Timeout so searches don't hang forever
         let timeoutTask = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(30))
+            try? await Task.sleep(for: .seconds(10))
             await self?.handleSearchTimeout()
         }
 
@@ -201,11 +206,13 @@ actor StockfishService {
     }
 
     private func handleSearchTimeout() {
+        debugLog("[SF] handleSearchTimeout: waitingForBestMove=\(waitingForBestMove), hasCont=\(pendingContinuation != nil)")
         guard waitingForBestMove else { return }
         waitingForBestMove = false
         let cont = pendingContinuation
         pendingContinuation = nil
         cont?.resume()
-        print("[ChessCoach] Stockfish: search timeout after 30s")
+        debugLog("[SF] handleSearchTimeout: resumed continuation")
+        print("[ChessCoach] Stockfish: search timeout after 10s")
     }
 }

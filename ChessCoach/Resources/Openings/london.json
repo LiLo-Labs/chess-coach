@@ -1,0 +1,753 @@
+{
+  "id": "london",
+  "name": "London System",
+  "description": "A solid, easy-to-learn system that works against almost any Black response.",
+  "color": "white",
+  "difficulty": 1,
+  "tree": {
+    "id": "london/root",
+    "children": [
+      {
+        "id": "london/d2d4",
+        "move": { "uci": "d2d4", "san": "d4", "explanation": "Control the center with the queen's pawn." },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "london/d2d4/d7d5",
+            "move": { "uci": "d7d5", "san": "d5", "explanation": "Black fights for the center symmetrically. The most common reply." },
+            "isMainLine": true,
+            "weight": 250,
+            "variationName": "Classical London",
+            "children": [
+              {
+                "id": "london/d2d4/d7d5/c1f4",
+                "move": { "uci": "c1f4", "san": "Bf4", "explanation": "The London Bishop! Develop it outside the pawn chain before playing e3." },
+                "isMainLine": true,
+                "weight": 200,
+                "children": [
+                  {
+                    "id": "london/d2d4/d7d5/c1f4/g8f6",
+                    "move": { "uci": "g8f6", "san": "Nf6", "explanation": "Black develops a knight to its most natural square, eyeing d5 and e4." },
+                    "isMainLine": true,
+                    "weight": 180,
+                    "variationName": "Main Line: 2...Nf6",
+                    "children": [
+                      {
+                        "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3",
+                        "move": { "uci": "e2e3", "san": "e3", "explanation": "Support d4 and open the diagonal for your king's bishop. The pawn chain d4-e3 is the London's backbone." },
+                        "isMainLine": true,
+                        "weight": 170,
+                        "children": [
+                          {
+                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5",
+                            "move": { "uci": "c7c5", "san": "c5", "explanation": "Black challenges your center — this is the most principled way to fight the London." },
+                            "isMainLine": true,
+                            "weight": 160,
+                            "variationName": "Main Line: ...c5 challenge",
+                            "children": [
+                              {
+                                "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3",
+                                "move": { "uci": "c2c3", "san": "c3", "explanation": "Reinforce d4. Your pawn structure is now rock-solid on d4-e3-c3." },
+                                "isMainLine": true,
+                                "weight": 150,
+                                "children": [
+                                  {
+                                    "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6",
+                                    "move": { "uci": "b8c6", "san": "Nc6", "explanation": "Black develops another piece and adds pressure to d4." },
+                                    "isMainLine": true,
+                                    "weight": 140,
+                                    "children": [
+                                      {
+                                        "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2",
+                                        "move": { "uci": "b1d2", "san": "Nd2", "explanation": "Develop the knight without blocking the c-pawn. A key London idea — the knight often goes to d2 then f3." },
+                                        "isMainLine": true,
+                                        "weight": 130,
+                                        "children": [
+                                          {
+                                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/e7e6",
+                                            "move": { "uci": "e7e6", "san": "e6", "explanation": "Black prepares to develop the dark-squared bishop to d6 or e7." },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/e7e6/f1d3",
+                                                "move": { "uci": "f1d3", "san": "Bd3", "explanation": "Develop the bishop to its ideal London square. It eyes the kingside, especially h7." },
+                                                "isMainLine": true,
+                                                "weight": 110,
+                                                "children": [
+                                                  {
+                                                    "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/e7e6/f1d3/f8d6",
+                                                    "move": { "uci": "f8d6", "san": "Bd6", "explanation": "Black tries to trade off your strong London bishop." },
+                                                    "isMainLine": true,
+                                                    "weight": 100,
+                                                    "children": [
+                                                      {
+                                                        "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/e7e6/f1d3/f8d6/f4g3",
+                                                        "move": { "uci": "f4g3", "san": "Bg3", "explanation": "Retreat the bishop to g3, keeping the piece. Trading bishops would give Black an easy game." },
+                                                        "isMainLine": true,
+                                                        "weight": 90,
+                                                        "children": [
+                                                          {
+                                                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/e7e6/f1d3/f8d6/f4g3/e8g8",
+                                                            "move": { "uci": "e8g8", "san": "O-O", "explanation": "Black castles for king safety. The middlegame is approaching." },
+                                                            "isMainLine": true,
+                                                            "weight": 80,
+                                                            "children": [
+                                                              {
+                                                                "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/e7e6/f1d3/f8d6/f4g3/e8g8/g1f3",
+                                                                "move": { "uci": "g1f3", "san": "Nf3", "explanation": "Develop the last minor piece. You're ready to castle next." },
+                                                                "isMainLine": true,
+                                                                "weight": 70,
+                                                                "children": []
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/e7e6/f1d3/f8e7",
+                                                    "move": { "uci": "f8e7", "san": "Be7", "explanation": "Black develops the bishop modestly, keeping options open." },
+                                                    "isMainLine": false,
+                                                    "variationName": "Quiet ...Be7 setup",
+                                                    "weight": 80,
+                                                    "children": [
+                                                      {
+                                                        "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/e7e6/f1d3/f8e7/g1f3",
+                                                        "move": { "uci": "g1f3", "san": "Nf3", "explanation": "Complete development. You have a harmonious London setup." },
+                                                        "isMainLine": true,
+                                                        "weight": 70,
+                                                        "children": [
+                                                          {
+                                                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/e7e6/f1d3/f8e7/g1f3/e8g8",
+                                                            "move": { "uci": "e8g8", "san": "O-O", "explanation": "Both sides have completed development. The London structure gives you a safe position with kingside attacking chances." },
+                                                            "isMainLine": true,
+                                                            "weight": 60,
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/d8b6",
+                                            "move": { "uci": "d8b6", "san": "Qb6", "explanation": "Black attacks your b2 pawn. A common trick in the London." },
+                                            "isMainLine": false,
+                                            "variationName": "Early ...Qb6 attack",
+                                            "weight": 80,
+                                            "children": [
+                                              {
+                                                "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/d8b6/d1b3",
+                                                "move": { "uci": "d1b3", "san": "Qb3", "explanation": "Defend b2 and offer a queen trade. If queens come off, your solid structure shines in the endgame." },
+                                                "isMainLine": true,
+                                                "weight": 70,
+                                                "children": [
+                                                  {
+                                                    "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/d8b6/d1b3/c5c4",
+                                                    "move": { "uci": "c5c4", "san": "c4", "explanation": "Black pushes the queen away but releases tension in the center — this actually helps your London structure." },
+                                                    "isMainLine": true,
+                                                    "weight": 60,
+                                                    "children": [
+                                                      {
+                                                        "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/b8c6/b1d2/d8b6/d1b3/c5c4/b3c2",
+                                                        "move": { "uci": "b3c2", "san": "Qc2", "explanation": "Retreat the queen to a strong central square. Now your e4 push is a real threat." },
+                                                        "isMainLine": true,
+                                                        "weight": 50,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/d8b6",
+                                    "move": { "uci": "d8b6", "san": "Qb6", "explanation": "Black attacks b2 immediately — the most direct way to challenge the London." },
+                                    "isMainLine": false,
+                                    "variationName": "Immediate ...Qb6",
+                                    "weight": 100,
+                                    "children": [
+                                      {
+                                        "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/d8b6/d1b3",
+                                        "move": { "uci": "d1b3", "san": "Qb3", "explanation": "Meet Qb6 with Qb3. You're happy to trade queens — the London is great in endgames." },
+                                        "isMainLine": true,
+                                        "weight": 90,
+                                        "children": [
+                                          {
+                                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/d8b6/d1b3/b6b3",
+                                            "move": { "uci": "b6b3", "san": "Qxb3", "explanation": "Black trades queens. This often favors White's solid pawn structure." },
+                                            "isMainLine": true,
+                                            "weight": 80,
+                                            "children": [
+                                              {
+                                                "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c7c5/c2c3/d8b6/d1b3/b6b3/a2b3",
+                                                "move": { "uci": "a2b3", "san": "axb3", "explanation": "Recapture toward the center. Your a-file is now open for your rook." },
+                                                "isMainLine": true,
+                                                "weight": 70,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/e7e6",
+                            "move": { "uci": "e7e6", "san": "e6", "explanation": "Black plays solidly, preparing to develop the bishop. A quiet but solid setup." },
+                            "isMainLine": false,
+                            "variationName": "Solid ...e6 setup",
+                            "weight": 120,
+                            "children": [
+                              {
+                                "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/e7e6/f1d3",
+                                "move": { "uci": "f1d3", "san": "Bd3", "explanation": "Develop the bishop to its ideal diagonal. It points at h7 — a key attacking target." },
+                                "isMainLine": true,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/e7e6/f1d3/f8d6",
+                                    "move": { "uci": "f8d6", "san": "Bd6", "explanation": "Black challenges your London bishop directly. This is the most testing reply." },
+                                    "isMainLine": true,
+                                    "weight": 100,
+                                    "children": [
+                                      {
+                                        "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/e7e6/f1d3/f8d6/f4g3",
+                                        "move": { "uci": "f4g3", "san": "Bg3", "explanation": "Keep the bishop! Retreating to g3 is standard — the bishop stays strong on the long diagonal." },
+                                        "isMainLine": true,
+                                        "weight": 90,
+                                        "children": [
+                                          {
+                                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/e7e6/f1d3/f8d6/f4g3/e8g8",
+                                            "move": { "uci": "e8g8", "san": "O-O", "explanation": "Black castles. Now continue developing with Nd2 and Ngf3." },
+                                            "isMainLine": true,
+                                            "weight": 80,
+                                            "children": [
+                                              {
+                                                "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/e7e6/f1d3/f8d6/f4g3/e8g8/b1d2",
+                                                "move": { "uci": "b1d2", "san": "Nd2", "explanation": "Continue the London setup. The knight heads for f3, completing your development." },
+                                                "isMainLine": true,
+                                                "weight": 70,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/e7e6/f1d3/c7c5",
+                                    "move": { "uci": "c7c5", "san": "c5", "explanation": "Black delays bishop development to challenge the center first." },
+                                    "isMainLine": false,
+                                    "variationName": "Delayed ...c5",
+                                    "weight": 80,
+                                    "children": [
+                                      {
+                                        "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/e7e6/f1d3/c7c5/c2c3",
+                                        "move": { "uci": "c2c3", "san": "c3", "explanation": "Same idea — reinforce d4. You know this structure well by now." },
+                                        "isMainLine": true,
+                                        "weight": 70,
+                                        "children": [
+                                          {
+                                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/e7e6/f1d3/c7c5/c2c3/b8c6",
+                                            "move": { "uci": "b8c6", "san": "Nc6", "explanation": "Black develops normally. The position transposes to the main line structure." },
+                                            "isMainLine": true,
+                                            "weight": 60,
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c8f5",
+                            "move": { "uci": "c8f5", "san": "Bf5", "explanation": "Black mirrors your idea — developing the bishop before playing e6. This is the 'mirror London'." },
+                            "isMainLine": false,
+                            "variationName": "Mirror Bishop: ...Bf5",
+                            "weight": 100,
+                            "children": [
+                              {
+                                "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c8f5/f1d3",
+                                "move": { "uci": "f1d3", "san": "Bd3", "explanation": "Offer to trade bishops. If Black trades, you recapture and open lines toward the kingside." },
+                                "isMainLine": true,
+                                "weight": 90,
+                                "children": [
+                                  {
+                                    "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c8f5/f1d3/f5d3",
+                                    "move": { "uci": "f5d3", "san": "Bxd3", "explanation": "Black trades bishops. This opens the c-file for your queen." },
+                                    "isMainLine": true,
+                                    "weight": 80,
+                                    "children": [
+                                      {
+                                        "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c8f5/f1d3/f5d3/d1d3",
+                                        "move": { "uci": "d1d3", "san": "Qxd3", "explanation": "Recapture with the queen. She sits nicely on d3, watching both flanks." },
+                                        "isMainLine": true,
+                                        "weight": 70,
+                                        "children": [
+                                          {
+                                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c8f5/f1d3/f5d3/d1d3/e7e6",
+                                            "move": { "uci": "e7e6", "san": "e6", "explanation": "Black solidifies. Continue with Nd2, Ngf3, and castle." },
+                                            "isMainLine": true,
+                                            "weight": 60,
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c8f5/f1d3/f5g6",
+                                    "move": { "uci": "f5g6", "san": "Bg6", "explanation": "Black retreats rather than trading. Now you can push for h4-h5 to harass the bishop." },
+                                    "isMainLine": false,
+                                    "variationName": "...Bg6 retreat",
+                                    "weight": 60,
+                                    "children": [
+                                      {
+                                        "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c8f5/f1d3/f5g6/g1f3",
+                                        "move": { "uci": "g1f3", "san": "Nf3", "explanation": "Develop and prepare to castle. You can consider h4 later to chase the bishop." },
+                                        "isMainLine": true,
+                                        "weight": 50,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c8g4",
+                            "move": { "uci": "c8g4", "san": "Bg4", "explanation": "Black develops the bishop to pin your knight on f3 — but you haven't played Nf3 yet! This is slightly inaccurate." },
+                            "isMainLine": false,
+                            "variationName": "Premature ...Bg4",
+                            "weight": 60,
+                            "children": [
+                              {
+                                "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c8g4/f1d3",
+                                "move": { "uci": "f1d3", "san": "Bd3", "explanation": "Ignore the bishop — it's not pinning anything useful. Develop normally and the bishop on g4 will be misplaced." },
+                                "isMainLine": true,
+                                "weight": 50,
+                                "children": [
+                                  {
+                                    "id": "london/d2d4/d7d5/c1f4/g8f6/e2e3/c8g4/f1d3/e7e6",
+                                    "move": { "uci": "e7e6", "san": "e6", "explanation": "Black plays solidly. Your London structure is already slightly better because their bishop is passive on g4." },
+                                    "isMainLine": true,
+                                    "weight": 40,
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "london/d2d4/d7d5/c1f4/c7c5",
+                    "move": { "uci": "c7c5", "san": "c5", "explanation": "Black immediately challenges the center before developing knights. An aggressive approach." },
+                    "isMainLine": false,
+                    "variationName": "Early ...c5 challenge",
+                    "weight": 120,
+                    "children": [
+                      {
+                        "id": "london/d2d4/d7d5/c1f4/c7c5/e2e3",
+                        "move": { "uci": "e2e3", "san": "e3", "explanation": "Stay calm. Support d4 and prepare to develop the bishop. Don't capture on c5 — let Black resolve the tension." },
+                        "isMainLine": true,
+                        "weight": 110,
+                        "children": [
+                          {
+                            "id": "london/d2d4/d7d5/c1f4/c7c5/e2e3/b8c6",
+                            "move": { "uci": "b8c6", "san": "Nc6", "explanation": "Black develops and keeps pressure on d4." },
+                            "isMainLine": true,
+                            "weight": 100,
+                            "children": [
+                              {
+                                "id": "london/d2d4/d7d5/c1f4/c7c5/e2e3/b8c6/c2c3",
+                                "move": { "uci": "c2c3", "san": "c3", "explanation": "Reinforce d4. Your standard London pawn fortress." },
+                                "isMainLine": true,
+                                "weight": 90,
+                                "children": [
+                                  {
+                                    "id": "london/d2d4/d7d5/c1f4/c7c5/e2e3/b8c6/c2c3/g8f6",
+                                    "move": { "uci": "g8f6", "san": "Nf6", "explanation": "Black completes knight development. The position transposes toward the main line." },
+                                    "isMainLine": true,
+                                    "weight": 80,
+                                    "children": [
+                                      {
+                                        "id": "london/d2d4/d7d5/c1f4/c7c5/e2e3/b8c6/c2c3/g8f6/b1d2",
+                                        "move": { "uci": "b1d2", "san": "Nd2", "explanation": "Develop the knight to d2. The standard London setup flows naturally regardless of Black's move order." },
+                                        "isMainLine": true,
+                                        "weight": 70,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "london/d2d4/d7d5/c1f4/c8f5",
+                    "move": { "uci": "c8f5", "san": "Bf5", "explanation": "Black mirrors your bishop move immediately. This is the 'symmetrical London'." },
+                    "isMainLine": false,
+                    "variationName": "Symmetrical: 2...Bf5",
+                    "weight": 100,
+                    "children": [
+                      {
+                        "id": "london/d2d4/d7d5/c1f4/c8f5/e2e3",
+                        "move": { "uci": "e2e3", "san": "e3", "explanation": "Continue normally. Having both bishops developed early leads to a quiet, strategic game." },
+                        "isMainLine": true,
+                        "weight": 90,
+                        "children": [
+                          {
+                            "id": "london/d2d4/d7d5/c1f4/c8f5/e2e3/e7e6",
+                            "move": { "uci": "e7e6", "san": "e6", "explanation": "Black sets up a solid structure. Develop with Bd3 to offer a bishop trade on your terms." },
+                            "isMainLine": true,
+                            "weight": 80,
+                            "children": [
+                              {
+                                "id": "london/d2d4/d7d5/c1f4/c8f5/e2e3/e7e6/f1d3",
+                                "move": { "uci": "f1d3", "san": "Bd3", "explanation": "Offer to trade light-squared bishops. If they trade, your queen lands on a strong square." },
+                                "isMainLine": true,
+                                "weight": 70,
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "london/d2d4/g8f6",
+            "move": { "uci": "g8f6", "san": "Nf6", "explanation": "Black develops the knight first, staying flexible about the center pawn structure." },
+            "isMainLine": false,
+            "variationName": "Indian Defense: 1...Nf6",
+            "weight": 200,
+            "children": [
+              {
+                "id": "london/d2d4/g8f6/c1f4",
+                "move": { "uci": "c1f4", "san": "Bf4", "explanation": "Same London bishop! The beauty of the London is you play Bf4 against almost everything." },
+                "isMainLine": true,
+                "weight": 190,
+                "children": [
+                  {
+                    "id": "london/d2d4/g8f6/c1f4/d7d5",
+                    "move": { "uci": "d7d5", "san": "d5", "explanation": "Black transposes into the classical London. Continue with e3 as normal." },
+                    "isMainLine": true,
+                    "variationName": "Transposition to Classical",
+                    "weight": 150,
+                    "children": [
+                      {
+                        "id": "london/d2d4/g8f6/c1f4/d7d5/e2e3",
+                        "move": { "uci": "e2e3", "san": "e3", "explanation": "You're in the main London structure. Same plans apply — Bd3, c3, Nd2." },
+                        "isMainLine": true,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "london/d2d4/g8f6/c1f4/d7d5/e2e3/c7c5",
+                            "move": { "uci": "c7c5", "san": "c5", "explanation": "The game has transposed into the main line. All your London knowledge applies." },
+                            "isMainLine": true,
+                            "weight": 130,
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "london/d2d4/g8f6/c1f4/g7g6",
+                    "move": { "uci": "g7g6", "san": "g6", "explanation": "Black plays the King's Indian setup — fianchettoing the bishop. Common at all levels." },
+                    "isMainLine": false,
+                    "variationName": "King's Indian setup: ...g6",
+                    "weight": 130,
+                    "children": [
+                      {
+                        "id": "london/d2d4/g8f6/c1f4/g7g6/e2e3",
+                        "move": { "uci": "e2e3", "san": "e3", "explanation": "Stick to the London plan. The fianchetto doesn't change your setup — e3, Bd3, Nd2, c3." },
+                        "isMainLine": true,
+                        "weight": 120,
+                        "children": [
+                          {
+                            "id": "london/d2d4/g8f6/c1f4/g7g6/e2e3/f8g7",
+                            "move": { "uci": "f8g7", "san": "Bg7", "explanation": "Black completes the fianchetto. The bishop is strong on the long diagonal but doesn't challenge your center." },
+                            "isMainLine": true,
+                            "weight": 110,
+                            "children": [
+                              {
+                                "id": "london/d2d4/g8f6/c1f4/g7g6/e2e3/f8g7/f1d3",
+                                "move": { "uci": "f1d3", "san": "Bd3", "explanation": "Same London square for the bishop. Against the King's Indian, your solid structure is very effective." },
+                                "isMainLine": true,
+                                "weight": 100,
+                                "children": [
+                                  {
+                                    "id": "london/d2d4/g8f6/c1f4/g7g6/e2e3/f8g7/f1d3/e8g8",
+                                    "move": { "uci": "e8g8", "san": "O-O", "explanation": "Black castles. Continue with Nd2, Ngf3, and castle yourself." },
+                                    "isMainLine": true,
+                                    "weight": 90,
+                                    "children": [
+                                      {
+                                        "id": "london/d2d4/g8f6/c1f4/g7g6/e2e3/f8g7/f1d3/e8g8/b1d2",
+                                        "move": { "uci": "b1d2", "san": "Nd2", "explanation": "Same development plan. Against the King's Indian, you might consider h3 and later Qe2." },
+                                        "isMainLine": true,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "london/d2d4/g8f6/c1f4/g7g6/e2e3/f8g7/f1d3/e8g8/b1d2/d7d6",
+                                            "move": { "uci": "d7d6", "san": "d6", "explanation": "Black plays a flexible King's Indian structure. You have a solid position with clear plans." },
+                                            "isMainLine": true,
+                                            "weight": 70,
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "london/d2d4/g8f6/c1f4/e7e6",
+                    "move": { "uci": "e7e6", "san": "e6", "explanation": "Black plays flexibly — could go into a Queen's Indian or a French-like structure." },
+                    "isMainLine": false,
+                    "variationName": "Flexible ...e6",
+                    "weight": 110,
+                    "children": [
+                      {
+                        "id": "london/d2d4/g8f6/c1f4/e7e6/e2e3",
+                        "move": { "uci": "e2e3", "san": "e3", "explanation": "Continue the London setup. Whether Black plays d5 or b6 next, your structure handles both." },
+                        "isMainLine": true,
+                        "weight": 100,
+                        "children": [
+                          {
+                            "id": "london/d2d4/g8f6/c1f4/e7e6/e2e3/d7d5",
+                            "move": { "uci": "d7d5", "san": "d5", "explanation": "Transposes into the standard London. Your system works regardless of Black's move order." },
+                            "isMainLine": true,
+                            "weight": 90,
+                            "children": []
+                          },
+                          {
+                            "id": "london/d2d4/g8f6/c1f4/e7e6/e2e3/b7b6",
+                            "move": { "uci": "b7b6", "san": "b6", "explanation": "Black prepares to fianchetto the queen's bishop. A Queen's Indian approach." },
+                            "isMainLine": false,
+                            "variationName": "Queen's Indian ...b6",
+                            "weight": 70,
+                            "children": [
+                              {
+                                "id": "london/d2d4/g8f6/c1f4/e7e6/e2e3/b7b6/f1d3",
+                                "move": { "uci": "f1d3", "san": "Bd3", "explanation": "Develop the bishop. Against b6 setups, your Bd3 and Nd2 formation is very comfortable." },
+                                "isMainLine": true,
+                                "weight": 60,
+                                "children": [
+                                  {
+                                    "id": "london/d2d4/g8f6/c1f4/e7e6/e2e3/b7b6/f1d3/c8b7",
+                                    "move": { "uci": "c8b7", "san": "Bb7", "explanation": "Black completes the fianchetto. Your London setup is perfectly fine here — just continue developing." },
+                                    "isMainLine": true,
+                                    "weight": 50,
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "london/d2d4/g8f6/c1f4/c7c5",
+                    "move": { "uci": "c7c5", "san": "c5", "explanation": "Black challenges d4 immediately without playing d5 first. A Benoni-like approach." },
+                    "isMainLine": false,
+                    "variationName": "Direct ...c5 (Benoni-style)",
+                    "weight": 90,
+                    "children": [
+                      {
+                        "id": "london/d2d4/g8f6/c1f4/c7c5/d4d5",
+                        "move": { "uci": "d4d5", "san": "d5", "explanation": "Push forward! Grab space in the center. This is the principled response to ...c5 without ...d5." },
+                        "isMainLine": true,
+                        "weight": 80,
+                        "children": [
+                          {
+                            "id": "london/d2d4/g8f6/c1f4/c7c5/d4d5/b7b5",
+                            "move": { "uci": "b7b5", "san": "b5", "explanation": "Black offers a Benko-style gambit. You can accept or decline." },
+                            "isMainLine": true,
+                            "weight": 70,
+                            "children": [
+                              {
+                                "id": "london/d2d4/g8f6/c1f4/c7c5/d4d5/b7b5/e2e3",
+                                "move": { "uci": "e2e3", "san": "e3", "explanation": "Decline the gambit and stick to the London setup. Safe and solid." },
+                                "isMainLine": true,
+                                "weight": 60,
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "id": "london/d2d4/g8f6/c1f4/c7c5/d4d5/e7e6",
+                            "move": { "uci": "e7e6", "san": "e6", "explanation": "Black challenges your center pawn. A Modern Benoni structure." },
+                            "isMainLine": false,
+                            "variationName": "Modern Benoni approach",
+                            "weight": 60,
+                            "children": [
+                              {
+                                "id": "london/d2d4/g8f6/c1f4/c7c5/d4d5/e7e6/e2e3",
+                                "move": { "uci": "e2e3", "san": "e3", "explanation": "Maintain the pawn chain. Your London structure handles this well." },
+                                "isMainLine": true,
+                                "weight": 50,
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "id": "london/d2d4/g8f6/c1f4/c7c5/e2e3",
+                        "move": { "uci": "e2e3", "san": "e3", "explanation": "Keep it simple — support d4 and develop normally. Not as ambitious as d5 but very safe." },
+                        "isMainLine": false,
+                        "variationName": "Quiet e3 vs ...c5",
+                        "weight": 60,
+                        "children": [
+                          {
+                            "id": "london/d2d4/g8f6/c1f4/c7c5/e2e3/c5d4",
+                            "move": { "uci": "c5d4", "san": "cxd4", "explanation": "Black trades. You recapture and have a comfortable position." },
+                            "isMainLine": true,
+                            "weight": 50,
+                            "children": [
+                              {
+                                "id": "london/d2d4/g8f6/c1f4/c7c5/e2e3/c5d4/e3d4",
+                                "move": { "uci": "e3d4", "san": "exd4", "explanation": "Recapture. You have an isolated d-pawn but it controls key central squares." },
+                                "isMainLine": true,
+                                "weight": 40,
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "london/d2d4/e7e6",
+            "move": { "uci": "e7e6", "san": "e6", "explanation": "Black plays a flexible move that could lead to many different structures." },
+            "isMainLine": false,
+            "variationName": "French-like: 1...e6",
+            "weight": 120,
+            "children": [
+              {
+                "id": "london/d2d4/e7e6/c1f4",
+                "move": { "uci": "c1f4", "san": "Bf4", "explanation": "London bishop first, as always. This works against any Black setup." },
+                "isMainLine": true,
+                "weight": 110,
+                "children": [
+                  {
+                    "id": "london/d2d4/e7e6/c1f4/d7d5",
+                    "move": { "uci": "d7d5", "san": "d5", "explanation": "Transposes into the standard London. Your plan is the same." },
+                    "isMainLine": true,
+                    "weight": 100,
+                    "children": [
+                      {
+                        "id": "london/d2d4/e7e6/c1f4/d7d5/e2e3",
+                        "move": { "uci": "e2e3", "san": "e3", "explanation": "Standard London. Now Bd3, c3, Nd2 — you know the drill." },
+                        "isMainLine": true,
+                        "weight": 90,
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "london/d2d4/c7c5",
+            "move": { "uci": "c7c5", "san": "c5", "explanation": "An aggressive reply — Black challenges d4 immediately. The Old Benoni approach." },
+            "isMainLine": false,
+            "variationName": "Old Benoni: 1...c5",
+            "weight": 80,
+            "children": [
+              {
+                "id": "london/d2d4/c7c5/d4d5",
+                "move": { "uci": "d4d5", "san": "d5", "explanation": "Advance and claim space. Now develop with Bf4 and build your London structure." },
+                "isMainLine": true,
+                "weight": 70,
+                "children": [
+                  {
+                    "id": "london/d2d4/c7c5/d4d5/g8f6",
+                    "move": { "uci": "g8f6", "san": "Nf6", "explanation": "Black develops. Play Bf4 to stay in the London system." },
+                    "isMainLine": true,
+                    "weight": 60,
+                    "children": [
+                      {
+                        "id": "london/d2d4/c7c5/d4d5/g8f6/c1f4",
+                        "move": { "uci": "c1f4", "san": "Bf4", "explanation": "London bishop comes out. Even in the Benoni structure, the London ideas apply." },
+                        "isMainLine": true,
+                        "weight": 50,
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "london/d2d4/c7c5/c1f4",
+                "move": { "uci": "c1f4", "san": "Bf4", "explanation": "You can also just develop the bishop, letting Black decide what to do with the tension." },
+                "isMainLine": false,
+                "variationName": "Quiet Bf4 vs ...c5",
+                "weight": 50,
+                "children": [
+                  {
+                    "id": "london/d2d4/c7c5/c1f4/c5d4",
+                    "move": { "uci": "c5d4", "san": "cxd4", "explanation": "Black captures. Recapture with the queen or a pawn — both are fine." },
+                    "isMainLine": true,
+                    "weight": 40,
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  }
+}

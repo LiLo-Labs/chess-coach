@@ -10,47 +10,84 @@ struct OpeningCard: View {
     }
 
     var body: some View {
-        HStack(spacing: 14) {
-            // Color indicator
-            Circle()
-                .fill(opening.color == .white ? Color.white : Color(white: 0.35))
-                .frame(width: 32, height: 32)
-                .overlay(
-                    Circle()
-                        .strokeBorder(Color.white.opacity(0.15), lineWidth: 1)
-                )
+        VStack(spacing: 0) {
+            HStack(spacing: AppSpacing.lg) {
+                // Color indicator
+                Circle()
+                    .fill(opening.color == .white ? Color.white : Color(white: 0.35))
+                    .frame(width: 32, height: 32)
+                    .overlay(
+                        Circle()
+                            .strokeBorder(AppColor.tertiaryText, lineWidth: 1)
+                    )
 
-            VStack(alignment: .leading, spacing: 3) {
-                Text(opening.name)
-                    .font(.headline)
-                    .foregroundStyle(.white)
+                VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
+                    Text(opening.name)
+                        .font(.headline)
+                        .foregroundStyle(AppColor.primaryText)
 
-                Text(opening.description)
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.5))
-                    .lineLimit(1)
-            }
+                    Text(opening.description)
+                        .font(.caption)
+                        .foregroundStyle(AppColor.secondaryText)
+                        .lineLimit(1)
+                }
 
-            Spacer()
+                Spacer()
 
-            // Progress indicator
-            VStack(alignment: .trailing, spacing: 2) {
-                if progress.gamesPlayed > 0 {
-                    Text("\(Int(progress.accuracy * 100))%")
-                        .font(.subheadline.monospacedDigit().weight(.bold))
-                        .foregroundStyle(.white.opacity(0.8))
-                    Text("\(progress.gamesPlayed) played")
-                        .font(.caption2)
-                        .foregroundStyle(.white.opacity(0.35))
-                } else {
-                    Text("New")
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(.white.opacity(0.4))
+                // Progress indicator
+                VStack(alignment: .trailing, spacing: 2) {
+                    if progress.gamesPlayed > 0 {
+                        Text(progress.gamesPlayed >= 3 ? "\(Int(progress.accuracy * 100))%" : "\(progress.gamesPlayed) played")
+                            .font(.subheadline.monospacedDigit().weight(.bold))
+                            .foregroundStyle(AppColor.primaryText)
+
+                        if progress.totalLineCount > 0 {
+                            Text("\(progress.masteredLineCount)/\(progress.totalLineCount) lines")
+                                .font(.caption2)
+                                .foregroundStyle(AppColor.secondaryText)
+                        } else {
+                            Text("\(progress.gamesPlayed) played")
+                                .font(.caption2)
+                                .foregroundStyle(AppColor.secondaryText)
+                        }
+                    } else {
+                        Text("New")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(AppColor.tertiaryText)
+                    }
                 }
             }
+
+            // Progress bar toward next phase
+            if progress.gamesPlayed > 0, let threshold = progress.currentPhase.promotionThreshold {
+                ProgressView(value: progress.compositeScore, total: threshold)
+                    .tint(AppColor.phase(progress.currentPhase))
+                    .scaleEffect(y: 0.5)
+                    .padding(.top, 4)
+            }
+
+            // Stage mini-pipeline: guided and unguided line counts
+            if progress.totalLineCount > 0 {
+                HStack(spacing: AppSpacing.xs) {
+                    Text("\(progress.guidedLineCount)/\(progress.totalLineCount) guided · \(progress.unguidedLineCount)/\(progress.totalLineCount) unguided")
+                        .font(.caption2)
+                        .foregroundStyle(AppColor.tertiaryText)
+                    Spacer()
+                }
+                .padding(.top, AppSpacing.xxxs)
+            }
+
+            // Last-played timestamp
+            if progress.lastPlayed != nil {
+                HStack {
+                    Text(TimeAgo.string(from: progress.lastPlayed))
+                        .font(.caption2)
+                        .foregroundStyle(AppColor.tertiaryText)
+                    Spacer()
+                }
+                .padding(.top, AppSpacing.xxxs)
+            }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 14)
-        .background(Color(white: 0.16), in: RoundedRectangle(cornerRadius: 12))
+        .appCard()
     }
 }
