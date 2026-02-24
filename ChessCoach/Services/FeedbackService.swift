@@ -1,15 +1,18 @@
 import Foundation
 import UIKit
 
-/// Posts feedback as GitHub Issues to MALathon/chess-coach.
-/// Uses a fine-grained PAT with issues:write scope only.
+/// Posts feedback to a Cloudflare Worker proxy that creates GitHub Issues.
+/// No secrets are stored in the app — the Worker holds the GitHub PAT.
 final class FeedbackService: Sendable {
     static let shared = FeedbackService()
 
     // MARK: - Configuration
-    // Replace with your fine-grained PAT (issues:write only on MALathon/chess-coach)
-    private let token = "PASTE_YOUR_GITHUB_PAT_HERE"
-    private let repo = "MALathon/chess-coach"
+    // After deploying the worker, replace with your actual URL:
+    //   https://chess-coach-feedback.<your-subdomain>.workers.dev/feedback
+    private let workerURL = "https://chess-coach-feedback.malathon.workers.dev/feedback"
+
+    // Optional API key for the worker (set via wrangler secret put API_KEY)
+    private let apiKey: String? = nil
 
     struct FeedbackPayload: Sendable {
         let screen: String
@@ -24,15 +27,16 @@ final class FeedbackService: Sendable {
 
         var errorDescription: String? {
             switch self {
-            case .notConfigured: return "Feedback token not configured"
+            case .notConfigured: return "Feedback service not configured"
             case .networkError(let msg): return msg
-            case .apiError(let code, let msg): return "GitHub API error \(code): \(msg)"
+            case .apiError(let code, let msg): return "Server error \(code): \(msg)"
             }
         }
     }
 
     func submit(_ payload: FeedbackPayload) async throws {
-        guard token != "PASTE_YOUR_GITHUB_PAT_HERE" else {
+        guard let url = URL(string: workerURL),
+              !workerURL.contains("REPLACE_ME") else {
             throw FeedbackError.notConfigured
         }
 
@@ -40,30 +44,20 @@ final class FeedbackService: Sendable {
         let osVersion = await UIDevice.current.systemVersion
         let deviceModel = await UIDevice.current.model
 
-        let title = "[\(payload.category.capitalized)] \(payload.screen): \(String(payload.message.prefix(60)))"
-        let body = """
-        **Screen:** \(payload.screen)
-        **Category:** \(payload.category)
-        **App Version:** \(appVersion)
-        **iOS Version:** \(osVersion)
-        **Device:** \(deviceModel)
-
-        ---
-
-        \(payload.message)
-        """
-
-        let url = URL(string: "https://api.github.com/repos/\(repo)/issues")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        if let apiKey {
+            request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
+        }
 
-        let json: [String: Any] = [
-            "title": title,
-            "body": body,
-            "labels": ["user-feedback", payload.category]
+        let json: [String: String] = [
+            "screen": payload.screen,
+            "category": payload.category,
+            "message": payload.message,
+            "appVersion": appVersion,
+            "osVersion": osVersion,
+            "device": deviceModel
         ]
         request.httpBody = try JSONSerialization.data(withJSONObject: json)
 
