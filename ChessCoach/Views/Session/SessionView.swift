@@ -4,11 +4,40 @@ import ChessKit
 struct SessionView: View {
     @State private var viewModel: SessionViewModel
     @State private var userCoachingExpanded = true
-    @State private var opponentCoachingExpanded = true
+    @State private var opponentCoachingExpanded = false
+    @State private var showReview = false
+    @State private var showProUpgrade = false
+    @State private var tappedMoveCoaching: String?  // Improvement 13
+    @State private var navigateToNextStage = false
     @Environment(\.dismiss) private var dismiss
+    @Environment(SubscriptionService.self) private var subscriptionService
 
-    init(opening: Opening) {
-        self._viewModel = State(initialValue: SessionViewModel(opening: opening))
+    init(opening: Opening, lineID: String? = nil, isPro: Bool = true, sessionMode: SessionMode = .guided) {
+        self._viewModel = State(initialValue: SessionViewModel(opening: opening, lineID: lineID, isPro: isPro, sessionMode: sessionMode))
+    }
+
+    // Total plies in active line for progress bar (improvement 17)
+    private var totalPlies: Int {
+        viewModel.activeLine?.moves.count ?? viewModel.opening.mainLine.count
+    }
+
+    // Progress fraction for the thin bar
+    private var moveProgress: Double {
+        guard totalPlies > 0 else { return 0 }
+        return Double(viewModel.moveCount) / Double(totalPlies)
+    }
+
+    // Phase color for progress bar tint
+    private var phaseColor: Color {
+        AppColor.phase(viewModel.currentPhase)
+    }
+
+    // Contextual undo label (improvement 20)
+    private var undoLabel: String {
+        if case let .userDeviated(expected, _) = viewModel.bookStatus {
+            return "Undo — play \(expected.san)"
+        }
+        return "Undo"
     }
 
     var body: some View {
@@ -19,61 +48,74 @@ struct SessionView: View {
 
             VStack(spacing: 0) {
                 topBar
-                engineStatusBar
+
+                // Improvement 15: minimal engine indicator (only when there's an issue)
+                if viewModel.maiaStatus.contains("failed") || viewModel.llmStatus == "…" || viewModel.stockfishStatus == "…" {
+                    engineWarningBar
+                }
+
                 opponentBar
 
-                // ── Eval bar + Board ──
+                // Eval bar + Board
                 HStack(spacing: 4) {
                     evalBar(height: boardSize)
                         .frame(width: evalWidth)
 
-                    GameBoardView(
-                        gameState: viewModel.gameState,
-                        perspective: viewModel.opening.color == .white ? PieceColor.white : PieceColor.black,
-                        allowInteraction: viewModel.isUserTurn && !viewModel.isThinking && !viewModel.sessionComplete
-                    ) { from, to in
-                        Task { await viewModel.userMoved(from: from, to: to) }
+                    ZStack {
+                        GameBoardView(
+                            gameState: viewModel.gameState,
+                            perspective: viewModel.opening.color == .white ? PieceColor.white : PieceColor.black,
+                            allowInteraction: viewModel.isUserTurn && !viewModel.isThinking && !viewModel.sessionComplete
+                        ) { from, to in
+                            viewModel.clearArrowAndHint()
+                            Task { await viewModel.userMoved(from: from, to: to) }
+                        }
+
+                        // Improvement 1: Move arrow overlay
+                        MoveArrowOverlay(
+                            arrowFrom: viewModel.arrowFrom,
+                            arrowTo: viewModel.arrowTo,
+                            boardSize: boardSize,
+                            perspective: viewModel.opening.color == .white
+                        )
                     }
                     .frame(width: boardSize, height: boardSize)
                 }
                 .frame(height: boardSize)
 
+                // Improvement 17: Move progress bar (thin, phase-colored)
+                ProgressView(value: moveProgress)
+                    .tint(phaseColor)
+                    .scaleEffect(y: 0.5)
+                    .padding(.horizontal, 16)
+                    .animation(.spring(response: 0.35, dampingFraction: 0.9), value: viewModel.moveCount)
+
+                // Improvement 13: Tappable move history
+                if !viewModel.coachingHistory.isEmpty {
+                    moveHistoryBar
+                }
+
                 userBar
 
-                // ── Info area ──
+                // Info area with gesture shortcuts (improvement 22)
                 ScrollView {
                     VStack(spacing: 8) {
-                        if !viewModel.sessionComplete {
+                        if !viewModel.sessionComplete && (viewModel.bookStatus != .onBook || viewModel.discoveryMode) {
                             guideCard
+                                .transition(.opacity)
                         }
 
-                        if let text = viewModel.opponentCoachingText {
-                            coachingCard(
-                                label: "Opponent",
-                                text: text,
-                                tint: Color(red: 0.55, green: 0.65, blue: 0.8),
-                                isExpanded: $opponentCoachingExpanded,
-                                showExplain: viewModel.opponentExplainContext != nil,
-                                explanation: viewModel.opponentExplanation,
-                                isExplaining: viewModel.isExplainingOpponent
-                            ) {
-                                Task { await viewModel.requestExplanation(forUserMove: false) }
-                            }
+                        // Variation switch suggestion
+                        if let variation = viewModel.suggestedVariation {
+                            variationSwitchCard(variation: variation)
+                                .transition(.opacity.combined(with: .move(edge: .top)))
                         }
 
-                        if let text = viewModel.userCoachingText {
-                            coachingCard(
-                                label: "Your move",
-                                text: text,
-                                tint: Color(red: 1.0, green: 0.84, blue: 0.35),
-                                isExpanded: $userCoachingExpanded,
-                                showExplain: viewModel.userExplainContext != nil,
-                                explanation: viewModel.userExplanation,
-                                isExplaining: viewModel.isExplainingUser
-                            ) {
-                                Task { await viewModel.requestExplanation(forUserMove: true) }
-                            }
-                        }
+                        // User coaching always expanded on top, opponent collapsed below
+                        userCoachingCard
+                            .transition(.opacity.combined(with: .move(edge: .top)))
+                        opponentCoachingCard
+                            .transition(.opacity.combined(with: .move(edge: .top)))
 
                         if viewModel.isCoachingLoading && viewModel.userCoachingText == nil && viewModel.opponentCoachingText == nil {
                             HStack(spacing: 8) {
@@ -86,24 +128,76 @@ struct SessionView: View {
                             .padding(14)
                             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
                             .padding(.horizontal, 12)
+                            .transition(.opacity)
                         }
                     }
+                    .animation(.spring(response: 0.4, dampingFraction: 0.85), value: viewModel.userCoachingText)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.85), value: viewModel.opponentCoachingText)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.85), value: viewModel.bookStatus)
+                    .animation(.spring(response: 0.35, dampingFraction: 0.9), value: viewModel.sessionComplete)
                     .padding(.top, 8)
                     .padding(.bottom, 20)
                 }
                 .scrollIndicators(.hidden)
+                // Improvement 22: Gesture shortcuts
+                .gesture(
+                    DragGesture(minimumDistance: 50)
+                        .onEnded { value in
+                            let horizontal = value.translation.width
+                            let vertical = abs(value.translation.height)
+                            // Only trigger if mostly horizontal
+                            guard abs(horizontal) > vertical else { return }
+                            if horizontal < -50, case .userDeviated = viewModel.bookStatus {
+                                // Swipe left = undo
+                                viewModel.retryLastMove()
+                            } else if horizontal > 50, case .userDeviated = viewModel.bookStatus {
+                                // Swipe right = continue after deviation
+                                Task { await viewModel.continueAfterDeviation() }
+                            }
+                        }
+                )
             }
         }
         .ignoresSafeArea(edges: .top)
-        .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+        .background(AppColor.background)
         .preferredColorScheme(.dark)
         .overlay {
             if viewModel.sessionComplete {
                 sessionCompleteOverlay
             }
         }
+        .sensoryFeedback(.impact(weight: .light), trigger: viewModel.correctMoveTrigger)
         .task {
             await viewModel.startSession()
+        }
+        .sheet(isPresented: $showProUpgrade) {
+            ProUpgradeView()
+        }
+        .onChange(of: viewModel.showProUpgrade) { _, show in
+            if show {
+                showProUpgrade = true
+                viewModel.dismissProUpgrade()
+            }
+        }
+        .onChange(of: subscriptionService.isPro) { _, newValue in
+            viewModel.updateProStatus(newValue)
+        }
+        .onChange(of: viewModel.opponentCoachingText) {
+            // Re-collapse opponent card when new opponent coaching arrives
+            opponentCoachingExpanded = false
+        }
+        .fullScreenCover(isPresented: $navigateToNextStage) {
+            SessionView(
+                opening: viewModel.opening,
+                lineID: viewModel.activeLine?.id,
+                isPro: viewModel.isPro,
+                sessionMode: .unguided
+            )
+            .environment(subscriptionService)
+        }
+        // Improvement 27: Auto-save session on app backgrounding
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+            viewModel.saveSessionToDisk()
         }
     }
 
@@ -130,72 +224,104 @@ struct SessionView: View {
             }
         }
         .frame(height: height)
-        .animation(.easeInOut(duration: 0.5), value: viewModel.evalScore)
+        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: viewModel.evalScore)
     }
 
     // MARK: - Top Bar
 
     private var topBar: some View {
         HStack {
-            Text(viewModel.opening.name)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.white)
+            Button {
+                viewModel.endSession()
+                dismiss()
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "chevron.left")
+                        .font(.subheadline.weight(.semibold))
+                    Text("Back")
+                        .font(.subheadline)
+                }
+                .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Back to opening detail")
 
             Spacer()
+
+            VStack(spacing: 2) {
+                Text(viewModel.opening.name)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.white)
+
+                if let line = viewModel.activeLine {
+                    Text(line.name)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Spacer()
+
+            // Session mode indicator pill
+            ModeIndicator(
+                mode: viewModel.sessionMode == .guided ? "Guided" : "Unguided",
+                color: viewModel.sessionMode == .guided ? AppColor.guided : AppColor.unguided
+            )
 
             if viewModel.stats.totalUserMoves > 0 {
                 Text("\(Int(viewModel.stats.accuracy * 100))%")
                     .font(.subheadline.monospacedDigit().weight(.bold))
                     .foregroundStyle(.secondary)
+                    .padding(.trailing, 4)
+                    .accessibilityLabel("Your accuracy: \(Int(viewModel.stats.accuracy * 100))%")
             }
 
+            FeedbackToolbarButton(screen: "Session")
+
             Button {
-                viewModel.endSession()
-                dismiss()
+                Task { await viewModel.restartSession() }
             } label: {
-                Image(systemName: "xmark.circle.fill")
+                Image(systemName: "arrow.counterclockwise.circle.fill")
                     .font(.title3)
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(.secondary)
             }
             .buttonStyle(.plain)
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 54)
-        .padding(.bottom, 8)
+        .padding(.horizontal, AppSpacing.screenPadding)
+        .padding(.top, AppSpacing.topBarSafeArea)
+        .padding(.bottom, AppSpacing.sm)
     }
 
-    // MARK: - Engine Status Bar
+    // MARK: - Engine Warning Bar (improvement 15: minimal, only on issues)
 
-    private var engineStatusBar: some View {
-        HStack(spacing: 12) {
-            statusPill(icon: "cpu", label: viewModel.maiaStatus)
-            statusPill(icon: "brain", label: viewModel.llmStatus)
-            statusPill(icon: "gauge.medium", label: viewModel.stockfishStatus)
+    private var engineWarningBar: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.caption2)
+                .foregroundStyle(.yellow)
+            Text("AI offline")
+                .font(.caption2.weight(.medium))
+                .foregroundStyle(.yellow)
             Spacer()
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 4)
     }
 
-    private func statusPill(icon: String, label: String) -> some View {
-        HStack(spacing: 3) {
-            Image(systemName: icon)
-                .font(.system(size: 8))
-            Text(label)
-                .font(.system(size: 9, weight: .medium))
-        }
-        .foregroundStyle(.secondary.opacity(0.7))
-    }
-
     // MARK: - Player Bars
+
+    // Improvement 12: Opponent personality
+    private var opponentPersonality: OpponentPersonality {
+        OpponentPersonality.forELO(viewModel.opponentELO)
+    }
 
     private var opponentBar: some View {
         HStack(spacing: 8) {
             Circle()
                 .fill(viewModel.opening.color == .white ? Color(white: 0.3) : .white)
                 .frame(width: 10, height: 10)
-            Text("Opponent")
+            Text(opponentPersonality.name)
                 .font(.footnote.weight(.medium))
                 .foregroundStyle(.primary)
             Text("\(viewModel.opponentELO)")
@@ -207,13 +333,13 @@ struct SessionView: View {
                     ProgressView().controlSize(.mini).tint(.secondary)
                     Text("thinking")
                         .font(.caption)
-                        .foregroundStyle(.tertiary)
+                        .foregroundStyle(.white.opacity(0.4))
                 }
             }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 7)
-        .background(Color(white: 0.14))
+        .background(AppColor.elevatedBackground)
     }
 
     private var userBar: some View {
@@ -237,13 +363,58 @@ struct SessionView: View {
                     .padding(.vertical, 3)
                     .background(.green.opacity(0.15), in: Capsule())
             }
-            Text("Move \(viewModel.moveCount / 2 + 1)")
-                .font(.caption.monospacedDigit())
-                .foregroundStyle(.tertiary)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 7)
-        .background(Color(white: 0.14))
+        .background(AppColor.elevatedBackground)
+    }
+
+    // MARK: - Move History Bar (improvement 13)
+
+    private var moveHistoryBar: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 4) {
+                ForEach(viewModel.coachingHistory, id: \.ply) { entry in
+                    let ply = entry.ply
+                    let moveNum = ply / 2 + 1
+                    let isWhite = ply % 2 == 0
+                    let label = isWhite ? "\(moveNum)." : ""
+                    let san = activeMoves(atPly: ply)?.san ?? "?"
+
+                    Button {
+                        tappedMoveCoaching = entry.text
+                    } label: {
+                        Text("\(label)\(san)")
+                            .font(.caption2.monospaced().weight(.medium))
+                            .foregroundStyle(.white.opacity(0.7))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 3)
+                            .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 4))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, 16)
+        }
+        .frame(height: 28)
+        .popover(isPresented: Binding(
+            get: { tappedMoveCoaching != nil },
+            set: { if !$0 { tappedMoveCoaching = nil } }
+        )) {
+            if let text = tappedMoveCoaching {
+                Text(text)
+                    .font(.subheadline)
+                    .padding(12)
+                    .frame(maxWidth: 280)
+                    .presentationCompactAdaptation(.popover)
+            }
+        }
+    }
+
+    private func activeMoves(atPly ply: Int) -> OpeningMove? {
+        let moves = viewModel.activeLine?.moves ?? viewModel.opening.mainLine
+        guard ply < moves.count else { return nil }
+        return moves[ply]
     }
 
     // MARK: - Guide Card
@@ -251,100 +422,132 @@ struct SessionView: View {
     private var guideCard: some View {
         VStack(spacing: 0) {
             HStack(spacing: 8) {
-                switch viewModel.bookStatus {
-                case .onBook:
-                    if let move = viewModel.expectedNextMove {
-                        Image(systemName: "book.fill")
-                            .font(.footnote)
-                            .foregroundStyle(.cyan)
-                        Text("Play")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                        Text(move.san)
-                            .font(.subheadline.weight(.bold))
-                            .foregroundStyle(.cyan)
-                        Text(move.explanation)
-                            .font(.footnote)
-                            .foregroundStyle(.tertiary)
-                            .lineLimit(2)
-                    } else {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.footnote)
-                            .foregroundStyle(.green)
-                        Text("End of opening line")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-
-                case let .userDeviated(expected, _):
-                    Image(systemName: "arrow.uturn.backward")
+                // Discovery mode: "Find a good move"
+                if viewModel.discoveryMode {
+                    Image(systemName: "magnifyingglass")
                         .font(.footnote)
-                        .foregroundStyle(.orange)
-                    Text("Off book — expected \(expected.san)")
-                        .font(.subheadline)
-                        .foregroundStyle(.orange)
-                    Spacer()
-                    Button(action: { viewModel.retryLastMove() }) {
-                        Text("Undo")
-                            .font(.caption.weight(.bold))
-                            .foregroundStyle(.orange)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(.orange.opacity(0.15), in: Capsule())
-                    }
-                    .buttonStyle(.plain)
-
-                case .opponentDeviated:
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.footnote)
-                        .foregroundStyle(.yellow)
+                        .foregroundStyle(.mint)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Opponent went off book")
+                        let count = viewModel.branchPointOptions?.count ?? 2
+                        Text("There are \(count) good options here. Can you find one?")
                             .font(.subheadline)
-                            .foregroundStyle(.yellow)
-                        if let hint = viewModel.bestResponseHint {
-                            Text("Best response: \(hint)")
-                                .font(.footnote)
+                            .foregroundStyle(.mint)
+                        Text("Explore and discover!")
+                            .font(.footnote)
+                            .foregroundStyle(.mint.opacity(0.6))
+                    }
+                } else {
+                    switch viewModel.bookStatus {
+                    case .onBook:
+                        EmptyView()
+
+                    case let .userDeviated(expected, _):
+                        let isUnguided = viewModel.sessionMode == .unguided
+                        let tint: Color = isUnguided ? AppColor.unguided : .orange
+                        Image(systemName: isUnguided ? "brain.head.profile" : "arrow.uturn.backward")
+                            .font(.footnote)
+                            .foregroundStyle(tint)
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(isUnguided
+                                 ? "The book move was \(expected.san)"
+                                 : "The \(viewModel.opening.name) plays \(expected.san) here")
+                                .font(.subheadline.weight(.medium))
+                                .foregroundStyle(tint)
+                            if !expected.explanation.isEmpty {
+                                Text(expected.explanation)
+                                    .font(.footnote)
+                                    .foregroundStyle(.primary.opacity(0.7))
+                                    .lineLimit(3)
+                            }
+                            Text(isUnguided
+                                 ? "Tap Undo to retry from memory, or keep going."
+                                 : "Tap Undo to try the book move, or keep going to practice from here.")
+                                .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
+
+                    case let .opponentDeviated(expected, played, _):
+                        opponentDeviationCard(expected: expected, played: played)
                     }
-                    Spacer()
-                    Button(action: { Task { await viewModel.restartSession() } }) {
-                        Text("Retry")
-                            .font(.caption.weight(.bold))
-                            .foregroundStyle(.yellow)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(.yellow.opacity(0.15), in: Capsule())
-                    }
-                    .buttonStyle(.plain)
                 }
 
                 Spacer(minLength: 0)
             }
 
-            // Off-book explanation
+            // Off-book action buttons
             if viewModel.bookStatus != .onBook {
-                if viewModel.offBookExplanation == nil && !viewModel.isExplainingOffBook {
-                    let tint: Color = {
-                        if case .userDeviated = viewModel.bookStatus { return .orange }
-                        return .yellow
-                    }()
-                    Button(action: { Task { await viewModel.requestOffBookExplanation() } }) {
-                        HStack(spacing: 4) {
-                            Image(systemName: "sparkles")
-                                .font(.caption2)
-                            Text("Why is this off book?")
-                                .font(.caption.weight(.medium))
+                let tint: Color = {
+                    if case .userDeviated = viewModel.bookStatus { return .orange }
+                    return .yellow
+                }()
+
+                HStack(spacing: 8) {
+                    if case .userDeviated = viewModel.bookStatus {
+                        // Improvement 20: Contextual undo label
+                        Button(action: { viewModel.retryLastMove() }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "arrow.uturn.backward")
+                                    .font(.caption2)
+                                Text(undoLabel)
+                                    .font(.caption.weight(.bold))
+                            }
+                            .foregroundStyle(tint)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(tint.opacity(0.12), in: Capsule())
                         }
-                        .foregroundStyle(tint)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(tint.opacity(0.12), in: Capsule())
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Undo last move")
+                        .accessibilityHint("Double tap to undo your last move")
+
+                        Button(action: { Task { await viewModel.continueAfterDeviation() } }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "arrow.forward")
+                                    .font(.caption2)
+                                Text("Continue")
+                                    .font(.caption.weight(.bold))
+                            }
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(Color.secondary.opacity(0.12), in: Capsule())
+                        }
+                        .buttonStyle(.plain)
+                    } else if case .opponentDeviated = viewModel.bookStatus {
+                        Button(action: { Task { await viewModel.restartSession() } }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "arrow.counterclockwise")
+                                    .font(.caption2)
+                                Text("Retry")
+                                    .font(.caption.weight(.bold))
+                            }
+                            .foregroundStyle(tint)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(tint.opacity(0.12), in: Capsule())
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
-                    .padding(.top, 8)
+
+                    if viewModel.offBookExplanation == nil && !viewModel.isExplainingOffBook {
+                        Button(action: { Task { await viewModel.requestOffBookExplanation() } }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "sparkles")
+                                    .font(.caption2)
+                                Text("Explain")
+                                    .font(.caption.weight(.bold))
+                            }
+                            .foregroundStyle(tint)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(tint.opacity(0.12), in: Capsule())
+                        }
+                        .buttonStyle(.plain)
+                    }
+
+                    Spacer()
                 }
+                .padding(.top, 8)
 
                 if viewModel.isExplainingOffBook {
                     HStack(spacing: 6) {
@@ -383,6 +586,137 @@ struct SessionView: View {
         .padding(.horizontal, 12)
     }
 
+    // MARK: - Opponent Deviation Card (phase-aware)
+
+    @ViewBuilder
+    private func opponentDeviationCard(expected: OpeningMove, played: String) -> some View {
+        let phase = viewModel.currentPhase
+        let isTraining = phase == .naturalDeviations || phase == .widerVariations
+
+        if isTraining {
+            Image(systemName: "figure.boxing")
+                .font(.footnote)
+                .foregroundStyle(.mint)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Time to adapt!")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.mint)
+                Text("Your opponent played \(played) instead of the book move \(expected.san). This is part of your training — learn to handle surprises.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                if let bestMove = viewModel.bestResponseDescription {
+                    HStack(spacing: 4) {
+                        Image(systemName: "sparkle")
+                            .font(.caption2)
+                        Text("Try \(bestMove)")
+                            .font(.footnote.weight(.medium))
+                    }
+                    .foregroundStyle(.mint)
+                }
+            }
+        } else {
+            Image(systemName: "lightbulb.fill")
+                .font(.footnote)
+                .foregroundStyle(.yellow)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Your opponent went off-book")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.yellow)
+                Text("They played \(played) — the \(viewModel.opening.name) expects \(expected.san) here.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                if let bestMove = viewModel.bestResponseDescription {
+                    HStack(spacing: 4) {
+                        Image(systemName: "sparkle")
+                            .font(.caption2)
+                        Text("Best response: \(bestMove)")
+                            .font(.footnote.weight(.medium))
+                    }
+                    .foregroundStyle(.yellow)
+                } else {
+                    Text("Stick to your \(viewModel.opening.name) ideas — develop pieces, control the center.")
+                        .font(.footnote)
+                        .foregroundStyle(.primary.opacity(0.7))
+                }
+            }
+        }
+    }
+
+    // MARK: - Variation Switch Card
+
+    private func variationSwitchCard(variation: OpeningLine) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: "arrow.triangle.branch")
+                .font(.footnote)
+                .foregroundStyle(.teal)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("You played into the \(variation.name)!")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.teal)
+                Text("Want to continue learning this line?")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Button {
+                viewModel.switchToLine(variation)
+            } label: {
+                Text("Switch")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.teal)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(.teal.opacity(0.12), in: Capsule())
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(12)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .padding(.horizontal, 12)
+    }
+
+    // MARK: - Coaching Card Wrappers
+
+    @ViewBuilder
+    private var userCoachingCard: some View {
+        if let text = viewModel.userCoachingText {
+            coachingCard(
+                label: "Your Next Move",
+                text: text,
+                tint: Color(red: 1.0, green: 0.84, blue: 0.35),
+                isExpanded: .constant(true),
+                showExplain: viewModel.userExplainContext != nil,
+                explanation: viewModel.userExplanation,
+                isExplaining: viewModel.isExplainingUser,
+                collapsible: false
+            ) {
+                Task { await viewModel.requestExplanation(forUserMove: true) }
+            }
+        }
+    }
+
+    // Improvement 16: Compact opponent coaching — single inline line, tappable to expand
+    @ViewBuilder
+    private var opponentCoachingCard: some View {
+        if let text = viewModel.opponentCoachingText {
+            coachingCard(
+                label: "Opponent moved",
+                text: text,
+                tint: Color(red: 0.55, green: 0.65, blue: 0.8),
+                isExpanded: $opponentCoachingExpanded,
+                showExplain: viewModel.opponentExplainContext != nil,
+                explanation: viewModel.opponentExplanation,
+                isExplaining: viewModel.isExplainingOpponent,
+                collapsible: true
+            ) {
+                Task { await viewModel.requestExplanation(forUserMove: false) }
+            }
+        }
+    }
+
     // MARK: - Coaching Card (collapsible, rounded)
 
     private func coachingCard(
@@ -393,13 +727,16 @@ struct SessionView: View {
         showExplain: Bool,
         explanation: String?,
         isExplaining: Bool,
+        collapsible: Bool = true,
         onExplain: @escaping () -> Void
     ) -> some View {
         VStack(spacing: 0) {
             // Header row
             Button {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    isExpanded.wrappedValue.toggle()
+                if collapsible {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+                        isExpanded.wrappedValue.toggle()
+                    }
                 }
             } label: {
                 HStack(spacing: 6) {
@@ -411,17 +748,20 @@ struct SessionView: View {
                     if !isExpanded.wrappedValue {
                         Text(text)
                             .font(.caption)
-                            .foregroundStyle(.tertiary)
+                            .foregroundStyle(.white.opacity(0.45))
                             .lineLimit(1)
                             .truncationMode(.tail)
                     }
 
                     Spacer()
 
-                    Image(systemName: "chevron.down")
-                        .font(.caption2.weight(.semibold))
-                        .foregroundStyle(.tertiary)
-                        .rotationEffect(.degrees(isExpanded.wrappedValue ? -180 : 0))
+                    if collapsible {
+                        Image(systemName: "chevron.down")
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(.white.opacity(0.35))
+                            .rotationEffect(.degrees(isExpanded.wrappedValue ? -180 : 0))
+                            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isExpanded.wrappedValue)
+                    }
                 }
             }
             .buttonStyle(.plain)
@@ -491,53 +831,33 @@ struct SessionView: View {
     // MARK: - Complete Overlay
 
     private var sessionCompleteOverlay: some View {
-        ZStack {
-            Color.black.opacity(0.75)
-                .ignoresSafeArea()
-
-            VStack(spacing: 24) {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 56))
-                    .foregroundStyle(.green)
-
-                Text("Session Complete")
-                    .font(.title2.weight(.bold))
-
-                Text("\(viewModel.moveCount / 2) moves · \(viewModel.opening.name)")
-                    .font(.body)
-                    .foregroundStyle(.secondary)
-
-                if viewModel.stats.totalUserMoves > 0 {
-                    VStack(spacing: 4) {
-                        Text("\(Int(viewModel.stats.accuracy * 100))%")
-                            .font(.system(size: 48, weight: .bold, design: .rounded))
-                        Text("accuracy")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-
-                HStack(spacing: 12) {
-                    Button {
-                        Task { await viewModel.restartSession() }
-                    } label: {
-                        Text("Try Again")
-                            .font(.body.weight(.semibold))
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 12)
-                            .background(.ultraThinMaterial, in: Capsule())
-                    }
-                    .buttonStyle(.plain)
-
-                    Button("Done") { dismiss() }
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 28)
-                        .padding(.vertical, 12)
-                        .background(.green, in: Capsule())
-                }
+        SessionCompleteView(
+            result: viewModel.sessionResult,
+            moveCount: viewModel.moveCount,
+            openingName: viewModel.opening.name,
+            lineName: viewModel.activeLine?.name,
+            sessionMode: viewModel.sessionMode,
+            onTryAgain: { Task { await viewModel.restartSession() } },
+            onDone: { dismiss() },
+            onReviewNow: (viewModel.sessionResult?.dueReviewCount ?? 0) > 0 ? { showReview = true } : nil,
+            onNextStage: nextStageAction
+        )
+        .sheet(isPresented: $showReview) {
+            NavigationStack {
+                QuickReviewView(openingID: viewModel.opening.id)
             }
-            .padding(32)
+        }
+    }
+
+    /// Returns action for transitioning to next training stage, or nil if not applicable.
+    private var nextStageAction: (() -> Void)? {
+        switch viewModel.sessionMode {
+        case .guided:
+            // Guided → Unguided
+            return { navigateToNextStage = true }
+        case .unguided, .practice:
+            // No automatic next stage — user returns to OpeningDetailView to start Practice
+            return nil
         }
     }
 }

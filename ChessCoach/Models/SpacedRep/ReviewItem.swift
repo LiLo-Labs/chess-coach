@@ -6,17 +6,23 @@ struct ReviewItem: Codable, Identifiable, Sendable {
     let fen: String
     let ply: Int
 
+    // Per-line tracking (v2)
+    var lineID: String?
+    var correctMove: String?
+
     // SM-2 fields
     var interval: Int        // days until next review
     var easeFactor: Double   // >= 1.3
     var repetitions: Int     // consecutive correct responses
     var nextReviewDate: Date
 
-    init(openingID: String, fen: String, ply: Int) {
+    init(openingID: String, fen: String, ply: Int, lineID: String? = nil, correctMove: String? = nil) {
         self.id = UUID()
         self.openingID = openingID
         self.fen = fen
         self.ply = ply
+        self.lineID = lineID
+        self.correctMove = correctMove
         self.interval = 1
         self.easeFactor = 2.5
         self.repetitions = 0

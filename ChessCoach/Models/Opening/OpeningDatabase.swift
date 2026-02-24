@@ -4,7 +4,12 @@ final class OpeningDatabase: Sendable {
     let openings: [Opening]
 
     init() {
-        self.openings = Self.builtInOpenings
+        // Merge JSON tree-based openings with built-in flat openings.
+        // JSON versions take priority (by id) over built-in versions.
+        let jsonOpenings = Self.loadFromJSON()
+        let jsonIDs = Set(jsonOpenings.map(\.id))
+        let remaining = Self.builtInOpenings.filter { !jsonIDs.contains($0.id) }
+        self.openings = (jsonOpenings + remaining).sorted { $0.difficulty < $1.difficulty }
     }
 
     func opening(named name: String) -> Opening? {
@@ -19,7 +24,101 @@ final class OpeningDatabase: Sendable {
         openings.filter { $0.color == color }
     }
 
-    // MARK: - Built-in Openings
+    // MARK: - JSON Loading
+
+    private static func loadFromJSON() -> [Opening] {
+        guard let resourceURL = Bundle.main.resourceURL else { return [] }
+
+        // Look for JSON files in Openings subdirectory first, then bundle root
+        let openingsDir = resourceURL.appendingPathComponent("Openings")
+        let searchDir = FileManager.default.fileExists(atPath: openingsDir.path) ? openingsDir : resourceURL
+
+        guard let files = try? FileManager.default.contentsOfDirectory(
+            at: searchDir,
+            includingPropertiesForKeys: nil
+        ).filter({ $0.pathExtension == "json" }) else {
+            return []
+        }
+
+        var openings: [Opening] = []
+        let decoder = JSONDecoder()
+
+        for file in files {
+            guard let data = try? Data(contentsOf: file) else { continue }
+
+            // Decode the JSON tree format
+            guard let jsonOpening = try? decoder.decode(JSONOpening.self, from: data) else {
+                continue
+            }
+
+            // Convert to Opening, extracting main line from tree
+            let mainLine = extractMainLine(from: jsonOpening.tree)
+            let tree = convertTree(jsonOpening.tree)
+            let lines = tree.allLines()
+
+            let opening = Opening(
+                id: jsonOpening.id,
+                name: jsonOpening.name,
+                description: jsonOpening.description,
+                color: Opening.PlayerColor(rawValue: jsonOpening.color) ?? .white,
+                difficulty: jsonOpening.difficulty,
+                mainLine: mainLine,
+                tree: tree,
+                lines: lines
+            )
+            openings.append(opening)
+        }
+
+        return openings.sorted { $0.difficulty < $1.difficulty }
+    }
+
+    /// Extract the main line (following isMainLine flags) from a JSON tree.
+    private static func extractMainLine(from tree: JSONOpeningTree) -> [OpeningMove] {
+        var moves: [OpeningMove] = []
+        var node = tree
+        while let mainChild = node.children.first(where: { $0.isMainLine ?? false }) ?? node.children.first {
+            if let move = mainChild.move {
+                moves.append(move)
+            }
+            node = mainChild
+        }
+        return moves
+    }
+
+    /// Convert JSON tree to OpeningNode tree.
+    private static func convertTree(_ json: JSONOpeningTree) -> OpeningNode {
+        let children = json.children.map { convertTree($0) }
+        return OpeningNode(
+            id: json.id ?? UUID().uuidString,
+            move: json.move,
+            children: children,
+            isMainLine: json.isMainLine ?? false,
+            variationName: json.variationName,
+            weight: json.weight ?? 0
+        )
+    }
+
+    // MARK: - JSON Codable types
+
+    private struct JSONOpening: Codable {
+        let id: String
+        let name: String
+        let description: String
+        let color: String
+        let difficulty: Int
+        let tree: JSONOpeningTree
+    }
+
+    private struct JSONOpeningTree: Codable {
+        let id: String?
+        let move: OpeningMove?
+        let children: [JSONOpeningTree]
+        let isMainLine: Bool?
+        let variationName: String?
+        let weight: UInt16?
+    }
+
+    // MARK: - Built-in Openings (Legacy Fallback)
 
     private static let builtInOpenings: [Opening] = [
         Opening(

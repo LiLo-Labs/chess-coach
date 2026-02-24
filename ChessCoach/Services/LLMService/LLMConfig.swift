@@ -1,7 +1,13 @@
 import Foundation
 
 struct LLMConfig: Sendable {
-    var ollamaBaseURL: URL { URL(string: "http://192.168.4.62:11434")! }
+    var ollamaBaseURL: URL {
+        let host = UserDefaults.standard.string(forKey: "ollama_host") ?? "192.168.4.62:11434"
+        return URL(string: "http://\(host)")!
+    }
+    var ollamaModel: String {
+        UserDefaults.standard.string(forKey: "ollama_model") ?? "qwen2.5:7b"
+    }
     var claudeBaseURL: URL { URL(string: "https://api.anthropic.com")! }
 
     var claudeAPIKey: String {

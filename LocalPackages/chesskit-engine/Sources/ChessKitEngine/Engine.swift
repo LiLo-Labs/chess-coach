@@ -4,6 +4,20 @@
 //
 
 import ChessKitEngineCore
+import Foundation
+
+// Debug file logger for engine pipeline tracing
+private func engineFileLog(_ message: String) {
+  let fmt = ISO8601DateFormatter()
+  let line = "[\(fmt.string(from: Date()))] [Engine.swift] \(message)\n"
+  let logFile = FileManager.default.temporaryDirectory.appendingPathComponent("chesscoach_debug.log")
+  if let handle = try? FileHandle(forWritingTo: logFile) {
+    handle.seekToEndOfFile()
+    handle.write(line.data(using: .utf8)!)
+    handle.synchronizeFile()
+    handle.closeFile()
+  }
+}
 
 public final class Engine: Sendable {
 
@@ -141,16 +155,17 @@ public final class Engine: Sendable {
   ///
   /// Any responses will be returned via ``Engine/responseStream``.
   public func send(command: EngineCommand) async {
+    engineFileLog("send: checking isRunning for '\(command.rawValue.prefix(60))'")
     guard await isRunning || [.uci, .isready].contains(command) else {
-      await log("Engine is not running, call start() first.")
+      engineFileLog("send: engine not running, dropping '\(command.rawValue.prefix(60))'")
       return
     }
 
-    await log(command.rawValue)
-
+    engineFileLog("send: dispatching '\(command.rawValue.prefix(60))'")
     commandQueue.sync {
       messenger.sendCommand(command.rawValue)
     }
+    engineFileLog("send: done '\(command.rawValue.prefix(60))'")
   }
 
   /// Enable printing logs to console.
@@ -192,16 +207,18 @@ public final class Engine: Sendable {
   ) {
     messenger.responseHandler = { [weak self] response in
       Task { [weak self] in
-        guard let self,
-          let parsed = EngineResponse(rawValue: response)
-        else {
+        guard let self else {
+          engineFileLog("responseHandler: self is nil")
+          return
+        }
+        guard let parsed = EngineResponse(rawValue: response) else {
           if !response.isEmpty {
-            await self?.log(response)
+            engineFileLog("responseHandler: UNPARSED '\(response.prefix(80))'")
           }
           return
         }
 
-        await self.log(parsed.rawValue)
+        engineFileLog("responseHandler: parsed \(parsed.rawValue.prefix(60))")
 
         if await !self.isRunning {
           if parsed == .readyok {
@@ -213,7 +230,10 @@ public final class Engine: Sendable {
             await self.send(command: next)
           }
         }
+        let hasContinuation = await self.engineConfigurationActor.streamContinuation != nil
+        engineFileLog("yielding to stream (hasContinuation=\(hasContinuation))")
         await self.engineConfigurationActor.streamContinuation?.yield(parsed)
+        engineFileLog("yield done for \(parsed.rawValue.prefix(40))")
       }
     }
   }

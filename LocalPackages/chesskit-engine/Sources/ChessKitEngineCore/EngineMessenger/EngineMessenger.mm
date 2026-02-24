@@ -68,6 +68,22 @@ public:
     PipeReadBuf(int pipefd) : fd(pipefd) {}
 };
 
+// Debug logging helper — writes to same file as Swift debugLog
+static void engineLog(NSString *message) {
+    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    fmt.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+    fmt.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    NSString *line = [NSString stringWithFormat:@"[%@] [EngMsg] %@\n", [fmt stringFromDate:[NSDate date]], message];
+    NSString *logPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"chesscoach_debug.log"];
+    NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:logPath];
+    if (handle) {
+        [handle seekToEndOfFile];
+        [handle writeData:[line dataUsingEncoding:NSUTF8StringEncoding]];
+        [handle synchronizeFile];
+        [handle closeFile];
+    }
+}
+
 @implementation EngineMessenger : NSObject {
     BOOL _stopped;
 }
@@ -149,11 +165,17 @@ static std::streambuf *_originalCinBuf = nullptr;
       if (!strongSelf || strongSelf->_stopped) break;
 
       NSData *data = [readHandle availableData];
-      if (data.length == 0) break; // EOF — pipe closed
+      if (data.length == 0) {
+        engineLog(@"read loop: EOF (0 bytes), exiting");
+        break; // EOF — pipe closed
+      }
 
-      NSArray<NSString *> *lines = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"\n"];
+      NSString *raw = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+      engineLog([NSString stringWithFormat:@"read loop: got %lu bytes", (unsigned long)data.length]);
+      NSArray<NSString *> *lines = [raw componentsSeparatedByString:@"\n"];
       for (NSString *line in lines) {
         if (line.length > 0) {
+          engineLog([NSString stringWithFormat:@"read loop -> responseHandler: %@", [line substringToIndex:MIN(line.length, 80)]]);
           __strong typeof(weakSelf) innerSelf = weakSelf;
           if (innerSelf && !innerSelf->_stopped) {
             [innerSelf responseHandler](line);
@@ -197,8 +219,12 @@ static std::streambuf *_originalCinBuf = nullptr;
 }
 
 - (void)sendCommand: (NSString*) command {
-  const char *cmd = [[command stringByAppendingString:@"\n"] UTF8String];
-  write([_pipeWriteHandle fileDescriptor], cmd, strlen(cmd));
+  engineLog([NSString stringWithFormat:@"sendCommand: %@", command]);
+  NSString *withNewline = [command stringByAppendingString:@"\n"];
+  const char *cmd = [withNewline UTF8String];
+  size_t len = strlen(cmd);
+  ssize_t written = write([_pipeWriteHandle fileDescriptor], cmd, len);
+  engineLog([NSString stringWithFormat:@"sendCommand wrote %zd/%zu bytes (fd=%d)", written, len, [_pipeWriteHandle fileDescriptor]]);
 }
 
 @end
