@@ -12,5 +12,8 @@ build/
 # Large model files (download separately, exceeds GitHub 2GB limit)
 *.gguf
 
+# Node
+node_modules/
+
 # OS files
 .DS_Store

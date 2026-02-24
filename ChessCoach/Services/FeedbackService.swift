@@ -7,8 +7,6 @@ final class FeedbackService: Sendable {
     static let shared = FeedbackService()
 
     // MARK: - Configuration
-    // After deploying the worker, replace with your actual URL:
-    //   https://chess-coach-feedback.<your-subdomain>.workers.dev/feedback
     private let workerURL = "https://chess-coach-feedback.malathon.workers.dev/feedback"
 
     // Optional API key for the worker (set via wrangler secret put API_KEY)
