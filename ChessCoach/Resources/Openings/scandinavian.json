@@ -1,0 +1,602 @@
+{
+  "id": "scandinavian",
+  "name": "Scandinavian Defense",
+  "description": "A straightforward defense where Black immediately challenges White's center. Easy to learn with clear plans.",
+  "color": "black",
+  "difficulty": 2,
+  "tree": {
+    "id": "scandinavian/root",
+    "children": [
+      {
+        "id": "scandinavian/e2e4",
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "White grabs the center — now it's your turn to challenge it immediately instead of letting White have it for free!"
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "scandinavian/e2e4/d7d5",
+            "move": {
+              "uci": "d7d5",
+              "san": "d5",
+              "explanation": "Strike back in the center right away! This is the Scandinavian — you challenge White's e4 pawn immediately on move one, fighting for the center from the very start."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "scandinavian/e2e4/d7d5/e4d5",
+                "move": {
+                  "uci": "e4d5",
+                  "san": "exd5",
+                  "explanation": "White captures — now you have a choice! You can recapture with the queen or develop the knight. Both are good options!"
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "scandinavian/e2e4/d7d5/e4d5/d8d5",
+                    "move": {
+                      "uci": "d8d5",
+                      "san": "Qxd5",
+                      "explanation": "Recapture with the queen! Yes, it comes out early — but you'll move it to a safe square right away where it stays active."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3",
+                        "move": {
+                          "uci": "b1c3",
+                          "san": "Nc3",
+                          "explanation": "White develops the knight and attacks your queen — you need to move it again, but don't worry, you're heading to a great square."
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5a5",
+                            "move": {
+                              "uci": "d5a5",
+                              "san": "Qa5",
+                              "explanation": "The queen finds a perfect home on a5 — it's safe from attack, watches the c3 knight, and controls the a5-e1 diagonal. This is the main Scandinavian position!"
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5a5/d2d4",
+                                "move": {
+                                  "uci": "d2d4",
+                                  "san": "d4",
+                                  "explanation": "White builds a big center — but you have a solid plan to fight back with Nf6, Bf5, and e6 to challenge those central pawns."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5a5/d2d4/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Develop the knight and attack the center — a key developing move that also takes aim at White's pawns."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5a5/d2d4/g8f6/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "White develops and defends d4 — now you want to develop your bishop to f5 before White can stop it."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5a5/d2d4/g8f6/g1f3/c8f5",
+                                            "move": {
+                                              "uci": "c8f5",
+                                              "san": "Bf5",
+                                              "explanation": "The bishop develops to its ideal square! Bf5 is the key move in the Scandinavian — it develops the bishop before the e6 pawn blocks it in forever."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5a5/d2d4/g8f6/g1f3/c8f5/f1c4",
+                                                "move": {
+                                                  "uci": "f1c4",
+                                                  "san": "Bc4",
+                                                  "explanation": "White aims at f7 — now play e6 to block that bishop and solidify your position."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5a5/d2d4/g8f6/g1f3/c8f5/f1c4/e7e6",
+                                                    "move": {
+                                                      "uci": "e7e6",
+                                                      "san": "e6",
+                                                      "explanation": "Perfect! You block White's bishop, solidify your center, and prepare to develop your own bishop and castle. You have a great position!"
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5d6",
+                            "move": {
+                              "uci": "d5d6",
+                              "san": "Qd6",
+                              "explanation": "The Qd6 variation — the queen moves to a central square where it is safe from attack and eyes the d-file."
+                            },
+                            "isMainLine": false,
+                            "variationName": "Scandinavian: ...Qd6",
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5d6/d2d4",
+                                "move": {
+                                  "uci": "d2d4",
+                                  "san": "d4",
+                                  "explanation": "White builds the center — now develop your knight and bishop quickly."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5d6/d2d4/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Develop the knight — it attacks e4 and helps control the center."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5d6/d2d4/g8f6/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "White develops — now get the bishop out to f5 before playing e6."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5d6/d2d4/g8f6/g1f3/c8f5",
+                                            "move": {
+                                              "uci": "c8f5",
+                                              "san": "Bf5",
+                                              "explanation": "Great! The bishop is out before the pawn chain locks it in — you have a harmonious position."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "scandinavian/e2e4/d7d5/e4d5/d8d5/b1c3/d5d6/d2d4/g8f6/g1f3/c8f5/f1d3",
+                                                "move": {
+                                                  "uci": "f1d3",
+                                                  "san": "Bd3",
+                                                  "explanation": "White challenges your bishop — you can swap it or keep it on the board. Both are fine options."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "scandinavian/e2e4/d7d5/e4d5/g8f6",
+                    "move": {
+                      "uci": "g8f6",
+                      "san": "Nf6",
+                      "explanation": "The Modern Scandinavian — instead of recapturing immediately, you develop the knight and plan to win the pawn back later with Nxd5."
+                    },
+                    "isMainLine": false,
+                    "variationName": "Modern Scandinavian (...Nf6)",
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/d2d4",
+                        "move": {
+                          "uci": "d2d4",
+                          "san": "d4",
+                          "explanation": "White holds the extra pawn and builds a center — now win the pawn back with Nxd5."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/d2d4/f6d5",
+                            "move": {
+                              "uci": "f6d5",
+                              "san": "Nxd5",
+                              "explanation": "Win the pawn back! The knight on d5 is well placed — it controls the center and can be hard for White to dislodge."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/d2d4/f6d5/g1f3",
+                                "move": {
+                                  "uci": "g1f3",
+                                  "san": "Nf3",
+                                  "explanation": "White develops — now get your bishop out to f5 while you can."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/d2d4/f6d5/g1f3/c8f5",
+                                    "move": {
+                                      "uci": "c8f5",
+                                      "san": "Bf5",
+                                      "explanation": "The bishop comes out actively — same plan as the main Scandinavian. Your pieces are well developed!"
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/d2d4/f6d5/g1f3/c8f5/f1d3",
+                                        "move": {
+                                          "uci": "f1d3",
+                                          "san": "Bd3",
+                                          "explanation": "White challenges your bishop — you can trade it if you want to simplify, or keep it active."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/d2d4/f6d5/g1f3/c8f5/f1d3/f5d3",
+                                            "move": {
+                                              "uci": "f5d3",
+                                              "san": "Bxd3",
+                                              "explanation": "Trade the bishops and simplify — you have a solid position with equal chances. Castle next!"
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "scandinavian/e2e4/d7d5/e4d5/g8f6",
+                    "move": {
+                      "uci": "g8f6",
+                      "san": "Nf6",
+                      "explanation": "The Icelandic Gambit path — if White plays c4 to hold the pawn, you can launch a sharp counterattack with e6!"
+                    },
+                    "isMainLine": false,
+                    "variationName": "Icelandic Gambit",
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/c2c4",
+                        "move": {
+                          "uci": "c2c4",
+                          "san": "c4",
+                          "explanation": "White tries to hold the pawn with c4 — now is the time to launch the Icelandic Gambit!"
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/c2c4/e7e6",
+                            "move": {
+                              "uci": "e7e6",
+                              "san": "e6",
+                              "explanation": "The Icelandic Gambit! You sacrifice a pawn to get a fast attack. White has to be careful or you'll overwhelm them with piece activity."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/c2c4/e7e6/d5e6",
+                                "move": {
+                                  "uci": "d5e6",
+                                  "san": "dxe6",
+                                  "explanation": "White takes the pawn — now you get rapid development and active pieces as compensation."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/c2c4/e7e6/d5e6/f7e6",
+                                    "move": {
+                                      "uci": "f7e6",
+                                      "san": "fxe6",
+                                      "explanation": "Recapture and open the f-file — your rook will be very powerful here, and your pieces can fly into the attack."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "scandinavian/e2e4/d7d5/e4d5/g8f6/c2c4/e7e6/d5e6/f7e6/d2d4",
+                                        "move": {
+                                          "uci": "d2d4",
+                                          "san": "d4",
+                                          "explanation": "White builds the center — you develop quickly with Nc6, Bc5, and push for the initiative. The gambit gives you exciting attacking chances!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Challenge White's center immediately with 1...d5, then after exd5 Qxd5, move the queen to a5 for safety. Develop the knight to f6, the bishop to f5 (before it gets locked in), then play e6 and castle. You'll have a solid, active position.",
+    "strategicGoals": [
+      { "description": "Challenge White's center immediately with 1...d5", "priority": 1 },
+      { "description": "Develop the queen to a5 where it is active and safe from attack", "priority": 2 },
+      { "description": "Get the bishop to f5 BEFORE playing e6 — otherwise it gets trapped!", "priority": 3 },
+      { "description": "Castle kingside and complete development with Nc6 or Nd7", "priority": 4 },
+      { "description": "Challenge White's center with ...c5 when the moment is right", "priority": 5 }
+    ],
+    "pawnStructureTarget": "Solid e6/d5 chain after winning back the pawn, with the bishop active on f5",
+    "keySquares": ["d5", "a5", "f5", "e6"],
+    "pieceTargets": [
+      { "piece": "queen", "idealSquares": ["a5", "d6"], "reasoning": "Safe from White's knights, watches c3, and keeps an eye on important diagonals" },
+      { "piece": "dark-squared bishop", "idealSquares": ["f5", "g4"], "reasoning": "Must be developed BEFORE e6 — otherwise it will be trapped behind the pawn chain for the entire game" },
+      { "piece": "king's knight", "idealSquares": ["f6"], "reasoning": "Controls center, puts pressure on e4, and helps with future d5 push" },
+      { "piece": "queen's knight", "idealSquares": ["c6", "d7"], "reasoning": "Supports the center and connects the rooks" }
+    ],
+    "typicalPlans": [
+      "Play Bf5 BEFORE e6 — this is the most important Scandinavian rule!",
+      "Challenge White's center with ...c5 to win back central space",
+      "Use the semi-open d-file for your rook after casting",
+      "If White plays Nb5, meet it with Qa4+ or Bd7 to kick the knight"
+    ],
+    "commonMistakes": [
+      "Playing e6 before Bf5 — the bishop gets trapped behind the pawns for the whole game",
+      "Leaving the queen on d5 after Nc3 — always move it to a5 or d6",
+      "Forgetting to castle — the queen on a5 can feel unsafe if the king is still in the center",
+      "Playing Bg4 too early — White can chase it with h3, losing tempos"
+    ],
+    "historicalNote": "The Scandinavian is one of the oldest defenses — it was played as far back as 1475! It became popular when Bent Larsen (Denmark) and later Sergei Tiviakov used it regularly. Grandmaster Tiviakov virtually played nothing else with Black for 20 years!",
+    "planLessons": [
+      {
+        "title": "Strike the Center Immediately!",
+        "description": "1...d5 is the Scandinavian spirit — instead of waiting to develop, you immediately challenge White's e4 pawn. This is very direct and easy to understand.",
+        "fen": "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2",
+        "highlights": ["d5", "e4"],
+        "arrows": [{"from": "d7", "to": "d5"}],
+        "style": "good"
+      },
+      {
+        "title": "The Queen Finds Safety on a5",
+        "description": "After Qxd5 and Nc3, move your queen to a5 — not back to d8! On a5 the queen is safe from attack, watches the c3 knight, and controls the important a5-e1 diagonal.",
+        "fen": "rnb1kbnr/ppp1pppp/8/q7/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
+        "highlights": ["a5", "c3"],
+        "arrows": [{"from": "d5", "to": "a5"}],
+        "style": "good"
+      },
+      {
+        "title": "THE KEY RULE: Bf5 Before e6!",
+        "description": "This is the most important thing to remember in the Scandinavian! Develop your bishop to f5 BEFORE you play e6. If you play e6 first, the bishop is stuck behind your own pawn for the whole game — a terrible position!",
+        "fen": "rnb1kb1r/ppp1pppp/5n2/q4b2/3P4/2N2N2/PPP2PPP/R1BQKB1R w KQkq - 4 5",
+        "highlights": ["f5", "e6"],
+        "arrows": [{"from": "c8", "to": "f5"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Trap Your Bishop!",
+        "description": "If you play e6 BEFORE developing the bishop, it gets locked behind your own pawns for the rest of the game. The bishop on c8 with e6 and d5 pawns in front of it is one of the weakest pieces in chess!",
+        "fen": "rnb1kb1r/ppp2ppp/3p1n2/q3p3/3PP3/2N2N2/PPP2PPP/R1BQKB1R w KQkq - 0 5",
+        "highlights": ["c8", "e6", "d5"],
+        "arrows": [],
+        "style": "bad"
+      },
+      {
+        "title": "Your Goal: Castle and Play c5",
+        "description": "Once you have Qa5, Nf6, Bf5, and e6 done, castle kingside! Then look for ...c5 to challenge White's center and activate your remaining pieces. You'll have a very playable game.",
+        "fen": "r1b1k2r/ppp2ppp/3ppn2/q4b2/3P4/2N2N2/PPP1BPPP/R1BQK2R b KQkq - 2 7",
+        "highlights": ["g8", "c5"],
+        "arrows": [{"from": "e8", "to": "g8"}, {"from": "c7", "to": "c5"}],
+        "style": "good"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnb1kbnr/ppp1pppp/8/3Q4/8/2N5/PPPP1PPP/R1BQKBNR b KQkq - 1 3",
+        "prompt": "After Qxd5 and Nc3, where should your queen go?",
+        "choices": [
+          {"text": "Qa5 — safe from attack and watches the c3 knight", "isCorrect": true},
+          {"text": "Qd8 — retreat to safety", "isCorrect": false},
+          {"text": "Qd6 — stay central", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Qa5 is the main move! The queen is safe on a5, it eyes the c3 knight, and sits on an important diagonal. Qd8 wastes a move, and Qd6 is playable but less active.",
+        "boardHighlightsOnReveal": ["a5", "c3"],
+        "arrowsOnReveal": [{"from": "d5", "to": "a5"}]
+      },
+      {
+        "fen": "rnb1kb1r/ppp1pppp/5n2/q7/3P4/2N2N2/PPP2PPP/R1BQKB1R b KQkq - 4 5",
+        "prompt": "It's your turn. What is the single most important thing to do in this position?",
+        "choices": [
+          {"text": "Bf5 — get the bishop out before e6 traps it", "isCorrect": true},
+          {"text": "e6 — solidify the center right away", "isCorrect": false},
+          {"text": "c6 — support a future d5 push", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Bf5 is the golden rule of the Scandinavian! If you play e6 first, your c8 bishop is permanently locked behind your own pawns. Always develop the bishop before playing e6.",
+        "boardHighlightsOnReveal": ["f5", "e6", "c8"],
+        "arrowsOnReveal": [{"from": "c8", "to": "f5"}]
+      },
+      {
+        "fen": "rnb1kb1r/ppp1pppp/5n2/q4b2/3P4/2N2N2/PPP2PPP/R1BQKB1R w KQkq - 4 5",
+        "prompt": "White plays Bc4 here, threatening f7. What is Black's best response?",
+        "choices": [
+          {"text": "e6 — block the bishop and solidify the center", "isCorrect": true},
+          {"text": "Bb4 — pin the knight", "isCorrect": false},
+          {"text": "Nc6 — develop another piece", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Now that Bf5 is done, e6 is perfect! It blocks White's Bc4, solidifies your pawn structure, and prepares to castle. You followed the rule — bishop out THEN e6!",
+        "boardHighlightsOnReveal": ["e6", "c4"],
+        "arrowsOnReveal": [{"from": "e7", "to": "e6"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Main Line: ...Qa5 (B01)",
+        "description": "After 1.e4 d5 2.exd5 Qxd5 3.Nc3 Qa5, you reach the most popular Scandinavian position. The queen on a5 is the signature move — safe, active, and watching the c3 knight.",
+        "fen": "rnb1kbnr/ppp1pppp/8/q7/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
+        "highlights": ["a5", "d4", "c3"],
+        "arrows": [{"from": "d5", "to": "a5"}],
+        "style": "theory"
+      },
+      {
+        "title": "Qd6 Variation (B01) — The Solid Alternative",
+        "description": "Instead of Qa5, some players prefer Qd6 — staying more central. The queen on d6 is safe from Nb5 attacks and eyes the d-file. It leads to solid positions but slightly less active play than Qa5.",
+        "fen": "rnb1kbnr/ppp1pppp/3q4/8/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
+        "highlights": ["d6", "d4"],
+        "arrows": [{"from": "d5", "to": "d6"}],
+        "style": "theory"
+      },
+      {
+        "title": "Modern Scandinavian: ...Nf6 (B01)",
+        "description": "Instead of Qxd5, play 2...Nf6 — a modern approach! You develop a piece instead of the queen, then win the pawn back with Nxd5 later. This avoids the early queen development.",
+        "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/3P4/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+        "highlights": ["f6", "d5"],
+        "arrows": [{"from": "g8", "to": "f6"}],
+        "style": "theory"
+      },
+      {
+        "title": "The Icelandic Gambit (B01) — For Adventurers!",
+        "description": "If White plays c4 to hold the d5 pawn, you can launch the Icelandic Gambit with ...e6! You sacrifice a pawn for rapid development and an exciting attack. White must know what they are doing or they can quickly get into trouble!",
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/2PP4/8/PP3PPP/RNBQKBNR w KQkq e6 0 4",
+        "highlights": ["e6", "c4", "d5"],
+        "arrows": [{"from": "e7", "to": "e6"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnb1kbnr/ppp1pppp/8/q7/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
+        "prompt": "This is the main Scandinavian position after Qa5. What ECO code is this?",
+        "choices": [
+          {"text": "B01 — Scandinavian Defense", "isCorrect": true},
+          {"text": "C20 — King's Pawn Opening", "isCorrect": false},
+          {"text": "A00 — Irregular Opening", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The Scandinavian Defense carries ECO code B01. It's one of the oldest openings in chess and has been popular at all levels from beginners to grandmasters like Tiviakov.",
+        "boardHighlightsOnReveal": ["a5", "d4"],
+        "arrowsOnReveal": []
+      },
+      {
+        "fen": "rnb1kbnr/ppp1pppp/3q4/8/3P4/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
+        "prompt": "Black played Qd6 instead of Qa5. What is this called?",
+        "choices": [
+          {"text": "The Qd6 Scandinavian — solid and avoids Nb5 tricks", "isCorrect": true},
+          {"text": "The Morphy Defense — queen on d6 is the oldest line", "isCorrect": false},
+          {"text": "The Modern Scandinavian — avoiding early queen moves", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Qd6 Scandinavian! The queen on d6 avoids the Nb5 trick that can happen against Qa5, and the queen stays central. It's slightly less active than Qa5 but very solid.",
+        "boardHighlightsOnReveal": ["d6"],
+        "arrowsOnReveal": []
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["e2e4", "d7d5", "e4d5", "d8d5", "b1c3", "d5a5"],
+    "responses": [
+      {
+        "id": "scandinavian-d4",
+        "move": { "uci": "d2d4", "san": "d4", "explanation": "White builds a big pawn center — the most natural and most common response." },
+        "name": "Main Line with d4",
+        "eco": "B01",
+        "frequency": 0.45,
+        "description": "White builds a full pawn center with d4 — now you develop Nf6, Bf5, e6, and castle. Stick to the plan!",
+        "planAdjustment": "Follow the main plan: Nf6, Bf5 (BEFORE e6!), then e6 and castle. Challenge the center with c5 later."
+      },
+      {
+        "id": "scandinavian-nf3",
+        "move": { "uci": "g1f3", "san": "Nf3", "explanation": "White develops the knight — a solid move that develops and defends e4." },
+        "name": "Nf3 system",
+        "eco": "B01",
+        "frequency": 0.25,
+        "description": "White plays Nf3 — flexible and solid. Your plan is the same: develop Nf6, Bf5, e6, and castle.",
+        "planAdjustment": "Same plan — Nf6, then Bf5 before e6. White has not committed to d4 yet so you have slightly more flexibility."
+      },
+      {
+        "id": "scandinavian-nb5",
+        "move": { "uci": "c3b5", "san": "Nb5", "explanation": "White attacks your queen with the knight — don't panic! You have a good response." },
+        "name": "Nb5 Attack",
+        "eco": "B01",
+        "frequency": 0.20,
+        "description": "White attacks the queen with Nb5 — answer with Qa4+ or Bd7. Then the knight has to go back and you're fine.",
+        "planAdjustment": "Play Qa4+ — check the king and force White to deal with it. After Bd2 Qb5, White's knight goes back to c3 and you continue with normal development."
+      },
+      {
+        "id": "scandinavian-bf4",
+        "move": { "uci": "c1f4", "san": "Bf4", "explanation": "White develops the bishop — a flexible response that keeps options open." },
+        "name": "Bf4 system",
+        "eco": "B01",
+        "frequency": 0.10,
+        "description": "White develops the bishop early — your plan is the same. Nf6, Bf5 (before e6!), and castle.",
+        "planAdjustment": "Develop normally with Nf6 and Bf5. White's bishop on f4 is actually fine for you — it doesn't cause any problems if you develop properly."
+      }
+    ]
+  }
+}

@@ -10,10 +10,10 @@ struct PracticeOpeningView: View {
     @State private var viewModel: PracticeSessionViewModel
     @Environment(\.dismiss) private var dismiss
 
-    init(opening: Opening, isPro: Bool = true) {
+    init(opening: Opening, isPro: Bool = true, stockfish: StockfishService? = nil) {
         self.opening = opening
         self.isPro = isPro
-        self._viewModel = State(initialValue: PracticeSessionViewModel(opening: opening, isPro: isPro))
+        self._viewModel = State(initialValue: PracticeSessionViewModel(opening: opening, isPro: isPro, stockfish: stockfish))
     }
 
     var body: some View {
@@ -77,7 +77,7 @@ struct PracticeOpeningView: View {
                                 Text("Practice Mode")
                                     .font(.subheadline.weight(.semibold))
                                     .foregroundStyle(AppColor.practice)
-                                Text("No hints — your opponent will mix up responses across all lines you've studied. Show what you know!")
+                                Text("No hints — your opponent will surprise you with different responses. Show what you know!")
                                     .font(.caption)
                                     .foregroundStyle(AppColor.secondaryText)
                                     .multilineTextAlignment(.center)
@@ -124,6 +124,7 @@ struct PracticeOpeningView: View {
                 .foregroundStyle(AppColor.secondaryText)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Back to opening detail")
 
             Spacer()
 
@@ -168,7 +169,7 @@ struct PracticeOpeningView: View {
                 Image(systemName: "arrow.triangle.branch")
                     .font(.caption2)
                     .foregroundStyle(AppColor.secondaryText)
-                Text("Off-book — play freely")
+                Text("On your own — play freely")
                     .font(.caption)
                     .foregroundStyle(AppColor.secondaryText)
             }
@@ -305,7 +306,7 @@ struct PracticeOpeningView: View {
                     // Lines encountered
                     if !viewModel.linesEncountered.isEmpty {
                         VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                            Text("Lines Encountered")
+                            Text("Paths Encountered")
                                 .font(.caption.weight(.semibold))
                                 .foregroundStyle(AppColor.secondaryText)
 

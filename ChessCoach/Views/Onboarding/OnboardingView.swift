@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// First-run tutorial with 4 screens (improvement 6).
+/// First-run tutorial introducing the plan-first learning model.
 struct OnboardingView: View {
     @Environment(AppSettings.self) private var settings
     @State private var page = 0
@@ -8,8 +8,6 @@ struct OnboardingView: View {
     private let totalPages = 4
 
     var body: some View {
-        @Bindable var s = settings
-
         ZStack {
             AppColor.background
                 .ignoresSafeArea()
@@ -17,17 +15,15 @@ struct OnboardingView: View {
             TabView(selection: $page) {
                 welcomePage.tag(0)
                 howItWorksPage.tag(1)
-                phasesPage.tag(2)
-                eloPage(bindable: $s).tag(3)
+                layersPage.tag(2)
+                eloPage.tag(3)
             }
             .tabViewStyle(.page(indexDisplayMode: .always))
             .indexViewStyle(.page(backgroundDisplayMode: .always))
 
-            // Page counter and Skip button anchored to bottom-left for thumb reach
             VStack {
                 Spacer()
                 HStack(alignment: .center) {
-                    // Skip button — bottom-left for easier thumb reach
                     if page < totalPages - 1 {
                         Button("Skip") {
                             settings.hasSeenOnboarding = true
@@ -40,7 +36,6 @@ struct OnboardingView: View {
 
                     Spacer()
 
-                    // Page counter — bottom-right
                     Text("\(page + 1) of \(totalPages)")
                         .font(.caption)
                         .foregroundStyle(AppColor.secondaryText)
@@ -63,7 +58,7 @@ struct OnboardingView: View {
             Text("Welcome to ChessCoach")
                 .font(.title.weight(.bold))
                 .foregroundStyle(AppColor.primaryText)
-            Text("Learn chess openings with AI-powered coaching, spaced repetition, and a human-like opponent.")
+            Text("Every chess game starts with a plan. We'll teach you proven game plans used by the best players — and help you understand WHY each move matters.")
                 .font(.body)
                 .foregroundStyle(AppColor.secondaryText)
                 .multilineTextAlignment(.center)
@@ -76,77 +71,60 @@ struct OnboardingView: View {
     private var howItWorksPage: some View {
         VStack(spacing: AppSpacing.xxl) {
             Spacer()
-            Image(systemName: "book.fill")
+            Image(systemName: "lightbulb.fill")
                 .font(.system(size: 64))
-                .foregroundStyle(AppColor.success)
+                .foregroundStyle(.cyan)
             Text("How It Works")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(AppColor.primaryText)
 
             VStack(alignment: .leading, spacing: AppSpacing.lg) {
-                featureRow(icon: "1.circle.fill", text: "Pick an opening to learn")
-                featureRow(icon: "2.circle.fill", text: "Play moves on the board")
-                featureRow(icon: "3.circle.fill", text: "Get coaching on every move")
-                featureRow(icon: "4.circle.fill", text: "Review weak spots with spaced rep")
+                featureRow(icon: "1.circle.fill", color: .cyan, text: "Learn the plan behind the moves")
+                featureRow(icon: "2.circle.fill", color: .blue, text: "Practice playing it your way")
+                featureRow(icon: "3.circle.fill", color: .indigo, text: "Discover the history and famous names")
+                featureRow(icon: "4.circle.fill", color: .orange, text: "Face real opponents who surprise you")
             }
             .padding(.horizontal, AppSpacing.xxxl)
+
+            Text("We'll guide you every step of the way — no prior knowledge needed.")
+                .font(.caption)
+                .foregroundStyle(AppColor.tertiaryText)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, AppSpacing.xxxl)
 
             Spacer()
             nextButton
         }
     }
 
-    private var phasesPage: some View {
+    private var layersPage: some View {
         VStack(spacing: AppSpacing.xxl) {
             Spacer()
             Image(systemName: "chart.line.uptrend.xyaxis")
                 .font(.system(size: 64))
-                .foregroundStyle(AppColor.guided)
-            Text("4 Learning Phases")
+                .foregroundStyle(AppColor.layer(.executePlan))
+            Text("Your Learning Journey")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(AppColor.primaryText)
 
             VStack(alignment: .leading, spacing: AppSpacing.md) {
-                // Improvement 26: Color-blind shape icons alongside phase colors
-                phaseRow(
-                    color: AppColor.study,
-                    name: "Learn",
-                    desc: "Read through the line with explanations",
-                    shape: "book.fill"
-                )
-                phaseRow(
-                    color: AppColor.guided,
-                    name: "Guided Practice",
-                    desc: "Play with hints and coaching",
-                    shape: "hand.point.right.fill"
-                )
-                phaseRow(
-                    color: AppColor.unguided,
-                    name: "Unguided Practice",
-                    desc: "Play from memory",
-                    shape: "brain.head.profile"
-                )
-                phaseRow(
-                    color: AppColor.practice,
-                    name: "Mixed Practice",
-                    desc: "All lines, no hints",
-                    shape: "shuffle"
-                )
+                ForEach(LearningLayer.allCases, id: \.rawValue) { layer in
+                    layerRow(layer: layer)
+                }
             }
-            .padding(.horizontal, AppSpacing.xxxl)
+            .padding(.horizontal, AppSpacing.xxl)
 
             Spacer()
             nextButton
         }
     }
 
-    // Takes a Bindable projection so the Stepper can write back through AppSettings
-    private func eloPage(bindable s: Bindable<AppSettings>) -> some View {
+    private var eloPage: some View {
         VStack(spacing: AppSpacing.xxl) {
             Spacer()
             Image(systemName: "person.fill.questionmark")
                 .font(.system(size: 64))
-                .foregroundStyle(AppColor.unguided)
+                .foregroundStyle(AppColor.layer(.handleVariety))
             Text("What's your level?")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(AppColor.primaryText)
@@ -157,15 +135,34 @@ struct OnboardingView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, AppSpacing.xxxl)
 
-            VStack(spacing: AppSpacing.sm) {
+            VStack(spacing: AppSpacing.md) {
                 Text("\(settings.userELO)")
                     .font(.system(size: 48, weight: .bold, design: .rounded))
                     .foregroundStyle(AppColor.primaryText)
+                    .contentTransition(.numericText())
 
-                Stepper("ELO", value: s.userELO, in: 400...2000, step: 100)
-                    .labelsHidden()
-                    .padding(.horizontal, 60)
-                    .accessibilityLabel("Your ELO rating: \(settings.userELO)")
+                // Use explicit +/- buttons instead of Stepper to avoid
+                // gesture conflicts with TabView page swiping
+                HStack(spacing: AppSpacing.xxl) {
+                    Button {
+                        withAnimation { settings.userELO = max(400, settings.userELO - 100) }
+                    } label: {
+                        Image(systemName: "minus.circle.fill")
+                            .font(.system(size: 36))
+                            .foregroundStyle(settings.userELO <= 400 ? AppColor.tertiaryText : AppColor.secondaryText)
+                    }
+                    .disabled(settings.userELO <= 400)
+
+                    Button {
+                        withAnimation { settings.userELO = min(2000, settings.userELO + 100) }
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 36))
+                            .foregroundStyle(settings.userELO >= 2000 ? AppColor.tertiaryText : AppColor.secondaryText)
+                    }
+                    .disabled(settings.userELO >= 2000)
+                }
+                .accessibilityLabel("Your skill level: \(settings.userELO)")
 
                 Text(eloDescription)
                     .font(.caption)
@@ -175,7 +172,9 @@ struct OnboardingView: View {
             Spacer()
 
             Button {
-                settings.hasSeenOnboarding = true
+                withAnimation {
+                    settings.hasSeenOnboarding = true
+                }
             } label: {
                 Text("Let's Go!")
                     .font(.body.weight(.semibold))
@@ -184,7 +183,6 @@ struct OnboardingView: View {
                     .padding(.vertical, 14)
                     .background(AppColor.success, in: RoundedRectangle(cornerRadius: AppRadius.lg))
             }
-            .buttonStyle(.plain)
             .padding(.horizontal, AppSpacing.xxxl)
             .padding(.bottom, 40)
         }
@@ -201,7 +199,7 @@ struct OnboardingView: View {
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
-                .background(AppColor.guided, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+                .background(AppColor.layer(.executePlan), in: RoundedRectangle(cornerRadius: AppRadius.lg))
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Go to next page")
@@ -209,11 +207,11 @@ struct OnboardingView: View {
         .padding(.bottom, 40)
     }
 
-    private func featureRow(icon: String, text: String) -> some View {
+    private func featureRow(icon: String, color: Color, text: String) -> some View {
         HStack(spacing: AppSpacing.md) {
             Image(systemName: icon)
                 .font(.title3)
-                .foregroundStyle(AppColor.success)
+                .foregroundStyle(color)
                 .frame(width: 28)
             Text(text)
                 .font(.body)
@@ -221,26 +219,30 @@ struct OnboardingView: View {
         }
     }
 
-    private func phaseRow(color: Color, name: String, desc: String, shape: String = "circle.fill") -> some View {
+    private func layerRow(layer: LearningLayer) -> some View {
         HStack(spacing: AppSpacing.md) {
-            if settings.colorblindMode {
-                Image(systemName: shape)
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundStyle(color)
-                    .frame(width: 18)
-            } else {
-                Circle()
-                    .fill(color)
-                    .frame(width: 10, height: 10)
-                    .padding(.leading, 4)
+            Image(systemName: AppColor.layerIcon(layer))
+                .font(.system(size: 14, weight: .bold))
+                .foregroundStyle(AppColor.layer(layer))
+                .frame(width: 22)
+
+            VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
+                Text(layer.displayName)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(AppColor.layer(layer))
+                Text(layer.layerDescription)
+                    .font(.caption)
+                    .foregroundStyle(AppColor.secondaryText)
+                    .lineLimit(2)
             }
-            Text(name)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(color)
-                .frame(width: 110, alignment: .leading)
-            Text(desc)
-                .font(.subheadline)
-                .foregroundStyle(AppColor.secondaryText)
+
+            Spacer()
+
+            if !layer.isFreeLayer {
+                Image(systemName: "lock.fill")
+                    .font(.caption2)
+                    .foregroundStyle(AppColor.tertiaryText)
+            }
         }
     }
 

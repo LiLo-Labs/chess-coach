@@ -70,6 +70,7 @@ struct MoveArrowOverlay: View {
             context.fill(headPath, with: .color(arrowColor))
         }
         .allowsHitTesting(false)
+        .accessibilityHidden(true)
         .frame(width: boardSize, height: boardSize)
     }
 

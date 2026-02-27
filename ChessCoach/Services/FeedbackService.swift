@@ -7,7 +7,7 @@ final class FeedbackService: Sendable {
     static let shared = FeedbackService()
 
     // MARK: - Configuration
-    private let workerURL = "https://chess-coach-feedback.malathon.workers.dev/feedback"
+    private let workerURL = AppConfig.feedback.workerURL
 
     // Optional API key for the worker (set via wrangler secret put API_KEY)
     private let apiKey: String? = nil

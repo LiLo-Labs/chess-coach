@@ -1,15 +1,25 @@
 import Foundation
 import StoreKit
 
-/// Manages Pro tier access via StoreKit 2 non-consumable IAP.
+/// Manages subscription tier access via StoreKit 2 IAP.
 @Observable
 @MainActor
 final class SubscriptionService {
-    static let proProductID = "com.chesscoach.pro.lifetime"
+    // Product IDs for each paid tier
+    static let onDeviceProductID = "com.chesscoach.ondevice"
+    static let cloudProductID = "com.chesscoach.cloud"
+    static let proProductID = AppConfig.pro.productID
 
-    private(set) var isPro: Bool = false
-    private(set) var product: Product?
+    private(set) var currentTier: SubscriptionTier = .free
+    private(set) var unlockedPaths: Set<String> = [] // per-path à la carte unlocks
+    private(set) var products: [String: Product] = [:]
     private(set) var purchaseState: PurchaseState = .idle
+
+    /// Backward-compatible convenience — true if any paid tier is active.
+    var isPro: Bool { currentTier != .free }
+
+    /// True if tier includes AI capabilities.
+    var hasAI: Bool { currentTier.hasAI }
 
     enum PurchaseState: Equatable {
         case idle
@@ -33,17 +43,24 @@ final class SubscriptionService {
 
     // MARK: - Public API
 
-    func loadProduct() async {
-        do {
-            let products = try await Product.products(for: [Self.proProductID])
-            product = products.first
-        } catch {
-            print("[ChessCoach] Failed to load products: \(error)")
+    func loadProducts() async throws {
+        let ids = [Self.onDeviceProductID, Self.cloudProductID, Self.proProductID]
+        let loaded = try await Product.products(for: ids)
+        for product in loaded {
+            products[product.id] = product
         }
     }
 
-    func purchase() async {
-        guard let product else {
+    /// Legacy single-product loader for backward compat.
+    func loadProduct() async throws {
+        try await loadProducts()
+    }
+
+    /// Access the legacy "pro" product for display.
+    var product: Product? { products[Self.proProductID] }
+
+    func purchase(productID: String = proProductID) async {
+        guard let product = products[productID] else {
             purchaseState = .failed("Product not available")
             return
         }
@@ -55,7 +72,7 @@ final class SubscriptionService {
             case let .success(verification):
                 let transaction = try checkVerified(verification)
                 await transaction.finish()
-                isPro = true
+                await checkEntitlement()
                 purchaseState = .purchased
             case .userCancelled:
                 purchaseState = .idle
@@ -69,47 +86,103 @@ final class SubscriptionService {
         }
     }
 
+    /// Unlock a specific opening path (à la carte purchase).
+    func unlockPath(_ pathID: String) {
+        unlockedPaths.insert(pathID)
+        // In production, this would be backed by a non-consumable IAP per path
+        UserDefaults.standard.set(Array(unlockedPaths), forKey: "chess_coach_unlocked_paths")
+    }
+
     func restore() async {
         try? await AppStore.sync()
         await checkEntitlement()
-        if isPro {
+        if currentTier != .free {
             purchaseState = .restored
         }
     }
 
     func isFeatureUnlocked(_ feature: ProFeature) -> Bool {
-        isPro
+        let required = SubscriptionTier.minimumTier(for: feature)
+        return tierSatisfies(required)
+    }
+
+    /// The set of starter opening IDs available in free tier.
+    static let freeOpeningIDs: Set<String> = AppConfig.pro.freeOpeningIDs
+
+    /// Check if an opening is accessible in the current tier.
+    func isOpeningAccessible(_ openingID: String) -> Bool {
+        currentTier.hasAllOpenings
+        || Self.freeOpeningIDs.contains(openingID)
+        || unlockedPaths.contains(openingID)
+    }
+
+    /// Check if a learning layer is accessible in the current tier.
+    func isLayerAccessible(_ layer: LearningLayer) -> Bool {
+        if layer.isFreeLayer { return true }
+        return tierSatisfies(.pro)
+    }
+
+    // MARK: - Tier Comparison
+
+    /// Returns true if the user's current tier meets or exceeds the required tier.
+    private func tierSatisfies(_ required: SubscriptionTier) -> Bool {
+        let order: [SubscriptionTier] = [.free, .onDeviceAI, .cloudAI, .pro]
+        guard let currentIdx = order.firstIndex(of: currentTier),
+              let requiredIdx = order.firstIndex(of: required) else { return false }
+        return currentIdx >= requiredIdx
     }
 
     // MARK: - Private
 
     private func checkEntitlement() async {
-        for await result in Transaction.currentEntitlements {
-            if case let .verified(transaction) = result,
-               transaction.productID == Self.proProductID {
-                isPro = true
-                return
-            }
-        }
-        // No entitlement found — check UserDefaults override for testing
+        // Check debug override first
         #if DEBUG
-        if UserDefaults.standard.bool(forKey: "debug_pro_override") {
-            isPro = true
+        if let debugTier = UserDefaults.standard.string(forKey: AppSettings.Key.debugTierOverride),
+           let tier = SubscriptionTier(rawValue: debugTier) {
+            currentTier = tier
+            loadUnlockedPaths()
+            return
+        }
+        // Legacy bool override
+        if UserDefaults.standard.bool(forKey: AppSettings.Key.debugProOverride) {
+            currentTier = .pro
+            loadUnlockedPaths()
             return
         }
         #endif
-        isPro = false
+
+        // Check StoreKit entitlements — highest tier wins
+        var highestTier: SubscriptionTier = .free
+        for await result in Transaction.currentEntitlements {
+            if case let .verified(transaction) = result {
+                switch transaction.productID {
+                case Self.proProductID:
+                    highestTier = .pro
+                case Self.cloudProductID where highestTier != .pro:
+                    highestTier = .cloudAI
+                case Self.onDeviceProductID where highestTier == .free:
+                    highestTier = .onDeviceAI
+                default:
+                    break
+                }
+            }
+        }
+        currentTier = highestTier
+        loadUnlockedPaths()
+    }
+
+    private func loadUnlockedPaths() {
+        let paths = UserDefaults.standard.stringArray(forKey: "chess_coach_unlocked_paths") ?? []
+        unlockedPaths = Set(paths)
     }
 
     private nonisolated func listenForTransactions() -> Task<Void, Never> {
         Task.detached {
             for await result in Transaction.updates {
-                if case let .verified(transaction) = result,
-                   transaction.productID == "com.chesscoach.pro.lifetime" {
+                if case let .verified(transaction) = result {
                     await transaction.finish()
                     await MainActor.run { [weak self] in
-                        self?.isPro = true
-                        self?.purchaseState = .purchased
+                        Task { await self?.checkEntitlement() }
                     }
                 }
             }

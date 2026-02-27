@@ -1,0 +1,600 @@
+{
+  "id": "queens-indian",
+  "name": "Queen's Indian Defense",
+  "description": "A solid, positional defense where Black fianchettoes the queenside bishop to control the center from a distance.",
+  "color": "black",
+  "difficulty": 2,
+  "tree": {
+    "id": "queens-indian/root",
+    "children": [
+      {
+        "id": "queens-indian/d2d4",
+        "move": {
+          "uci": "d2d4",
+          "san": "d4",
+          "explanation": "White grabs the center with the queen's pawn. This is one of the most popular first moves at all levels — now you need a plan!"
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "queens-indian/d2d4/g8f6",
+            "move": {
+              "uci": "g8f6",
+              "san": "Nf6",
+              "explanation": "Develop your knight to its ideal square, fighting for the center and keeping lots of options open. A flexible and strong first move for Black."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "queens-indian/d2d4/g8f6/c2c4",
+                "move": {
+                  "uci": "c2c4",
+                  "san": "c4",
+                  "explanation": "White expands on the queenside, claiming more space. Now White threatens to build a huge center with e4. Time to choose your defense!"
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "queens-indian/d2d4/g8f6/c2c4/e7e6",
+                    "move": {
+                      "uci": "e7e6",
+                      "san": "e6",
+                      "explanation": "Solid and flexible — you open the diagonal for the dark-squared bishop and prepare to fight for d5. This pawn forms the backbone of your defense."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3",
+                        "move": {
+                          "uci": "g1f3",
+                          "san": "Nf3",
+                          "explanation": "White develops the knight and avoids allowing the Nimzo-Indian (if White had played Nc3, you could pin it with Bb4). Now you use the Queen's Indian!"
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6",
+                            "move": {
+                              "uci": "b7b6",
+                              "san": "b6",
+                              "explanation": "The Queen's Indian move! You prepare to fianchetto your queenside bishop to b7, where it will control the long diagonal and put pressure on the center from afar."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3",
+                                "move": {
+                                  "uci": "g2g3",
+                                  "san": "g3",
+                                  "explanation": "White also fianchettoes the bishop! This is a positional duel — both sides will have powerful fianchettoed bishops fighting for the long diagonals."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8b7",
+                                    "move": {
+                                      "uci": "c8b7",
+                                      "san": "Bb7",
+                                      "explanation": "Fianchetto your bishop to b7! Now it controls the a8-h1 diagonal and puts real pressure on the center, especially the e4 square. This is the heart of the Queen's Indian."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8b7/f1g2",
+                                        "move": {
+                                          "uci": "f1g2",
+                                          "san": "Bg2",
+                                          "explanation": "White's bishop goes to g2, completing the fianchetto and fighting for the long diagonal. Now the two bishops will battle for control of the center!"
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8b7/f1g2/f8e7",
+                                            "move": {
+                                              "uci": "f8e7",
+                                              "san": "Be7",
+                                              "explanation": "Develop the bishop modestly and prepare to castle. You don't need to be aggressive here — solid development and then castle is the right plan."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8b7/f1g2/f8e7/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "White castles. Now White plans to build a center with Nc3 and d5. You need to be ready to counterattack!"
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8b7/f1g2/f8e7/e1g1/e8g8",
+                                                    "move": {
+                                                      "uci": "e8g8",
+                                                      "san": "O-O",
+                                                      "explanation": "Castle to safety! Your king is tucked away on g8 and your rook on f8 can support future kingside play. Now the real battle begins."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": [
+                                                      {
+                                                        "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8b7/f1g2/f8e7/e1g1/e8g8/b1c3",
+                                                        "move": {
+                                                          "uci": "b1c3",
+                                                          "san": "Nc3",
+                                                          "explanation": "White develops the knight, preparing to push d5 and close the diagonal of your Bb7. You need to either stop this with ...Ne4 or counterattack before the position closes."
+                                                        },
+                                                        "isMainLine": true,
+                                                        "weight": 60,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8a6",
+                                    "move": {
+                                      "uci": "c8a6",
+                                      "san": "Ba6",
+                                      "explanation": "The Petrosian Variation! Instead of the quiet Bb7, you develop the bishop aggressively to a6, immediately attacking the c4 pawn and threatening to win material."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "variationName": "Queen's Indian: ...Ba6",
+                                    "children": [
+                                      {
+                                        "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8a6/d1c2",
+                                        "move": {
+                                          "uci": "d1c2",
+                                          "san": "Qc2",
+                                          "explanation": "White defends the c4 pawn with the queen. Now you need to follow up actively — the bishop on a6 is well-placed but needs support."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8a6/d1c2/c7c5",
+                                            "move": {
+                                              "uci": "c7c5",
+                                              "san": "c5",
+                                              "explanation": "Strike in the center immediately! ...c5 attacks d4 and keeps pressure on the whole queenside. This forces White to make decisions."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8a6/d1c2/c7c5/e2e4",
+                                                "move": {
+                                                  "uci": "e2e4",
+                                                  "san": "e4",
+                                                  "explanation": "White builds the giant center they wanted! But now the Bb7 pressure on e4 will be real once you retreat the bishop."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8a6/d1c2/c7c5/e2e4/a6b7",
+                                                    "move": {
+                                                      "uci": "a6b7",
+                                                      "san": "Bb7",
+                                                      "explanation": "Retreat to b7 where the bishop is most active, now pointing right at White's center. Your bishop pair will be a long-term asset."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/c8a6/d1c2/c7c5/e2e4/a6b7/e4e5",
+                                                        "move": {
+                                                          "uci": "e4e5",
+                                                          "san": "e5",
+                                                          "explanation": "White advances aggressively to gain more space, but now the position is sharp and both sides have real chances."
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/f8b4",
+                                    "move": {
+                                      "uci": "f8b4",
+                                      "san": "Bb4+",
+                                      "explanation": "A check! You develop your bishop aggressively, forcing White to block with a piece. This slows down White's kingside fianchetto and gives you a tempo."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "variationName": "Bogo-Indian Hybrid",
+                                    "children": [
+                                      {
+                                        "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/f8b4/c1d2",
+                                        "move": {
+                                          "uci": "c1d2",
+                                          "san": "Bd2",
+                                          "explanation": "White blocks the check with the bishop. Now you must decide whether to trade bishops or keep yours active."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/f8b4/c1d2/b4e7",
+                                            "move": {
+                                              "uci": "b4e7",
+                                              "san": "Be7",
+                                              "explanation": "Retreat the bishop to e7 to prepare normal development. You've gained time by forcing the Bd2 and now develop smoothly."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/f8b4/c1d2/b4e7/b1c3",
+                                                "move": {
+                                                  "uci": "b1c3",
+                                                  "san": "Nc3",
+                                                  "explanation": "White develops the knight. The position has transposed into something similar to the standard Queen's Indian. Continue with ...Bb7 and ...O-O."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/f8b4/c1d2/b4e7/b1c3/c8b7",
+                                                    "move": {
+                                                      "uci": "c8b7",
+                                                      "san": "Bb7",
+                                                      "explanation": "Complete the fianchetto! Now your Bb7 controls the long diagonal and you're ready to castle. The position is back to familiar Queen's Indian territory."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/f8b4/c1d2/b4e7/b1c3/c8b7/f1g2",
+                                                        "move": {
+                                                          "uci": "f1g2",
+                                                          "san": "Bg2",
+                                                          "explanation": "White completes the fianchetto. Now both sides will castle and the real strategic battle on the long diagonal begins!"
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/d7d5",
+                                    "move": {
+                                      "uci": "d7d5",
+                                      "san": "d5",
+                                      "explanation": "You challenge the center directly with your queen's pawn before fianchettoing. This is a more combative approach that leads to open positions."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "variationName": "Queen's Indian: ...d5 central",
+                                    "children": [
+                                      {
+                                        "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/d7d5/c4d5",
+                                        "move": {
+                                          "uci": "c4d5",
+                                          "san": "cxd5",
+                                          "explanation": "White captures to open the center and challenge you. Now you must recapture wisely."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/d7d5/c4d5/e6d5",
+                                            "move": {
+                                              "uci": "e6d5",
+                                              "san": "exd5",
+                                              "explanation": "Recapture with the e-pawn, maintaining a solid pawn center. You now have an isolated queen's pawn (IQP) setup with active piece play."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/d7d5/c4d5/e6d5/f1g2",
+                                                "move": {
+                                                  "uci": "f1g2",
+                                                  "san": "Bg2",
+                                                  "explanation": "White develops the bishop, now pointing at your d5 pawn. You need to support it with ...Be7 and ...O-O."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/d7d5/c4d5/e6d5/f1g2/f8e7",
+                                                    "move": {
+                                                      "uci": "f8e7",
+                                                      "san": "Be7",
+                                                      "explanation": "Develop the bishop and prepare to castle. Your d5 pawn gives you central control — protect it and activate your pieces."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "queens-indian/d2d4/g8f6/c2c4/e7e6/g1f3/b7b6/g2g3/d7d5/c4d5/e6d5/f1g2/f8e7/e1g1",
+                                                        "move": {
+                                                          "uci": "e1g1",
+                                                          "san": "O-O",
+                                                          "explanation": "White castles, completing development. Now castle and prepare to fight for the initiative with ...c5 or ...Nc6!"
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Fianchetto your queenside bishop to b7, where it controls the powerful a8-h1 diagonal and pressures e4 from a distance. Castle early, then fight back in the center with ...Ne4 or ...c5 when White overextends.",
+    "strategicGoals": [
+      { "description": "Fianchetto the bishop to b7 to control the long diagonal and pressure e4", "priority": 1 },
+      { "description": "Castle kingside quickly to ensure king safety", "priority": 2 },
+      { "description": "Fight back in the center with ...Ne4 or ...c5 when White overextends", "priority": 3 },
+      { "description": "Use the d5 square as an outpost for knights and pawns", "priority": 4 }
+    ],
+    "pawnStructureTarget": "Solid e6/d5 or e6/b6 pawn chain with the Bb7 controlling the long diagonal",
+    "keySquares": ["b7", "e4", "d5", "c5"],
+    "pieceTargets": [
+      { "piece": "queenside bishop", "idealSquares": ["b7", "a6"], "reasoning": "Controls the a8-h1 diagonal, pressuring e4 and d5 from a safe distance" },
+      { "piece": "king's knight", "idealSquares": ["f6", "e4"], "reasoning": "Nf6 controls d5 and e4; jumping to Ne4 gives Black strong counterplay" },
+      { "piece": "queen's knight", "idealSquares": ["d7", "c6"], "reasoning": "Supports d5 advances and keeps the position flexible" }
+    ],
+    "typicalPlans": [
+      "Play ...b6 and ...Bb7 to fianchetto the bishop on the long diagonal",
+      "Follow with ...Be7 and ...O-O for solid development",
+      "Jump with ...Ne4 to challenge White's center and gain activity",
+      "Play ...c5 to strike at d4 when White overextends"
+    ],
+    "commonMistakes": [
+      "Playing ...Bb7 before the Nf3 move order is established — allows White to play Nc3 and enter a different system",
+      "Forgetting to castle before launching ...Ne4 or ...c5",
+      "Allowing White to push d5 unopposed, closing the Bb7 diagonal and making your bishop passive"
+    ],
+    "historicalNote": "The Queen's Indian Defense was a favorite of Aaron Nimzowitsch and has been played at the highest level for over a century. It was also beloved by Karpov, who used it as a reliable weapon in World Championship matches.",
+    "planLessons": [
+      {
+        "title": "The Fianchetto — Controlling from Afar",
+        "description": "After ...b6 and ...Bb7, your bishop controls the a8-h1 diagonal all the way to e4. White cannot easily push e4 without losing the pawn or creating a weakness. You're controlling the center with a bishop, not a pawn!",
+        "fen": "rn1qk2r/pbpp1ppp/1p2pn2/8/2PP4/5NP1/PP2PPBP/RNBQK2R b KQkq - 1 5",
+        "highlights": ["b7", "e4", "d5"],
+        "arrows": [{"from": "b7", "to": "e4"}, {"from": "b7", "to": "h1"}],
+        "style": "good"
+      },
+      {
+        "title": "The Knight Jump — ...Ne4!",
+        "description": "One of Black's key ideas in the Queen's Indian is to jump the knight from f6 to e4, attacking White's center directly. If White captures, the queen recaptures and Black has excellent piece activity.",
+        "fen": "rn1q1rk1/pbppbppp/1p2p3/8/2PPn3/2N2NP1/PP2PPBP/R1BQ1RK1 w - - 4 8",
+        "highlights": ["e4", "f6", "d2"],
+        "arrows": [{"from": "f6", "to": "e4"}],
+        "style": "good"
+      },
+      {
+        "title": "Castle Before Counterattacking",
+        "description": "Always castle before jumping in with ...Ne4 or ...c5. If your king is still in the center when the position opens up, you could get in serious trouble!",
+        "fen": "rn1q1rk1/pbppbppp/1p2pn2/8/2PP4/2N2NP1/PP2PPBP/R1BQ1RK1 b - - 4 7",
+        "highlights": ["g8", "f8"],
+        "arrows": [],
+        "style": "good"
+      },
+      {
+        "title": "Don't Let White Push d5",
+        "description": "If White plays d5, your Bb7 gets locked out of the game. The diagonal is blocked and your whole plan falls apart. Watch for d5 and prevent it with ...Ne4 or ...c5 in advance!",
+        "fen": "rn1q1rk1/pbppbppp/1p2pn2/3P4/2P5/2N2NP1/PP2PPBP/R1BQ1RK1 b - - 0 7",
+        "highlights": ["d5", "b7"],
+        "arrows": [{"from": "d5", "to": "b7"}],
+        "style": "bad"
+      },
+      {
+        "title": "The ...Ba6 Alternative — Attack c4 Directly",
+        "description": "Instead of Bb7, you can try ...Ba6, directly attacking the c4 pawn. This forces White to defend immediately and can lead to sharp, interesting positions. It's riskier but very active!",
+        "fen": "rn1qk2r/pbpp1ppp/bp2pn2/8/2PP4/5NP1/PP2PPBP/RNBQK2R w KQkq - 2 6",
+        "highlights": ["a6", "c4"],
+        "arrows": [{"from": "a6", "to": "c4"}],
+        "style": "neutral"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rn1qk2r/pbpp1ppp/1p2pn2/8/2PP4/5NP1/PP2PPBP/RNBQK2R b KQkq - 1 5",
+        "prompt": "Your bishop is on b7. What square does it control most importantly?",
+        "choices": [
+          {"text": "e4 — preventing White from occupying that square freely", "isCorrect": true},
+          {"text": "a8 — protecting your own rook", "isCorrect": false},
+          {"text": "f3 — attacking White's knight", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The bishop on b7 controls the long a8-h1 diagonal, and most importantly, it keeps an eye on e4! If White tries to occupy e4, the bishop makes that square very uncomfortable.",
+        "boardHighlightsOnReveal": ["b7", "e4"],
+        "arrowsOnReveal": [{"from": "b7", "to": "e4"}]
+      },
+      {
+        "fen": "rn1q1rk1/pbppbppp/1p2pn2/8/2PP4/2N2NP1/PP2PPBP/R1BQ1RK1 b - - 4 7",
+        "prompt": "Both sides have castled. What is Black's best plan now?",
+        "choices": [
+          {"text": "Play ...Ne4 to jump into the center and challenge White directly", "isCorrect": true},
+          {"text": "Play ...a5 to expand on the queenside", "isCorrect": false},
+          {"text": "Play ...h6 to prevent Ng5", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Play ...Ne4! This is the key Queen's Indian idea — jumping the knight into the center attacks White's bishop on g2 (indirectly via the e4 square) and gains Black excellent piece activity.",
+        "boardHighlightsOnReveal": ["e4", "f6"],
+        "arrowsOnReveal": [{"from": "f6", "to": "e4"}]
+      },
+      {
+        "fen": "rn1qk2r/pbpp1ppp/1p2pn2/8/2PP4/5NP1/PP2PPBP/RNBQK2R b KQkq - 1 5",
+        "prompt": "It's your turn. What should you do first?",
+        "choices": [
+          {"text": "O-O — castle first, then plan counterplay in the center", "isCorrect": true},
+          {"text": "Ne4 — jump immediately to challenge White's center", "isCorrect": false},
+          {"text": "c5 — attack d4 right away", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Castle first! Your king needs to be safe before you start counterattacking. After O-O, you can play ...Ne4 or ...c5 with confidence, knowing your king is tucked away safely.",
+        "boardHighlightsOnReveal": ["g8"],
+        "arrowsOnReveal": [{"from": "e8", "to": "g8"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Classical Queen's Indian (E17) — Bb7 vs Bg2",
+        "description": "The main line features both sides fianchettoing — your Bb7 vs White's Bg2. The two bishops battle on the long diagonal. Your goal is to play ...Ne4 or ...c5 before White can push d5 and close your bishop.",
+        "fen": "rn1q1rk1/pbppbppp/1p2pn2/8/2PP4/2N2NP1/PP2PPBP/R1BQ1RK1 b - - 4 7",
+        "highlights": ["b7", "g2", "e4"],
+        "arrows": [{"from": "b7", "to": "g2"}, {"from": "g2", "to": "b7"}],
+        "style": "theory"
+      },
+      {
+        "title": "The Petrosian Variation — ...Ba6 vs Qc2",
+        "description": "Instead of ...Bb7, playing ...Ba6 directly attacks c4! White must defend with Qc2, and then ...c5 creates immediate pressure. This variation is named after World Champion Tigran Petrosian, who loved prophylaxis.",
+        "fen": "rn1qk2r/p1pp1ppp/bp2pn2/8/2PP4/5NP1/PPQ1PPBP/RNB1K2R b KQkq - 3 6",
+        "highlights": ["a6", "c4", "c2"],
+        "arrows": [{"from": "a6", "to": "c4"}],
+        "style": "theory"
+      },
+      {
+        "title": "Why 3.Nf3 Avoids the Nimzo-Indian",
+        "description": "Notice that White plays Nf3 instead of Nc3. This is on purpose! If White played Nc3, you would pin it with ...Bb4 (the Nimzo-Indian). By playing Nf3, White keeps the c3 square free and forces you to use a different plan.",
+        "fen": "rnbqkb1r/p1pp1ppp/1p2pn2/8/2PP4/5N2/PP2PPPP/RNBQKB1R w KQkq - 0 4",
+        "highlights": ["f3", "c3"],
+        "arrows": [{"from": "b4", "to": "c3"}],
+        "style": "neutral"
+      },
+      {
+        "title": "The ...d5 Central Variation",
+        "description": "Instead of fianchettoing, you can play ...d5 directly to challenge the center head-on. After cxd5 exd5, you get an IQP (isolated queen's pawn) position with active piece play. This is more direct but less typical of the Queen's Indian.",
+        "fen": "rn1q1rk1/pbp1bppp/1p3n2/3p4/3P4/2N2NP1/PP2PPBP/R1BQ1RK1 w - - 0 9",
+        "highlights": ["d5", "d4"],
+        "arrows": [{"from": "d7", "to": "d5"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkb1r/p1pp1ppp/1p2pn2/8/2PP4/5N2/PP2PPPP/RNBQKB1R w KQkq - 0 4",
+        "prompt": "Why does White play Nf3 instead of Nc3 to meet the Queen's Indian?",
+        "choices": [
+          {"text": "Nf3 avoids the Nimzo-Indian Defense, where Black pins the knight with ...Bb4", "isCorrect": true},
+          {"text": "Nf3 attacks the e5 square immediately", "isCorrect": false},
+          {"text": "Nc3 would block the c-pawn", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "If White played Nc3, Black would immediately pin it with ...Bb4 — that's the Nimzo-Indian! By playing Nf3 instead, White keeps the c3 square free and forces Black to choose a different system.",
+        "boardHighlightsOnReveal": ["f3", "c3", "b4"],
+        "arrowsOnReveal": [{"from": "f8", "to": "b4"}]
+      },
+      {
+        "fen": "rn1qk2r/pbpp1ppp/1p2pn2/8/2PP4/5NP1/PP2PPBP/RNBQK2R b KQkq - 1 5",
+        "prompt": "Black just played ...Bb7. What is this opening called?",
+        "choices": [
+          {"text": "Queen's Indian Defense", "isCorrect": true},
+          {"text": "King's Indian Defense", "isCorrect": false},
+          {"text": "Nimzo-Indian Defense", "isCorrect": false},
+          {"text": "Bogo-Indian Defense", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Queen's Indian Defense (E15-E17)! The name comes from 'Indian Defense' systems that control the center with pieces rather than pawns, combined with the queenside bishop fianchetto on b7.",
+        "boardHighlightsOnReveal": ["b7", "b6"],
+        "arrowsOnReveal": []
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["d2d4", "g8f6", "c2c4", "e7e6", "g1f3", "b7b6"],
+    "responses": [
+      {
+        "id": "g3-fianchetto",
+        "move": { "uci": "g2g3", "san": "g3", "explanation": "White also fianchettoes the kingside bishop, setting up a positional battle where both sides have bishops on long diagonals." },
+        "name": "Fianchetto Variation",
+        "eco": "E15",
+        "frequency": 0.45,
+        "description": "The most common response — White fianchettoes on g3 for a positional battle on the long diagonals.",
+        "planAdjustment": "Play ...Bb7, ...Be7, and ...O-O. Then watch for the chance to play ...Ne4 to challenge White's center. Prevent White from pushing d5 by keeping pieces active."
+      },
+      {
+        "id": "nc3-classical",
+        "move": { "uci": "b1c3", "san": "Nc3", "explanation": "White develops the knight to c3, entering a position where Black must handle a strong center. This allows the classical 4.Nc3 lines." },
+        "name": "Classical Variation",
+        "eco": "E12",
+        "frequency": 0.25,
+        "description": "White plays Nc3 to support a big center. The position is now similar to a Nimzo-Indian without the pin.",
+        "planAdjustment": "Continue with ...Bb7 and ...d5 to fight for the center. You no longer have Bb4 as an option, but ...Bb7 combined with ...Ne4 gives solid counterplay."
+      },
+      {
+        "id": "e3-solid",
+        "move": { "uci": "e2e3", "san": "e3", "explanation": "White plays very solidly, building a sturdy center before deciding where to develop the bishop." },
+        "name": "Solid e3 Variation",
+        "eco": "E13",
+        "frequency": 0.20,
+        "description": "A solid, non-committal response. White builds carefully before defining the pawn structure.",
+        "planAdjustment": "Play ...Bb7, ...d5, and ...Be7. After castling, you can play ...c5 to attack White's central pawns. The position is balanced."
+      },
+      {
+        "id": "b3-nimzowitsch",
+        "move": { "uci": "b2b3", "san": "b3", "explanation": "White also fianchettoes — but on the queenside! Both sides will have powerful bishop pairs pointed at the center." },
+        "name": "Nimzowitsch Variation",
+        "eco": "E11",
+        "frequency": 0.10,
+        "description": "White fianchettoes on b3 for a symmetrical long-diagonal battle.",
+        "planAdjustment": "Play ...Bb7 and ...d5 to fight in the center. The two fianchettoed bishops will neutralize each other — look for piece activity with ...Ne4 and ...c5."
+      }
+    ]
+  }
+}

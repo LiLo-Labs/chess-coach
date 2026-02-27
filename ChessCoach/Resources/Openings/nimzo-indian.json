@@ -1,0 +1,612 @@
+{
+  "id": "nimzo-indian",
+  "name": "Nimzo-Indian Defense",
+  "description": "One of Black's most respected defenses. The bishop pins White's knight, controlling the center indirectly.",
+  "color": "black",
+  "difficulty": 3,
+  "tree": {
+    "id": "nimzo-indian/root",
+    "children": [
+      {
+        "id": "nimzo-indian/d2d4",
+        "move": {
+          "uci": "d2d4",
+          "san": "d4",
+          "explanation": "White stakes a claim in the center with the queen's pawn. This opens lines for the dark-squared bishop and supports a big pawn center."
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "nimzo-indian/d2d4/g8f6",
+            "move": {
+              "uci": "g8f6",
+              "san": "Nf6",
+              "explanation": "You develop your knight to its best square, attacking the center and getting ready to jump into the action. This flexible move keeps many options open!"
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "nimzo-indian/d2d4/g8f6/c2c4",
+                "move": {
+                  "uci": "c2c4",
+                  "san": "c4",
+                  "explanation": "White plays the Queen's Gambit pawn, grabbing even more space and threatening to build a giant center. Now you need a plan!"
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6",
+                    "move": {
+                      "uci": "e7e6",
+                      "san": "e6",
+                      "explanation": "You open a path for your dark-squared bishop and solidly support the center. This pawn will later help you fight for d5 too."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3",
+                        "move": {
+                          "uci": "b1c3",
+                          "san": "Nc3",
+                          "explanation": "White develops the knight to its best square, supporting the center and preparing to push e4. This is the move that sets the stage for the Nimzo-Indian!"
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4",
+                            "move": {
+                              "uci": "f8b4",
+                              "san": "Bb4",
+                              "explanation": "The Nimzo-Indian move! Your bishop pins the knight on c3, which means White can't just play e4 for free. You're controlling the center with a piece instead of a pawn — very clever!"
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3",
+                                "move": {
+                                  "uci": "e2e3",
+                                  "san": "e3",
+                                  "explanation": "White plays carefully, supporting d4 and preparing to develop the bishop to d3. This is the Rubinstein Variation — solid and principled."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/e8g8",
+                                    "move": {
+                                      "uci": "e8g8",
+                                      "san": "O-O",
+                                      "explanation": "Castle and get your king to safety! Now your rook is ready to join the fight and you can focus on the middlegame plan."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/e8g8/f1d3",
+                                        "move": {
+                                          "uci": "f1d3",
+                                          "san": "Bd3",
+                                          "explanation": "White develops the bishop to a strong central square, where it will support e4 and aim at the kingside."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/e8g8/f1d3/d7d5",
+                                            "move": {
+                                              "uci": "d7d5",
+                                              "san": "d5",
+                                              "explanation": "Now you stake your claim in the center! This pawn on d5 challenges White's whole setup and gives you a solid central foundation."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/e8g8/f1d3/d7d5/g1f3",
+                                                "move": {
+                                                  "uci": "g1f3",
+                                                  "san": "Nf3",
+                                                  "explanation": "White develops the knight and prepares to castle. The position is getting tense — both sides have solid pieces."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/e8g8/f1d3/d7d5/g1f3/c7c5",
+                                                    "move": {
+                                                      "uci": "c7c5",
+                                                      "san": "c5",
+                                                      "explanation": "Strike in the center! This powerful move attacks both d4 pawns and puts White under real pressure right away."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": [
+                                                      {
+                                                        "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/e8g8/f1d3/d7d5/g1f3/c7c5/e1g1",
+                                                        "move": {
+                                                          "uci": "e1g1",
+                                                          "san": "O-O",
+                                                          "explanation": "White castles to safety. The position is rich and complex — both sides have real chances in this classical battle."
+                                                        },
+                                                        "isMainLine": true,
+                                                        "weight": 60,
+                                                        "children": [
+                                                          {
+                                                            "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/e8g8/f1d3/d7d5/g1f3/c7c5/e1g1/b8c6",
+                                                            "move": {
+                                                              "uci": "b8c6",
+                                                              "san": "Nc6",
+                                                              "explanation": "Develop and reinforce the center! Your knight on c6 supports the d5 and c5 pawns while eyeing the powerful d4 outpost."
+                                                            },
+                                                            "isMainLine": true,
+                                                            "weight": 50,
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/c7c5",
+                                    "move": {
+                                      "uci": "c7c5",
+                                      "san": "c5",
+                                      "explanation": "You strike at the center right away before castling! This aggressive move puts immediate pressure on d4 and is a great way to fight for equality."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "variationName": "Nimzo-Indian: ...c5 early",
+                                    "children": [
+                                      {
+                                        "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/c7c5/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "White develops normally and defends d4. The game will revolve around whether Black can create enough counterplay."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/c7c5/g1f3/c5d4",
+                                            "move": {
+                                              "uci": "c5d4",
+                                              "san": "cxd4",
+                                              "explanation": "Trade in the center to open things up and reduce White's pawn advantage. Now the recapture will determine who stands better."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/c7c5/g1f3/c5d4/e3d4",
+                                                "move": {
+                                                  "uci": "e3d4",
+                                                  "san": "exd4",
+                                                  "explanation": "White recaptures, keeping a strong pawn center. Now you can challenge it further with ...d5."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/c7c5/g1f3/c5d4/e3d4/d7d5",
+                                                    "move": {
+                                                      "uci": "d7d5",
+                                                      "san": "d5",
+                                                      "explanation": "Challenge the center directly! This is the most ambitious response — you're attacking both White pawns at once."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/e2e3/c7c5/g1f3/c5d4/e3d4/d7d5/c4d5",
+                                                        "move": {
+                                                          "uci": "c4d5",
+                                                          "san": "cxd5",
+                                                          "explanation": "White trades off the tension. Now the game enters an IQP (isolated queen's pawn) structure where both sides have their chances."
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/d1c2",
+                                "move": {
+                                  "uci": "d1c2",
+                                  "san": "Qc2",
+                                  "explanation": "The Capablanca Variation — White protects the c3 knight immediately so the pin is less powerful. This is one of White's sharpest and most popular choices."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "variationName": "Capablanca Variation",
+                                "children": [
+                                  {
+                                    "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/d1c2/d7d5",
+                                    "move": {
+                                      "uci": "d7d5",
+                                      "san": "d5",
+                                      "explanation": "Fight for the center immediately! This strong pawn advance challenges White's setup and keeps the position balanced."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/d1c2/d7d5/a2a3",
+                                        "move": {
+                                          "uci": "a2a3",
+                                          "san": "a3",
+                                          "explanation": "White forces the issue — the bishop must capture the knight or retreat. This is the moment you've been building toward!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/d1c2/d7d5/a2a3/b4c3",
+                                            "move": {
+                                              "uci": "b4c3",
+                                              "san": "Bxc3+",
+                                              "explanation": "Execute the trade! You give up your bishop for the knight, leaving White with doubled pawns on the c-file. This is the whole point of the Nimzo-Indian — damage White's pawn structure!"
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/d1c2/d7d5/a2a3/b4c3/b2c3",
+                                                "move": {
+                                                  "uci": "b2c3",
+                                                  "san": "bxc3",
+                                                  "explanation": "White recaptures, creating doubled pawns on c3 and c4. These pawns will be weak targets for you in the endgame!"
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/d1c2/d7d5/a2a3/b4c3/b2c3/c7c5",
+                                                    "move": {
+                                                      "uci": "c7c5",
+                                                      "san": "c5",
+                                                      "explanation": "Attack the doubled pawns right away! With ...c5 you put pressure on c4 and d4 simultaneously, making White's life very uncomfortable."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/f2f3",
+                                "move": {
+                                  "uci": "f2f3",
+                                  "san": "f3",
+                                  "explanation": "The Samisch Variation — White plays an aggressive pawn move to challenge your pin and prepare a big center with e4. This weakens White's kingside but gains space."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "variationName": "Samisch Variation",
+                                "children": [
+                                  {
+                                    "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/f2f3/d7d5",
+                                    "move": {
+                                      "uci": "d7d5",
+                                      "san": "d5",
+                                      "explanation": "Challenge the center right away before White can build an unstoppable pawn wall. Solid and direct."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/f2f3/d7d5/a2a3",
+                                        "move": {
+                                          "uci": "a2a3",
+                                          "san": "a3",
+                                          "explanation": "White insists on resolving the pin. Time to capture the knight and damage White's pawns!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/f2f3/d7d5/a2a3/b4c3",
+                                            "move": {
+                                              "uci": "b4c3",
+                                              "san": "Bxc3+",
+                                              "explanation": "Trade your bishop for the knight! White gains the bishop pair but gets doubled pawns and a weakened kingside — a good trade for you."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/f2f3/d7d5/a2a3/b4c3/b2c3",
+                                                "move": {
+                                                  "uci": "b2c3",
+                                                  "san": "bxc3",
+                                                  "explanation": "White recaptures and now has three pawn islands. Your plan is to target the weak c3 and c4 pawns while keeping the position solid."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "nimzo-indian/d2d4/g8f6/c2c4/e7e6/b1c3/f8b4/f2f3/d7d5/a2a3/b4c3/b2c3/c7c5",
+                                                    "move": {
+                                                      "uci": "c7c5",
+                                                      "san": "c5",
+                                                      "explanation": "Hit those weak doubled pawns! This is the ideal follow-up — you're winning the opening battle by targeting White's structural weaknesses."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Pin White's knight on c3 with your bishop, force doubled pawns when White pushes you away, then attack those structural weaknesses with ...c5 and ...d5. You trade a bishop for a knight but get a long-term pawn structure advantage.",
+    "strategicGoals": [
+      { "description": "Pin the Nc3 with Bb4 to prevent White from playing e4 freely", "priority": 1 },
+      { "description": "Force doubled pawns on the c-file when White plays a3", "priority": 2 },
+      { "description": "Castle kingside to ensure king safety early", "priority": 3 },
+      { "description": "Attack the doubled c-pawns with ...c5 and ...d5", "priority": 4 },
+      { "description": "Activate pieces using the open b-file and central outposts", "priority": 5 }
+    ],
+    "pawnStructureTarget": "Solid e6/d5 center with c5 counterplay against White's doubled c-pawns",
+    "keySquares": ["c3", "c4", "d4", "e4", "d5"],
+    "pieceTargets": [
+      { "piece": "dark-squared bishop", "idealSquares": ["b4", "c3"], "reasoning": "Pins the Nc3, preventing e4, then trades off to create structural damage" },
+      { "piece": "king's knight", "idealSquares": ["f6", "e4"], "reasoning": "Controls the center and can target the weak c3 pawn" },
+      { "piece": "queen's knight", "idealSquares": ["c6", "d7"], "reasoning": "Supports d5 and c5 pawn advances" }
+    ],
+    "typicalPlans": [
+      "Trade your bishop for the c3 knight to create White's doubled pawns",
+      "Play ...c5 and ...d5 to attack the weakened pawn structure",
+      "Use the open b-file with rooks to pressure the doubled pawns",
+      "Aim for an endgame where White's pawn weaknesses matter most"
+    ],
+    "commonMistakes": [
+      "Retreating the bishop with ...Ba5 or ...Be7 without creating doubled pawns — you lose the whole point of the opening",
+      "Forgetting to castle before launching counterplay in the center",
+      "Trading off too many pieces before exploiting the pawn weaknesses"
+    ],
+    "historicalNote": "The Nimzo-Indian is named after Aron Nimzowitsch, the great chess thinker of the 1920s who loved to control the center with pieces rather than pawns. It has been the weapon of choice for world champions like Kasparov, Karpov, Tal, and Petrosian.",
+    "planLessons": [
+      {
+        "title": "The Pin — Your Secret Weapon",
+        "description": "After 3.Nc3 Bb4, your bishop pins the knight. White cannot play e4 without losing the pawn to ...Nxe4, because the knight on c3 is tied down. This is indirect center control at its best!",
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+        "highlights": ["b4", "c3", "e4"],
+        "arrows": [{"from": "b4", "to": "c3"}, {"from": "c3", "to": "e4"}],
+        "style": "good"
+      },
+      {
+        "title": "The Whole Plan — Create Doubled Pawns",
+        "description": "When White plays a3, you trade your bishop for the knight. Now White has ugly doubled pawns on c3 and c4. These are weak pawns you'll attack for the rest of the game!",
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/2PP4/P1P5/4PPPP/R1BQKBNR b KQkq - 0 6",
+        "highlights": ["c3", "c4"],
+        "arrows": [{"from": "c4", "to": "c3"}],
+        "style": "bad"
+      },
+      {
+        "title": "Attack the Doubled Pawns with ...c5",
+        "description": "After creating the doubled pawns, play ...c5! This attacks both the c4 pawn and indirectly pressures d4. White is always struggling to defend this structure.",
+        "fen": "rnbqk2r/pp1p1ppp/4pn2/2p5/2PP4/P1P5/4PPPP/R1BQKBNR w KQkq c6 0 7",
+        "highlights": ["c5", "c4", "d4"],
+        "arrows": [{"from": "c5", "to": "c4"}, {"from": "c5", "to": "d4"}],
+        "style": "good"
+      },
+      {
+        "title": "Castle First, Attack Second",
+        "description": "Before launching ...c5 and ...d5, always castle! Your king on g8 is safe and your rook on f8 supports future play on the f-file.",
+        "fen": "rnbq1rk1/pppp1ppp/4pn2/8/1bPP4/2N1P3/PP3PPP/R1BQKBNR w KQ - 2 5",
+        "highlights": ["g8", "f8"],
+        "arrows": [],
+        "style": "good"
+      },
+      {
+        "title": "Don't Retreat the Bishop for Nothing",
+        "description": "If you play ...Be7 or ...Ba5 without capturing on c3, you've wasted moves and White gets a free e4 push. The whole point of Bb4 is to trade it for the knight when the time is right!",
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/2PP4/2N1P3/PP3PPP/R1BQKBNR b KQkq - 0 5",
+        "highlights": ["c3", "e4"],
+        "arrows": [{"from": "e2", "to": "e4"}],
+        "style": "bad"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+        "prompt": "Your bishop is on b4 pinning the knight on c3. What is the main goal of this pin?",
+        "choices": [
+          {"text": "To prevent White from playing e4 for free and control the center with a piece", "isCorrect": true},
+          {"text": "To attack the White king directly", "isCorrect": false},
+          {"text": "To win the c3 knight immediately", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The bishop on b4 pins the c3 knight so White cannot play e4 without losing the pawn. This is indirect center control — the heart of the Nimzo-Indian Defense!",
+        "boardHighlightsOnReveal": ["b4", "c3", "e4"],
+        "arrowsOnReveal": [{"from": "b4", "to": "c3"}]
+      },
+      {
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/2PP4/P1P2N2/4PPPP/R1BQKB1R b KQkq - 0 6",
+        "prompt": "White has doubled pawns on c3 and c4. What is Black's best plan?",
+        "choices": [
+          {"text": "Play ...c5 and ...d5 to attack the weak doubled pawns", "isCorrect": true},
+          {"text": "Play ...a6 to stop any queenside expansion", "isCorrect": false},
+          {"text": "Develop the queen early to put pressure on White", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "After forcing doubled pawns, attack them with ...c5 and ...d5! These pawn advances put pressure on both c4 and d4, making White's life very difficult.",
+        "boardHighlightsOnReveal": ["c3", "c4", "d4"],
+        "arrowsOnReveal": [{"from": "c7", "to": "c5"}, {"from": "d7", "to": "d5"}]
+      },
+      {
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N1P3/PP3PPP/R1BQKBNR b KQkq - 0 5",
+        "prompt": "White played e3 instead of a3. Should you trade your bishop for the knight now or wait?",
+        "choices": [
+          {"text": "Castle first, then decide later — king safety is always the priority", "isCorrect": true},
+          {"text": "Trade immediately with Bxc3+ to create doubled pawns right away", "isCorrect": false},
+          {"text": "Retreat the bishop to e7 — it's not needed anymore", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Castle first! There's no rush to trade the bishop. Get your king safe on g8 and your rook into play before committing to the trade. The pin remains powerful for now.",
+        "boardHighlightsOnReveal": ["g8", "b4", "c3"],
+        "arrowsOnReveal": [{"from": "e8", "to": "g8"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Rubinstein Variation (E53) — The Classical Approach",
+        "description": "After 4.e3, White plays solidly. The main line continues 4...O-O 5.Bd3 d5, and now Black has a solid center with the bishop still pinning the knight. Named after the great Akiba Rubinstein.",
+        "fen": "rnbq1rk1/pppp1ppp/4pn2/8/1bPP4/2NBP3/PP3PPP/R1BQK1NR w KQ - 4 6",
+        "highlights": ["b4", "c3", "d5", "d3"],
+        "arrows": [{"from": "b4", "to": "c3"}, {"from": "d5", "to": "c4"}],
+        "style": "theory"
+      },
+      {
+        "title": "Capablanca Variation (E41) — Qc2 Sidesteps the Pin",
+        "description": "4.Qc2 is White's most direct attempt to neutralize the pin. White says 'I don't care about the pin — I'll recapture on c3 with the queen!' Black should respond with ...d5 or ...c5 to fight back in the center.",
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PPQ1PPPP/R1B1KBNR b KQkq - 3 4",
+        "highlights": ["c2", "c3", "b4"],
+        "arrows": [{"from": "b4", "to": "c3"}, {"from": "c2", "to": "c3"}],
+        "style": "theory"
+      },
+      {
+        "title": "Samisch Variation (E24) — The Aggressive f3",
+        "description": "4.f3 is White's most aggressive choice, planning e4 by force. It weakens the kingside and gives Black targets, but White gets a huge center. Respond with ...d5 and ...c5 to challenge it immediately.",
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N2P2/PP2P1PP/R1BQKBNR b KQkq - 0 4",
+        "highlights": ["f3", "e4", "b4"],
+        "arrows": [{"from": "f3", "to": "e4"}, {"from": "b4", "to": "c3"}],
+        "style": "theory"
+      },
+      {
+        "title": "The Doubled Pawn Advantage",
+        "description": "After ...Bxc3+ bxc3, White has doubled pawns on c3 and c4. These pawns can't protect each other and become targets in the endgame. Black's long-term advantage is real — be patient!",
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/2PP4/P1P5/4PPPP/R1BQKBNR b KQkq - 0 6",
+        "highlights": ["c3", "c4", "b2"],
+        "arrows": [{"from": "c5", "to": "c4"}, {"from": "d5", "to": "c4"}],
+        "style": "good"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PPQ1PPPP/R1B1KBNR b KQkq - 3 4",
+        "prompt": "White just played Qc2. What is White's plan with this move?",
+        "choices": [
+          {"text": "To recapture on c3 with the queen so the doubled pawns are avoided", "isCorrect": true},
+          {"text": "To develop the queen and start attacking immediately", "isCorrect": false},
+          {"text": "To prevent Black from castling", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Qc2 sidesteps the whole doubled-pawn problem! If Black plays ...Bxc3+, White recaptures Qxc3 — no doubled pawns. Black should respond with ...d5 or ...c5 to fight in the center instead.",
+        "boardHighlightsOnReveal": ["c2", "c3"],
+        "arrowsOnReveal": [{"from": "b4", "to": "c3"}, {"from": "c2", "to": "c3"}]
+      },
+      {
+        "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N2P2/PP2P1PP/R1BQKBNR b KQkq - 0 4",
+        "prompt": "White played f3 — the Samisch Variation. What should Black do?",
+        "choices": [
+          {"text": "Play ...d5 to challenge the center right away", "isCorrect": true},
+          {"text": "Immediately play ...Bxc3+ to create doubled pawns", "isCorrect": false},
+          {"text": "Play ...Nf6-e4 to attack the f3 pawn", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Play ...d5 to fight for the center! White wants to play e4, and ...d5 stops that plan while maintaining your solid pawn structure. You can always decide when to trade on c3 later.",
+        "boardHighlightsOnReveal": ["d5", "e4", "f3"],
+        "arrowsOnReveal": [{"from": "d7", "to": "d5"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["d2d4", "g8f6", "c2c4", "e7e6", "b1c3", "f8b4"],
+    "responses": [
+      {
+        "id": "rubinstein",
+        "move": { "uci": "e2e3", "san": "e3", "explanation": "White plays solidly, supporting d4 and preparing to develop the bishop to d3. The classical main line." },
+        "name": "Rubinstein Variation",
+        "eco": "E53",
+        "frequency": 0.40,
+        "description": "The most classical response — White builds a solid center and prepares Bd3. The position is balanced and strategic.",
+        "planAdjustment": "Castle, then play ...d5 and ...c5 to fight in the center. The doubled pawn plan works well here after White eventually plays a3."
+      },
+      {
+        "id": "capablanca",
+        "move": { "uci": "d1c2", "san": "Qc2", "explanation": "White sidesteps the doubled pawn problem — if Black captures on c3, White recaptures with the queen, avoiding the structural damage." },
+        "name": "Capablanca Variation",
+        "eco": "E41",
+        "frequency": 0.30,
+        "description": "White's sharpest try to neutralize the Nimzo-Indian — Qc2 prevents doubled pawns after Bxc3.",
+        "planAdjustment": "Play ...d5 or ...c5 immediately! The whole doubled-pawn plan is off, so fight for the center instead. ...c5 followed by ...Nc6 is a solid approach."
+      },
+      {
+        "id": "samisch",
+        "move": { "uci": "f2f3", "san": "f3", "explanation": "White's most aggressive move — planning e4 by force regardless of the pin. This weakens the kingside but gives White a massive center." },
+        "name": "Samisch Variation",
+        "eco": "E24",
+        "frequency": 0.20,
+        "description": "An aggressive pawn thrust that weakens White's kingside but grabs tremendous space.",
+        "planAdjustment": "Play ...d5 immediately to challenge the center. After the inevitable a3 and Bxc3+, you'll have doubled pawns to target AND White's weakened kingside."
+      },
+      {
+        "id": "classical-4nf3",
+        "move": { "uci": "g1f3", "san": "Nf3", "explanation": "White develops the knight first, keeping options flexible before committing to a pawn structure." },
+        "name": "Classical Variation",
+        "eco": "E40",
+        "frequency": 0.10,
+        "description": "White develops normally and delays committing to a specific pawn structure.",
+        "planAdjustment": "Continue with ...O-O and ...d5. White will likely play e3 next, transposing to the Rubinstein. Stick to your standard plan."
+      }
+    ]
+  }
+}

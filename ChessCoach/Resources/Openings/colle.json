@@ -1,0 +1,629 @@
+{
+  "id": "colle",
+  "name": "Colle System",
+  "description": "A beginner-friendly system opening. Set up with d4, Nf3, e3, Bd3, O-O and then push e4 when ready.",
+  "color": "white",
+  "difficulty": 1,
+  "tree": {
+    "id": "colle/root",
+    "children": [
+      {
+        "id": "colle/d2d4",
+        "move": {
+          "uci": "d2d4",
+          "san": "d4",
+          "explanation": "Stake your claim in the center with the queen's pawn. This is the first step in the Colle System — every great plan starts here!"
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "colle/d2d4/d7d5",
+            "move": {
+              "uci": "d7d5",
+              "san": "d5",
+              "explanation": "Black fights back for the center! Now both sides have a pawn in the middle and the real game begins."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "colle/d2d4/d7d5/g1f3",
+                "move": {
+                  "uci": "g1f3",
+                  "san": "Nf3",
+                  "explanation": "Develop your knight to a great central square where it attacks the d4 pawn and controls the middle of the board."
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "colle/d2d4/d7d5/g1f3/g8f6",
+                    "move": {
+                      "uci": "g8f6",
+                      "san": "Nf6",
+                      "explanation": "Black develops a knight too, challenging your control and getting ready for the middlegame."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3",
+                        "move": {
+                          "uci": "e2e3",
+                          "san": "e3",
+                          "explanation": "The signature Colle move! This quiet pawn step opens the diagonal for your bishop and prepares to launch e4 later. Patience is the key!"
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6",
+                            "move": {
+                              "uci": "e7e6",
+                              "san": "e6",
+                              "explanation": "Black builds a solid pawn wall. This is the most common response — Black prepares to develop the dark-squared bishop."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3",
+                                "move": {
+                                  "uci": "f1d3",
+                                  "san": "Bd3",
+                                  "explanation": "The heart of the Colle! Your bishop takes aim at h7, Black's weak spot near the king. This is where the attacking dream begins."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5",
+                                    "move": {
+                                      "uci": "c7c5",
+                                      "san": "c5",
+                                      "explanation": "Black challenges your d4 pawn, trying to break up your center. Stay calm and support it!"
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5/c2c3",
+                                        "move": {
+                                          "uci": "c2c3",
+                                          "san": "c3",
+                                          "explanation": "Shore up the center! This pawn protects d4 and keeps your structure solid while you finish developing."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5/c2c3/b8c6",
+                                            "move": {
+                                              "uci": "b8c6",
+                                              "san": "Nc6",
+                                              "explanation": "Black develops the queen's knight, putting pressure on d4. Time to bring out your knight too!"
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5/c2c3/b8c6/b1d2",
+                                                "move": {
+                                                  "uci": "b1d2",
+                                                  "san": "Nbd2",
+                                                  "explanation": "Develop the queen's knight to d2, keeping the c-pawn protected and preparing to route the knight to f1 and then e3 or g3 for a kingside attack."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5/c2c3/b8c6/b1d2/f8d6",
+                                                    "move": {
+                                                      "uci": "f8d6",
+                                                      "san": "Bd6",
+                                                      "explanation": "Black develops the bishop actively to d6. Notice it mirrors your bishop on d3 — a battle of bishops in the center!"
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": [
+                                                      {
+                                                        "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5/c2c3/b8c6/b1d2/f8d6/e1g1",
+                                                        "move": {
+                                                          "uci": "e1g1",
+                                                          "san": "O-O",
+                                                          "explanation": "Castle to safety! Your king is tucked away on g1, and now you can start dreaming about that e4 breakthrough."
+                                                        },
+                                                        "isMainLine": true,
+                                                        "weight": 60,
+                                                        "children": [
+                                                          {
+                                                            "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5/c2c3/b8c6/b1d2/f8d6/e1g1/e8g8",
+                                                            "move": {
+                                                              "uci": "e8g8",
+                                                              "san": "O-O",
+                                                              "explanation": "Black castles too. Both kings are safe — now comes the fun part where you launch e4 and storm the kingside!"
+                                                            },
+                                                            "isMainLine": true,
+                                                            "weight": 50,
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8f5",
+                            "move": {
+                              "uci": "c8f5",
+                              "san": "Bf5",
+                              "explanation": "Black develops the bishop early to f5, a very active square. This is called the Anti-Colle because it tries to spoil your bishop on d3."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "variationName": "Colle: ...Bf5 Anti-Colle",
+                            "children": [
+                              {
+                                "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8f5/f1d3",
+                                "move": {
+                                  "uci": "f1d3",
+                                  "san": "Bd3",
+                                  "explanation": "Play your bishop to d3 anyway! You invite Black to trade — and trading the dark bishop actually helps your attack."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8f5/f1d3/f5d3",
+                                    "move": {
+                                      "uci": "f5d3",
+                                      "san": "Bxd3",
+                                      "explanation": "Black captures your bishop. Now recapture with the queen and reach a position where your queen is well-placed."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8f5/f1d3/f5d3/d1d3",
+                                        "move": {
+                                          "uci": "d1d3",
+                                          "san": "Qxd3",
+                                          "explanation": "Your queen comes out to d3, looking at the kingside. Continue developing with Nbd2 and O-O before striking with e4."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8f5/f1d3/f5d3/d1d3/e7e6",
+                                            "move": {
+                                              "uci": "e7e6",
+                                              "san": "e6",
+                                              "explanation": "Black plays solidly. You can now castle and prepare the classic Colle e4 attack."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8f5/f1d3/f5d3/d1d3/e7e6/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "Castle and get ready! After Nbd2, Re1, and e4 you'll have a powerful kingside attack rolling."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8g4",
+                            "move": {
+                              "uci": "c8g4",
+                              "san": "Bg4",
+                              "explanation": "Black pins your knight to the queen! This is the Bg4 Pin variation — Black tries to remove your key defender."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "variationName": "Colle: ...Bg4 Pin",
+                            "children": [
+                              {
+                                "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8g4/f1e2",
+                                "move": {
+                                  "uci": "f1e2",
+                                  "san": "Be2",
+                                  "explanation": "A calm response — develop the bishop to e2 and let the pin stand for now. You'll break it naturally once you castle."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8g4/f1e2/e7e6",
+                                    "move": {
+                                      "uci": "e7e6",
+                                      "san": "e6",
+                                      "explanation": "Black plays solidly. Continue with O-O and then plan to break the pin with h3 if needed."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8g4/f1e2/e7e6/e1g1",
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle and now the pin is less scary since your king is safe. Plan to play h3 to kick the bishop and then continue your Colle setup."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8g4/f1e2/e7e6/e1g1/f8d6",
+                                            "move": {
+                                              "uci": "f8d6",
+                                              "san": "Bd6",
+                                              "explanation": "Black develops another piece. Now you can play c4 to challenge the center and gain space."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/c8g4/f1e2/e7e6/e1g1/f8d6/c2c4",
+                                                "move": {
+                                                  "uci": "c2c4",
+                                                  "san": "c4",
+                                                  "explanation": "Strike in the center! This move challenges Black's d5 pawn and opens the game for your pieces."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6",
+                            "move": {
+                              "uci": "e7e6",
+                              "san": "e6",
+                              "explanation": "Black plays e6 immediately after e3. This leads into the Colle-Zukertort variation with b3 and Bb2."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "variationName": "Colle-Zukertort",
+                            "children": [
+                              {
+                                "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3",
+                                "move": {
+                                  "uci": "f1d3",
+                                  "san": "Bd3",
+                                  "explanation": "Place the bishop on d3 as usual. The Colle-Zukertort adds b3 and Bb2 to give the bishop a powerful diagonal."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5",
+                                    "move": {
+                                      "uci": "c7c5",
+                                      "san": "c5",
+                                      "explanation": "Black strikes in the center. In the Colle-Zukertort, instead of c3, you play b3 to develop the bishop to b2."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5/b2b3",
+                                        "move": {
+                                          "uci": "b2b3",
+                                          "san": "b3",
+                                          "explanation": "The Zukertort move! Prepare to swing the bishop to b2 where it fires down the long diagonal at Black's kingside."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5/b2b3/b8c6",
+                                            "move": {
+                                              "uci": "b8c6",
+                                              "san": "Nc6",
+                                              "explanation": "Black develops the knight. Now put your bishop on b2 — a fantastic long diagonal that targets Black's kingside."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "colle/d2d4/d7d5/g1f3/g8f6/e2e3/e7e6/f1d3/c7c5/b2b3/b8c6/c1b2",
+                                                "move": {
+                                                  "uci": "c1b2",
+                                                  "san": "Bb2",
+                                                  "explanation": "Your bishop arrives on b2, pointing like a laser at g7 and Black's castled king. Now castle and begin the e4 attack!"
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Set up the Colle triangle (d4-e3-Nf3), plant the bishop on d3 pointed at h7, castle kingside, then unleash the e4 pawn break for a powerful kingside attack that catches many opponents completely off guard.",
+    "strategicGoals": [
+      { "description": "Build the Colle triangle: pawns on d4 and e3, knight on f3", "priority": 1 },
+      { "description": "Place the bishop on d3 aiming at the h7 square near Black's king", "priority": 2 },
+      { "description": "Castle kingside and connect the rooks", "priority": 3 },
+      { "description": "Launch the e4 pawn break to crack open Black's kingside", "priority": 4 }
+    ],
+    "pawnStructureTarget": "d4/e3 triangle transforming to d4/e4 after the break",
+    "keySquares": ["d3", "e4", "h7", "f3"],
+    "pieceTargets": [
+      { "piece": "light-squared bishop", "idealSquares": ["d3"], "reasoning": "Aims at h7, Black's weak point near the castled king, and supports the e4 push" },
+      { "piece": "king's knight", "idealSquares": ["f3", "e5"], "reasoning": "Controls the center from f3, then jumps to e5 to lead the kingside attack" },
+      { "piece": "queen's knight", "idealSquares": ["d2"], "reasoning": "Goes to d2 to avoid blocking c-pawn, then supports e4 or goes to f1-e3-g4 for attack" }
+    ],
+    "typicalPlans": [
+      "After O-O, play Re1 and then push e4 to crack open the center",
+      "Use the d3 bishop and Nf3-e5 knight together to attack h7",
+      "In the Colle-Zukertort, play b3 and Bb2 for a fianchetto bishop aiming at g7",
+      "If Black trades on d3, the queen recaptures and keeps kingside pressure"
+    ],
+    "commonMistakes": [
+      "Playing c4 too early — the Colle plan is e4, not c4",
+      "Developing the bishop to e2 instead of the more active d3",
+      "Forgetting to castle before launching the e4 attack",
+      "Moving the knight away from f3 before you're ready to push e4"
+    ],
+    "historicalNote": "The Colle System is named after Belgian master Edgar Colle (1897-1932), who used it with great success in the 1920s. Grandmaster Mikhail Zukertort popularized the b3-Bb2 version. It remains one of the most beginner-friendly attacking systems in chess.",
+    "planLessons": [
+      {
+        "title": "The Colle Triangle",
+        "description": "The foundation of the Colle is the 'triangle' of pawns on d4 and e3, supported by the knight on f3. This safe setup hides your real plan — the e4 explosion!",
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3P4/4PN2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+        "highlights": ["d4", "e3", "f3"],
+        "arrows": [{"from": "e3", "to": "e4"}],
+        "style": "good"
+      },
+      {
+        "title": "The Bishop on d3 — Your Secret Weapon",
+        "description": "Once you place Bd3, your bishop points directly at h7 — the square right next to Black's castled king. This is the dream setup for a Colle attack!",
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R b KQkq - 1 5",
+        "highlights": ["d3", "h7"],
+        "arrows": [{"from": "d3", "to": "h7"}],
+        "style": "good"
+      },
+      {
+        "title": "The e4 Break — Bringing the Attack to Life",
+        "description": "After castling and Re1, you push e4! This opens lines toward Black's king. The bishop on d3, knight on f3, and queen all work together for a powerful attack.",
+        "fen": "r1bq1rk1/ppp2ppp/2n1pn2/3p4/3PP3/3BPN2/PPP2PPP/R1BQ1RK1 w - - 0 8",
+        "highlights": ["e4", "d3", "f3"],
+        "arrows": [{"from": "e3", "to": "e4"}, {"from": "d3", "to": "h7"}],
+        "style": "good"
+      },
+      {
+        "title": "The Colle-Zukertort: Bb2 Upgrade",
+        "description": "In the Zukertort version, you play b3 and Bb2 instead of c3. The bishop on b2 fires along the long diagonal at g7, adding a second attack route against Black's king.",
+        "fen": "r1bqk2r/ppp2ppp/2n1pn2/3p4/3P4/1P1BPN2/PBP2PPP/RN1QK2R b KQkq - 0 7",
+        "highlights": ["b2", "g7"],
+        "arrows": [{"from": "b2", "to": "g7"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Rush e4 Without Castling First",
+        "description": "Pushing e4 before castling leaves your king stuck in the center. Black can open files and attack YOUR king. Always castle first!",
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3PP3/3B1N2/PPP2PPP/RNBQK2R b KQkq e3 0 5",
+        "highlights": ["e1", "e4"],
+        "arrows": [{"from": "e4", "to": "e1"}],
+        "style": "bad"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 1 5",
+        "prompt": "What square does the Colle bishop on d3 target near Black's king?",
+        "choices": [
+          {"text": "h7 — the weak square next to the castled king", "isCorrect": true},
+          {"text": "f5 — to swap bishops", "isCorrect": false},
+          {"text": "g6 — to attack the pawn", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The bishop on d3 points straight at h7, the square next to Black's castled king on g8. Combined with the knight on f3 and the e4 push, this is the core of the Colle attack!",
+        "boardHighlightsOnReveal": ["d3", "h7"],
+        "arrowsOnReveal": [{"from": "d3", "to": "h7"}]
+      },
+      {
+        "fen": "r1bq1rk1/ppp2ppp/2n1pn2/3p4/3P4/3BPN2/PPP2PPP/R1BQ1RK1 w - - 0 8",
+        "prompt": "You're fully set up in the Colle. What is your next big plan?",
+        "choices": [
+          {"text": "Push e4 to crack open Black's kingside", "isCorrect": true},
+          {"text": "Trade the bishop on d3 for Black's knight", "isCorrect": false},
+          {"text": "Push a4 to attack on the queenside", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "After completing development and castling, push e4! This pawn break opens lines toward Black's king, activating your bishop on d3 and the rook on e1.",
+        "boardHighlightsOnReveal": ["e3", "e4"],
+        "arrowsOnReveal": [{"from": "e3", "to": "e4"}]
+      },
+      {
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3P4/3BPN2/PPP2PPP/RNBQK2R w KQkq - 1 5",
+        "prompt": "In the Colle-Zukertort, instead of c3, what move do you play?",
+        "choices": [
+          {"text": "b3 — to develop the bishop to b2", "isCorrect": true},
+          {"text": "a3 — to prepare b4", "isCorrect": false},
+          {"text": "f4 — to attack immediately", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "In the Colle-Zukertort, you play b3 followed by Bb2. This puts the bishop on b2, firing along the long diagonal at g7 — adding a second deadly angle of attack!",
+        "boardHighlightsOnReveal": ["b3", "b2"],
+        "arrowsOnReveal": [{"from": "b2", "to": "g7"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Colle System (D05) — The Basic Setup",
+        "description": "The Colle System starts 1.d4 d5 2.Nf3 Nf6 3.e3. This quiet-looking move hides a dangerous plan. White will follow with Bd3, O-O, Nbd2, and then e4 to start a kingside attack.",
+        "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/3P4/4PN2/PPP2PPP/RNBQKB1R b KQkq - 0 3",
+        "highlights": ["d4", "e3", "f3"],
+        "arrows": [{"from": "f1", "to": "d3"}],
+        "style": "theory"
+      },
+      {
+        "title": "Colle-Zukertort: The b3-Bb2 System",
+        "description": "Instead of c3, White plays b3 and Bb2. The bishop on b2 attacks along the a1-h8 diagonal, targeting g7 and adding extra firepower to the kingside attack.",
+        "fen": "r1bqk2r/ppp2ppp/2n1pn2/3p4/3P4/1P1BPN2/PBP2PPP/RN1QK2R b KQkq - 0 7",
+        "highlights": ["b2", "b3", "d3"],
+        "arrows": [{"from": "b2", "to": "g7"}, {"from": "d3", "to": "h7"}],
+        "style": "theory"
+      },
+      {
+        "title": "The Anti-Colle: ...Bf5",
+        "description": "When Black plays ...Bf5, they try to exchange their bishop for your crucial d3 bishop. The trick is to play Bd3 anyway and welcome the trade — after Qxd3, your queen is well-placed for the attack.",
+        "fen": "rnbqkb1r/ppp1pppp/5n2/3p1b2/3P4/4PN2/PPP2PPP/RNBQKB1R w KQkq - 1 4",
+        "highlights": ["f5", "d3"],
+        "arrows": [{"from": "f5", "to": "d3"}, {"from": "d1", "to": "d3"}],
+        "style": "theory"
+      },
+      {
+        "title": "The ...Bg4 Pin Variation",
+        "description": "Black pins your knight to the queen with ...Bg4. The calm reply is Be2 — you sidestep the pin and castle quickly. After h3, the bishop is expelled and you resume your normal plan.",
+        "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/3P2b1/4PN2/PPP2PPP/RNBQKB1R w KQkq - 2 4",
+        "highlights": ["g4", "f3"],
+        "arrows": [{"from": "f1", "to": "e2"}, {"from": "h2", "to": "h3"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/3P4/4PN2/PPP2PPP/RNBQKB1R b KQkq - 0 3",
+        "prompt": "What is the Colle System's signature third move for White?",
+        "choices": [
+          {"text": "e3 — quietly preparing Bd3 and e4", "isCorrect": true},
+          {"text": "c4 — the Queen's Gambit approach", "isCorrect": false},
+          {"text": "Bf4 — developing the bishop first", "isCorrect": false},
+          {"text": "e4 — immediate center push", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The Colle System is defined by 3.e3! This quiet move opens the f1-a6 diagonal for the bishop and prepares the future e4 break. It is the move that makes the opening unique.",
+        "boardHighlightsOnReveal": ["e3", "f1", "d3"],
+        "arrowsOnReveal": [{"from": "f1", "to": "d3"}]
+      },
+      {
+        "fen": "r1bq1rk1/ppp2ppp/2n1pn2/3p4/3P4/1P1BPN2/PBP2PPP/RN1Q1RK1 b - - 0 8",
+        "prompt": "In this Colle-Zukertort position, what is the bishop on b2 doing?",
+        "choices": [
+          {"text": "Attacking along the long diagonal toward g7", "isCorrect": true},
+          {"text": "Defending the b3 pawn", "isCorrect": false},
+          {"text": "Preparing to move to c1", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The bishop on b2 fires down the a1-h8 diagonal, putting pressure on g7 near Black's castled king. Combined with the d3 bishop targeting h7, White has two dangerous bishops pointing at the kingside.",
+        "boardHighlightsOnReveal": ["b2", "g7"],
+        "arrowsOnReveal": [{"from": "b2", "to": "g7"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["d2d4", "d7d5", "g1f3", "g8f6", "e2e3", "e7e6", "f1d3"],
+    "responses": [
+      {
+        "id": "colle-main-c5",
+        "move": {
+          "uci": "c7c5",
+          "san": "c5",
+          "explanation": "Black challenges your d4 pawn immediately, trying to break up your center."
+        },
+        "name": "Classical ...c5",
+        "eco": "D05",
+        "frequency": 0.40,
+        "description": "The most common response — Black strikes at d4 to undermine your center.",
+        "planAdjustment": "Play c3 to reinforce d4, then Nbd2, O-O, Re1, and push e4 when ready. The plan does not change."
+      },
+      {
+        "id": "colle-bd6",
+        "move": {
+          "uci": "f8d6",
+          "san": "Bd6",
+          "explanation": "Black develops the bishop actively to d6, mirroring your bishop on d3."
+        },
+        "name": "Active ...Bd6",
+        "eco": "D05",
+        "frequency": 0.30,
+        "description": "Black develops actively and prepares to castle. The position stays balanced.",
+        "planAdjustment": "Continue with c3, Nbd2, O-O, and Re1. After e4, if Black plays dxe4, recapture with Nxe4 and your pieces are more active."
+      },
+      {
+        "id": "colle-bf5",
+        "move": {
+          "uci": "c8f5",
+          "san": "Bf5",
+          "explanation": "The Anti-Colle! Black rushes to develop the bishop before e3 closes the diagonal."
+        },
+        "name": "Anti-Colle ...Bf5",
+        "eco": "D05",
+        "frequency": 0.20,
+        "description": "Black tries to exchange the key d3 bishop. Play Bd3 anyway and welcome the trade.",
+        "planAdjustment": "Play Bd3 — if Black takes, recapture Qxd3. The queen on d3 is strong and you continue the normal Colle plan."
+      },
+      {
+        "id": "colle-bg4",
+        "move": {
+          "uci": "c8g4",
+          "san": "Bg4",
+          "explanation": "Black pins your knight to the queen, hoping to disrupt the Colle setup."
+        },
+        "name": "Pin ...Bg4",
+        "eco": "D05",
+        "frequency": 0.10,
+        "description": "Black pins the f3 knight. Respond with Be2, then castle and play h3 to break the pin.",
+        "planAdjustment": "Play Be2 instead of Bd3, then O-O and h3 to expel the bishop. After the bishop retreats, resume the standard Colle plan with c4 or e4."
+      }
+    ]
+  }
+}

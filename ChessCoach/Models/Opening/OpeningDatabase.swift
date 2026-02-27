@@ -1,6 +1,9 @@
 import Foundation
 
 final class OpeningDatabase: Sendable {
+    /// Shared singleton — use this instead of creating new instances to avoid redundant file I/O.
+    static let shared = OpeningDatabase()
+
     let openings: [Opening]
 
     init() {
@@ -64,7 +67,9 @@ final class OpeningDatabase: Sendable {
                 difficulty: jsonOpening.difficulty,
                 mainLine: mainLine,
                 tree: tree,
-                lines: lines
+                lines: lines,
+                plan: jsonOpening.plan,
+                opponentResponses: jsonOpening.opponentResponses
             )
             openings.append(opening)
         }
@@ -107,6 +112,8 @@ final class OpeningDatabase: Sendable {
         let color: String
         let difficulty: Int
         let tree: JSONOpeningTree
+        let plan: OpeningPlan?
+        let opponentResponses: OpponentResponseCatalogue?
     }
 
     private struct JSONOpeningTree: Codable {
@@ -303,6 +310,392 @@ final class OpeningDatabase: Sendable {
                 OpeningMove(uci: "g7g6", san: "g6", explanation: "Prepare the fianchetto. Your bishop on g7 will be a monster on the long diagonal."),
                 OpeningMove(uci: "f2f4", san: "f4", explanation: "White plays aggressively with the Austrian Attack."),
                 OpeningMove(uci: "f8g7", san: "Bg7", explanation: "Complete the fianchetto. Your bishop eyes White's center and queenside."),
+            ]
+        ),
+
+        // MARK: - New White Openings
+
+        Opening(
+            id: "vienna",
+            name: "Vienna Game",
+            description: "A flexible opening where White delays committing to a pawn structure, keeping options for both quiet and aggressive play.",
+            color: .white,
+            difficulty: 2,
+            mainLine: [
+                OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center with the king's pawn."),
+                OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors, fighting for the center."),
+                OpeningMove(uci: "b1c3", san: "Nc3", explanation: "The Vienna! Develop the knight and keep options open for f4."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Black develops and pressures e4."),
+                OpeningMove(uci: "f2f4", san: "f4", explanation: "The Vienna Gambit! Strike at the center aggressively."),
+                OpeningMove(uci: "d7d5", san: "d5", explanation: "Black counterattacks in the center."),
+                OpeningMove(uci: "f4e5", san: "fxe5", explanation: "Capture, opening the f-file for your rook."),
+                OpeningMove(uci: "f6e4", san: "Nxe4", explanation: "Black centralizes the knight."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "Develop and prepare to castle."),
+                OpeningMove(uci: "f8c5", san: "Bc5", explanation: "Black develops the bishop actively."),
+            ]
+        ),
+        Opening(
+            id: "kings-gambit",
+            name: "King's Gambit",
+            description: "One of the oldest and most romantic openings. White sacrifices a pawn for rapid development and attacking chances.",
+            color: .white,
+            difficulty: 3,
+            mainLine: [
+                OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center."),
+                OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),
+                OpeningMove(uci: "f2f4", san: "f4", explanation: "The King's Gambit! Offer a pawn for a fast attack."),
+                OpeningMove(uci: "e5f4", san: "exf4", explanation: "Black accepts the gambit."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "Develop and prevent Qh4+."),
+                OpeningMove(uci: "g7g5", san: "g5", explanation: "Black tries to hold the extra pawn."),
+                OpeningMove(uci: "f1c4", san: "Bc4", explanation: "Aim at f7, the weakest point."),
+                OpeningMove(uci: "g5g4", san: "g4", explanation: "Black attacks the knight."),
+                OpeningMove(uci: "e1g1", san: "O-O", explanation: "The Muzio Gambit! Sacrifice the knight for a crushing attack."),
+                OpeningMove(uci: "g4f3", san: "gxf3", explanation: "Black takes the knight."),
+            ]
+        ),
+        Opening(
+            id: "english",
+            name: "English Opening",
+            description: "A flexible opening where White controls the center from the flank.",
+            color: .white,
+            difficulty: 2,
+            mainLine: [
+                OpeningMove(uci: "c2c4", san: "c4", explanation: "The English! Control d5 from the flank."),
+                OpeningMove(uci: "e7e5", san: "e5", explanation: "Black takes the center directly."),
+                OpeningMove(uci: "b1c3", san: "Nc3", explanation: "Develop toward the center."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Black develops a knight."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "Develop the other knight."),
+                OpeningMove(uci: "b8c6", san: "Nc6", explanation: "Black develops symmetrically."),
+                OpeningMove(uci: "g2g3", san: "g3", explanation: "Prepare to fianchetto the bishop."),
+                OpeningMove(uci: "f8b4", san: "Bb4", explanation: "Black pins the knight."),
+                OpeningMove(uci: "f1g2", san: "Bg2", explanation: "Complete the fianchetto. The bishop controls the long diagonal."),
+                OpeningMove(uci: "e8g8", san: "O-O", explanation: "Black castles for safety."),
+            ]
+        ),
+        Opening(
+            id: "catalan",
+            name: "Catalan Opening",
+            description: "A sophisticated opening combining Queen's Gambit pawn structure with a fianchettoed bishop.",
+            color: .white,
+            difficulty: 3,
+            mainLine: [
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "Control the center."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Black develops."),
+                OpeningMove(uci: "c2c4", san: "c4", explanation: "Grab more space."),
+                OpeningMove(uci: "e7e6", san: "e6", explanation: "Black prepares d5."),
+                OpeningMove(uci: "g2g3", san: "g3", explanation: "The Catalan! Fianchetto the bishop for long-term pressure."),
+                OpeningMove(uci: "d7d5", san: "d5", explanation: "Black stakes a claim in the center."),
+                OpeningMove(uci: "f1g2", san: "Bg2", explanation: "The Catalan bishop dominates the long diagonal."),
+                OpeningMove(uci: "f8e7", san: "Be7", explanation: "Black develops solidly."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "Develop and prepare to castle."),
+                OpeningMove(uci: "e8g8", san: "O-O", explanation: "Black castles."),
+            ]
+        ),
+        Opening(
+            id: "reti",
+            name: "Reti Opening",
+            description: "A hypermodern opening where White controls the center with pieces rather than pawns.",
+            color: .white,
+            difficulty: 2,
+            mainLine: [
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "The Reti! Develop the knight first, keeping options open."),
+                OpeningMove(uci: "d7d5", san: "d5", explanation: "Black takes the center."),
+                OpeningMove(uci: "c2c4", san: "c4", explanation: "Challenge Black's center from the side."),
+                OpeningMove(uci: "d5c4", san: "dxc4", explanation: "Black accepts the pawn."),
+                OpeningMove(uci: "e2e3", san: "e3", explanation: "Prepare to recapture the pawn with the bishop."),
+                OpeningMove(uci: "c7c5", san: "c5", explanation: "Black fights for space."),
+                OpeningMove(uci: "f1c4", san: "Bxc4", explanation: "Recapture with an active bishop."),
+                OpeningMove(uci: "e7e6", san: "e6", explanation: "Black solidifies."),
+                OpeningMove(uci: "e1g1", san: "O-O", explanation: "Castle for safety."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Black develops."),
+            ]
+        ),
+        Opening(
+            id: "four-knights",
+            name: "Four Knights Game",
+            description: "A solid, symmetrical opening where both sides develop their knights first.",
+            color: .white,
+            difficulty: 1,
+            mainLine: [
+                OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center."),
+                OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "Develop and attack e5."),
+                OpeningMove(uci: "b8c6", san: "Nc6", explanation: "Defend e5."),
+                OpeningMove(uci: "b1c3", san: "Nc3", explanation: "Four Knights! Both sides develop symmetrically."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "All four knights are out."),
+                OpeningMove(uci: "f1b5", san: "Bb5", explanation: "The Spanish Four Knights. Pin the knight."),
+                OpeningMove(uci: "f8b4", san: "Bb4", explanation: "Black mirrors the pin."),
+                OpeningMove(uci: "e1g1", san: "O-O", explanation: "Castle for safety."),
+                OpeningMove(uci: "e8g8", san: "O-O", explanation: "Black castles too."),
+            ]
+        ),
+        Opening(
+            id: "bishops-opening",
+            name: "Bishop's Opening",
+            description: "A simple but effective opening. White develops the bishop early aiming at f7.",
+            color: .white,
+            difficulty: 1,
+            mainLine: [
+                OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center."),
+                OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),
+                OpeningMove(uci: "f1c4", san: "Bc4", explanation: "The Bishop's Opening! Aim at f7 immediately."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Black develops and attacks e4."),
+                OpeningMove(uci: "d2d3", san: "d3", explanation: "Support e4 solidly."),
+                OpeningMove(uci: "f8c5", san: "Bc5", explanation: "Black develops actively."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "Develop the knight."),
+                OpeningMove(uci: "d7d6", san: "d6", explanation: "Black supports e5."),
+                OpeningMove(uci: "e1g1", san: "O-O", explanation: "Castle for king safety."),
+                OpeningMove(uci: "e8g8", san: "O-O", explanation: "Black castles too."),
+            ]
+        ),
+        Opening(
+            id: "kings-indian-attack",
+            name: "King's Indian Attack",
+            description: "A universal system for White. Set up with Nf3, g3, Bg2, d3, Nbd2 and e4 against almost anything.",
+            color: .white,
+            difficulty: 2,
+            mainLine: [
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "Flexible development."),
+                OpeningMove(uci: "d7d5", san: "d5", explanation: "Black takes the center."),
+                OpeningMove(uci: "g2g3", san: "g3", explanation: "Prepare to fianchetto."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Black develops."),
+                OpeningMove(uci: "f1g2", san: "Bg2", explanation: "The fianchettoed bishop controls the center."),
+                OpeningMove(uci: "e7e6", san: "e6", explanation: "Black builds a solid structure."),
+                OpeningMove(uci: "e1g1", san: "O-O", explanation: "Castle early."),
+                OpeningMove(uci: "f8e7", san: "Be7", explanation: "Black develops."),
+                OpeningMove(uci: "d2d3", san: "d3", explanation: "Support the e4 push."),
+                OpeningMove(uci: "e8g8", san: "O-O", explanation: "Black castles."),
+            ]
+        ),
+        Opening(
+            id: "colle",
+            name: "Colle System",
+            description: "A beginner-friendly system. Set up with d4, Nf3, e3, Bd3, O-O and then push e4 when ready.",
+            color: .white,
+            difficulty: 1,
+            mainLine: [
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "Control the center."),
+                OpeningMove(uci: "d7d5", san: "d5", explanation: "Black mirrors."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "Develop the knight."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Black develops."),
+                OpeningMove(uci: "e2e3", san: "e3", explanation: "The Colle! Support d4 and free the bishop."),
+                OpeningMove(uci: "e7e6", san: "e6", explanation: "Black builds a solid structure."),
+                OpeningMove(uci: "f1d3", san: "Bd3", explanation: "Develop the bishop to its ideal square."),
+                OpeningMove(uci: "c7c5", san: "c5", explanation: "Black challenges the center."),
+                OpeningMove(uci: "c2c3", san: "c3", explanation: "Reinforce d4."),
+                OpeningMove(uci: "b8c6", san: "Nc6", explanation: "Black develops."),
+            ]
+        ),
+        Opening(
+            id: "trompowsky",
+            name: "Trompowsky Attack",
+            description: "A surprise weapon where White develops the bishop before the knight, forcing Black to make early decisions.",
+            color: .white,
+            difficulty: 2,
+            mainLine: [
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "Control the center."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Black develops."),
+                OpeningMove(uci: "c1g5", san: "Bg5", explanation: "The Trompowsky! Pin or challenge the knight immediately."),
+                OpeningMove(uci: "d7d5", san: "d5", explanation: "Black takes the center."),
+                OpeningMove(uci: "e2e3", san: "e3", explanation: "Support d4 and keep options open."),
+                OpeningMove(uci: "c7c5", san: "c5", explanation: "Black challenges the center."),
+                OpeningMove(uci: "c2c3", san: "c3", explanation: "Reinforce d4."),
+                OpeningMove(uci: "d8b6", san: "Qb6", explanation: "Black pressures b2."),
+                OpeningMove(uci: "d1b3", san: "Qb3", explanation: "Trade queens to simplify."),
+                OpeningMove(uci: "b6b3", san: "Qxb3", explanation: "Queens are exchanged."),
+            ]
+        ),
+
+        // MARK: - New Black Openings
+
+        Opening(
+            id: "scandinavian",
+            name: "Scandinavian Defense",
+            description: "A straightforward defense where Black immediately challenges White's center.",
+            color: .black,
+            difficulty: 2,
+            mainLine: [
+                OpeningMove(uci: "e2e4", san: "e4", explanation: "White opens with the king's pawn."),
+                OpeningMove(uci: "d7d5", san: "d5", explanation: "The Scandinavian! Challenge the center immediately."),
+                OpeningMove(uci: "e4d5", san: "exd5", explanation: "White captures."),
+                OpeningMove(uci: "d8d5", san: "Qxd5", explanation: "Recapture with the queen. She'll move again but you gain central control."),
+                OpeningMove(uci: "b1c3", san: "Nc3", explanation: "White develops and attacks the queen."),
+                OpeningMove(uci: "d5a5", san: "Qa5", explanation: "The queen retreats to a safe but active square."),
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "White grabs more center space."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop and fight for e4."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "White develops."),
+                OpeningMove(uci: "c8f5", san: "Bf5", explanation: "Develop the bishop outside the pawn chain. This is why the Scandinavian is great."),
+            ]
+        ),
+        Opening(
+            id: "nimzo-indian",
+            name: "Nimzo-Indian Defense",
+            description: "One of Black's most respected defenses. The bishop pins White's knight, controlling the center indirectly.",
+            color: .black,
+            difficulty: 3,
+            mainLine: [
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "White opens with the queen's pawn."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop the knight."),
+                OpeningMove(uci: "c2c4", san: "c4", explanation: "White grabs more space."),
+                OpeningMove(uci: "e7e6", san: "e6", explanation: "Prepare to pin the knight with Bb4."),
+                OpeningMove(uci: "b1c3", san: "Nc3", explanation: "White develops."),
+                OpeningMove(uci: "f8b4", san: "Bb4", explanation: "The Nimzo-Indian! Pin the knight that controls e4."),
+                OpeningMove(uci: "e2e3", san: "e3", explanation: "White supports d4."),
+                OpeningMove(uci: "e8g8", san: "O-O", explanation: "Castle early for safety."),
+                OpeningMove(uci: "f1d3", san: "Bd3", explanation: "White develops the bishop."),
+                OpeningMove(uci: "d7d5", san: "d5", explanation: "Strike at the center."),
+            ]
+        ),
+        Opening(
+            id: "queens-indian",
+            name: "Queen's Indian Defense",
+            description: "A solid, positional defense where Black fianchettoes the queenside bishop to control the center from a distance.",
+            color: .black,
+            difficulty: 2,
+            mainLine: [
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "White opens with the queen's pawn."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop."),
+                OpeningMove(uci: "c2c4", san: "c4", explanation: "White grabs space."),
+                OpeningMove(uci: "e7e6", san: "e6", explanation: "Prepare the fianchetto."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "White develops."),
+                OpeningMove(uci: "b7b6", san: "b6", explanation: "The Queen's Indian! Prepare to fianchetto the bishop."),
+                OpeningMove(uci: "g2g3", san: "g3", explanation: "White also fianchettoes."),
+                OpeningMove(uci: "c8b7", san: "Bb7", explanation: "Your bishop controls the long diagonal, especially e4 and d5."),
+                OpeningMove(uci: "f1g2", san: "Bg2", explanation: "White completes the fianchetto."),
+                OpeningMove(uci: "f8e7", san: "Be7", explanation: "Develop and prepare to castle."),
+            ]
+        ),
+        Opening(
+            id: "slav",
+            name: "Slav Defense",
+            description: "A rock-solid defense that supports d5 with c6 while keeping the light-squared bishop free.",
+            color: .black,
+            difficulty: 2,
+            mainLine: [
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "White controls the center."),
+                OpeningMove(uci: "d7d5", san: "d5", explanation: "Fight for the center."),
+                OpeningMove(uci: "c2c4", san: "c4", explanation: "The Queen's Gambit."),
+                OpeningMove(uci: "c7c6", san: "c6", explanation: "The Slav! Support d5 without blocking the bishop."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "White develops."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop and fight for e4."),
+                OpeningMove(uci: "b1c3", san: "Nc3", explanation: "White develops."),
+                OpeningMove(uci: "d5c4", san: "dxc4", explanation: "Capture! Now develop the bishop before playing e6."),
+                OpeningMove(uci: "a2a4", san: "a4", explanation: "White prevents b5."),
+                OpeningMove(uci: "c8f5", san: "Bf5", explanation: "Develop the bishop outside the pawn chain. This is the Slav's advantage."),
+            ]
+        ),
+        Opening(
+            id: "dutch",
+            name: "Dutch Defense",
+            description: "An aggressive defense where Black immediately fights for control of the e4 square.",
+            color: .black,
+            difficulty: 3,
+            mainLine: [
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "White opens with the queen's pawn."),
+                OpeningMove(uci: "f7f5", san: "f5", explanation: "The Dutch! Control e4 and prepare for a kingside attack."),
+                OpeningMove(uci: "g2g3", san: "g3", explanation: "White fianchettoes."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop the knight."),
+                OpeningMove(uci: "f1g2", san: "Bg2", explanation: "White completes the fianchetto."),
+                OpeningMove(uci: "e7e6", san: "e6", explanation: "Support the f-pawn and prepare to develop the bishop."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "White develops."),
+                OpeningMove(uci: "f8e7", san: "Be7", explanation: "Develop and prepare to castle."),
+                OpeningMove(uci: "e1g1", san: "O-O", explanation: "White castles."),
+                OpeningMove(uci: "e8g8", san: "O-O", explanation: "Castle and start planning a kingside attack."),
+            ]
+        ),
+        Opening(
+            id: "grunfeld",
+            name: "Grunfeld Defense",
+            description: "A dynamic defense where Black allows White a big center then attacks it.",
+            color: .black,
+            difficulty: 3,
+            mainLine: [
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "White controls the center."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop."),
+                OpeningMove(uci: "c2c4", san: "c4", explanation: "White grabs space."),
+                OpeningMove(uci: "g7g6", san: "g6", explanation: "Prepare to fianchetto."),
+                OpeningMove(uci: "b1c3", san: "Nc3", explanation: "White develops."),
+                OpeningMove(uci: "d7d5", san: "d5", explanation: "The Grunfeld! Challenge the center directly."),
+                OpeningMove(uci: "c4d5", san: "cxd5", explanation: "White captures."),
+                OpeningMove(uci: "f6d5", san: "Nxd5", explanation: "Recapture with the knight."),
+                OpeningMove(uci: "e2e4", san: "e4", explanation: "White builds a massive center."),
+                OpeningMove(uci: "d5c3", san: "Nxc3", explanation: "Exchange the knight, damaging White's structure."),
+            ]
+        ),
+        Opening(
+            id: "philidor",
+            name: "Philidor Defense",
+            description: "A solid, old-fashioned defense where Black supports e5 with d6.",
+            color: .black,
+            difficulty: 1,
+            mainLine: [
+                OpeningMove(uci: "e2e4", san: "e4", explanation: "White claims the center."),
+                OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "White develops and attacks e5."),
+                OpeningMove(uci: "d7d6", san: "d6", explanation: "The Philidor! Support e5 solidly with the pawn."),
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "White seizes more space."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop and attack e4."),
+                OpeningMove(uci: "b1c3", san: "Nc3", explanation: "White develops."),
+                OpeningMove(uci: "b8d7", san: "Nbd7", explanation: "Develop the other knight to support e5 and f6."),
+                OpeningMove(uci: "f1c4", san: "Bc4", explanation: "White aims at f7."),
+                OpeningMove(uci: "f8e7", san: "Be7", explanation: "Develop and prepare to castle."),
+            ]
+        ),
+        Opening(
+            id: "alekhine",
+            name: "Alekhine Defense",
+            description: "A provocative defense where Black invites White to advance pawns and then attacks the overextended center.",
+            color: .black,
+            difficulty: 3,
+            mainLine: [
+                OpeningMove(uci: "e2e4", san: "e4", explanation: "White claims the center."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "The Alekhine! Attack the e4 pawn immediately."),
+                OpeningMove(uci: "e4e5", san: "e5", explanation: "White advances, chasing the knight."),
+                OpeningMove(uci: "f6d5", san: "Nd5", explanation: "Retreat to a strong central square."),
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "White builds a big center."),
+                OpeningMove(uci: "d7d6", san: "d6", explanation: "Challenge the overextended center."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "White develops."),
+                OpeningMove(uci: "c8g4", san: "Bg4", explanation: "Pin the knight and add pressure."),
+                OpeningMove(uci: "f1e2", san: "Be2", explanation: "White unpins."),
+                OpeningMove(uci: "e7e6", san: "e6", explanation: "Solidify and prepare to develop the bishop."),
+            ]
+        ),
+        Opening(
+            id: "benoni",
+            name: "Modern Benoni",
+            description: "An ambitious defense where Black creates an asymmetrical pawn structure and plays for a queenside pawn majority.",
+            color: .black,
+            difficulty: 3,
+            mainLine: [
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "White controls the center."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop."),
+                OpeningMove(uci: "c2c4", san: "c4", explanation: "White grabs space."),
+                OpeningMove(uci: "c7c5", san: "c5", explanation: "The Benoni! Challenge d4 from the side."),
+                OpeningMove(uci: "d4d5", san: "d5", explanation: "White advances, creating an asymmetrical structure."),
+                OpeningMove(uci: "e7e6", san: "e6", explanation: "Undermine the d5 pawn."),
+                OpeningMove(uci: "b1c3", san: "Nc3", explanation: "White develops."),
+                OpeningMove(uci: "e6d5", san: "exd5", explanation: "Open the e-file for counterplay."),
+                OpeningMove(uci: "c4d5", san: "cxd5", explanation: "White recaptures."),
+                OpeningMove(uci: "d7d6", san: "d6", explanation: "Support the structure and prepare kingside development."),
+            ]
+        ),
+        Opening(
+            id: "petroff",
+            name: "Petroff Defense",
+            description: "A solid, symmetrical defense where Black mirrors White's play. Very reliable.",
+            color: .black,
+            difficulty: 2,
+            mainLine: [
+                OpeningMove(uci: "e2e4", san: "e4", explanation: "White opens."),
+                OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),
+                OpeningMove(uci: "g1f3", san: "Nf3", explanation: "White attacks e5."),
+                OpeningMove(uci: "g8f6", san: "Nf6", explanation: "The Petroff! Instead of defending, Black counterattacks e4."),
+                OpeningMove(uci: "f3e5", san: "Nxe5", explanation: "White takes the pawn."),
+                OpeningMove(uci: "d7d6", san: "d6", explanation: "Chase the knight away."),
+                OpeningMove(uci: "e5f3", san: "Nf3", explanation: "The knight retreats."),
+                OpeningMove(uci: "f6e4", san: "Nxe4", explanation: "Win back the pawn with a strong knight."),
+                OpeningMove(uci: "d2d4", san: "d4", explanation: "White takes the center."),
+                OpeningMove(uci: "d6d5", san: "d5", explanation: "Establish a solid central pawn."),
             ]
         ),
     ]

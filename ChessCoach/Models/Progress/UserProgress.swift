@@ -129,6 +129,23 @@ struct OpeningProgress: Codable, Sendable {
         lineProgress.count
     }
 
+    /// Reset progress for a single line back to initial state.
+    mutating func resetLineProgress(lineID: String) {
+        lineProgress[lineID] = LineProgress(lineID: lineID, openingID: openingID)
+    }
+
+    /// Reset all progress for this opening.
+    mutating func resetAllProgress() {
+        lineProgress = [:]
+        gamesPlayed = 0
+        gamesWon = 0
+        accuracyHistory = []
+        currentPhase = .learningMainLine
+        practiceSessionCount = 0
+        practiceAccuracy = 0
+        bestAccuracy = 0
+    }
+
     /// Check if a line should be unlocked based on its parent's progress.
     func isLineUnlocked(_ lineID: String, parentLineID: String?) -> Bool {
         guard let parentID = parentLineID else { return true } // No parent = always unlocked

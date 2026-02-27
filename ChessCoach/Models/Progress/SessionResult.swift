@@ -15,8 +15,19 @@ struct SessionResult {
     /// User moves played per minute (nil if time not tracked or zero).
     let movesPerMinute: Double?
 
+    // Plan Execution Score data (v2)
+    let averagePES: Double?
+    let pesCategory: ScoreCategory?
+    let moveScores: [PlanExecutionScore]?
+    let layerPromotion: LayerPromotion?
+
     struct PhasePromotion {
         let from: LearningPhase
         let to: LearningPhase
+    }
+
+    struct LayerPromotion {
+        let from: LearningLayer
+        let to: LearningLayer
     }
 }

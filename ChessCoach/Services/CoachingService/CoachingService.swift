@@ -1,12 +1,14 @@
 import Foundation
 
 actor CoachingService {
-    private let llmService: LLMService
+    private let llmService: any TextGenerating
     private let curriculumService: CurriculumService
+    private let featureAccess: any FeatureAccessProviding
 
-    init(llmService: LLMService, curriculumService: CurriculumService) {
+    init(llmService: any TextGenerating, curriculumService: CurriculumService, featureAccess: any FeatureAccessProviding) {
         self.llmService = llmService
         self.curriculumService = curriculumService
+        self.featureAccess = featureAccess
     }
 
     /// Determine whether coaching should be shown for this move.
@@ -28,7 +30,7 @@ actor CoachingService {
     }
 
     /// Get coaching text for a move.
-    /// When `isPro` is false, returns hardcoded fallback coaching only (no LLM call).
+    /// When LLM coaching is not unlocked, returns hardcoded fallback coaching only (no LLM call).
     func getCoaching(
         fen: String,
         lastMove: String,
@@ -38,8 +40,7 @@ actor CoachingService {
         userELO: Int,
         moveHistory: String = "",
         isUserMove: Bool = true,
-        studentColor: String? = nil,
-        isPro: Bool = true
+        studentColor: String? = nil
     ) async -> String? {
         let moveCategory = curriculumService.categorizeUserMove(
             atPly: ply,
@@ -54,7 +55,8 @@ actor CoachingService {
         }
 
         // Free tier: return hardcoded coaching only
-        if !isPro {
+        let hasLLM = await featureAccess.isUnlocked(.llmCoaching)
+        if !hasLLM {
             let context = buildContext(
                 fen: fen, lastMove: lastMove, scoreBefore: scoreBefore, scoreAfter: scoreAfter,
                 ply: ply, userELO: userELO, moveHistory: moveHistory,
@@ -83,22 +85,27 @@ actor CoachingService {
         )
 
         do {
-            let raw = try await llmService.getCoaching(for: context)
+            let prompt = LLMService.buildPrompt(for: context)
+            let raw = try await llmService.generate(prompt: prompt, maxTokens: AppConfig.tokens.coaching)
             let parsed = CoachingValidator.parse(response: raw)
             if let validated = CoachingValidator.validate(parsed: parsed, fen: fen) {
                 return validated
             } else {
+                #if DEBUG
                 print("[ChessCoach] Hallucination detected in coaching, using fallback")
+                #endif
                 return fallbackCoaching(for: context)
             }
         } catch {
+            #if DEBUG
             print("[ChessCoach] LLM coaching failed: \(error)")
+            #endif
             return nil
         }
     }
 
     /// Get batched coaching for both user and opponent moves in a single LLM call.
-    /// When `isPro` is false, returns hardcoded fallback coaching only (no LLM call).
+    /// When LLM coaching is not unlocked, returns hardcoded fallback coaching only.
     func getBatchedCoaching(
         userFen: String,
         userMove: String,
@@ -110,8 +117,7 @@ actor CoachingService {
         scoreAfter: Int,
         userELO: Int,
         moveHistory: String,
-        studentColor: String?,
-        isPro: Bool = true
+        studentColor: String?
     ) async -> (userCoaching: String?, opponentCoaching: String?) {
         let userMoveCategory = curriculumService.categorizeUserMove(
             atPly: userPly, move: userMove, stockfishScore: scoreAfter - scoreBefore
@@ -128,7 +134,8 @@ actor CoachingService {
         }
 
         // Free tier: return hardcoded coaching only
-        if !isPro {
+        let hasLLM = await featureAccess.isUnlocked(.llmCoaching)
+        if !hasLLM {
             let uc = buildContext(
                 fen: userFen, lastMove: userMove, scoreBefore: scoreBefore, scoreAfter: scoreAfter,
                 ply: userPly, userELO: userELO, moveHistory: moveHistory,
@@ -172,7 +179,9 @@ actor CoachingService {
         )
 
         do {
-            let result = try await llmService.getBatchedCoaching(for: batched)
+            let batchedPrompt = LLMService.buildBatchedPrompt(for: batched)
+            let rawResult = try await llmService.generate(prompt: batchedPrompt, maxTokens: AppConfig.tokens.batchedCoaching)
+            let result = LLMService.parseBatchedResponse(rawResult)
 
             // Validate user coaching
             let userParsed = CoachingValidator.parse(response: result.userCoaching)
@@ -180,7 +189,9 @@ actor CoachingService {
             if let v = CoachingValidator.validate(parsed: userParsed, fen: userFen) {
                 validatedUser = shouldCoachUser ? v : nil
             } else {
+                #if DEBUG
                 print("[ChessCoach] Hallucination detected in user coaching, using fallback")
+                #endif
                 validatedUser = shouldCoachUser ? fallbackCoaching(for: userContext) : nil
             }
 
@@ -190,32 +201,42 @@ actor CoachingService {
             if let v = CoachingValidator.validate(parsed: opponentParsed, fen: opponentFen) {
                 validatedOpponent = shouldCoachOpponent ? v : nil
             } else {
+                #if DEBUG
                 print("[ChessCoach] Hallucination detected in opponent coaching, using fallback")
+                #endif
                 validatedOpponent = shouldCoachOpponent ? fallbackCoaching(for: opponentContext) : nil
             }
 
             return (validatedUser, validatedOpponent)
         } catch {
+            #if DEBUG
             print("[ChessCoach] Batched LLM coaching failed: \(error)")
+            #endif
             // Fall back to single coaching calls
             var userResult: String?
             var opponentResult: String?
             if shouldCoachUser {
                 do {
-                    let raw = try await llmService.getCoaching(for: userContext)
+                    let prompt = LLMService.buildPrompt(for: userContext)
+                    let raw = try await llmService.generate(prompt: prompt, maxTokens: AppConfig.tokens.coaching)
                     let parsed = CoachingValidator.parse(response: raw)
                     userResult = CoachingValidator.validate(parsed: parsed, fen: userFen) ?? fallbackCoaching(for: userContext)
                 } catch {
+                    #if DEBUG
                     print("[ChessCoach] Single user coaching also failed: \(error)")
+                    #endif
                 }
             }
             if shouldCoachOpponent {
                 do {
-                    let raw = try await llmService.getCoaching(for: opponentContext)
+                    let prompt = LLMService.buildPrompt(for: opponentContext)
+                    let raw = try await llmService.generate(prompt: prompt, maxTokens: AppConfig.tokens.coaching)
                     let parsed = CoachingValidator.parse(response: raw)
                     opponentResult = CoachingValidator.validate(parsed: parsed, fen: opponentFen) ?? fallbackCoaching(for: opponentContext)
                 } catch {
+                    #if DEBUG
                     print("[ChessCoach] Single opponent coaching also failed: \(error)")
+                    #endif
                 }
             }
             return (userResult, opponentResult)
@@ -227,36 +248,28 @@ actor CoachingService {
     /// Get a chat response for a user's question about the current position (Pro feature).
     func getChatResponse(question: String, context: ChatContext) async -> String {
         let opening = curriculumService.opening
-        let userELO = UserDefaults.standard.object(forKey: "user_elo") as? Int ?? 600
+        let userELO = UserDefaults.standard.object(forKey: AppSettings.Key.userELO) as? Int ?? 600
         let boardState = LLMService.boardStateSummary(fen: context.fen)
+        let occupied = LLMService.occupiedSquares(fen: context.fen)
 
         let moveHistoryStr = context.moveHistory.enumerated().map { i, m in
             i % 2 == 0 ? "\(i / 2 + 1). \(m)" : m
         }.joined(separator: " ")
 
-        let prompt = """
-        You are a friendly chess coach. The student (ELO ~\(userELO)) is studying the \(context.openingName) (\(context.lineName)).
-
-        Current position (FEN): \(context.fen)
-        Board state:
-        \(boardState)
-
-        Move history: \(moveHistoryStr)
-        Current ply: \(context.currentPly)
-
-        The student asks: \(question)
-
-        Explain clearly for a \(userELO)-rated player. Use simple language.
-        Keep your response concise (2-4 sentences). Spell out piece names, avoid algebraic notation symbols.
-        Reference specific squares and pieces to make your explanation concrete.
-
-        Response format (REQUIRED):
-        REFS: <list each piece and square you mention, e.g. "bishop e5, knight c3". Write "none" if you don't reference specific pieces>
-        COACHING: <your explanation>
-        """
+        let prompt = PromptCatalog.chatPrompt(
+            question: question,
+            openingName: context.openingName,
+            lineName: context.lineName,
+            fen: context.fen,
+            boardSummary: boardState,
+            occupiedSquares: occupied,
+            moveHistory: moveHistoryStr,
+            currentPly: context.currentPly,
+            userELO: userELO
+        )
 
         do {
-            let response = try await llmService.getExplanation(prompt: prompt)
+            let response = try await llmService.generate(prompt: prompt, maxTokens: AppConfig.tokens.explanation)
             let parsed = CoachingValidator.parse(response: response)
             if let validated = CoachingValidator.validate(parsed: parsed, fen: context.fen) {
                 return validated
@@ -304,24 +317,25 @@ actor CoachingService {
     }
 
     private func fallbackCoaching(for context: CoachingContext) -> String? {
+        let cfg = AppConfig.coaching
         if context.isUserMove {
             switch context.moveCategory {
             case .goodMove:
-                return "Good move! That follows the \(context.openingName) plan."
+                return String(format: cfg.goodMoveTemplate, context.openingName)
             case .okayMove:
                 let expected = context.expectedMoveSAN ?? "the book move"
-                return "Playable, but \(expected) is the main line here."
+                return String(format: cfg.okayMoveTemplate, expected)
             case .mistake:
                 let expected = context.expectedMoveSAN ?? "the book move"
-                return "The book move here is \(expected)."
+                return String(format: cfg.mistakeMoveTemplate, expected)
             default:
                 return nil
             }
         } else {
             if context.moveCategory == .deviation {
-                return "Your opponent went off-book. Stay calm and use your \(context.openingName) ideas."
+                return String(format: cfg.deviationTemplate, context.openingName)
             } else {
-                return "Your opponent continues with a standard response."
+                return cfg.standardOpponentTemplate
             }
         }
     }

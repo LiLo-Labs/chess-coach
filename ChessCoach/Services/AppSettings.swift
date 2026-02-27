@@ -2,12 +2,15 @@ import SwiftUI
 
 /// Centralized, type-safe settings service replacing scattered UserDefaults access.
 /// Inject into environment via `.environment(appSettings)` on the root view.
+///
+/// All properties are **stored** so the @Observable macro can track mutations.
+/// Each setter syncs the new value to UserDefaults for persistence across launches.
 @Observable
 @MainActor
 final class AppSettings {
     // MARK: - Keys (centralized, no more magic strings)
 
-    private enum Key {
+    enum Key {
         static let hasSeenOnboarding = "has_seen_onboarding"
         static let userELO = "user_elo"
         static let opponentELO = "opponent_elo"
@@ -22,6 +25,7 @@ final class AppSettings {
         static let openingViewCounts = "opening_view_counts"
         static let consecutiveCorrect = "chess_coach_consecutive_correct"
         static let debugProOverride = "debug_pro_override"
+        static let debugTierOverride = "debug_tier_override"
         static let dailyGoalTarget = "daily_goal_target"
         static let dailyGoalProgress = "daily_goal_progress_date"
         static let dailyGoalCount = "daily_goal_count"
@@ -30,106 +34,83 @@ final class AppSettings {
         static let confettiEnabled = "confetti_enabled"
         static let notificationsEnabled = "notifications_enabled"
         static let gestureHintShown = "gesture_hint_shown"
+        static let bestReviewStreak = "best_review_streak"
     }
 
-    private let defaults = UserDefaults.standard
+    @ObservationIgnored private let defaults = UserDefaults.standard
 
     // MARK: - Player
 
     var userELO: Int {
-        get { defaults.object(forKey: Key.userELO) as? Int ?? 600 }
-        set { defaults.set(newValue, forKey: Key.userELO) }
+        didSet { defaults.set(userELO, forKey: Key.userELO) }
     }
 
     var opponentELO: Int {
-        get { defaults.object(forKey: Key.opponentELO) as? Int ?? 1200 }
-        set { defaults.set(newValue, forKey: Key.opponentELO) }
+        didSet { defaults.set(opponentELO, forKey: Key.opponentELO) }
     }
 
     // MARK: - Sound & Haptics
 
     var soundEnabled: Bool {
-        get { defaults.object(forKey: Key.soundEnabled) as? Bool ?? true }
-        set { defaults.set(newValue, forKey: Key.soundEnabled) }
+        didSet { defaults.set(soundEnabled, forKey: Key.soundEnabled) }
     }
 
     var hapticsEnabled: Bool {
-        get { defaults.object(forKey: Key.hapticsEnabled) as? Bool ?? true }
-        set { defaults.set(newValue, forKey: Key.hapticsEnabled) }
+        didSet { defaults.set(hapticsEnabled, forKey: Key.hapticsEnabled) }
     }
 
     // MARK: - Display
 
     var notationStyle: String {
-        get { defaults.string(forKey: Key.notationStyle) ?? "san" }
-        set { defaults.set(newValue, forKey: Key.notationStyle) }
+        didSet { defaults.set(notationStyle, forKey: Key.notationStyle) }
     }
 
     var colorblindMode: Bool {
-        get { defaults.bool(forKey: Key.colorblindMode) }
-        set { defaults.set(newValue, forKey: Key.colorblindMode) }
+        didSet { defaults.set(colorblindMode, forKey: Key.colorblindMode) }
     }
 
     var confettiEnabled: Bool {
-        get { defaults.object(forKey: Key.confettiEnabled) as? Bool ?? true }
-        set { defaults.set(newValue, forKey: Key.confettiEnabled) }
+        didSet { defaults.set(confettiEnabled, forKey: Key.confettiEnabled) }
     }
 
     var showLegalMovesImmediately: Bool {
-        get { defaults.object(forKey: Key.showLegalMoves) as? Bool ?? true }
-        set { defaults.set(newValue, forKey: Key.showLegalMoves) }
+        didSet { defaults.set(showLegalMovesImmediately, forKey: Key.showLegalMoves) }
     }
 
     // MARK: - LLM
 
     var llmProvider: String {
-        get { defaults.string(forKey: Key.llmProvider) ?? "auto" }
-        set { defaults.set(newValue, forKey: Key.llmProvider) }
+        didSet { defaults.set(llmProvider, forKey: Key.llmProvider) }
     }
 
     var claudeAPIKey: String {
-        get { defaults.string(forKey: Key.claudeAPIKey) ?? "" }
-        set { defaults.set(newValue, forKey: Key.claudeAPIKey) }
+        didSet { defaults.set(claudeAPIKey, forKey: Key.claudeAPIKey) }
     }
 
     var ollamaHost: String {
-        get { defaults.string(forKey: Key.ollamaHost) ?? "192.168.4.62:11434" }
-        set { defaults.set(newValue, forKey: Key.ollamaHost) }
+        didSet { defaults.set(ollamaHost, forKey: Key.ollamaHost) }
     }
 
     var ollamaModel: String {
-        get { defaults.string(forKey: Key.ollamaModel) ?? "qwen2.5:7b" }
-        set { defaults.set(newValue, forKey: Key.ollamaModel) }
+        didSet { defaults.set(ollamaModel, forKey: Key.ollamaModel) }
     }
 
     // MARK: - Onboarding
 
     var hasSeenOnboarding: Bool {
-        get { defaults.bool(forKey: Key.hasSeenOnboarding) }
-        set { defaults.set(newValue, forKey: Key.hasSeenOnboarding) }
+        didSet { defaults.set(hasSeenOnboarding, forKey: Key.hasSeenOnboarding) }
     }
 
     // MARK: - Daily Goal
 
     var dailyGoalTarget: Int {
-        get { defaults.object(forKey: Key.dailyGoalTarget) as? Int ?? 3 }
-        set { defaults.set(newValue, forKey: Key.dailyGoalTarget) }
+        didSet { defaults.set(dailyGoalTarget, forKey: Key.dailyGoalTarget) }
     }
 
     var dailyGoalCompleted: Int {
-        get {
-            // Reset if date changed
-            let today = Self.todayString
-            if defaults.string(forKey: Key.dailyGoalProgress) != today {
-                defaults.set(today, forKey: Key.dailyGoalProgress)
-                defaults.set(0, forKey: Key.dailyGoalCount)
-                return 0
-            }
-            return defaults.integer(forKey: Key.dailyGoalCount)
-        }
-        set {
+        didSet {
             defaults.set(Self.todayString, forKey: Key.dailyGoalProgress)
-            defaults.set(newValue, forKey: Key.dailyGoalCount)
+            defaults.set(dailyGoalCompleted, forKey: Key.dailyGoalCount)
         }
     }
 
@@ -140,29 +121,25 @@ final class AppSettings {
     // MARK: - Line Study
 
     var autoPlaySpeed: Double {
-        get { defaults.object(forKey: Key.autoPlaySpeed) as? Double ?? 3.0 }
-        set { defaults.set(newValue, forKey: Key.autoPlaySpeed) }
+        didSet { defaults.set(autoPlaySpeed, forKey: Key.autoPlaySpeed) }
     }
 
     // MARK: - Notifications
 
     var notificationsEnabled: Bool {
-        get { defaults.object(forKey: Key.notificationsEnabled) as? Bool ?? false }
-        set { defaults.set(newValue, forKey: Key.notificationsEnabled) }
+        didSet { defaults.set(notificationsEnabled, forKey: Key.notificationsEnabled) }
     }
 
     // MARK: - UX hints
 
     var gestureHintShown: Bool {
-        get { defaults.bool(forKey: Key.gestureHintShown) }
-        set { defaults.set(newValue, forKey: Key.gestureHintShown) }
+        didSet { defaults.set(gestureHintShown, forKey: Key.gestureHintShown) }
     }
 
     // MARK: - View counts
 
     var openingViewCounts: [String: Int] {
-        get { defaults.dictionary(forKey: Key.openingViewCounts) as? [String: Int] ?? [:] }
-        set { defaults.set(newValue, forKey: Key.openingViewCounts) }
+        didSet { defaults.set(openingViewCounts, forKey: Key.openingViewCounts) }
     }
 
     func incrementViewCount(for openingID: String) {
@@ -174,25 +151,55 @@ final class AppSettings {
     // MARK: - "I Know This" Tracking
 
     var consecutiveCorrectPlays: [String: Int] {
-        get {
-            if let data = defaults.data(forKey: Key.consecutiveCorrect),
-               let dict = try? JSONDecoder().decode([String: Int].self, from: data) {
-                return dict
-            }
-            return [:]
-        }
-        set {
-            if let data = try? JSONEncoder().encode(newValue) {
-                defaults.set(data, forKey: Key.consecutiveCorrect)
-            }
+        didSet {
+            defaults.set(consecutiveCorrectPlays, forKey: Key.consecutiveCorrect)
         }
     }
 
     // MARK: - Review Streak
 
     var bestReviewStreak: Int {
-        get { defaults.integer(forKey: "best_review_streak") }
-        set { defaults.set(newValue, forKey: "best_review_streak") }
+        didSet { defaults.set(bestReviewStreak, forKey: Key.bestReviewStreak) }
+    }
+
+    // MARK: - Initialization
+
+    init() {
+        let d = UserDefaults.standard
+
+        // Load all values from UserDefaults (or use defaults)
+        self.userELO = d.object(forKey: Key.userELO) as? Int ?? 600
+        self.opponentELO = d.object(forKey: Key.opponentELO) as? Int ?? 1200
+        self.soundEnabled = d.object(forKey: Key.soundEnabled) as? Bool ?? true
+        self.hapticsEnabled = d.object(forKey: Key.hapticsEnabled) as? Bool ?? true
+        self.notationStyle = d.string(forKey: Key.notationStyle) ?? "san"
+        self.colorblindMode = d.bool(forKey: Key.colorblindMode)
+        self.confettiEnabled = d.object(forKey: Key.confettiEnabled) as? Bool ?? true
+        self.showLegalMovesImmediately = d.object(forKey: Key.showLegalMoves) as? Bool ?? true
+        self.llmProvider = d.string(forKey: Key.llmProvider) ?? "onDevice"
+        self.claudeAPIKey = d.string(forKey: Key.claudeAPIKey) ?? ""
+        self.ollamaHost = d.string(forKey: Key.ollamaHost) ?? AppConfig.llm.defaultOllamaHost
+        self.ollamaModel = d.string(forKey: Key.ollamaModel) ?? AppConfig.llm.defaultOllamaModel
+        self.hasSeenOnboarding = d.bool(forKey: Key.hasSeenOnboarding)
+        self.dailyGoalTarget = d.object(forKey: Key.dailyGoalTarget) as? Int ?? 3
+        self.autoPlaySpeed = d.object(forKey: Key.autoPlaySpeed) as? Double ?? 3.0
+        self.notificationsEnabled = d.object(forKey: Key.notificationsEnabled) as? Bool ?? false
+        self.gestureHintShown = d.bool(forKey: Key.gestureHintShown)
+        self.openingViewCounts = d.dictionary(forKey: Key.openingViewCounts) as? [String: Int] ?? [:]
+        self.bestReviewStreak = d.integer(forKey: Key.bestReviewStreak)
+
+        // Daily goal: reset if date changed
+        let today = Self.todayString
+        if d.string(forKey: Key.dailyGoalProgress) != today {
+            d.set(today, forKey: Key.dailyGoalProgress)
+            d.set(0, forKey: Key.dailyGoalCount)
+            self.dailyGoalCompleted = 0
+        } else {
+            self.dailyGoalCompleted = d.integer(forKey: Key.dailyGoalCount)
+        }
+
+        // Consecutive correct plays (stored as raw dictionary, same as SessionViewModel)
+        self.consecutiveCorrectPlays = d.dictionary(forKey: Key.consecutiveCorrect) as? [String: Int] ?? [:]
     }
 
     // MARK: - Helpers

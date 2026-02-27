@@ -3,22 +3,12 @@ import Foundation
 extension LearningPhase {
     /// Composite score needed for promotion from this phase.
     var promotionThreshold: Double? {
-        switch self {
-        case .learningMainLine: return 60
-        case .naturalDeviations: return 70
-        case .widerVariations: return 75
-        case .freePlay: return nil
-        }
+        AppConfig.learning.threshold(for: self).promotionThreshold
     }
 
     /// Minimum games required for promotion from this phase.
     var minimumGames: Int? {
-        switch self {
-        case .learningMainLine: return 3
-        case .naturalDeviations: return 5
-        case .widerVariations: return 8
-        case .freePlay: return nil
-        }
+        AppConfig.learning.threshold(for: self).minimumGames
     }
 
     var nextPhase: LearningPhase? {
@@ -45,6 +35,16 @@ extension LearningPhase {
         case .naturalDeviations: return "Handle common opponent deviations"
         case .widerVariations: return "Master wider variations and transpositions"
         case .freePlay: return "Play freely with full opening knowledge"
+        }
+    }
+
+    /// Map legacy phase to the new learning layer system.
+    var correspondingLayer: LearningLayer {
+        switch self {
+        case .learningMainLine: return .understandPlan
+        case .naturalDeviations: return .executePlan
+        case .widerVariations: return .handleVariety
+        case .freePlay: return .realConditions
         }
     }
 }

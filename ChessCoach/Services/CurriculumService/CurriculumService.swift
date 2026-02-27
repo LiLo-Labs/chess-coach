@@ -101,4 +101,55 @@ final class CurriculumService: Sendable {
         let moveHistory = moves.prefix(ply).map(\.uci)
         return opening.continuations(afterMoves: Array(moveHistory))
     }
+
+    // MARK: - PES-Based Categorization
+
+    /// Categorize a move based on its Plan Execution Score.
+    /// Used when plan data is available (v2 flow).
+    func categorizeFromPES(_ pes: PlanExecutionScore) -> MoveCategory {
+        switch pes.category {
+        case .masterful, .strong:
+            return .goodMove
+        case .solid:
+            return .okayMove
+        case .developing, .needsWork:
+            return .mistake
+        }
+    }
+
+    /// Get Maia override for the new layer-based system.
+    /// Layers 1-2: Force book moves. Layer 3+: Free play.
+    func getMaiaOverrideForLayer(atPly ply: Int, layer: LearningLayer) -> String? {
+        let line = moves
+
+        switch layer {
+        case .understandPlan:
+            // Always force line moves during plan understanding
+            guard ply < line.count else { return nil }
+            return line[ply].uci
+
+        case .executePlan:
+            // Force opponent moves for first 4 plies to set up the position
+            if ply < 4 && ply < line.count {
+                return line[ply].uci
+            }
+            return nil
+
+        case .discoverTheory:
+            // Force book moves to demonstrate the canonical order
+            guard ply < line.count else { return nil }
+            return line[ply].uci
+
+        case .handleVariety:
+            // Force first 2 plies, then use varied opponent service
+            if ply < 2 && ply < line.count {
+                return line[ply].uci
+            }
+            return nil
+
+        case .realConditions:
+            // Never override — full freedom
+            return nil
+        }
+    }
 }

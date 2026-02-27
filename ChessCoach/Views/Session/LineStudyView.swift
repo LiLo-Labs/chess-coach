@@ -131,7 +131,7 @@ struct LineStudyView: View {
                 .foregroundStyle(AppColor.secondaryText)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Previous move")
+            .accessibilityLabel("Back to opening detail")
 
             Spacer()
 
@@ -346,6 +346,7 @@ struct LineStudyView: View {
                 Image(systemName: "hare.fill")
                     .font(.system(size: 10))
                     .foregroundStyle(AppColor.tertiaryText)
+                    .accessibilityHidden(true)
 
                 speedButton(label: "1s", value: 1.0)
                 speedButton(label: "2s", value: 2.0)
@@ -355,6 +356,7 @@ struct LineStudyView: View {
                 Image(systemName: "tortoise.fill")
                     .font(.system(size: 10))
                     .foregroundStyle(AppColor.tertiaryText)
+                    .accessibilityHidden(true)
             }
         }
         .padding(.vertical, AppSpacing.screenPadding)

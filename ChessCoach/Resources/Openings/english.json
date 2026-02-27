@@ -1,0 +1,675 @@
+{
+  "id": "english",
+  "name": "English Opening",
+  "description": "A flexible opening where White controls the center from the flank. Can transpose into many different positions.",
+  "color": "white",
+  "difficulty": 2,
+  "tree": {
+    "id": "english/root",
+    "children": [
+      {
+        "id": "english/c2c4",
+        "move": {
+          "uci": "c2c4",
+          "san": "c4",
+          "explanation": "Welcome to the English Opening! Instead of charging straight into the center, you stake a claim on the d5 square from the side — like sneaking around to control the playground without starting a fight."
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "english/c2c4/e7e5",
+            "move": {
+              "uci": "e7e5",
+              "san": "e5",
+              "explanation": "Black plants a pawn right in the center, claiming space and daring White to challenge it."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "english/c2c4/e7e5/b1c3",
+                "move": {
+                  "uci": "b1c3",
+                  "san": "Nc3",
+                  "explanation": "Develop the queen's knight toward the center. It puts pressure on d5 and e4 and helps control the important central squares."
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "english/c2c4/e7e5/b1c3/g8f6",
+                    "move": {
+                      "uci": "g8f6",
+                      "san": "Nf6",
+                      "explanation": "Black develops the knight to a great central square, attacking the c4 pawn and preparing to castle."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "english/c2c4/e7e5/b1c3/g8f6/g1f3",
+                        "move": {
+                          "uci": "g1f3",
+                          "san": "Nf3",
+                          "explanation": "Develop your king's knight to its ideal square. It eyes the e5 pawn and prepares to fianchetto your bishop with g3."
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "english/c2c4/e7e5/b1c3/g8f6/g1f3/b8c6",
+                            "move": {
+                              "uci": "b8c6",
+                              "san": "Nc6",
+                              "explanation": "Black develops the other knight, defending e5 and fighting for the center. Now both sides have two knights out — great development!"
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "english/c2c4/e7e5/b1c3/g8f6/g1f3/b8c6/g2g3",
+                                "move": {
+                                  "uci": "g2g3",
+                                  "san": "g3",
+                                  "explanation": "Prepare to fianchetto your bishop on g2. This bishop will be a powerful long-range piece, controlling the center from the side."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "english/c2c4/e7e5/b1c3/g8f6/g1f3/b8c6/g2g3/f8b4",
+                                    "move": {
+                                      "uci": "f8b4",
+                                      "san": "Bb4",
+                                      "explanation": "Black pins your c3 knight, preventing it from capturing the e5 pawn. This is an aggressive and principled response."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "english/c2c4/e7e5/b1c3/g8f6/g1f3/b8c6/g2g3/f8b4/f1g2",
+                                        "move": {
+                                          "uci": "f1g2",
+                                          "san": "Bg2",
+                                          "explanation": "Complete the fianchetto! Your bishop on g2 is a mighty piece that controls the whole long diagonal from g2 to a8."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "english/c2c4/e7e5/b1c3/g8f6/g1f3/b8c6/g2g3/f8b4/f1g2/e8g8",
+                                            "move": {
+                                              "uci": "e8g8",
+                                              "san": "O-O",
+                                              "explanation": "Black castles to safety. Both sides are developing smoothly — the game is evenly balanced."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "english/c2c4/e7e5/b1c3/g8f6/g1f3/b8c6/g2g3/f8b4/f1g2/e8g8/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "Castle! Your king is safe and your rook joins the game. Now you can focus on the center with moves like d3 and a3."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "english/c2c4/e7e5/b1c3/g8f6/g1f3/b8c6/g2g3/f8b4/f1g2/e8g8/e1g1/e5e4",
+                                                    "move": {
+                                                      "uci": "e5e4",
+                                                      "san": "e4",
+                                                      "explanation": "Black pushes the pawn forward aggressively, trying to cramp White's position. Now Ng5 or Ne1 followed by d3 will dissolve the pawn."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "english/c2c4/c7c5",
+            "move": {
+              "uci": "c7c5",
+              "san": "c5",
+              "explanation": "Black mirrors your move! This creates a symmetrical position — both sides fight for the same squares."
+            },
+            "isMainLine": false,
+            "weight": 185,
+            "variationName": "Symmetrical English",
+            "children": [
+              {
+                "id": "english/c2c4/c7c5/b1c3",
+                "move": {
+                  "uci": "b1c3",
+                  "san": "Nc3",
+                  "explanation": "Develop the knight toward the center. In symmetrical positions, good development is the key to getting an advantage."
+                },
+                "isMainLine": false,
+                "weight": 170,
+                "children": [
+                  {
+                    "id": "english/c2c4/c7c5/b1c3/b8c6",
+                    "move": {
+                      "uci": "b8c6",
+                      "san": "Nc6",
+                      "explanation": "Black mirrors again with the queen's knight. This pure symmetry is a hallmark of the Symmetrical English."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "english/c2c4/c7c5/b1c3/b8c6/g2g3",
+                        "move": {
+                          "uci": "g2g3",
+                          "san": "g3",
+                          "explanation": "Break the symmetry by starting the fianchetto. You aim to get the bishop on g2 and then castle, reaching a very comfortable setup."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "english/c2c4/c7c5/b1c3/b8c6/g2g3/g7g6",
+                            "move": {
+                              "uci": "g7g6",
+                              "san": "g6",
+                              "explanation": "Black also fianchettos! Now both sides will have bishops pointing toward the middle — a fascinating battle of long diagonals."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "english/c2c4/c7c5/b1c3/b8c6/g2g3/g7g6/f1g2",
+                                "move": {
+                                  "uci": "f1g2",
+                                  "san": "Bg2",
+                                  "explanation": "Place the bishop on g2 — the best diagonal in the English Opening. It reaches all the way to a8 and controls many important squares."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "english/c2c4/c7c5/b1c3/b8c6/g2g3/g7g6/f1g2/f8g7",
+                                    "move": {
+                                      "uci": "f8g7",
+                                      "san": "Bg7",
+                                      "explanation": "Black completes the fianchetto too. The g7 bishop will fight hard against your g2 bishop for control of the long diagonal."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "english/c2c4/c7c5/b1c3/b8c6/g2g3/g7g6/f1g2/f8g7/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "Develop the king's knight and prepare to castle. You have a well-coordinated setup ready for the middlegame."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "english/c2c4/c7c6",
+            "move": {
+              "uci": "c7c6",
+              "san": "c6",
+              "explanation": "Black plays the Slav setup, preparing to support a d5 pawn advance. This is a very solid and careful choice."
+            },
+            "isMainLine": false,
+            "weight": 185,
+            "variationName": "Anglo-Slav",
+            "children": [
+              {
+                "id": "english/c2c4/c7c6/g1f3",
+                "move": {
+                  "uci": "g1f3",
+                  "san": "Nf3",
+                  "explanation": "Develop the knight and wait to see what Black does. The English is very flexible — you can decide your setup based on Black's choices."
+                },
+                "isMainLine": false,
+                "weight": 170,
+                "children": [
+                  {
+                    "id": "english/c2c4/c7c6/g1f3/d7d5",
+                    "move": {
+                      "uci": "d7d5",
+                      "san": "d5",
+                      "explanation": "Black advances the d-pawn as planned. Now the c4 pawn and the d5 pawn are in direct contact."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "english/c2c4/c7c6/g1f3/d7d5/c4d5",
+                        "move": {
+                          "uci": "c4d5",
+                          "san": "cxd5",
+                          "explanation": "Exchange in the center. This opens the position slightly and forces Black to decide how to recapture."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "english/c2c4/c7c6/g1f3/d7d5/c4d5/c6d5",
+                            "move": {
+                              "uci": "c6d5",
+                              "san": "cxd5",
+                              "explanation": "Black recaptures with the c-pawn, keeping a strong pawn center. The position now resembles a Panov Attack from the Caro-Kann."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "english/c2c4/c7c6/g1f3/d7d5/c4d5/c6d5/d2d4",
+                                "move": {
+                                  "uci": "d2d4",
+                                  "san": "d4",
+                                  "explanation": "Establish a strong pawn center with d4 and e-pawn later. Now you have space and active play ahead."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "english/c2c4/c7c6/g1f3/d7d5/c4d5/c6d5/d2d4/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Black develops actively, attacking the d4 pawn. Both sides are racing to complete development."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "english/c2c4/c7c6/g1f3/d7d5/c4d5/c6d5/d2d4/g8f6/b1c3",
+                                        "move": {
+                                          "uci": "b1c3",
+                                          "san": "Nc3",
+                                          "explanation": "Develop the knight and support the d4 pawn. The position is balanced with rich play ahead for both sides."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "english/c2c4/e7e6",
+            "move": {
+              "uci": "e7e6",
+              "san": "e6",
+              "explanation": "Black plays a cautious move, supporting a future d5 and keeping the position solid. This often leads to Queen's Gambit-style positions."
+            },
+            "isMainLine": false,
+            "weight": 185,
+            "variationName": "English: ...e6 setup",
+            "children": [
+              {
+                "id": "english/c2c4/e7e6/g1f3",
+                "move": {
+                  "uci": "g1f3",
+                  "san": "Nf3",
+                  "explanation": "Develop the knight toward the center. The English is very flexible — you can adopt a fianchetto setup regardless of what Black does."
+                },
+                "isMainLine": false,
+                "weight": 170,
+                "children": [
+                  {
+                    "id": "english/c2c4/e7e6/g1f3/d7d5",
+                    "move": {
+                      "uci": "d7d5",
+                      "san": "d5",
+                      "explanation": "Black occupies the center with two pawns. This is a very classical, solid approach."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "english/c2c4/e7e6/g1f3/d7d5/g2g3",
+                        "move": {
+                          "uci": "g2g3",
+                          "san": "g3",
+                          "explanation": "Begin the fianchetto — this will transpose into a Catalan-style position, one of White's most powerful setups against d5 and e6."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "english/c2c4/e7e6/g1f3/d7d5/g2g3/g8f6",
+                            "move": {
+                              "uci": "g8f6",
+                              "san": "Nf6",
+                              "explanation": "Black develops the knight to a great central square. Both sides are building up their positions carefully."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "english/c2c4/e7e6/g1f3/d7d5/g2g3/g8f6/f1g2",
+                                "move": {
+                                  "uci": "f1g2",
+                                  "san": "Bg2",
+                                  "explanation": "Complete the fianchetto! The g2 bishop will apply long-term pressure on the d5 pawn and the queenside."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "english/c2c4/e7e6/g1f3/d7d5/g2g3/g8f6/f1g2/f8e7",
+                                    "move": {
+                                      "uci": "f8e7",
+                                      "san": "Be7",
+                                      "explanation": "Black develops the bishop safely to e7, preparing to castle. This solid approach is very popular at all levels."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "english/c2c4/e7e6/g1f3/d7d5/g2g3/g8f6/f1g2/f8e7/e1g1",
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle and reach the standard Catalan setup. Your bishop on g2 will squeeze Black's position for the whole game."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Control the center indirectly with 1.c4, develop knights and fianchetto the king's bishop on g2, then castle and apply long-term pressure with the powerful g2 bishop. Stay flexible — the English can adapt to almost any Black response.",
+    "strategicGoals": [
+      { "description": "Control d5 and e4 from the flank with c4 and the knights", "priority": 1 },
+      { "description": "Fianchetto the king's bishop on g2 to dominate the long diagonal", "priority": 2 },
+      { "description": "Castle kingside early for king safety", "priority": 3 },
+      { "description": "Squeeze Black's position with long-term positional pressure", "priority": 4 }
+    ],
+    "pawnStructureTarget": "c4 flank control with flexible d3/d4 options",
+    "keySquares": ["d5", "e4", "g2", "c4"],
+    "pieceTargets": [
+      { "piece": "king's bishop", "idealSquares": ["g2"], "reasoning": "The fianchettoed bishop controls the long a8-g2 diagonal, pressuring the queenside and center for many moves" },
+      { "piece": "queen's knight", "idealSquares": ["c3"], "reasoning": "Controls d5 and supports the c4 pawn — the engine of the English Opening" },
+      { "piece": "king's knight", "idealSquares": ["f3"], "reasoning": "Fights for e5 and d4, supports a future d4 push and defends the kingside after castling" }
+    ],
+    "typicalPlans": [
+      "Fianchetto the bishop (g3, Bg2) and castle, then apply positional pressure",
+      "Play d3 and Nbd2 to support a later e4 push in the center",
+      "In the Symmetrical English, try to be the first to break symmetry with a well-timed d4"
+    ],
+    "commonMistakes": [
+      "Rushing d4 without the bishop on g2 to support it",
+      "Playing Nc3 and then blocking the c-pawn's advance — coordinate your pieces first",
+      "Forgetting that the English is patient — don't attack prematurely before development is complete"
+    ],
+    "historicalNote": "The English Opening is named after Howard Staunton, the leading English player who popularized it in the 1840s. It became a favorite of world champions Mikhail Botvinnik, Anatoly Karpov, and Garry Kasparov, who used it to steer the game into strategic battles they controlled.",
+    "planLessons": [
+      {
+        "title": "The Idea of 1.c4",
+        "description": "Instead of fighting for the center with a pawn on e4 or d4, White controls the important d5 square from the side. It's like guarding the middle of the playground from the edge — sneaky and effective!",
+        "fen": "rnbqkbnr/pppppppp/8/8/2P5/8/PP1PPPPP/RNBQKBNR b KQkq c3 0 1",
+        "highlights": ["c4", "d5"],
+        "arrows": [{"from": "c4", "to": "d5"}],
+        "style": "good"
+      },
+      {
+        "title": "The Powerful Fianchetto Bishop",
+        "description": "After g3 and Bg2, your bishop becomes a long-range sniper on the g2-a8 diagonal. It controls many squares without even moving — patient and powerful!",
+        "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2P5/2N3P1/PP1PPP1P/R1BQKBNR b KQkq - 0 3",
+        "highlights": ["g3", "g2"],
+        "arrows": [{"from": "g2", "to": "a8"}],
+        "style": "good"
+      },
+      {
+        "title": "The Symmetrical English Trap",
+        "description": "When Black copies every move (c5, Nc6, g6...), you must break symmetry first. Playing d4 at the right moment gives you the advantage — Black's copy-cat strategy will fall apart.",
+        "fen": "r1bqk1nr/pp1pppbp/2n3p1/2p5/2P5/2N3P1/PP1PPPBP/R1BQK1NR w KQkq - 4 5",
+        "highlights": ["c4", "c5"],
+        "arrows": [{"from": "d2", "to": "d4"}],
+        "style": "neutral"
+      },
+      {
+        "title": "Castle Before Attacking",
+        "description": "Get your king to safety on g1 before pushing pawns or attacking. The English is a long-game opening — patience and safety first!",
+        "fen": "r1bq1rk1/pppp1ppp/2n2n2/4p3/2P5/2N2NP1/PP1PPPBP/R1BQ1RK1 b - - 6 5",
+        "highlights": ["g1", "f1"],
+        "arrows": [],
+        "style": "good"
+      },
+      {
+        "title": "Don't Rush d4 Too Early",
+        "description": "Jumping to d4 before developing your pieces can backfire. Here Black has a solid position and your pawn center becomes a target. Develop first!",
+        "fen": "rnbqkbnr/pppp1ppp/8/4p3/2PP4/8/PP2PPPP/RNBQKBNR b KQkq d3 0 2",
+        "highlights": ["d4", "e5"],
+        "arrows": [{"from": "e5", "to": "d4"}],
+        "style": "bad"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkbnr/pppp1ppp/8/4p3/2P5/8/PP1PPPPP/RNBQKBNR w KQkq - 0 2",
+        "prompt": "You played 1.c4 and Black responded 1...e5. What is your best next move?",
+        "choices": [
+          {"text": "Nc3 — develop the knight and pressure d5 and e4", "isCorrect": true},
+          {"text": "c5 — advance the pawn further", "isCorrect": false},
+          {"text": "Qa4+ — early queen attack", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Nc3 is the right idea — develop pieces toward the center. The queen's knight belongs on c3 where it fights for the key squares. The other moves waste time or put pieces on bad squares.",
+        "boardHighlightsOnReveal": ["c3"],
+        "arrowsOnReveal": [{"from": "b1", "to": "c3"}]
+      },
+      {
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2P5/2N3P1/PP1PPP1P/R1BQKBNR b KQkq - 0 4",
+        "prompt": "White has played g3. What is the best square for the bishop?",
+        "choices": [
+          {"text": "g2 — fianchetto! The best square in the English", "isCorrect": true},
+          {"text": "e2 — safe but passive", "isCorrect": false},
+          {"text": "d3 — blocks the d-pawn", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Bg2 completes the fianchetto! The bishop on g2 is a powerhouse in the English Opening, controlling the long diagonal and putting pressure on Black's position for the entire game.",
+        "boardHighlightsOnReveal": ["g2"],
+        "arrowsOnReveal": [{"from": "f1", "to": "g2"}]
+      },
+      {
+        "fen": "r1bqk1nr/pppp1ppp/2n5/4p3/2P5/2N2NP1/PP1PPP1P/R1BQKB1R b KQkq - 2 4",
+        "prompt": "It's Black's turn. Black copies with ...g6. What should White do next?",
+        "choices": [
+          {"text": "Bg2 — complete the fianchetto and keep building", "isCorrect": true},
+          {"text": "d4 — immediately break the symmetry with a pawn push", "isCorrect": false},
+          {"text": "h4 — attack on the kingside right away", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Complete your development first with Bg2 before doing anything aggressive. In the English Opening, finishing your setup calmly puts you in an excellent position for the middlegame.",
+        "boardHighlightsOnReveal": ["g2", "g3"],
+        "arrowsOnReveal": [{"from": "f1", "to": "g2"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Four Knights English (A28)",
+        "description": "After 1.c4 e5 2.Nc3 Nf6 3.Nf3 Nc6, all four knights are developed. This is one of the most classical English positions, rich with strategic ideas and transpositional possibilities.",
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2P5/2N2N2/PP1PPPPP/R1BQKB1R w KQkq - 4 4",
+        "highlights": ["c3", "f3", "c6", "f6"],
+        "arrows": [{"from": "c4", "to": "d5"}],
+        "style": "theory"
+      },
+      {
+        "title": "Symmetrical English (A30)",
+        "description": "After 1.c4 c5, both sides fight for the same squares with mirror symmetry. White must break the symmetry at the right moment — usually with d4 — to claim an advantage.",
+        "fen": "rnbqkbnr/pp1ppppp/8/2p5/2P5/8/PP1PPPPP/RNBQKBNR w KQkq c6 0 2",
+        "highlights": ["c4", "c5"],
+        "arrows": [{"from": "d2", "to": "d4"}],
+        "style": "theory"
+      },
+      {
+        "title": "Anglo-Slav / Anglo-Indian (A11)",
+        "description": "After 1.c4 c6, Black prepares a Slav Defense setup. White responds with Nf3 and g3, reaching a flexible position that can transpose into the Catalan or Reti.",
+        "fen": "rnbqkbnr/pp1ppppp/2p5/8/2P5/8/PP1PPPPP/RNBQKBNR w KQkq - 0 2",
+        "highlights": ["c4", "c6"],
+        "arrows": [{"from": "g1", "to": "f3"}],
+        "style": "theory"
+      },
+      {
+        "title": "The Bb4 Pin in the Four Knights",
+        "description": "When Black plays ...Bb4, pinning your Nc3, the correct response is Bg2 — complete your development. The pin is not dangerous because your g2 bishop will be so strong that the knight's loss would be compensated.",
+        "fen": "r1bqk2r/pppp1ppp/2n2n2/4p3/1bP5/2N2NP1/PP1PPP1P/R1BQKB1R w KQkq - 2 5",
+        "highlights": ["b4", "c3"],
+        "arrows": [{"from": "f1", "to": "g2"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2P5/2N2N2/PP1PPPPP/R1BQKB1R w KQkq - 4 4",
+        "prompt": "This Four Knights English position is reached after 1.c4 e5 2.Nc3 Nf6 3.Nf3 Nc6. What is White's best next move?",
+        "choices": [
+          {"text": "g3 — begin the fianchetto setup", "isCorrect": true},
+          {"text": "e4 — grab the center with a pawn", "isCorrect": false},
+          {"text": "d4 — attack the center immediately", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "g3 begins the fianchetto, which is White's most thematic plan in the English Opening. After Bg2 and O-O, the bishop on g2 will control the board for many moves.",
+        "boardHighlightsOnReveal": ["g3"],
+        "arrowsOnReveal": [{"from": "f1", "to": "g2"}]
+      },
+      {
+        "fen": "rnbqkbnr/pp1ppppp/8/2p5/2P5/8/PP1PPPPP/RNBQKBNR w KQkq c6 0 2",
+        "prompt": "Black has played 1...c5, copying your move. This variation is called the...?",
+        "choices": [
+          {"text": "Symmetrical English", "isCorrect": true},
+          {"text": "Anglo-Slav", "isCorrect": false},
+          {"text": "King's Indian Attack", "isCorrect": false},
+          {"text": "Reti Opening", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "When Black mirrors 1.c4 with 1...c5, it's the Symmetrical English (ECO A30). Both pawns fight for the same squares, and White must break the symmetry at the right time — usually with d4.",
+        "boardHighlightsOnReveal": ["c4", "c5"],
+        "arrowsOnReveal": []
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["c2c4"],
+    "responses": [
+      {
+        "id": "english-e5",
+        "move": {
+          "uci": "e7e5",
+          "san": "e5",
+          "explanation": "Black stakes out the center with the king's pawn, fighting for space immediately."
+        },
+        "name": "Reversed Sicilian / King's English",
+        "eco": "A21",
+        "frequency": 0.30,
+        "description": "Black occupies the center with e5, leading to the King's English. This is the most classical and fighting response.",
+        "planAdjustment": "Play Nc3, Nf3, g3, Bg2, and O-O. The four knights setup with the fianchetto is your most reliable plan against e5."
+      },
+      {
+        "id": "english-c5",
+        "move": {
+          "uci": "c7c5",
+          "san": "c5",
+          "explanation": "Black mirrors your move, creating the Symmetrical English where both sides fight for the same central squares."
+        },
+        "name": "Symmetrical English",
+        "eco": "A30",
+        "frequency": 0.25,
+        "description": "Black mirrors 1.c4 with 1...c5, creating a symmetrical battle. White must break symmetry at the right time.",
+        "planAdjustment": "Play Nc3, g3, Bg2, Nf3, and O-O. Look for the right moment to play d4 and break the symmetry — that's when you gain an edge."
+      },
+      {
+        "id": "english-nf6",
+        "move": {
+          "uci": "g8f6",
+          "san": "Nf6",
+          "explanation": "Black develops the knight immediately, keeping options open. This flexible move delays revealing Black's pawn structure."
+        },
+        "name": "Anglo-Indian Defense",
+        "eco": "A15",
+        "frequency": 0.25,
+        "description": "Black plays Nf6 without committing pawns, leading to an Anglo-Indian structure with many transpositional options.",
+        "planAdjustment": "Play Nc3, g3, Bg2, Nf3, O-O, and then decide between d4 (Catalan-style) or d3 (King's Indian Attack-style) based on how Black sets up."
+      },
+      {
+        "id": "english-e6",
+        "move": {
+          "uci": "e7e6",
+          "san": "e6",
+          "explanation": "Black plays a cautious, solid move preparing d5. This often leads to Queen's Gambit or Catalan-style positions."
+        },
+        "name": "English: ...e6 System",
+        "eco": "A13",
+        "frequency": 0.20,
+        "description": "Black sets up a solid structure with e6 and d5, similar to the Queen's Gambit Declined. Transposes well into Catalan.",
+        "planAdjustment": "Respond with Nf3, g3, Bg2, and O-O — you'll reach a Catalan-like position where the g2 bishop slowly squeezes Black's queenside."
+      }
+    ]
+  }
+}

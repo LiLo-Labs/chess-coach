@@ -1,0 +1,588 @@
+{
+  "id": "kings-gambit",
+  "name": "King's Gambit",
+  "description": "One of the oldest and most romantic openings. White sacrifices a pawn for rapid development and attacking chances.",
+  "color": "white",
+  "difficulty": 3,
+  "tree": {
+    "id": "kings-gambit/root",
+    "children": [
+      {
+        "id": "kings-gambit/e2e4",
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "Stake a claim in the center! The king's pawn opening controls key central squares and opens lines for your bishop and queen."
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "kings-gambit/e2e4/e7e5",
+            "move": {
+              "uci": "e7e5",
+              "san": "e5",
+              "explanation": "Black fights for the center too, creating a tense, balanced position where both sides have equal central pawns."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "kings-gambit/e2e4/e7e5/f2f4",
+                "move": {
+                  "uci": "f2f4",
+                  "san": "f4",
+                  "explanation": "The King's Gambit! White boldly offers a pawn — this is one of the oldest and most exciting moves in chess. If Black takes, you'll get a huge lead in development and a powerful attack!"
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "kings-gambit/e2e4/e7e5/f2f4/e5f4",
+                    "move": {
+                      "uci": "e5f4",
+                      "san": "exf4",
+                      "explanation": "Black accepts the gambit and grabs the pawn! Now the f-file is open and White must develop fast to take advantage of the extra space in the center."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "kings-gambit/e2e4/e7e5/f2f4/e5f4/g1f3",
+                        "move": {
+                          "uci": "g1f3",
+                          "san": "Nf3",
+                          "explanation": "Develop the knight and attack! Nf3 controls the center and threatens to build a strong pawn center with d4. Now the fun begins!"
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "kings-gambit/e2e4/e7e5/f2f4/e5f4/g1f3/g7g5",
+                            "move": {
+                              "uci": "g7g5",
+                              "san": "g5",
+                              "explanation": "Black defends the f4 pawn aggressively by advancing the g-pawn. This is the classic King's Gambit Accepted main line — very sharp and exciting!"
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "kings-gambit/e2e4/e7e5/f2f4/e5f4/g1f3/g7g5/f1c4",
+                                "move": {
+                                  "uci": "f1c4",
+                                  "san": "Bc4",
+                                  "explanation": "The Muzio Gambit setup! Your bishop targets f7 while your knight on f3 is under attack from g5. You're ready to sacrifice even more material for a devastating attack!"
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "kings-gambit/e2e4/e7e5/f2f4/e5f4/g1f3/g7g5/f1c4/g5g4",
+                                    "move": {
+                                      "uci": "g5g4",
+                                      "san": "g4",
+                                      "explanation": "Black pushes the g-pawn again, attacking your knight! This is the critical position — do you retreat or sacrifice? The Muzio Gambit says sacrifice!"
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "kings-gambit/e2e4/e7e5/f2f4/e5f4/g1f3/g7g5/f1c4/g5g4/e1g1",
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "The Muzio Gambit! You sacrifice your knight on f3 by castling into the attack. Your rook rushes to f1 and your pieces will come crashing in. Pure attacking chess!"
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "kings-gambit/e2e4/e7e5/f2f4/e5f4/g1f3/g7g5/f1c4/g5g4/e1g1/g4f3",
+                                            "move": {
+                                              "uci": "g4f3",
+                                              "san": "gxf3",
+                                              "explanation": "Black takes the knight — now you have sacrificed a whole knight! But your rook on f1 is staring at f7 and the queen is ready to join the attack."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "kings-gambit/e2e4/e7e5/f2f4/e5f4/g1f3/g7g5/f1c4/g5g4/e1g1/g4f3/d1f3",
+                                                "move": {
+                                                  "uci": "d1f3",
+                                                  "san": "Qxf3",
+                                                  "explanation": "The queen recaptures on f3 with huge threats! She eyes f7 alongside the bishop on c4. Black's king is in serious danger — this is the dream King's Gambit position!"
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "kings-gambit/e2e4/e7e5/f2f4/d7d5",
+                    "move": {
+                      "uci": "d7d5",
+                      "san": "d5",
+                      "explanation": "The Falkbeer Counter-Gambit! Instead of accepting the f4 pawn, Black strikes back in the center with d5. A very aggressive and principled response!"
+                    },
+                    "isMainLine": false,
+                    "variationName": "Falkbeer Counter-Gambit",
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "kings-gambit/e2e4/e7e5/f2f4/d7d5/e4d5",
+                        "move": {
+                          "uci": "e4d5",
+                          "san": "exd5",
+                          "explanation": "Capture the pawn! You accept the trade in the center and now Black will try to push their e-pawn forward aggressively."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "kings-gambit/e2e4/e7e5/f2f4/d7d5/e4d5/e5e4",
+                            "move": {
+                              "uci": "e5e4",
+                              "san": "e4",
+                              "explanation": "Black's pawn marches forward! This is the point of the Falkbeer — Black gets an aggressive passed pawn in the center that cramps White's pieces."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "kings-gambit/e2e4/e7e5/f2f4/d7d5/e4d5/e5e4/d2d3",
+                                "move": {
+                                  "uci": "d2d3",
+                                  "san": "d3",
+                                  "explanation": "Challenge the e4 pawn immediately! This is the standard way to fight back against the Falkbeer — you must not let Black keep that powerful pawn in the center."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "kings-gambit/e2e4/e7e5/f2f4/d7d5/e4d5/e5e4/d2d3/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Black develops the knight while keeping the pawn tension. This position is exciting — both sides have active plans!"
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "kings-gambit/e2e4/e7e5/f2f4/d7d5/e4d5/e5e4/d2d3/g8f6/b1c3",
+                                        "move": {
+                                          "uci": "b1c3",
+                                          "san": "Nc3",
+                                          "explanation": "Develop the queen's knight to help push back the e4 pawn. You're fighting for the center while Black tries to hold onto their space advantage."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "kings-gambit/e2e4/e7e5/f2f4/d7d5/e4d5/e5e4/d2d3/g8f6/b1c3/f8b4",
+                                            "move": {
+                                              "uci": "f8b4",
+                                              "san": "Bb4",
+                                              "explanation": "Black pins the knight with check, adding pressure. This is a typical Falkbeer position where Black has active piece play in return for the pawn structure."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5",
+                    "move": {
+                      "uci": "f8c5",
+                      "san": "Bc5",
+                      "explanation": "The Classical Defense (King's Gambit Declined)! Black develops the bishop actively to c5, declining the pawn and counterattacking White's center."
+                    },
+                    "isMainLine": false,
+                    "variationName": "Classical Defense",
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5/g1f3",
+                        "move": {
+                          "uci": "g1f3",
+                          "san": "Nf3",
+                          "explanation": "Develop your knight toward the center. You maintain the f4 pawn and prepare for a solid developing sequence."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5/g1f3/d7d6",
+                            "move": {
+                              "uci": "d7d6",
+                              "san": "d6",
+                              "explanation": "Black solidifies the e5 pawn with d6. This creates a solid structure but gives White a clear plan of developing pieces and building up."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5/g1f3/d7d6/b1c3",
+                                "move": {
+                                  "uci": "b1c3",
+                                  "san": "Nc3",
+                                  "explanation": "Develop the queen's knight! You're building a strong position with pieces aimed at the center. Castle soon and you'll be ready to attack."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5/g1f3/d7d6/b1c3/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Black develops the knight, contesting the center. The position is becoming more balanced — you need to find the right plan to keep the initiative."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5/g1f3/d7d6/b1c3/g8f6/f1c4",
+                                        "move": {
+                                          "uci": "f1c4",
+                                          "san": "Bc4",
+                                          "explanation": "The bishop joins the game, aiming at f7! Now you threaten Bxf7+ and your pieces are all pointing at Black's king. Castle and attack!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5",
+                    "move": {
+                      "uci": "f8c5",
+                      "san": "Bc5",
+                      "explanation": "The King's Gambit Declined — Black opts not to take on f4 and instead develops the bishop aggressively."
+                    },
+                    "isMainLine": false,
+                    "variationName": "King's Gambit Declined",
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5/g1f3",
+                        "move": {
+                          "uci": "g1f3",
+                          "san": "Nf3",
+                          "explanation": "Develop your knight and maintain the tension. Your pawn on f4 stays, adding pressure to Black's position."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5/g1f3/d7d6",
+                            "move": {
+                              "uci": "d7d6",
+                              "san": "d6",
+                              "explanation": "Black supports the e5 pawn. Now White must decide whether to keep the pawn tension or release it."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5/g1f3/d7d6/c2c3",
+                                "move": {
+                                  "uci": "c2c3",
+                                  "san": "c3",
+                                  "explanation": "Prepare d4! With c3, you set up the strong center push that will challenge Black's bishop and open the game in your favor."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5/g1f3/d7d6/c2c3/c8g4",
+                                    "move": {
+                                      "uci": "c8g4",
+                                      "san": "Bg4",
+                                      "explanation": "Black pins your knight with the bishop! This adds pressure to your center. You need to decide how to handle this pin."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "kings-gambit/e2e4/e7e5/f2f4/f8c5/g1f3/d7d6/c2c3/c8g4/f4e5",
+                                        "move": {
+                                          "uci": "f4e5",
+                                          "san": "fxe5",
+                                          "explanation": "Release the pawn tension! After fxe5, you open the f-file and create new opportunities. Black's bishop on g4 may soon become misplaced."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Sacrifice the f-pawn for a huge development lead and an open f-file, then develop all pieces rapidly toward the center and kingside. Castle and unleash your pieces against Black's king before Black can return the pawn and consolidate.",
+    "strategicGoals": [
+      { "description": "Give up the f-pawn to open the f-file and gain a development advantage", "priority": 1 },
+      { "description": "Build a strong pawn center with e4 and d4", "priority": 2 },
+      { "description": "Develop all pieces rapidly — Nf3, Bc4, and castle — before Black consolidates", "priority": 3 },
+      { "description": "Attack along the f-file and diagonals targeting f7", "priority": 4 }
+    ],
+    "pawnStructureTarget": "Strong e4/d4 center with open f-file for rook activity",
+    "keySquares": ["f4", "e4", "d4", "f7", "g5"],
+    "pieceTargets": [
+      { "piece": "king's knight", "idealSquares": ["f3"], "reasoning": "Controls d4 and e5, supports the d4 pawn push, and defends the kingside" },
+      { "piece": "light-squared bishop", "idealSquares": ["c4"], "reasoning": "Aims at f7 alongside the queen on f3, creating devastating kingside threats" },
+      { "piece": "king's rook", "idealSquares": ["f1"], "reasoning": "After castling the rook controls the open f-file — the main attacking weapon" }
+    ],
+    "typicalPlans": [
+      "Play Nf3, Bc4, and O-O to activate pieces and control the f-file",
+      "Advance d4 to build a strong pawn center after accepting the gambit",
+      "Attack with Qf3 or Qh5 in combination with Bc4 targeting f7"
+    ],
+    "commonMistakes": [
+      "Trying to hold onto the f-pawn with g5 too early, weakening the kingside severely",
+      "Playing h4 to attack the g5 pawn before developing pieces — development must come first",
+      "Forgetting to castle after sacrificing material — your king needs safety!"
+    ],
+    "historicalNote": "The King's Gambit was the most popular opening in the 1800s, played by legends like Paul Morphy, Adolf Anderssen, and Boris Spassky. Bobby Fischer declared it refuted in 1961 with 3...d6, but today it is still a powerful weapon at all levels.",
+    "planLessons": [
+      {
+        "title": "The Pawn Sacrifice: Why Give It Away?",
+        "description": "After 1.e4 e5 2.f4, White offers the f-pawn. If Black takes it, the f-file opens and White gains a huge lead in development. The pawn is the price you pay for a huge attack!",
+        "fen": "rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR b KQkq f3 0 2",
+        "highlights": ["f4", "e4"],
+        "arrows": [{"from": "f2", "to": "f4"}],
+        "style": "good"
+      },
+      {
+        "title": "The Open F-File Is Your Weapon",
+        "description": "After Black takes on f4, the f-file opens. After you castle, your rook on f1 becomes a powerful attacking piece. This is the heart of the King's Gambit — the f-file highway!",
+        "fen": "rnbqkb1r/pppp1ppp/5n2/8/2B1Pp2/5N2/PPPP2PP/RNBQK2R w KQkq - 2 4",
+        "highlights": ["f1", "f4", "f7"],
+        "arrows": [{"from": "e1", "to": "g1"}, {"from": "f1", "to": "f7"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Chase the g5 Pawn with h4 Too Early",
+        "description": "Playing h4 to attack Black's g5 pawn before developing all your pieces is a mistake. The g5 pawn is not going anywhere — develop first, then worry about it!",
+        "fen": "rnbqkb1r/pppp1ppp/5n2/6p1/4Pp1P/5N2/PPPP2PP/RNBQKB1R b KQkq h3 0 4",
+        "highlights": ["h4", "g5"],
+        "arrows": [{"from": "h2", "to": "h4"}],
+        "style": "bad"
+      },
+      {
+        "title": "The Muzio Gambit: Sacrifice the Knight!",
+        "description": "After 3.Nf3 g5 4.Bc4 g4, instead of retreating, White plays 5.O-O! The knight is sacrificed for a devastating attack. The queen comes to f3 and targets f7 together with the bishop.",
+        "fen": "rnbqkbnr/pppp1p1p/8/8/2B1Ppp1/5N2/PPPP2PP/RNBQK2R w KQkq - 0 5",
+        "highlights": ["f3", "c4", "f7"],
+        "arrows": [{"from": "e1", "to": "g1"}],
+        "style": "theory"
+      },
+      {
+        "title": "Build the Center with d4",
+        "description": "After developing Nf3 and Bc4, push d4 to build a dominant pawn center. With pawns on e4 and d4, your pieces will have room to maneuver and attack powerfully.",
+        "fen": "rnbqkb1r/pppp1ppp/5n2/8/2BPPp2/5N2/PPP3PP/RNBQK2R b KQkq d3 0 4",
+        "highlights": ["d4", "e4"],
+        "arrows": [{"from": "d2", "to": "d4"}],
+        "style": "good"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR b KQkq f3 0 2",
+        "prompt": "White just played f4. What is the main purpose of this move?",
+        "choices": [
+          {"text": "To offer a pawn and open the f-file for a rapid attack", "isCorrect": true},
+          {"text": "To defend the e4 pawn with another pawn", "isCorrect": false},
+          {"text": "To prepare to castle queenside", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "f4 is the King's Gambit! White sacrifices the f-pawn to open the f-file after Black takes. The open file becomes a highway for the rook after castling, enabling a powerful attack.",
+        "boardHighlightsOnReveal": ["f4", "e4"],
+        "arrowsOnReveal": [{"from": "f1", "to": "f4"}]
+      },
+      {
+        "fen": "rnbqkb1r/pppp1ppp/5n2/6p1/2B1Pp2/5N2/PPPP2PP/RNBQK2R w KQkq - 2 4",
+        "prompt": "Black pushed g5 to defend the f4 pawn. What is White's best response?",
+        "choices": [
+          {"text": "Castle (O-O) and use the rook on f1 as an attacker", "isCorrect": true},
+          {"text": "Take on g5 immediately with Nxg5", "isCorrect": false},
+          {"text": "Retreat the bishop to b3", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Castling is the key! After O-O, the rook comes to f1 pointing at f7. The queen can follow to f3, creating huge pressure. This is the Muzio Gambit — one of chess history's most exciting sacrifices!",
+        "boardHighlightsOnReveal": ["g1", "f1"],
+        "arrowsOnReveal": [{"from": "e1", "to": "g1"}]
+      },
+      {
+        "fen": "rnbqkb1r/pppp1ppp/5n2/8/2BPPp2/5N2/PPP3PP/RNBQK2R b KQkq d3 0 4",
+        "prompt": "After accepting the gambit, White just played d4. Why is this important?",
+        "choices": [
+          {"text": "It builds a strong pawn center on e4 and d4, giving White more space", "isCorrect": true},
+          {"text": "It attacks Black's knight on f6", "isCorrect": false},
+          {"text": "It prepares to queen the d-pawn", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "d4 is the key follow-up in the King's Gambit! It creates a powerful pawn center on d4 and e4, giving White more space and opening lines for the bishops. With open lines and a pawn center, the attack will be unstoppable.",
+        "boardHighlightsOnReveal": ["d4", "e4"],
+        "arrowsOnReveal": [{"from": "d2", "to": "d4"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "King's Gambit Accepted: Main Line (C37)",
+        "description": "After 1.e4 e5 2.f4 exf4 3.Nf3 g5 4.Bc4, this is the sharpest and most famous King's Gambit line. Black tries to hold the pawn with g5 and White aims at f7 with Bc4. Explosive tactics everywhere!",
+        "fen": "rnbqkbnr/pppp1p1p/8/6p1/2B1Pp2/5N2/PPPP2PP/RNBQK2R w KQkq g6 0 4",
+        "highlights": ["c4", "f4", "g5", "f7"],
+        "arrows": [{"from": "c4", "to": "f7"}],
+        "style": "theory"
+      },
+      {
+        "title": "The Muzio Gambit (C37)",
+        "description": "After 4...g4 5.O-O!, White sacrifices the knight on f3 for a ferocious attack. After 5...gxf3 6.Qxf3, the queen and bishop both point at f7. This is the most aggressive King's Gambit line — pure 19th century chess!",
+        "fen": "rnbqkbnr/pppp1p1p/8/8/2B1Ppp1/8/PPPP2PP/RNBQ1RK1 b kq - 1 5",
+        "highlights": ["f3", "c4", "f7", "g1"],
+        "arrows": [{"from": "d1", "to": "f3"}, {"from": "c4", "to": "f7"}],
+        "style": "theory"
+      },
+      {
+        "title": "Falkbeer Counter-Gambit (C31)",
+        "description": "After 2.f4, Black plays 2...d5! instead of taking on f4. This is the Falkbeer Counter-Gambit — Black sacrifices their own pawn to seize the initiative and fight for the center immediately.",
+        "fen": "rnbqkbnr/ppp2ppp/8/3pp3/4PP2/8/PPPP2PP/RNBQKBNR w KQkq d6 0 3",
+        "highlights": ["d5", "e5", "f4"],
+        "arrows": [{"from": "d7", "to": "d5"}],
+        "style": "theory"
+      },
+      {
+        "title": "King's Gambit Declined: Classical (C30)",
+        "description": "With 2...Bc5, Black declines the gambit and develops actively. White should continue with Nf3 and Nc3, maintaining the pawn on f4 and aiming for a solid positional game with the bishop targeting f7.",
+        "fen": "rnbqk1nr/pppp1ppp/8/2b1p3/4PP2/8/PPPP2PP/RNBQKBNR w KQkq - 1 3",
+        "highlights": ["c5", "f4", "f7"],
+        "arrows": [{"from": "g1", "to": "f3"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkbnr/pppp1p1p/8/6p1/2B1Pp2/5N2/PPPP2PP/RNBQK2R w KQkq g6 0 4",
+        "prompt": "This position arises after 1.e4 e5 2.f4 exf4 3.Nf3 g5 4.Bc4. What is the name of this variation?",
+        "choices": [
+          {"text": "King's Gambit Accepted, Kieseritzky Gambit", "isCorrect": true},
+          {"text": "Falkbeer Counter-Gambit", "isCorrect": false},
+          {"text": "Vienna Gambit", "isCorrect": false},
+          {"text": "King's Gambit Declined", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the King's Gambit Accepted with 3.Nf3 g5 4.Bc4 — leading to the Kieseritzky Gambit or Muzio Gambit lines depending on how Black continues. A key battleground of 19th century chess!",
+        "boardHighlightsOnReveal": ["c4", "f4", "g5"],
+        "arrowsOnReveal": [{"from": "c4", "to": "f7"}]
+      },
+      {
+        "fen": "rnbqkbnr/ppp2ppp/8/3pp3/4PP2/8/PPPP2PP/RNBQKBNR w KQkq d6 0 3",
+        "prompt": "Black responded to 2.f4 with d5 instead of taking the pawn. What is this called?",
+        "choices": [
+          {"text": "Falkbeer Counter-Gambit", "isCorrect": true},
+          {"text": "King's Gambit Declined", "isCorrect": false},
+          {"text": "Petroff Defense", "isCorrect": false},
+          {"text": "Vienna Gambit", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Falkbeer Counter-Gambit (C31)! Instead of accepting White's pawn with exf4, Black strikes back in the center with d5, offering their own pawn for counter-play and central activity.",
+        "boardHighlightsOnReveal": ["d5", "e5"],
+        "arrowsOnReveal": [{"from": "d7", "to": "d5"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["e2e4", "e7e5", "f2f4", "e5f4"],
+    "responses": [
+      {
+        "id": "kg-nf3-main",
+        "move": { "uci": "g1f3", "san": "Nf3", "explanation": "White develops the knight to f3, the main King's Gambit continuation, attacking e5 and preparing Bc4." },
+        "name": "King's Knight Variation",
+        "eco": "C37",
+        "frequency": 0.55,
+        "description": "White plays Nf3, the main line. After 3...g5, White typically plays Bc4 leading to Kieseritzky and Muzio Gambit territory.",
+        "planAdjustment": "Follow up with Bc4 after g5, aiming at f7. Be prepared to sacrifice the knight with O-O (Muzio) if Black plays g4."
+      },
+      {
+        "id": "kg-bc4-bishop",
+        "move": { "uci": "f1c4", "san": "Bc4", "explanation": "White immediately develops the bishop to c4, targeting f7 before bringing out the knight." },
+        "name": "Bishop's Gambit",
+        "eco": "C33",
+        "frequency": 0.25,
+        "description": "White plays Bc4 first — the Bishop's Gambit. A favourite of Paul Morphy. The bishop eyes f7 immediately.",
+        "planAdjustment": "Develop Nf3 next, then castle. The f7 square is the primary target — use queen and bishop together to attack it."
+      },
+      {
+        "id": "kg-nc3",
+        "move": { "uci": "b1c3", "san": "Nc3", "explanation": "White develops the queen's knight, a solid alternative to Nf3." },
+        "name": "Mason-Keres Gambit",
+        "eco": "C34",
+        "frequency": 0.12,
+        "description": "White plays Nc3 instead of Nf3, a rare but interesting choice preserving flexibility.",
+        "planAdjustment": "Follow with d4 and Nf3 to build a strong center. This line is less sharp but still gives good attacking chances."
+      },
+      {
+        "id": "kg-d4",
+        "move": { "uci": "d2d4", "san": "d4", "explanation": "White builds a large pawn center immediately with d4." },
+        "name": "Center Gambit",
+        "eco": "C21",
+        "frequency": 0.08,
+        "description": "White plays d4 immediately, building a large pawn center. A bold approach that leads to open, tactical positions.",
+        "planAdjustment": "Develop all pieces rapidly — Nf3, Bc4, and castle. The open position favors active piece play."
+      }
+    ]
+  }
+}

@@ -56,7 +56,7 @@ struct ConfettiView: View {
                         targetX: centerX + cos(angle) * distance,
                         targetY: centerY + sin(angle) * distance + CGFloat.random(in: 50...200),
                         size: CGFloat.random(in: 4...10),
-                        color: colors.randomElement()!,
+                        color: colors.randomElement() ?? .yellow,
                         rotation: Double.random(in: -3...3)
                     )
                 }
@@ -67,5 +67,6 @@ struct ConfettiView: View {
             }
         }
         .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 }

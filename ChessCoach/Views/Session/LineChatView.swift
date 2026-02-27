@@ -206,10 +206,12 @@ struct LineChatView: View {
             if coachingService == nil {
                 let llmService = LLMService()
                 await llmService.detectProvider()
-                coachingService = CoachingService(
+                let newService = CoachingService(
                     llmService: llmService,
-                    curriculumService: CurriculumService(opening: opening, activeLine: line, phase: .learningMainLine)
+                    curriculumService: CurriculumService(opening: opening, activeLine: line, phase: .learningMainLine),
+                    featureAccess: UnlockedAccess()
                 )
+                await MainActor.run { coachingService = newService }
             }
             guard let coachingService else { return }
             let response = await coachingService.getChatResponse(question: question, context: context)

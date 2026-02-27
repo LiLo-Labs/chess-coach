@@ -1,8 +1,13 @@
 import SwiftUI
-import Charts
 
-/// Navigation target for the training pipeline.
+/// Navigation target for the 5-layer training pipeline.
 enum TrainingNavigation: Identifiable, Equatable {
+    case planUnderstanding
+    case executePlan(lineID: String)
+    case discoverTheory
+    case handleVariety(lineID: String)
+    case realConditions(lineID: String)
+    // Legacy
     case study(lineID: String)
     case guided(lineID: String)
     case unguided(lineID: String)
@@ -10,6 +15,11 @@ enum TrainingNavigation: Identifiable, Equatable {
 
     var id: String {
         switch self {
+        case .planUnderstanding: return "planUnderstanding"
+        case .executePlan(let id): return "execute-\(id)"
+        case .discoverTheory: return "discoverTheory"
+        case .handleVariety(let id): return "variety-\(id)"
+        case .realConditions(let id): return "real-\(id)"
         case .study(let id): return "study-\(id)"
         case .guided(let id): return "guided-\(id)"
         case .unguided(let id): return "unguided-\(id)"
@@ -21,13 +31,21 @@ enum TrainingNavigation: Identifiable, Equatable {
 struct OpeningDetailView: View {
     let opening: Opening
     @State private var activeNavigation: TrainingNavigation?
+    @State private var mastery: OpeningMastery
     @State private var progress: OpeningProgress
     @State private var showLockedHint = false
+    @State private var showSettings = false
     @Environment(\.dismiss) private var dismiss
     @Environment(SubscriptionService.self) private var subscriptionService
+    @Environment(AppServices.self) private var appServices
 
     init(opening: Opening) {
         self.opening = opening
+        let openingID = opening.id
+        self._mastery = State(initialValue:
+            PersistenceService.shared.loadMastery(forOpening: openingID)
+            ?? OpeningMastery(openingID: openingID)
+        )
         self._progress = State(initialValue: PersistenceService.shared.loadProgress(forOpening: opening.id))
     }
 
@@ -35,7 +53,7 @@ struct OpeningDetailView: View {
         opening.lines ?? [
             OpeningLine(
                 id: "\(opening.id)/main",
-                name: "Main Line",
+                name: OpeningNode.generateLineName(moves: opening.mainLine),
                 moves: opening.mainLine,
                 branchPoint: 0,
                 parentLineID: nil
@@ -45,436 +63,589 @@ struct OpeningDetailView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: AppSpacing.lg) {
-                // Header
+            VStack(spacing: AppSpacing.xl) {
                 headerSection
 
-                // Pipeline progress card
-                pipelineProgressSection
+                // Animated board preview
+                OpeningPreviewBoard(opening: opening)
 
-                // Practice Opening CTA
-                if progress.isPracticeUnlocked {
-                    practiceButton
+                // Plan summary (if available)
+                if let plan = opening.plan {
+                    planSummaryCard(plan: plan)
                 }
 
-                // Progress chart
-                if progress.accuracyHistory.count >= 2 {
-                    accuracyChartSection
+                // 5-layer pipeline progress
+                layerPipelineSection
+
+                // Lines section (for advanced users)
+                if mastery.currentLayer >= .executePlan {
+                    linesPanel
                 }
-
-                // Lines section
-                VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                    Text("Lines & Variations")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(AppColor.secondaryText)
-                    Text("Tap a line to continue your training")
-                        .font(.caption)
-                        .foregroundStyle(AppColor.tertiaryText)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                VStack(spacing: 0) {
-                    ForEach(allLines) { line in
-                        let unlocked = progress.isLineUnlocked(line.id, parentLineID: line.parentLineID)
-                        let lp = progress.progress(forLine: line.id)
-
-                        linePipelineRow(line: line, lineProgress: lp, isUnlocked: unlocked)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                if unlocked {
-                                    activeNavigation = nextStage(for: line, lineProgress: lp)
-                                } else {
-                                    showLockedHint = true
-                                }
-                            }
-
-                        if line.id != allLines.last?.id {
-                            Divider()
-                                .padding(.leading, CGFloat(AppSpacing.screenPadding + CGFloat(lineDepth(line)) * 20))
-                        }
-                    }
-                }
-                .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
             }
-            .padding(AppSpacing.screenPadding)
+            .padding(.horizontal, AppSpacing.screenPadding)
+            .padding(.bottom, AppSpacing.xxl)
         }
         .background(AppColor.background)
         .navigationTitle(opening.name)
         .preferredColorScheme(.dark)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                FeedbackToolbarButton(screen: "Opening Detail")
-            }
-        }
-        .onAppear {
-            progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
-        }
-        .fullScreenCover(item: $activeNavigation) { nav in
-            switch nav {
-            case .study(let lineID):
-                if let line = allLines.first(where: { $0.id == lineID }) {
-                    LineStudyView(
-                        opening: opening,
-                        line: line,
-                        isPro: subscriptionService.isPro,
-                        onStartPracticing: {
-                            // Mark as studied and transition to guided
-                            var prog = PersistenceService.shared.loadProgress(forOpening: opening.id)
-                            if prog.lineProgress[lineID] == nil {
-                                prog.lineProgress[lineID] = LineProgress(lineID: lineID, openingID: opening.id)
-                            }
-                            prog.lineProgress[lineID]?.hasStudied = true
-                            PersistenceService.shared.saveProgress(prog)
-                            activeNavigation = .guided(lineID: lineID)
-                        }
-                    )
-                    .environment(subscriptionService)
+                HStack(spacing: AppSpacing.sm) {
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
+                    FeedbackToolbarButton(screen: "Opening Detail")
                 }
-            case .guided(let lineID):
-                SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .guided)
-                    .environment(subscriptionService)
-            case .unguided(let lineID):
-                SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .unguided)
-                    .environment(subscriptionService)
-            case .practice:
-                PracticeOpeningView(opening: opening, isPro: subscriptionService.isPro)
             }
+        }
+        .sheet(isPresented: $showSettings, onDismiss: { refreshData() }) {
+            OpeningSettingsView(opening: opening)
+        }
+        .onAppear { refreshData() }
+        .fullScreenCover(item: $activeNavigation) { nav in
+            navigationDestination(for: nav)
         }
         .onChange(of: activeNavigation) { old, new in
-            // Refresh progress when returning from any training view
             if old != nil && new == nil {
-                progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
+                refreshData()
             }
         }
-        .alert("Line Locked", isPresented: $showLockedHint) {
+        .alert("Locked", isPresented: $showLockedHint) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text("Complete the parent line with 70%+ accuracy and 50%+ win rate to unlock this variation.")
+            Text("Upgrade to Pro to access Layers 4-5 with opponent variety and real conditions.")
         }
     }
 
-    // MARK: - Pipeline Progress Section
-
-    private var pipelineProgressSection: some View {
-        VStack(alignment: .leading, spacing: AppSpacing.md) {
-            Text("Your Progress")
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(AppColor.secondaryText)
-
-            VStack(spacing: AppSpacing.sm) {
-                pipelineStageLine(
-                    icon: progress.studiedLineCount >= allLines.count ? "checkmark.circle.fill" : "circle",
-                    iconColor: progress.studiedLineCount >= allLines.count ? AppColor.success : AppColor.study,
-                    label: "Learn",
-                    detail: "\(progress.studiedLineCount)/\(allLines.count) lines studied",
-                    completed: progress.studiedLineCount,
-                    total: allLines.count
-                )
-
-                pipelineStageLine(
-                    icon: progress.guidedLineCount >= allLines.count ? "checkmark.circle.fill" : "circle",
-                    iconColor: progress.guidedLineCount >= allLines.count ? AppColor.success : AppColor.guided,
-                    label: "Guided",
-                    detail: "\(progress.guidedLineCount)/\(allLines.count) lines practiced",
-                    completed: progress.guidedLineCount,
-                    total: allLines.count
-                )
-
-                pipelineStageLine(
-                    icon: progress.unguidedLineCount >= allLines.count ? "checkmark.circle.fill" : "circle",
-                    iconColor: progress.unguidedLineCount >= allLines.count ? AppColor.success : AppColor.unguided,
-                    label: "Unguided",
-                    detail: "\(progress.unguidedLineCount)/\(allLines.count) lines mastered",
-                    completed: progress.unguidedLineCount,
-                    total: allLines.count
-                )
-
-                if progress.practiceSessionCount > 0 {
-                    pipelineStageLine(
-                        icon: "target",
-                        iconColor: AppColor.practice,
-                        label: "Practice",
-                        detail: "\(progress.practiceSessionCount) session\(progress.practiceSessionCount == 1 ? "" : "s") completed",
-                        completed: progress.practiceSessionCount,
-                        total: max(progress.practiceSessionCount, 5) // Show progress toward 5 sessions
-                    )
-                }
-            }
-        }
-        .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+    private func refreshData() {
+        mastery = PersistenceService.shared.loadMastery(forOpening: opening.id)
+            ?? OpeningMastery(openingID: opening.id)
+        progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
     }
 
-    private func pipelineStageLine(icon: String, iconColor: Color, label: String, detail: String, completed: Int, total: Int) -> some View {
-        HStack(spacing: 10) {
-            Image(systemName: icon)
-                .font(.system(size: 14))
-                .foregroundStyle(iconColor)
-                .frame(width: 20)
-
-            VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
-                HStack(spacing: AppSpacing.xs) {
-                    Text(label)
-                        .font(.subheadline.weight(.medium))
-                        .foregroundStyle(AppColor.primaryText)
-
-                    Text(detail)
-                        .font(.caption)
-                        .foregroundStyle(AppColor.secondaryText)
-                }
-
-                // Mini progress bar
-                if total > 0 {
-                    GeometryReader { geo in
-                        ZStack(alignment: .leading) {
-                            Capsule()
-                                .fill(AppColor.primaryText.opacity(0.08))
-                                .frame(height: 3)
-
-                            Capsule()
-                                .fill(completed >= total ? AppColor.success : iconColor)
-                                .frame(width: geo.size.width * CGFloat(completed) / CGFloat(max(1, total)), height: 3)
-                        }
-                    }
-                    .frame(height: 3)
-                }
-            }
-
-            Spacer()
-        }
-    }
-
-    // MARK: - Practice Opening CTA
-
-    private var practiceButton: some View {
-        Button {
-            activeNavigation = .practice
-        } label: {
-            HStack(spacing: AppSpacing.sm) {
-                Image(systemName: "target")
-                    .font(.subheadline.weight(.semibold))
-                Text("Practice Opening")
-                    .font(.body.weight(.semibold))
-            }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .background(AppColor.practice, in: RoundedRectangle(cornerRadius: AppRadius.lg))
-        }
-        .buttonStyle(.plain)
-    }
-
-    // MARK: - Per-line Pipeline Row
-
-    private func linePipelineRow(line: OpeningLine, lineProgress: LineProgress, isUnlocked: Bool) -> some View {
-        HStack(spacing: AppSpacing.md) {
-            // Indentation
-            if lineDepth(line) > 0 {
-                HStack(spacing: 0) {
-                    ForEach(0..<lineDepth(line), id: \.self) { _ in
-                        Rectangle()
-                            .fill(Color.white.opacity(0.08))
-                            .frame(width: 1)
-                            .padding(.horizontal, 9)
-                    }
-                }
-
-                Image(systemName: "arrow.turn.down.right")
-                    .font(.system(size: 10))
-                    .foregroundStyle(AppColor.disabledText)
-            }
-
-            // Lock / book icon
-            if !isUnlocked {
-                Image(systemName: "lock.fill")
-                    .font(.system(size: 14))
-                    .foregroundStyle(AppColor.unguided.opacity(0.6))
-            } else {
-                Image(systemName: "book.fill")
-                    .font(.system(size: 12))
-                    .foregroundStyle(AppColor.study)
-            }
-
-            VStack(alignment: .leading, spacing: AppSpacing.xxs) {
-                Text(line.name)
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(isUnlocked ? AppColor.primaryText : AppColor.primaryText.opacity(0.45))
-
-                if isUnlocked {
-                    // Mini pipeline: Learn -> Guided -> Unguided -> checkmark
-                    miniPipeline(lineProgress: lineProgress, lineID: line.id)
-                } else {
-                    Text("Complete parent line first")
-                        .font(.caption)
-                        .foregroundStyle(AppColor.tertiaryText)
-                }
-            }
-
-            Spacer()
-
-            // CTA for next stage — now uses PillBadge via nextStageBadge
-            if isUnlocked {
-                let stage = nextStage(for: line, lineProgress: lineProgress)
-                nextStageBadge(stage: stage)
-            }
-        }
-        .padding(.horizontal, AppSpacing.screenPadding)
-        .padding(.vertical, AppSpacing.md)
-        .opacity(isUnlocked ? 1.0 : 0.6)
-    }
-
-    private func miniPipeline(lineProgress: LineProgress, lineID: String) -> some View {
-        HStack(spacing: AppSpacing.xxs) {
-            miniStageChip("Learn", done: lineProgress.hasStudied, color: AppColor.study)
-            Image(systemName: "arrow.right")
-                .font(.system(size: 6))
-                .foregroundStyle(AppColor.disabledText)
-            miniStageChip("Guided", done: lineProgress.guidedCompletions > 0, color: AppColor.guided)
-            Image(systemName: "arrow.right")
-                .font(.system(size: 6))
-                .foregroundStyle(AppColor.disabledText)
-            miniStageChip("Unguided", done: lineProgress.unguidedCompletions > 0, color: AppColor.unguided)
-
-            if lineProgress.unguidedCompletions > 0 {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 10))
-                    .foregroundStyle(AppColor.success)
-            }
-        }
-    }
-
-    private func miniStageChip(_ label: String, done: Bool, color: Color) -> some View {
-        Text(label)
-            .font(.system(size: 9, weight: .medium))
-            .foregroundStyle(done ? color : AppColor.tertiaryText)
-    }
+    // MARK: - Navigation Destination
 
     @ViewBuilder
-    private func nextStageBadge(stage: TrainingNavigation) -> some View {
-        switch stage {
-        case .study:
-            PillBadge(text: "Study", color: AppColor.study)
-        case .guided:
-            PillBadge(text: "Practice", color: AppColor.guided)
-        case .unguided:
-            PillBadge(text: "Unguided", color: AppColor.unguided)
+    private func navigationDestination(for nav: TrainingNavigation) -> some View {
+        switch nav {
+        case .planUnderstanding:
+            PlanUnderstandingView(opening: opening) { quizScore in
+                var m = mastery
+                m.completePlanUnderstanding(quizScore: quizScore)
+                PersistenceService.shared.saveMastery(m)
+                mastery = m
+                activeNavigation = nil
+            }
+        case .executePlan(let lineID):
+            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .guided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+                .environment(subscriptionService)
+        case .discoverTheory:
+            TheoryDiscoveryView(opening: opening) { quizScore in
+                var m = mastery
+                m.completeTheoryDiscovery(quizScore: quizScore)
+                PersistenceService.shared.saveMastery(m)
+                mastery = m
+                activeNavigation = nil
+            }
+        case .handleVariety(let lineID):
+            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .unguided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+                .environment(subscriptionService)
+        case .realConditions(let lineID):
+            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .practice, stockfish: appServices.stockfish, llmService: appServices.llmService)
+                .environment(subscriptionService)
+        case .study(let lineID):
+            if let line = allLines.first(where: { $0.id == lineID }) {
+                LineStudyView(
+                    opening: opening,
+                    line: line,
+                    isPro: subscriptionService.isPro,
+                    onStartPracticing: {
+                        var prog = PersistenceService.shared.loadProgress(forOpening: opening.id)
+                        if prog.lineProgress[lineID] == nil {
+                            prog.lineProgress[lineID] = LineProgress(lineID: lineID, openingID: opening.id)
+                        }
+                        prog.lineProgress[lineID]?.hasStudied = true
+                        PersistenceService.shared.saveProgress(prog)
+                        activeNavigation = .guided(lineID: lineID)
+                    }
+                )
+                .environment(subscriptionService)
+            }
+        case .guided(let lineID):
+            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .guided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+                .environment(subscriptionService)
+        case .unguided(let lineID):
+            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .unguided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+                .environment(subscriptionService)
         case .practice:
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 16))
-                .foregroundStyle(AppColor.success)
+            PracticeOpeningView(opening: opening, isPro: subscriptionService.isPro, stockfish: appServices.stockfish)
         }
     }
 
-    /// Determine the next training stage for a line.
-    private func nextStage(for line: OpeningLine, lineProgress: LineProgress) -> TrainingNavigation {
-        if !lineProgress.hasStudied {
-            return .study(lineID: line.id)
-        }
-        if lineProgress.guidedCompletions == 0 {
-            return .guided(lineID: line.id)
-        }
-        if lineProgress.unguidedCompletions == 0 {
-            return .unguided(lineID: line.id)
-        }
-        // All stages done — tapping cycles back to unguided for more practice
-        return .unguided(lineID: line.id)
-    }
-
-    // MARK: - Header
+    // MARK: - Hero Header
 
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            HStack(spacing: 10) {
-                Circle()
-                    .fill(opening.color == .white ? Color.white : Color(white: 0.35))
-                    .frame(width: 28, height: 28)
-                    .overlay(
-                        Circle().strokeBorder(Color.white.opacity(0.15), lineWidth: 1)
-                    )
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            // Color + name row
+            HStack(alignment: .center, spacing: AppSpacing.md) {
+                // Refined color indicator
+                ZStack {
+                    Circle()
+                        .fill(opening.color == .white
+                              ? LinearGradient(colors: [.white, Color(white: 0.85)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                              : LinearGradient(colors: [Color(white: 0.28), Color(white: 0.18)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .frame(width: 42, height: 42)
+                        .shadow(color: .black.opacity(0.3), radius: 6, x: 0, y: 3)
 
-                VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
-                    Text(opening.name)
-                        .font(.title2.weight(.bold))
-                        .foregroundStyle(AppColor.primaryText)
+                    Circle()
+                        .strokeBorder(Color.white.opacity(0.12), lineWidth: 1)
+                        .frame(width: 42, height: 42)
+                }
 
-                    HStack(spacing: AppSpacing.xxs) {
+                VStack(alignment: .leading, spacing: AppSpacing.xxs) {
+                    Text(opening.color == .white ? "White Opening" : "Black Opening")
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(AppColor.tertiaryText)
+                        .textCase(.uppercase)
+                        .tracking(0.5)
+
+                    // Difficulty dots
+                    HStack(spacing: 4) {
+                        Text("Difficulty")
+                            .font(.system(size: 9, weight: .medium))
+                            .foregroundStyle(AppColor.tertiaryText)
                         ForEach(0..<opening.difficulty, id: \.self) { _ in
-                            Image(systemName: "star.fill")
-                                .font(.system(size: 8))
-                                .foregroundStyle(AppColor.gold)
+                            Circle()
+                                .fill(AppColor.gold)
+                                .frame(width: 6, height: 6)
                         }
                         ForEach(0..<(5 - opening.difficulty), id: \.self) { _ in
-                            Image(systemName: "star")
-                                .font(.system(size: 8))
-                                .foregroundStyle(AppColor.disabledText)
+                            Circle()
+                                .fill(AppColor.disabledText.opacity(0.4))
+                                .frame(width: 6, height: 6)
                         }
                     }
                 }
 
                 Spacer()
 
-                // Last-played timestamp
-                if let lastPlayed = progress.lastPlayed {
-                    Text(TimeAgo.string(from: lastPlayed))
-                        .font(.caption)
-                        .foregroundStyle(AppColor.tertiaryText)
+                // Current stage + last played
+                VStack(alignment: .trailing, spacing: AppSpacing.xxs) {
+                    PillBadge(
+                        text: mastery.currentLayer.shortName,
+                        color: AppColor.layer(mastery.currentLayer)
+                    )
+                    if let lastPlayed = mastery.lastPlayed {
+                        Text(TimeAgo.string(from: lastPlayed))
+                            .font(.caption2)
+                            .foregroundStyle(AppColor.tertiaryText)
+                    }
                 }
             }
 
+            // Description
             Text(opening.description)
                 .font(.subheadline)
                 .foregroundStyle(AppColor.secondaryText)
+                .lineSpacing(2)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(AppSpacing.cardPadding)
+        .background {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(.ultraThinMaterial)
+                .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
+        }
     }
 
-    // MARK: - Accuracy Chart
+    // MARK: - Plan Summary Card
 
-    private var accuracyChartSection: some View {
-        VStack(alignment: .leading, spacing: AppSpacing.sm) {
-            Text("Accuracy Trend")
-                .font(.caption.weight(.semibold))
+    private func planSummaryCard(plan: OpeningPlan) -> some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            // Header row
+            HStack(spacing: AppSpacing.sm) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .fill(Color.cyan.opacity(0.12))
+                        .frame(width: 30, height: 30)
+                    Image(systemName: "lightbulb.fill")
+                        .font(.system(size: 14))
+                        .foregroundStyle(.cyan)
+                }
+
+                Text("The Game Plan")
+                    .font(.headline.weight(.semibold))
+                    .foregroundStyle(AppColor.primaryText)
+
+                Spacer()
+            }
+
+            Text(plan.summary)
+                .font(.subheadline)
                 .foregroundStyle(AppColor.secondaryText)
+                .lineSpacing(3)
 
-            let history = Array(progress.accuracyHistory.suffix(20))
-            Chart {
-                ForEach(Array(history.enumerated()), id: \.offset) { index, accuracy in
-                    LineMark(
-                        x: .value("Session", index + 1),
-                        y: .value("Accuracy", accuracy * 100)
-                    )
-                    .foregroundStyle(AppColor.phase(progress.currentPhase))
+            // Key squares
+            if !plan.keySquares.isEmpty {
+                VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                    Text("Important Squares")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(AppColor.tertiaryText)
+                        .textCase(.uppercase)
+                        .tracking(0.4)
 
-                    PointMark(
-                        x: .value("Session", index + 1),
-                        y: .value("Accuracy", accuracy * 100)
-                    )
-                    .foregroundStyle(AppColor.phase(progress.currentPhase))
-                    .symbolSize(20)
+                    HStack(spacing: AppSpacing.xs) {
+                        ForEach(plan.keySquares, id: \.self) { square in
+                            Text(square)
+                                .font(.caption.weight(.bold).monospaced())
+                                .foregroundStyle(.cyan)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(.cyan.opacity(0.12), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+                        }
+                    }
                 }
             }
-            .chartYScale(domain: 0...100)
-            .chartYAxis {
-                AxisMarks(values: [0, 25, 50, 75, 100]) {
-                    AxisValueLabel()
-                    AxisGridLine()
+
+            // Strategic goals
+            let topGoals = plan.strategicGoals.prefix(3)
+            if !topGoals.isEmpty {
+                Divider().opacity(0.3)
+
+                VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                    Text("What You're Aiming For")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(AppColor.tertiaryText)
+                        .textCase(.uppercase)
+                        .tracking(0.4)
+
+                    ForEach(Array(topGoals.enumerated()), id: \.offset) { _, goal in
+                        HStack(alignment: .top, spacing: AppSpacing.sm) {
+                            Image(systemName: "checkmark.circle")
+                                .font(.system(size: 12))
+                                .foregroundStyle(.green.opacity(0.8))
+                                .padding(.top, 1)
+                            Text(goal.description)
+                                .font(.caption)
+                                .foregroundStyle(AppColor.secondaryText)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
                 }
             }
-            .chartXAxis(.hidden)
-            .frame(height: 120)
         }
         .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+        .background {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(AppColor.cardBackground)
+                .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+        }
+        .overlay(alignment: .top) {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .strokeBorder(Color.cyan.opacity(0.1), lineWidth: 1)
+        }
     }
 
-    private func lineDepth(_ line: OpeningLine) -> Int {
-        if line.parentLineID == nil { return 0 }
-        return 1
+    // MARK: - 5-Layer Pipeline Section
+
+    private var layerPipelineSection: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Panel header
+            HStack {
+                VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
+                    Text("Learning Journey")
+                        .font(.headline.weight(.semibold))
+                        .foregroundStyle(AppColor.primaryText)
+                    Text(mastery.currentLayer.displayName)
+                        .font(.caption)
+                        .foregroundStyle(AppColor.layer(mastery.currentLayer))
+                }
+
+                Spacer()
+
+                // PES score intentionally not shown here — only for bot/practice games
+            }
+            .padding(.horizontal, AppSpacing.cardPadding)
+            .padding(.top, AppSpacing.cardPadding)
+            .padding(.bottom, AppSpacing.md)
+
+            Divider()
+                .opacity(0.3)
+                .padding(.horizontal, AppSpacing.cardPadding)
+
+            // Layer rows
+            VStack(spacing: 0) {
+                ForEach(Array(LearningLayer.allCases.enumerated()), id: \.element.rawValue) { index, layer in
+                    layerRow(layer: layer, index: index)
+
+                    if index < LearningLayer.allCases.count - 1 {
+                        // Inset connector line between rows
+                        HStack {
+                            Spacer().frame(width: AppSpacing.cardPadding + 15)
+                            Rectangle()
+                                .fill(connectorColor(forIndex: index))
+                                .frame(width: 1, height: 8)
+                            Spacer()
+                        }
+                    }
+                }
+            }
+            .padding(.bottom, AppSpacing.sm)
+        }
+        .background {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(AppColor.cardBackground)
+                .shadow(color: .black.opacity(0.22), radius: 8, x: 0, y: 4)
+        }
     }
-}
 
-// MARK: - String Identifiable for fullScreenCover
+    private func connectorColor(forIndex index: Int) -> Color {
+        let layer = LearningLayer.allCases[index]
+        let isComplete = mastery.currentLayer.rawValue > layer.rawValue
+        return isComplete ? AppColor.layer(layer).opacity(0.4) : Color.white.opacity(0.08)
+    }
 
-extension String: @retroactive Identifiable {
-    public var id: String { self }
+    private func layerRow(layer: LearningLayer, index: Int) -> some View {
+        let isCurrent = mastery.currentLayer == layer
+        let isCompleted = mastery.currentLayer.rawValue > layer.rawValue
+        let isLocked = !isCompleted && !isCurrent
+        let isFree = layer.isFreeLayer
+        let canAccess = isFree || subscriptionService.isPro
+
+        return Button {
+            if isLocked && !canAccess {
+                showLockedHint = true
+            } else if isCurrent || isCompleted {
+                navigateToLayer(layer)
+            }
+        } label: {
+            HStack(spacing: AppSpacing.md) {
+                // Step indicator
+                ZStack {
+                    Circle()
+                        .fill(isCompleted
+                              ? AppColor.layer(layer)
+                              : (isCurrent ? AppColor.layer(layer).opacity(0.2) : Color.white.opacity(0.05)))
+                        .frame(width: 30, height: 30)
+
+                    if isCompleted {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundStyle(.white)
+                    } else {
+                        Image(systemName: AppColor.layerIcon(layer))
+                            .font(.system(size: 12))
+                            .foregroundStyle(isCurrent ? AppColor.layer(layer) : AppColor.disabledText)
+                    }
+                }
+
+                // Text content
+                VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
+                    HStack(spacing: AppSpacing.xs) {
+                        Text(layer.displayName)
+                            .font(.subheadline.weight(isCurrent ? .semibold : .medium))
+                            .foregroundStyle(isLocked ? AppColor.tertiaryText : AppColor.primaryText)
+
+                        if isCurrent {
+                            Text("CURRENT")
+                                .font(.system(size: 8, weight: .heavy))
+                                .foregroundStyle(AppColor.layer(layer))
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 1.5)
+                                .background(AppColor.layer(layer).opacity(0.15), in: Capsule())
+                        }
+
+                        if !isFree && !subscriptionService.isPro && isLocked {
+                            Image(systemName: "lock.fill")
+                                .font(.system(size: 8))
+                                .foregroundStyle(AppColor.tertiaryText)
+                        }
+                    }
+
+                    Text(layerDetail(layer))
+                        .font(.caption)
+                        .foregroundStyle(AppColor.secondaryText)
+                }
+
+                Spacer()
+
+                // CTA chevron
+                if isCurrent {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(AppColor.layer(layer))
+                } else if isCompleted {
+                    Image(systemName: "arrow.counterclockwise")
+                        .font(.system(size: 12))
+                        .foregroundStyle(AppColor.tertiaryText)
+                }
+            }
+            .padding(.horizontal, AppSpacing.cardPadding)
+            .padding(.vertical, AppSpacing.md)
+            .background {
+                if isCurrent {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(AppColor.layer(layer).opacity(0.07))
+                        .padding(.horizontal, AppSpacing.xs)
+                }
+            }
+            .opacity(isLocked ? 0.45 : 1.0)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func layerDetail(_ layer: LearningLayer) -> String {
+        switch layer {
+        case .understandPlan:
+            return mastery.planUnderstanding ? "Completed" : "Learn what you're aiming for"
+        case .executePlan:
+            if mastery.executionScores.isEmpty {
+                return "Play it your way"
+            }
+            return mastery.isExecutionComplete ? "Complete" : "Keep practicing"
+        case .discoverTheory:
+            return mastery.theoryCompleted ? "Completed" : "Discover the history"
+        case .handleVariety:
+            let count = mastery.varietyResponseCount
+            return count > 0 ? "\(count)/3 responses handled" : "Face different opponents"
+        case .realConditions:
+            if mastery.realConditionScores.isEmpty {
+                return "No hints — just you and the board"
+            }
+            return "\(mastery.realConditionScores.count) sessions completed"
+        }
+    }
+
+    private func navigateToLayer(_ layer: LearningLayer) {
+        let mainLineID = allLines.first?.id ?? "\(opening.id)/main"
+        switch layer {
+        case .understandPlan:
+            activeNavigation = .planUnderstanding
+        case .executePlan:
+            activeNavigation = .executePlan(lineID: mainLineID)
+        case .discoverTheory:
+            activeNavigation = .discoverTheory
+        case .handleVariety:
+            activeNavigation = .handleVariety(lineID: mainLineID)
+        case .realConditions:
+            activeNavigation = .realConditions(lineID: mainLineID)
+        }
+    }
+
+    // MARK: - Lines Panel
+
+    private var linesPanel: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Panel header
+            HStack {
+                VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
+                    Text("Paths")
+                        .font(.headline.weight(.semibold))
+                        .foregroundStyle(AppColor.primaryText)
+                    Text("Tap to practice")
+                        .font(.caption)
+                        .foregroundStyle(AppColor.tertiaryText)
+                }
+                Spacer()
+                Text("\(allLines.count)")
+                    .font(.caption2.monospacedDigit())
+                    .foregroundStyle(AppColor.tertiaryText)
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 3)
+                    .background(AppColor.tertiaryText.opacity(0.12), in: Capsule())
+            }
+            .padding(.horizontal, AppSpacing.cardPadding)
+            .padding(.top, AppSpacing.cardPadding)
+            .padding(.bottom, AppSpacing.md)
+
+            Divider()
+                .opacity(0.3)
+
+            VStack(spacing: 0) {
+                ForEach(Array(allLines.enumerated()), id: \.element.id) { index, line in
+                    let lp = progress.progress(forLine: line.id)
+                    let unlocked = progress.isLineUnlocked(line.id, parentLineID: line.parentLineID)
+
+                    lineRow(line: line, lp: lp, unlocked: unlocked)
+
+                    if index < allLines.count - 1 {
+                        Divider()
+                            .padding(.leading, AppSpacing.cardPadding + 32 + AppSpacing.md)
+                            .opacity(0.25)
+                    }
+                }
+            }
+            .padding(.bottom, AppSpacing.xs)
+        }
+        .background {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(AppColor.cardBackground)
+                .shadow(color: .black.opacity(0.22), radius: 8, x: 0, y: 4)
+        }
+    }
+
+    private func lineRow(line: OpeningLine, lp: LineProgress, unlocked: Bool) -> some View {
+        Button {
+            if unlocked {
+                activeNavigation = .executePlan(lineID: line.id)
+            }
+        } label: {
+            HStack(spacing: AppSpacing.md) {
+                // Icon
+                ZStack {
+                    Circle()
+                        .fill(unlocked
+                              ? AppColor.layer(.executePlan).opacity(0.12)
+                              : Color.white.opacity(0.05))
+                        .frame(width: 32, height: 32)
+                    Image(systemName: unlocked ? "book.fill" : "lock.fill")
+                        .font(.system(size: 12))
+                        .foregroundStyle(unlocked ? AppColor.layer(.executePlan) : AppColor.disabledText)
+                }
+
+                VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
+                    Text(line.name)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(unlocked ? AppColor.primaryText : AppColor.tertiaryText)
+
+                    if lp.guidedCompletions > 0 || lp.unguidedCompletions > 0 {
+                        HStack(spacing: AppSpacing.sm) {
+                            if lp.guidedCompletions > 0 {
+                                HStack(spacing: 3) {
+                                    Image(systemName: "eye.fill")
+                                        .font(.system(size: 8))
+                                    Text("\(lp.guidedCompletions) with hints")
+                                        .font(.caption2)
+                                }
+                                .foregroundStyle(AppColor.tertiaryText)
+                            }
+                            if lp.unguidedCompletions > 0 {
+                                HStack(spacing: 3) {
+                                    Image(systemName: "brain.fill")
+                                        .font(.system(size: 8))
+                                    Text("\(lp.unguidedCompletions) without hints")
+                                        .font(.caption2)
+                                }
+                                .foregroundStyle(AppColor.tertiaryText)
+                            }
+                        }
+                    }
+                }
+
+                Spacer()
+
+                if unlocked {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(AppColor.tertiaryText)
+                }
+            }
+            .padding(.horizontal, AppSpacing.cardPadding)
+            .padding(.vertical, AppSpacing.md)
+            .opacity(unlocked ? 1.0 : 0.5)
+        }
+        .buttonStyle(.plain)
+    }
 }

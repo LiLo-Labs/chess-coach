@@ -13,7 +13,7 @@ struct QuickReviewView: View {
     @State private var consecutiveCorrect = 0
 
     private let scheduler = SpacedRepScheduler()
-    private let db = OpeningDatabase()
+    private let db = OpeningDatabase.shared
 
     enum FeedbackState: Equatable {
         case waiting
@@ -139,7 +139,7 @@ struct QuickReviewView: View {
             // Board — interactive when waiting for answer
             GameBoardView(
                 gameState: gameState,
-                perspective: gameState.isWhiteTurn ? .white : .black,
+                perspective: (item.playerColor == "black") ? PieceColor.black : PieceColor.white,
                 allowInteraction: feedbackState == .waiting
             ) { from, to in
                 handleMove(from: from, to: to, item: item)

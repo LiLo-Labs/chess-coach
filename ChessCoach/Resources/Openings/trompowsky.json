@@ -1,0 +1,593 @@
+{
+  "id": "trompowsky",
+  "name": "Trompowsky Attack",
+  "description": "A surprise weapon where White develops the bishop before the knight. Forces Black to make early decisions.",
+  "color": "white",
+  "difficulty": 2,
+  "tree": {
+    "id": "trompowsky/root",
+    "children": [
+      {
+        "id": "trompowsky/d2d4",
+        "move": {
+          "uci": "d2d4",
+          "san": "d4",
+          "explanation": "Start with the queen's pawn — the foundation for the Trompowsky Attack. You are about to surprise Black with an unusual bishop move!"
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "trompowsky/d2d4/g8f6",
+            "move": {
+              "uci": "g8f6",
+              "san": "Nf6",
+              "explanation": "Black develops the knight to f6, the most natural response to 1.d4, preparing to fight for the center."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "trompowsky/d2d4/g8f6/c1g5",
+                "move": {
+                  "uci": "c1g5",
+                  "san": "Bg5",
+                  "explanation": "The Trompowsky! Instead of the expected Nf3 or c4, you develop the bishop to g5 and pin Black's knight right away. Black must decide how to react — and there is no easy answer!"
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "trompowsky/d2d4/g8f6/c1g5/d7d5",
+                    "move": {
+                      "uci": "d7d5",
+                      "san": "d5",
+                      "explanation": "Black plays d5, fighting for the center and ignoring the pin. This is the classical and most solid response to the Trompowsky."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "trompowsky/d2d4/g8f6/c1g5/d7d5/e2e3",
+                        "move": {
+                          "uci": "e2e3",
+                          "san": "e3",
+                          "explanation": "Solid and flexible — support d4, keep the bishop on g5, and prepare to develop the f1 bishop. You build a stable center before deciding your exact plan."
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "trompowsky/d2d4/g8f6/c1g5/d7d5/e2e3/c7c5",
+                            "move": {
+                              "uci": "c7c5",
+                              "san": "c5",
+                              "explanation": "Black challenges your d4 pawn — a natural counterattack. Now you must decide to support d4 or let the center transform."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "trompowsky/d2d4/g8f6/c1g5/d7d5/e2e3/c7c5/c2c3",
+                                "move": {
+                                  "uci": "c2c3",
+                                  "san": "c3",
+                                  "explanation": "Fortify the center! The c3 pawn supports d4, keeping your central stronghold. Now Nd2 and Ngf3 will complete your development."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "trompowsky/d2d4/g8f6/c1g5/d7d5/e2e3/c7c5/c2c3/d8b6",
+                                    "move": {
+                                      "uci": "d8b6",
+                                      "san": "Qb6",
+                                      "explanation": "Black's queen attacks both b2 and d4 — a double threat! Stay calm and respond with Qb3 to trade queens, or Nd2 to defend b2."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "trompowsky/d2d4/g8f6/c1g5/d7d5/e2e3/c7c5/c2c3/d8b6/d1b3",
+                                        "move": {
+                                          "uci": "d1b3",
+                                          "san": "Qb3",
+                                          "explanation": "Trade queens! After the exchange you open the a2 file and have a solid, slightly better endgame position. Don't fear the queen trade — you are well-developed."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "trompowsky/d2d4/g8f6/c1g5/d7d5/e2e3/c7c5/c2c3/d8b6/d1b3/b6b3",
+                                            "move": {
+                                              "uci": "b6b3",
+                                              "san": "Qxb3",
+                                              "explanation": "Queens come off the board. The endgame slightly favors White due to the solid central pawns and the bishop on g5 creating minor piece pressure."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "trompowsky/d2d4/g8f6/c1g5/d7d5/e2e3/c7c5/c2c3/d8b6/d1b3/b6b3/a2b3",
+                                                "move": {
+                                                  "uci": "a2b3",
+                                                  "san": "axb3",
+                                                  "explanation": "Recapture with the a-pawn! The a-file is now half-open for your rook. Your position is solid and you have a small long-term advantage in the endgame."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "trompowsky/d2d4/g8f6/c1g5/f6e4",
+                    "move": {
+                      "uci": "f6e4",
+                      "san": "Ne4",
+                      "explanation": "Black attacks your bishop immediately by jumping to e4! This is the most aggressive response to the Trompowsky — Black demands you make a decision right away."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "variationName": "Trompowsky Accepted",
+                    "children": [
+                      {
+                        "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5h4",
+                        "move": {
+                          "uci": "g5h4",
+                          "san": "Bh4",
+                          "explanation": "Retreat the bishop to h4, keeping the pin! The knight on e4 is a great post but you plan to kick it away with f3 soon."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5h4/d7d5",
+                            "move": {
+                              "uci": "d7d5",
+                              "san": "d5",
+                              "explanation": "Black supports the knight on e4 and fights for the center. The knight is well-placed but you can dislodge it."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5h4/d7d5/f2f3",
+                                "move": {
+                                  "uci": "f2f3",
+                                  "san": "f3",
+                                  "explanation": "Attack the knight! Push f3 to chase it away. This pawn will also help support e4 later for a strong center."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5h4/d7d5/f2f3/e4f6",
+                                    "move": {
+                                      "uci": "e4f6",
+                                      "san": "Nf6",
+                                      "explanation": "The knight retreats. Your f3 pawn is a bit weak but the position is solid and you can play e4 for a powerful center."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5h4/d7d5/f2f3/e4f6/e2e4",
+                                        "move": {
+                                          "uci": "e2e4",
+                                          "san": "e4",
+                                          "explanation": "Stake out a massive center! With pawns on d4 and e4, you dominate the middle of the board. Develop the remaining pieces and castle quickly."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "trompowsky/d2d4/g8f6/c1g5/e7e6",
+                    "move": {
+                      "uci": "e7e6",
+                      "san": "e6",
+                      "explanation": "The quiet e6 response — Black ignores the pin and develops solidly. The pawn supports d5 and gets the dark-squared bishop ready."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "variationName": "Trompowsky: ...e6 quiet",
+                    "children": [
+                      {
+                        "id": "trompowsky/d2d4/g8f6/c1g5/e7e6/e2e4",
+                        "move": {
+                          "uci": "e2e4",
+                          "san": "e4",
+                          "explanation": "Take full advantage of Black's quiet setup — build a massive center with e4! Black's bishop on c8 is now locked in behind the e6 pawn."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "trompowsky/d2d4/g8f6/c1g5/e7e6/e2e4/h7h6",
+                            "move": {
+                              "uci": "h7h6",
+                              "san": "h6",
+                              "explanation": "Black attacks your bishop! You must decide whether to trade or retreat. This is the key decision in the ...e6 variation."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "trompowsky/d2d4/g8f6/c1g5/e7e6/e2e4/h7h6/g5f6",
+                                "move": {
+                                  "uci": "g5f6",
+                                  "san": "Bxf6",
+                                  "explanation": "Trade the bishop for the knight! You give up the bishop pair but Black gets doubled f-pawns. The f-file can become a target later."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "trompowsky/d2d4/g8f6/c1g5/e7e6/e2e4/h7h6/g5f6/d8f6",
+                                    "move": {
+                                      "uci": "d8f6",
+                                      "san": "Qxf6",
+                                      "explanation": "Black recaptures with the queen, now strongly placed on f6. Develop fast — Nc3 and then castle to take advantage of your central space."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "trompowsky/d2d4/g8f6/c1g5/e7e6/e2e4/h7h6/g5f6/d8f6/b1c3",
+                                        "move": {
+                                          "uci": "b1c3",
+                                          "san": "Nc3",
+                                          "explanation": "Develop and control the center! With e4, d4, and Nc3, you have a great position. Castle next and Black's queen on f6 will be under pressure."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5f4",
+                    "move": {
+                      "uci": "f6e4",
+                      "san": "Ne4",
+                      "explanation": "Black again attacks the bishop with the knight — now retreating to f4 is the alternative to Bh4."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "variationName": "Trompowsky: ...Ne4 Gambit",
+                    "children": [
+                      {
+                        "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5f4",
+                        "move": {
+                          "uci": "g5f4",
+                          "san": "Bf4",
+                          "explanation": "Retreat to f4 instead of h4! The bishop stays active on a different diagonal. This is a simpler approach — stay solid and develop."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5f4/c7c5",
+                            "move": {
+                              "uci": "c7c5",
+                              "san": "c5",
+                              "explanation": "Black counterattacks the center. Now you need to keep d4 stable or allow a trade."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5f4/c7c5/f2f3",
+                                "move": {
+                                  "uci": "f2f3",
+                                  "san": "f3",
+                                  "explanation": "Push f3 to evict the knight on e4. You fight for the center and the knight must move — giving you time to develop."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5f4/c7c5/f2f3/e4f6",
+                                    "move": {
+                                      "uci": "e4f6",
+                                      "san": "Nf6",
+                                      "explanation": "The knight retreats to f6. Now play e4 to complete your central dominance!"
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "trompowsky/d2d4/g8f6/c1g5/f6e4/g5f4/c7c5/f2f3/e4f6/e2e4",
+                                        "move": {
+                                          "uci": "e2e4",
+                                          "san": "e4",
+                                          "explanation": "Occupy the center! Pawns on d4 and e4 give you a dominant position. Develop Nc3, castle, and enjoy a space advantage."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Surprise Black with 2.Bg5, pinning the f6 knight immediately. Force Black to make awkward decisions early, then build a stable center with d4, e3, and c3. Use your flexible bishop to create long-term pressure on Black's position.",
+    "strategicGoals": [
+      { "description": "Develop the bishop to g5 immediately, pinning Black's knight and forcing a decision", "priority": 1 },
+      { "description": "Maintain a stable center with d4 supported by e3 and c3", "priority": 2 },
+      { "description": "Use f3 to push away any knight that jumps to e4", "priority": 3 },
+      { "description": "Build a strong e4 pawn to dominate the center when the moment is right", "priority": 4 }
+    ],
+    "pawnStructureTarget": "d4/e3/c3 triangle aiming to transform to d4/e4 after chasing the knight",
+    "keySquares": ["g5", "e4", "d4", "e4"],
+    "pieceTargets": [
+      { "piece": "dark-squared bishop", "idealSquares": ["g5", "h4", "f4"], "reasoning": "The g5 bishop is the whole point of the opening — it pins the knight and creates early problems for Black" },
+      { "piece": "king's knight", "idealSquares": ["f3", "e2"], "reasoning": "Develops after the bishop to avoid being pinned itself; e2 is available if f6 is occupied" },
+      { "piece": "queen's knight", "idealSquares": ["d2", "c3"], "reasoning": "Goes to d2 to avoid blocking c3, or to c3 for central pressure after the bishop retreats" }
+    ],
+    "typicalPlans": [
+      "After ...d5 e3 c5 c3, trade queens with Qb3 when Black plays ...Qb6 for a safe endgame advantage",
+      "Against ...Ne4, retreat the bishop to h4 and then push f3 to kick the knight out",
+      "After ...e6, seize the center with e4 and enjoy a space advantage",
+      "Against ...d5, play Bxf6 to double Black's pawns if it becomes favorable"
+    ],
+    "commonMistakes": [
+      "Retreating the bishop when Black plays h6 — sometimes Bxf6 is better to double the pawns",
+      "Playing c4 immediately — in the Trompowsky the bishop on g5 is your main weapon, not c4",
+      "Allowing the knight to stay on e4 too long — push f3 early to reclaim the square",
+      "Forgetting to develop the king's knight — Nf3 or Ne2 should come soon after Bg5"
+    ],
+    "historicalNote": "The Trompowsky Attack is named after Octávio Trompowsky, a Brazilian chess player who popularized it in the 1930s and 40s. It lay dormant for decades until grandmasters Julian Hodgson and Nigel Short revived it in the 1990s. Today it is a popular surprise weapon at all levels, including at Grandmaster tournaments.",
+    "planLessons": [
+      {
+        "title": "The Trompowsky Surprise — Bg5!",
+        "description": "After 1.d4 Nf6, instead of the expected 2.c4, White plays 2.Bg5! This pin immediately forces Black to make a decision — every option has trade-offs.",
+        "fen": "rnbqkb1r/pppppppp/5n2/6B1/3P4/8/PPP1PPPP/RN1QKBNR b KQkq - 2 2",
+        "highlights": ["g5", "f6"],
+        "arrows": [{"from": "g5", "to": "f6"}],
+        "style": "good"
+      },
+      {
+        "title": "When Black Plays ...Ne4 — Use Bh4 or Bf4",
+        "description": "If Black attacks your bishop with ...Ne4, retreat to h4 or f4! Both are good. From h4, the bishop stays on the h4-d8 diagonal. From f4, it eyes the c1-h6 diagonal.",
+        "fen": "rnbqkb1r/pppppppp/8/7B/3Pn3/8/PPP1PPPP/RN1QKBNR w KQkq - 3 3",
+        "highlights": ["e4", "h4", "f4"],
+        "arrows": [{"from": "g5", "to": "h4"}, {"from": "g5", "to": "f4"}],
+        "style": "neutral"
+      },
+      {
+        "title": "Push f3 to Evict the Knight",
+        "description": "When Black has a knight on e4, push f3! The knight must retreat and you gain time and central space. After f3 ...Nf6, play e4 to build a dominant center.",
+        "fen": "rnbqkb1r/pppp1ppp/4p3/7B/3Pn3/5P2/PPP3PP/RN1QKBNR b KQkq - 0 4",
+        "highlights": ["f3", "e4"],
+        "arrows": [{"from": "e4", "to": "f6"}, {"from": "e2", "to": "e4"}],
+        "style": "good"
+      },
+      {
+        "title": "The Qb6/Qb3 Queen Trade",
+        "description": "When Black plays ...Qb6 attacking b2 and d4, respond with Qb3! Offering a queen trade is fine — after Qxb3 axb3, the a-file opens for your rook and you have a solid, slightly better endgame.",
+        "fen": "rnb1kb1r/pp2pppp/5n2/2pp2B1/3P4/2PQ4/PP2PPPP/RN2KBNR b KQkq - 0 5",
+        "highlights": ["b3", "b6"],
+        "arrows": [{"from": "d1", "to": "b3"}, {"from": "b6", "to": "b3"}, {"from": "a2", "to": "b3"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Retreat the Bishop When It Gets a Good Trade",
+        "description": "When Black plays ...h6 asking your bishop what it wants, sometimes Bxf6 is the answer! You get doubled f-pawns on Black's kingside, which is a long-term structural plus.",
+        "fen": "rnbqkb1r/pppp1ppp/4pn1p/6B1/3PP3/8/PPP2PPP/RN1QKBNR w KQkq - 0 4",
+        "highlights": ["g5", "f6", "f7"],
+        "arrows": [{"from": "g5", "to": "f6"}],
+        "style": "good"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkb1r/pppppppp/5n2/6B1/3P4/8/PPP1PPPP/RN1QKBNR b KQkq - 2 2",
+        "prompt": "What is the main idea of 2.Bg5 in the Trompowsky Attack?",
+        "choices": [
+          {"text": "Pin the f6 knight to force Black into awkward decisions", "isCorrect": true},
+          {"text": "Prepare to castle queenside immediately", "isCorrect": false},
+          {"text": "Support the d4 pawn with the bishop", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "2.Bg5 immediately pins Black's knight to the queen! Black can't easily move the knight without consequences, and every response has trade-offs. This early pressure is what makes the Trompowsky a powerful surprise weapon.",
+        "boardHighlightsOnReveal": ["g5", "f6", "d8"],
+        "arrowsOnReveal": [{"from": "g5", "to": "f6"}]
+      },
+      {
+        "fen": "rnbqkb1r/pppppppp/8/7B/3Pn3/8/PPP1PPPP/RN1QKBNR w KQkq - 3 3",
+        "prompt": "Black plays ...Ne4 attacking your bishop. What is the best response?",
+        "choices": [
+          {"text": "Bh4 — retreat and maintain the diagonal", "isCorrect": true},
+          {"text": "Bxd8 — trade bishop for queen", "isCorrect": false},
+          {"text": "Bg3 — stay aggressive", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Bh4! Retreating to h4 keeps the bishop active and maintains the pin on the f6 square. Then push f3 to kick the knight away. Bxd8 would trade your good bishop for just a king (after Kxd8), which is terrible!",
+        "boardHighlightsOnReveal": ["h4", "e4"],
+        "arrowsOnReveal": [{"from": "g5", "to": "h4"}, {"from": "f2", "to": "f3"}]
+      },
+      {
+        "fen": "rnb1kb1r/pp2pppp/5n2/2pp4/3P3B/2P2P2/PP2P1PP/RN1QKbNR w KQkq - 0 6",
+        "prompt": "Black has ...Qb6 attacking b2 and d4. What is the calm Trompowsky response?",
+        "choices": [
+          {"text": "Qb3 — offer a queen trade for a solid endgame", "isCorrect": true},
+          {"text": "b3 — protect b2 defensively", "isCorrect": false},
+          {"text": "Nd2 — defend b2 with the knight", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Qb3! Offering to trade queens is the correct Trompowsky reaction. After Qxb3 axb3, the a-file opens for White's rook and you have a solid, slightly better endgame. Don't be afraid of the queen trade!",
+        "boardHighlightsOnReveal": ["b3", "a2"],
+        "arrowsOnReveal": [{"from": "d1", "to": "b3"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Trompowsky Attack (A45) — The Setup",
+        "description": "The Trompowsky is defined by 1.d4 Nf6 2.Bg5. Rather than developing the knight to f3, White develops the bishop first to create immediate problems. Black has four main responses: ...d5, ...Ne4, ...e6, and ...c5.",
+        "fen": "rnbqkb1r/pppppppp/5n2/6B1/3P4/8/PPP1PPPP/RN1QKBNR b KQkq - 2 2",
+        "highlights": ["g5", "f6", "d4"],
+        "arrows": [{"from": "c1", "to": "g5"}],
+        "style": "theory"
+      },
+      {
+        "title": "...Ne4 Variation — Bh4 and f3",
+        "description": "After 2...Ne4, White plays 3.Bh4 to maintain the diagonal. Then 3...d5 4.f3 pushes the knight away. White follows with e4 to dominate the center. This is sharp and tactical.",
+        "fen": "rnbqkb1r/pppp1ppp/4p3/8/3Pn2B/5P2/PPP3PP/RN1QKBNR b KQkq - 0 5",
+        "highlights": ["h4", "f3", "e4"],
+        "arrows": [{"from": "e4", "to": "f6"}, {"from": "e2", "to": "e4"}],
+        "style": "theory"
+      },
+      {
+        "title": "...e6 Variation — Seize the Center with e4",
+        "description": "After 2...e6 3.e4!, White grabs a massive center while Black's c8 bishop is locked in. After ...h6 Bxf6 Qxf6, White has a space advantage and doubled pawns on Black's f-file.",
+        "fen": "rnbqkb1r/pppp1ppp/4pn2/6B1/3PP3/8/PPP2PPP/RN1QKBNR b KQkq e3 0 3",
+        "highlights": ["e4", "d4", "c8"],
+        "arrows": [{"from": "g5", "to": "f6"}],
+        "style": "theory"
+      },
+      {
+        "title": "...d5 Variation — Solid Center Play",
+        "description": "After 2...d5 3.e3, both sides build solid structures. White plays c3 to support d4, and if Black plays ...Qb6, White meets it with Qb3 offering a queen trade. A calm, positional game.",
+        "fen": "rnbqkb1r/ppp1pppp/5n2/3p2B1/3P4/4P3/PPP2PPP/RN1QKBNR b KQkq - 0 3",
+        "highlights": ["d5", "d4", "g5"],
+        "arrows": [{"from": "c2", "to": "c3"}, {"from": "d1", "to": "b3"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2",
+        "prompt": "Black plays ...Nf6. What is the Trompowsky Attack's defining move?",
+        "choices": [
+          {"text": "Bg5 — pin the knight immediately", "isCorrect": true},
+          {"text": "c4 — play the Queen's Gambit", "isCorrect": false},
+          {"text": "Nf3 — develop normally", "isCorrect": false},
+          {"text": "e4 — go into the Blackmar-Diemer Gambit", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "2.Bg5 is the Trompowsky Attack! It pins the f6 knight before White has even developed the g1 knight. This surprise move is what makes the Trompowsky unique and unexpected for many Black players.",
+        "boardHighlightsOnReveal": ["g5", "f6"],
+        "arrowsOnReveal": [{"from": "c1", "to": "g5"}]
+      },
+      {
+        "fen": "rnbqkb1r/pppp1ppp/5n2/3p2B1/3P4/4P3/PPP2PPP/RN1QKBNR b KQkq - 0 3",
+        "prompt": "After 1.d4 Nf6 2.Bg5 d5 3.e3, Black plays ...Qb6. What is the correct White response?",
+        "choices": [
+          {"text": "Qb3 — trade queens for a safe endgame", "isCorrect": true},
+          {"text": "b3 — protect b2 passively", "isCorrect": false},
+          {"text": "Bc1 — retreat the bishop", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Qb3! After Qxb3 axb3, the a-file opens and White has a slightly better endgame. This is the standard Trompowsky response to ...Qb6 — don't be afraid of the queen trade, it favors White!",
+        "boardHighlightsOnReveal": ["b3", "b6"],
+        "arrowsOnReveal": [{"from": "d1", "to": "b3"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["d2d4", "g8f6", "c1g5"],
+    "responses": [
+      {
+        "id": "tromp-d5",
+        "move": {
+          "uci": "d7d5",
+          "san": "d5",
+          "explanation": "Black plays d5, ignoring the pin and fighting for the center solidly."
+        },
+        "name": "Classical ...d5",
+        "eco": "A45",
+        "frequency": 0.40,
+        "description": "The most solid response — Black builds a central pawn and develops naturally.",
+        "planAdjustment": "Play e3 and c3 to support d4. If Black plays ...Qb6, respond with Qb3 to trade queens for a small endgame advantage."
+      },
+      {
+        "id": "tromp-ne4",
+        "move": {
+          "uci": "f6e4",
+          "san": "Ne4",
+          "explanation": "Black aggressively attacks the bishop with the knight, demanding you make a decision immediately."
+        },
+        "name": "Knight Attack (...Ne4)",
+        "eco": "A45",
+        "frequency": 0.30,
+        "description": "Sharp and aggressive — Black drives the bishop away immediately.",
+        "planAdjustment": "Play Bh4 to keep the diagonal, then f3 to kick the knight. After ...Nf6, play e4 for a strong center. Alternatively, Bf4 is a simpler retreat."
+      },
+      {
+        "id": "tromp-e6",
+        "move": {
+          "uci": "e7e6",
+          "san": "e6",
+          "explanation": "Black plays quietly with e6, developing solidly and ignoring the pin for now."
+        },
+        "name": "Quiet ...e6",
+        "eco": "A45",
+        "frequency": 0.20,
+        "description": "A solid and flexible response — Black develops normally and keeps options open.",
+        "planAdjustment": "Play e4 immediately to build a massive center! Black's c8 bishop is locked in. If Black plays ...h6, consider Bxf6 to create doubled f-pawns."
+      },
+      {
+        "id": "tromp-c5",
+        "move": {
+          "uci": "c7c5",
+          "san": "c5",
+          "explanation": "Black immediately counterattacks d4 with c5, a sharp Benoni-like approach."
+        },
+        "name": "Counter ...c5",
+        "eco": "A45",
+        "frequency": 0.10,
+        "description": "A dynamic and aggressive counterstrike against d4.",
+        "planAdjustment": "Play d5 to close the center — your bishop on g5 becomes a strong piece after d5. Develop with Nc3 and e4 to build a space advantage."
+      }
+    ]
+  }
+}

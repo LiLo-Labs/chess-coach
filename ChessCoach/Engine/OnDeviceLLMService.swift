@@ -10,7 +10,7 @@ actor OnDeviceLLMService {
     private var vocab: OpaquePointer?
     private var isLoaded = false
 
-    static let modelFilename = "qwen3-4b-q4_k_m"
+    static let modelFilename = AppConfig.llm.onDeviceModelFilename
 
     /// Check whether the GGUF model file is bundled in the app.
     nonisolated static var isModelAvailable: Bool {
@@ -38,7 +38,7 @@ actor OnDeviceLLMService {
 
         let nThreads = max(1, min(8, ProcessInfo.processInfo.processorCount - 2))
         var ctxParams = llama_context_default_params()
-        ctxParams.n_ctx = 4096
+        ctxParams.n_ctx = AppConfig.llm.contextSize
         ctxParams.n_threads = Int32(nThreads)
         ctxParams.n_threads_batch = Int32(nThreads)
 
@@ -51,26 +51,24 @@ actor OnDeviceLLMService {
         self.context = c
         self.vocab = llama_model_get_vocab(m)
         self.isLoaded = true
+        #if DEBUG
         print("[ChessCoach] On-device LLM loaded (\(nThreads) threads)")
+        #endif
     }
 
     /// Generate a completion for the given prompt. Supports Qwen3 thinking mode.
-    func generate(prompt: String, maxTokens: Int = 200, useThinking: Bool = false) throws -> String {
+    func generate(prompt: String, maxTokens: Int = 200, useThinking: Bool = false) async throws -> String {
         guard isLoaded, let model, let context, let vocab else {
             throw OnDeviceLLMError.modelNotLoaded
         }
 
         // Build ChatML prompt for Qwen3
         let thinkTag = useThinking ? "/think" : "/no_think"
-        let chatMLPrompt = "<|im_start|>system\nYou are a helpful chess coaching assistant.\(thinkTag)<|im_end|>\n<|im_start|>user\n\(prompt)<|im_end|>\n<|im_start|>assistant\n"
+        let chatMLPrompt = "<|im_start|>system\n\(AppConfig.llm.onDeviceSystemMessage)\(thinkTag)<|im_end|>\n<|im_start|>user\n\(prompt)<|im_end|>\n<|im_start|>assistant\n"
 
-        let result = try Self.runInference(
-            model: model,
-            context: context,
-            vocab: vocab,
-            prompt: chatMLPrompt,
-            maxTokens: maxTokens
-        )
+        let result = try Self.runInference(model: model, context: context, vocab: vocab,
+                                             prompt: chatMLPrompt, maxTokens: maxTokens,
+                                             useThinking: useThinking)
 
         if useThinking {
             return Self.stripThinkingContent(result)
@@ -86,7 +84,9 @@ actor OnDeviceLLMService {
         self.vocab = nil
         self.isLoaded = false
         llama_backend_free()
+        #if DEBUG
         print("[ChessCoach] On-device LLM unloaded")
+        #endif
     }
 
     // Cleanup is handled by unloadModel() — caller must call it before releasing.
@@ -99,7 +99,8 @@ actor OnDeviceLLMService {
         context: OpaquePointer,
         vocab: OpaquePointer,
         prompt: String,
-        maxTokens: Int
+        maxTokens: Int,
+        useThinking: Bool = false
     ) throws -> String {
         // Tokenize
         let utf8Count = prompt.utf8.count
@@ -133,11 +134,22 @@ actor OnDeviceLLMService {
             throw OnDeviceLLMError.decodeFailed
         }
 
-        // Set up sampler
+        // Set up sampler — order per Qwen3 docs: TopK → TopP → MinP → Temp → Dist
         let sparams = llama_sampler_chain_default_params()
-        let sampler = llama_sampler_chain_init(sparams)!
-        llama_sampler_chain_add(sampler, llama_sampler_init_temp(0.6))
-        llama_sampler_chain_add(sampler, llama_sampler_init_top_p(0.95, 1))
+        guard let sampler = llama_sampler_chain_init(sparams) else {
+            throw OnDeviceLLMError.decodeFailed
+        }
+        if useThinking {
+            llama_sampler_chain_add(sampler, llama_sampler_init_top_k(AppConfig.llm.thinkingTopK))
+            llama_sampler_chain_add(sampler, llama_sampler_init_top_p(AppConfig.llm.thinkingTopP, 1))
+            llama_sampler_chain_add(sampler, llama_sampler_init_min_p(AppConfig.llm.thinkingMinP, 1))
+            llama_sampler_chain_add(sampler, llama_sampler_init_temp(AppConfig.llm.thinkingTemperature))
+        } else {
+            llama_sampler_chain_add(sampler, llama_sampler_init_top_k(AppConfig.llm.topK))
+            llama_sampler_chain_add(sampler, llama_sampler_init_top_p(AppConfig.llm.topP, 1))
+            llama_sampler_chain_add(sampler, llama_sampler_init_min_p(AppConfig.llm.minP, 1))
+            llama_sampler_chain_add(sampler, llama_sampler_init_temp(AppConfig.llm.temperature))
+        }
         llama_sampler_chain_add(sampler, llama_sampler_init_dist(UInt32.random(in: 0...UInt32.max)))
         defer { llama_sampler_free(sampler) }
 
@@ -228,6 +240,7 @@ enum OnDeviceLLMError: Error, LocalizedError {
     case modelNotLoaded
     case tokenizationFailed
     case decodeFailed
+    case inferenceTimeout
 
     var errorDescription: String? {
         switch self {
@@ -237,6 +250,7 @@ enum OnDeviceLLMError: Error, LocalizedError {
         case .modelNotLoaded: "Model not loaded — call loadModel() first"
         case .tokenizationFailed: "Failed to tokenize prompt"
         case .decodeFailed: "llama_decode failed during inference"
+        case .inferenceTimeout: "On-device LLM inference timed out after 30 seconds"
         }
     }
 }

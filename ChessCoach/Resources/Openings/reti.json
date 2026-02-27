@@ -1,0 +1,639 @@
+{
+  "id": "reti",
+  "name": "Reti Opening",
+  "description": "A hypermodern opening where White controls the center with pieces rather than pawns. Very flexible and transpositional.",
+  "color": "white",
+  "difficulty": 2,
+  "tree": {
+    "id": "reti/root",
+    "children": [
+      {
+        "id": "reti/g1f3",
+        "move": {
+          "uci": "g1f3",
+          "san": "Nf3",
+          "explanation": "Develop the king's knight on the very first move — the Réti way! Instead of claiming the center with a pawn, you control it with a piece. The knight attacks e5 and d4 right away."
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "reti/g1f3/d7d5",
+            "move": {
+              "uci": "d7d5",
+              "san": "d5",
+              "explanation": "Black takes the center with the queen's pawn, daring you to challenge it. This is the most direct and natural response."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "reti/g1f3/d7d5/c2c4",
+                "move": {
+                  "uci": "c2c4",
+                  "san": "c4",
+                  "explanation": "Challenge the d5 pawn from the flank! This is the Réti move — instead of meeting d5 head-on with d4, you poke at it from the side. Very clever and flexible."
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "reti/g1f3/d7d5/c2c4/d5c4",
+                    "move": {
+                      "uci": "d5c4",
+                      "san": "dxc4",
+                      "explanation": "Black captures the pawn, accepting the gambit. Now you have a lead in development and will quickly win the pawn back while developing your pieces."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "reti/g1f3/d7d5/c2c4/d5c4/e2e3",
+                        "move": {
+                          "uci": "e2e3",
+                          "san": "e3",
+                          "explanation": "A quiet but powerful move — open the diagonal for your bishop and prepare to recapture on c4. This is the calm, positional way to play the Réti Accepted."
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "reti/g1f3/d7d5/c2c4/d5c4/e2e3/c7c5",
+                            "move": {
+                              "uci": "c7c5",
+                              "san": "c5",
+                              "explanation": "Black tries to hold onto the extra pawn by supporting it with c5. This is the most ambitious reply but it loosens Black's position slightly."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "reti/g1f3/d7d5/c2c4/d5c4/e2e3/c7c5/f1c4",
+                                "move": {
+                                  "uci": "f1c4",
+                                  "san": "Bxc4",
+                                  "explanation": "Recapture the pawn with the bishop! Now the bishop is beautifully placed on c4, eyeing the f7 square and the center. Development and activity — perfect!"
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "reti/g1f3/d7d5/c2c4/d5c4/e2e3/c7c5/f1c4/e7e6",
+                                    "move": {
+                                      "uci": "e7e6",
+                                      "san": "e6",
+                                      "explanation": "Black plays solidly with e6, developing the dark-squared bishop and reinforcing the center. The position now resembles a Queen's Gambit Accepted with reversed colors."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "reti/g1f3/d7d5/c2c4/d5c4/e2e3/c7c5/f1c4/e7e6/e1g1",
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle to safety! Your king is secure and your rook connects to the f1 square. All your pieces are working together beautifully."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "reti/g1f3/d7d5/c2c4/d5c4/e2e3/c7c5/f1c4/e7e6/e1g1/g8f6",
+                                            "move": {
+                                              "uci": "g8f6",
+                                              "san": "Nf6",
+                                              "explanation": "Black develops the knight — now both sides have developed knights and castled. The position is rich with possibilities."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "reti/g1f3/d7d5/c2c4/d5c4/e2e3/c7c5/f1c4/e7e6/e1g1/g8f6/d2d4",
+                                                "move": {
+                                                  "uci": "d2d4",
+                                                  "san": "d4",
+                                                  "explanation": "Now push d4! After all this preparation, you finally establish a strong central pawn. Your pieces support it well and the position is excellent."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "reti/g1f3/d7d5/c2c4/g8f6",
+                    "move": {
+                      "uci": "g8f6",
+                      "san": "Nf6",
+                      "explanation": "Instead of capturing, Black develops the knight and defends d5. This leads to the fianchetto variation of the Réti."
+                    },
+                    "isMainLine": false,
+                    "variationName": "Reti Accepted: ...Nf6",
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "reti/g1f3/d7d5/c2c4/g8f6/g2g3",
+                        "move": {
+                          "uci": "g2g3",
+                          "san": "g3",
+                          "explanation": "Begin the fianchetto! This is the classic Réti setup — you'll develop the bishop to g2 and castle, building long-term pressure on d5."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "reti/g1f3/d7d5/c2c4/g8f6/g2g3/e7e6",
+                            "move": {
+                              "uci": "e7e6",
+                              "san": "e6",
+                              "explanation": "Black plays solidly with e6, supporting d5 and preparing to develop the dark-squared bishop. The position is entering Catalan territory."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "reti/g1f3/d7d5/c2c4/g8f6/g2g3/e7e6/f1g2",
+                                "move": {
+                                  "uci": "f1g2",
+                                  "san": "Bg2",
+                                  "explanation": "Complete the fianchetto! The bishop on g2 now pressures d5 and the queenside. This position is nearly identical to the Catalan Opening."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "reti/g1f3/d7d5/c2c4/g8f6/g2g3/e7e6/f1g2/c7c5",
+                                    "move": {
+                                      "uci": "c7c5",
+                                      "san": "c5",
+                                      "explanation": "Black plays actively with c5, attacking your d4-controlling structure. The position is dynamic and rich in strategic ideas."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "reti/g1f3/d7d5/c2c4/g8f6/g2g3/e7e6/f1g2/c7c5/e1g1",
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle! The setup is complete. Now you can push d4 when ready or build with Nc3 and d3 first."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "reti/g1f3/e7e6",
+            "move": {
+              "uci": "e7e6",
+              "san": "e6",
+              "explanation": "Black plays a solid e6 without committing the d-pawn yet. This flexible move keeps many options open."
+            },
+            "isMainLine": false,
+            "variationName": "Reti: ...e6 system",
+            "weight": 185,
+            "children": [
+              {
+                "id": "reti/g1f3/e7e6/g2g3",
+                "move": {
+                  "uci": "g2g3",
+                  "san": "g3",
+                  "explanation": "Begin your fianchetto setup regardless of Black's choice. The Réti is wonderfully flexible — g3 and Bg2 work against almost any Black system."
+                },
+                "isMainLine": false,
+                "weight": 170,
+                "children": [
+                  {
+                    "id": "reti/g1f3/e7e6/g2g3/g8f6",
+                    "move": {
+                      "uci": "g8f6",
+                      "san": "Nf6",
+                      "explanation": "Black develops the knight to f6 — a classic central square. Both sides are building up carefully."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "reti/g1f3/e7e6/g2g3/g8f6/f1g2",
+                        "move": {
+                          "uci": "f1g2",
+                          "san": "Bg2",
+                          "explanation": "Fianchetto the bishop! This piece will work with your knight on f3 to control the center without committing pawns yet."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "reti/g1f3/e7e6/g2g3/g8f6/f1g2/f8e7",
+                            "move": {
+                              "uci": "f8e7",
+                              "san": "Be7",
+                              "explanation": "Black develops the bishop and prepares to castle. Both sides are completing development before any action."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "reti/g1f3/e7e6/g2g3/g8f6/f1g2/f8e7/e1g1",
+                                "move": {
+                                  "uci": "e1g1",
+                                  "san": "O-O",
+                                  "explanation": "Castle to safety! Your kingside setup is complete. Now you can decide: play c4 to challenge the center or d3 for the King's Indian Attack setup."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "reti/g1f3/e7e6/g2g3/g8f6/f1g2/f8e7/e1g1/e8g8",
+                                    "move": {
+                                      "uci": "e8g8",
+                                      "san": "O-O",
+                                      "explanation": "Both sides have castled. The position is solid and balanced — now the strategic battles of the middlegame begin!"
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "reti/g1f3/e7e6/g2g3/g8f6/f1g2/f8e7/e1g1/e8g8/c2c4",
+                                        "move": {
+                                          "uci": "c2c4",
+                                          "san": "c4",
+                                          "explanation": "Now play c4 to challenge the center! This typically transposes into a Catalan or English structure where your g2 bishop is a long-term asset."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "reti/g1f3/c7c6",
+            "move": {
+              "uci": "c7c6",
+              "san": "c6",
+              "explanation": "Black plays the Caro-Kann-like move c6, preparing d5 while keeping the position solid. A very trustworthy choice."
+            },
+            "isMainLine": false,
+            "variationName": "Reti: ...c6 system",
+            "weight": 185,
+            "children": [
+              {
+                "id": "reti/g1f3/c7c6/g2g3",
+                "move": {
+                  "uci": "g2g3",
+                  "san": "g3",
+                  "explanation": "Begin the fianchetto — the Réti is flexible enough to use this plan against any Black setup, including the Caro-Kann structure."
+                },
+                "isMainLine": false,
+                "weight": 170,
+                "children": [
+                  {
+                    "id": "reti/g1f3/c7c6/g2g3/d7d5",
+                    "move": {
+                      "uci": "d7d5",
+                      "san": "d5",
+                      "explanation": "Black advances d5 as planned. Now the c4 pawn or Bg2 will pressure this pawn from the long diagonal."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "reti/g1f3/c7c6/g2g3/d7d5/f1g2",
+                        "move": {
+                          "uci": "f1g2",
+                          "san": "Bg2",
+                          "explanation": "Complete the fianchetto! The bishop on g2 immediately puts pressure on the d5 pawn and will remain powerful for the whole game."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "reti/g1f3/c7c6/g2g3/d7d5/f1g2/c8f5",
+                            "move": {
+                              "uci": "c8f5",
+                              "san": "Bf5",
+                              "explanation": "Black develops the bishop actively to f5 before closing the queenside. This is an ambitious and principled move to get the bishop outside the pawn chain."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "reti/g1f3/c7c6/g2g3/d7d5/f1g2/c8f5/e1g1",
+                                "move": {
+                                  "uci": "e1g1",
+                                  "san": "O-O",
+                                  "explanation": "Castle! Your king is safe and now you can challenge the center. The position is strategically rich with ideas for both sides."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "reti/g1f3/c7c6/g2g3/d7d5/f1g2/c8f5/e1g1/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Black develops the knight. The game is entering a typical Réti middlegame with competing plans on both sides."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "reti/g1f3/c7c6/g2g3/d7d5/f1g2/c8f5/e1g1/g8f6/d2d3",
+                                        "move": {
+                                          "uci": "d2d3",
+                                          "san": "d3",
+                                          "explanation": "Play d3 to support a future e4, completing the King's Indian Attack setup. Your solid position gives you long-term pressure."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Develop the king's knight first, then challenge the center with c4. You can fianchetto the bishop on g2 for long-term pressure, or take a more direct approach. The Réti is extremely flexible — it can transpose into the English, Catalan, or King's Indian Attack depending on how Black responds.",
+    "strategicGoals": [
+      { "description": "Control the center with pieces (Nf3) before committing pawns", "priority": 1 },
+      { "description": "Challenge Black's d5 pawn with the flank move c4", "priority": 2 },
+      { "description": "Fianchetto the bishop on g2 for long-term diagonal pressure", "priority": 3 },
+      { "description": "Castle early and complete development before pushing d4", "priority": 4 }
+    ],
+    "pawnStructureTarget": "Flexible — c4 challenges d5; d4 can be played later after development",
+    "keySquares": ["d5", "c4", "g2", "d4"],
+    "pieceTargets": [
+      { "piece": "king's knight", "idealSquares": ["f3"], "reasoning": "Controls d4 and e5 immediately, fights for the center without pawns — the hypermodern principle" },
+      { "piece": "king's bishop", "idealSquares": ["g2", "c4"], "reasoning": "On g2 it pressures d5 long-term; on c4 after ...dxc4 it aims at f7 and controls the center" },
+      { "piece": "queen's pawn", "idealSquares": ["d4"], "reasoning": "Played after development is complete, d4 establishes a strong center at the right moment" }
+    ],
+    "typicalPlans": [
+      "After ...dxc4: play e3 and Bxc4 to recapture the pawn with tempo and activity",
+      "After Black keeps d5: fianchetto with g3, Bg2, O-O, then play d4 when ready",
+      "The Réti can transpose into the Catalan (with g3/Bg2/d4) or English (with Nc3) based on Black's setup"
+    ],
+    "commonMistakes": [
+      "Playing c4 then d4 too quickly without developing pieces first — develop before you push!",
+      "Being afraid when Black captures dxc4 — you gain activity and will win the pawn back easily",
+      "Forgetting that the Réti is flexible — you don't need to play the same moves in the same order every game"
+    ],
+    "historicalNote": "The Réti Opening is named after Czech Grandmaster Richard Réti, who introduced it in the 1920s as part of the 'hypermodern' revolution in chess. Réti and his contemporaries (Nimzowitsch, Tartakower) shocked the chess world by arguing that controlling the center with pieces was better than occupying it with pawns. The opening was famously used by Réti himself against the reigning world champion José Capablanca in 1924.",
+    "planLessons": [
+      {
+        "title": "The Hypermodern Idea: Control Without Occupying",
+        "description": "In the Réti, you control d5 and e4 with your knight on f3 — no pawns needed! This 'hypermodern' idea surprised the chess world in the 1920s. Your pieces watch the center rather than pawns occupying it.",
+        "fen": "rnbqkbnr/ppp1pppp/8/3p4/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 0 2",
+        "highlights": ["f3", "d5", "e4"],
+        "arrows": [{"from": "f3", "to": "d5"}, {"from": "f3", "to": "e5"}],
+        "style": "good"
+      },
+      {
+        "title": "The Réti Move: 2.c4!",
+        "description": "After 1...d5, instead of meeting it head-on with d4, you attack the pawn from the side with c4! This is the Réti move — a flank challenge that Black must answer carefully.",
+        "fen": "rnbqkbnr/ppp1pppp/8/3p4/2P5/5N2/PP1PPPPP/RNBQKB1R b KQkq c3 0 2",
+        "highlights": ["c4", "d5"],
+        "arrows": [{"from": "c4", "to": "d5"}],
+        "style": "good"
+      },
+      {
+        "title": "When Black Captures dxc4 — Don't Panic!",
+        "description": "After ...dxc4, Black has an extra pawn — but only for a moment! Play e3 and then Bxc4 to recapture with the bishop beautifully developed. You get the pawn back and great piece activity.",
+        "fen": "rnbqkbnr/ppp1pppp/8/8/2p5/4PN2/PP1P1PPP/RNBQKB1R b KQkq - 0 3",
+        "highlights": ["c4", "e3"],
+        "arrows": [{"from": "e3", "to": "c4"}, {"from": "f1", "to": "c4"}],
+        "style": "good"
+      },
+      {
+        "title": "The Réti Fianchetto: g3 and Bg2",
+        "description": "When Black keeps d5 instead of capturing, play g3 and Bg2. This bishop will pressure d5 and the queenside for the entire game — very similar to the Catalan Opening.",
+        "fen": "rnbqkbnr/ppp1pppp/8/3p4/2P5/5NP1/PP1PPP1P/RNBQKB1R b KQkq - 0 3",
+        "highlights": ["g3", "g2"],
+        "arrows": [{"from": "f1", "to": "g2"}, {"from": "g2", "to": "a8"}],
+        "style": "good"
+      },
+      {
+        "title": "Flexibility: Don't Be Predictable",
+        "description": "The Réti is special because it can become many different openings depending on Black's choice. If Black plays e6 and d5, you can go Catalan. If Black plays c5, you can go English. This flexibility is a weapon!",
+        "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/2P5/5NP1/PP1PPP1P/RNBQKB1R b KQkq - 0 3",
+        "highlights": ["c4", "g3"],
+        "arrows": [{"from": "f1", "to": "g2"}],
+        "style": "neutral"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkbnr/ppp1pppp/8/3p4/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 0 2",
+        "prompt": "You played 1.Nf3 and Black responded with 1...d5. What is your best next move?",
+        "choices": [
+          {"text": "c4 — the Réti move! Challenge d5 from the flank", "isCorrect": true},
+          {"text": "d4 — play like a Queen's Gambit", "isCorrect": false},
+          {"text": "e4 — put a pawn in the center", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "c4 is the Réti! Instead of meeting d5 head-on with d4, you challenge it from the flank with c4. This keeps the position flexible and is the heart of the Réti Opening's hypermodern philosophy.",
+        "boardHighlightsOnReveal": ["c4", "d5"],
+        "arrowsOnReveal": [{"from": "c2", "to": "c4"}]
+      },
+      {
+        "fen": "rnbqkbnr/ppp1pppp/8/8/2p5/5N2/PPPPPPPP/RNBQKB1R w KQkq - 0 3",
+        "prompt": "Black just captured ...dxc4. How do you recapture the pawn most effectively?",
+        "choices": [
+          {"text": "e3 then Bxc4 — develop the bishop with tempo", "isCorrect": true},
+          {"text": "Qa4+ immediately — win the pawn right away", "isCorrect": false},
+          {"text": "Na3 — use the knight to chase the pawn", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Play e3 first, then Bxc4! This is the best way — you develop your bishop to a great active square and recover the pawn at the same time. The bishop on c4 will be a powerful piece pointing at f7.",
+        "boardHighlightsOnReveal": ["e3", "c4"],
+        "arrowsOnReveal": [{"from": "f1", "to": "c4"}]
+      },
+      {
+        "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/2P5/5N2/PP1PPPPP/RNBQKB1R w KQkq - 2 3",
+        "prompt": "Black played ...Nf6 instead of capturing. What is White's best plan?",
+        "choices": [
+          {"text": "g3 — begin the fianchetto, like a Catalan", "isCorrect": true},
+          {"text": "Nc3 — develop another knight", "isCorrect": false},
+          {"text": "e4 — push to the center immediately", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "g3 is the best plan! Begin the fianchetto with g3, Bg2, and O-O. The bishop on g2 will pressure the d5 pawn and the queenside for the entire game — this is a Catalan-style approach within the Réti.",
+        "boardHighlightsOnReveal": ["g3", "g2", "d5"],
+        "arrowsOnReveal": [{"from": "f1", "to": "g2"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Reti Accepted (A09)",
+        "description": "After 1.Nf3 d5 2.c4 dxc4, Black grabs the pawn. White plays 3.e3 and 4.Bxc4 to recover it with excellent piece activity. This is the sharpest and most principled line.",
+        "fen": "rnbqkbnr/ppp1pppp/8/8/2p5/4PN2/PP1P1PPP/RNBQKB1R b KQkq - 0 3",
+        "highlights": ["c4", "e3"],
+        "arrows": [{"from": "f1", "to": "c4"}],
+        "style": "theory"
+      },
+      {
+        "title": "Reti with Fianchetto (A07)",
+        "description": "The main Réti line: 1.Nf3 d5 2.c4 Nf6 3.g3 — White fianchettos the bishop, creating a Catalan-like pressure on the long diagonal. The bishop on g2 is White's main weapon.",
+        "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/2P5/5NP1/PP1PPP1P/RNBQKB1R b KQkq - 0 3",
+        "highlights": ["g3", "d5"],
+        "arrows": [{"from": "f1", "to": "g2"}, {"from": "g2", "to": "d5"}],
+        "style": "theory"
+      },
+      {
+        "title": "The ...c6 System: Reti vs Caro-Kann Setup",
+        "description": "When Black plays 1...c6 preparing d5, White continues with g3 and Bg2 anyway. The bishop on g2 will still pressure the d5 pawn, and White can develop flexibly. The Réti works against everything!",
+        "fen": "rnbqkbnr/pp1ppppp/2p5/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 0 2",
+        "highlights": ["c6", "g3"],
+        "arrows": [{"from": "g2", "to": "d5"}],
+        "style": "theory"
+      },
+      {
+        "title": "Richard Reti's Famous Idea",
+        "description": "In 1924, Réti showed the world that 1.Nf3 — controlling the center with a knight — was just as valid as 1.e4 or 1.d4. He beat world champion Capablanca with this idea. The 'hypermodern' school was born!",
+        "fen": "rnbqkbnr/ppp1pppp/8/3p4/2P5/5N2/PP1PPPPP/RNBQKB1R b KQkq c3 0 2",
+        "highlights": ["f3", "c4"],
+        "arrows": [{"from": "f3", "to": "d4"}, {"from": "c4", "to": "d5"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkbnr/ppp1pppp/8/8/2p5/4PN2/PP1P1PPP/RNBQKB1R b KQkq - 0 3",
+        "prompt": "White has played e3 after Black captured ...dxc4. This variation is called the...?",
+        "choices": [
+          {"text": "Reti Accepted", "isCorrect": true},
+          {"text": "Reti Fianchetto", "isCorrect": false},
+          {"text": "Symmetrical Reti", "isCorrect": false},
+          {"text": "Anglo-Reti", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "When Black captures ...dxc4, it's the Reti Accepted (A09). White plays e3 and then Bxc4 to recapture the pawn with an actively placed bishop.",
+        "boardHighlightsOnReveal": ["c4", "e3"],
+        "arrowsOnReveal": [{"from": "f1", "to": "c4"}]
+      },
+      {
+        "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/2P5/5NP1/PP1PPP1P/RNBQKB1R b KQkq - 0 3",
+        "prompt": "White has played 1.Nf3 d5 2.c4 Nf6 3.g3. Why does White choose g3 instead of developing another piece?",
+        "choices": [
+          {"text": "To fianchetto the bishop on g2 for long-term pressure on d5", "isCorrect": true},
+          {"text": "To prepare h4 for a kingside attack", "isCorrect": false},
+          {"text": "To protect the f2 pawn from attack", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "g3 prepares Bg2! The bishop on g2 will pressure the d5 pawn and the queenside for the entire game — this is the core idea of the Réti fianchetto variation, very similar to the Catalan Opening.",
+        "boardHighlightsOnReveal": ["g3", "g2", "d5"],
+        "arrowsOnReveal": [{"from": "g2", "to": "d5"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["g1f3", "d7d5", "c2c4"],
+    "responses": [
+      {
+        "id": "reti-dxc4",
+        "move": {
+          "uci": "d5c4",
+          "san": "dxc4",
+          "explanation": "Black captures the c4 pawn, accepting the gambit and trying to hold onto the extra material."
+        },
+        "name": "Reti Accepted",
+        "eco": "A09",
+        "frequency": 0.35,
+        "description": "Black grabs the c4 pawn, leading to the Reti Accepted. White plays e3 and Bxc4 to recover the pawn with excellent activity.",
+        "planAdjustment": "Play e3 and then Bxc4 to recover the pawn. Don't rush to win it back with Qa4+ — the bishop development is more important."
+      },
+      {
+        "id": "reti-nf6",
+        "move": {
+          "uci": "g8f6",
+          "san": "Nf6",
+          "explanation": "Black develops the knight instead of capturing, keeping d5 protected and the position flexible."
+        },
+        "name": "Reti: ...Nf6",
+        "eco": "A07",
+        "frequency": 0.30,
+        "description": "Black develops Nf6, defending d5 without committing to a capture. This leads to the fianchetto variation of the Réti.",
+        "planAdjustment": "Play g3, Bg2, and O-O — the Catalan-style approach. Your bishop on g2 will pressure d5 for the entire game. Then play d4 when fully developed."
+      },
+      {
+        "id": "reti-e6",
+        "move": {
+          "uci": "e7e6",
+          "san": "e6",
+          "explanation": "Black plays solidly with e6, supporting d5 and preparing to develop the dark-squared bishop."
+        },
+        "name": "Reti: ...e6 System",
+        "eco": "A07",
+        "frequency": 0.20,
+        "description": "Black plays e6, leading to a Queen's Gambit Declined-type position. White continues with g3, Bg2, and O-O for a Catalan-like structure.",
+        "planAdjustment": "Continue with g3, Bg2, O-O — the position will be nearly identical to the Catalan Opening with your bishop pressing the long diagonal."
+      },
+      {
+        "id": "reti-c6",
+        "move": {
+          "uci": "c7c6",
+          "san": "c6",
+          "explanation": "Black plays the Caro-Kann setup, preparing d5 with extra support. A very solid choice."
+        },
+        "name": "Reti vs Caro-Kann Setup",
+        "eco": "A07",
+        "frequency": 0.15,
+        "description": "Black plays c6 for a solid Caro-Kann-like structure. White still plays g3, Bg2, and O-O — the bishop on g2 pressures d5 in all variations.",
+        "planAdjustment": "Play g3, Bg2, O-O, and then d3 for a King's Indian Attack setup. The bishop on g2 will pressure Black's center regardless of the exact pawn structure."
+      }
+    ]
+  }
+}

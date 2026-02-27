@@ -27,8 +27,8 @@ final class PracticeSessionViewModel {
     private(set) var lineAccuracies: [String: (correct: Int, total: Int)] = [:]
     private(set) var linesEncountered: [String] = []
 
-    private(set) var userELO: Int = UserDefaults.standard.object(forKey: "user_elo") as? Int ?? 600
-    private(set) var opponentELO: Int = UserDefaults.standard.object(forKey: "opponent_elo") as? Int ?? 1200
+    private(set) var userELO: Int = UserDefaults.standard.object(forKey: AppSettings.Key.userELO) as? Int ?? 600
+    private(set) var opponentELO: Int = UserDefaults.standard.object(forKey: AppSettings.Key.opponentELO) as? Int ?? 1200
     private var sessionGeneration = 0
     private var moveSequence: [String] = []
 
@@ -54,11 +54,11 @@ final class PracticeSessionViewModel {
         return "\(sign)\(String(format: "%.1f", pawns))"
     }
 
-    init(opening: Opening, isPro: Bool = true) {
+    init(opening: Opening, isPro: Bool = true, stockfish: StockfishService? = nil) {
         self.opening = opening
         self.isPro = isPro
         self.gameState = GameState()
-        self.stockfish = StockfishService()
+        self.stockfish = stockfish ?? StockfishService()
         self.variedOpponent = VariedOpponentService(opening: opening)
     }
 
@@ -66,7 +66,9 @@ final class PracticeSessionViewModel {
         do {
             maiaService = try MaiaService()
         } catch {
+            #if DEBUG
             print("[ChessCoach] Maia init failed for practice: \(error)")
+            #endif
         }
 
         await stockfish.start()
@@ -153,12 +155,14 @@ final class PracticeSessionViewModel {
                     eloOppo: userELO
                 )
             } catch {
+                #if DEBUG
                 print("[ChessCoach] Maia failed in practice: \(error)")
+                #endif
             }
         }
 
         if computedMove == nil {
-            if let result = await stockfish.evaluate(fen: gameState.fen, depth: 10) {
+            if let result = await stockfish.evaluate(fen: gameState.fen, depth: AppConfig.engine.opponentMoveDepth) {
                 computedMove = result.bestMove
             }
         }
@@ -219,7 +223,7 @@ final class PracticeSessionViewModel {
 
     private func updateEval() async {
         let fen = gameState.fen
-        if let result = await stockfish.evaluate(fen: fen, depth: 12) {
+        if let result = await stockfish.evaluate(fen: fen, depth: AppConfig.engine.evalDepth) {
             evalScore = result.score
         }
     }

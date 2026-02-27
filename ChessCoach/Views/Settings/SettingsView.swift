@@ -6,7 +6,6 @@ struct SettingsView: View {
 
     @State private var showingAPIKey = false
     @State private var showOnboarding = false
-    @State private var detectedProvider: String?
     @State private var showProUpgrade = false
 
     var body: some View {
@@ -14,9 +13,9 @@ struct SettingsView: View {
 
         Form {
             Section("Player Settings") {
-                Stepper("Your ELO: \(s.userELO)", value: $s.userELO, in: 400...2000, step: 100)
-                Stepper("Opponent ELO: \(s.opponentELO)", value: $s.opponentELO, in: 800...2000, step: 100)
-                Text("Maia 2 adjusts play style to match the opponent ELO")
+                Stepper("Your Skill Level: \(s.userELO)", value: $s.userELO, in: 400...2000, step: 100)
+                Stepper("Opponent Level: \(s.opponentELO)", value: $s.opponentELO, in: 800...2000, step: 100)
+                Text("The AI opponent adjusts to match the skill level")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -24,13 +23,6 @@ struct SettingsView: View {
             Section("Sound & Haptics") {
                 Toggle("Sound Effects", isOn: $s.soundEnabled)
                 Toggle("Haptic Feedback", isOn: $s.hapticsEnabled)
-            }
-
-            Section("Notifications") {
-                Toggle("Daily Reminder", isOn: $s.notificationsEnabled)
-                Text("Get reminded to practice your openings")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
             }
 
             Section("Daily Goal") {
@@ -45,7 +37,7 @@ struct SettingsView: View {
                 }
                 Toggle("Color-Blind Friendly", isOn: $s.colorblindMode)
                 if s.colorblindMode {
-                    Text("Phase indicators use shapes in addition to colors")
+                    Text("Stage indicators use shapes in addition to colors")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -53,7 +45,7 @@ struct SettingsView: View {
                 Toggle("Celebration Effects", isOn: $s.confettiEnabled)
             }
 
-            Section("Line Study") {
+            Section("Path Study") {
                 HStack {
                     Text("Auto-play Speed")
                     Spacer()
@@ -64,69 +56,61 @@ struct SettingsView: View {
             }
 
             if subscriptionService.isPro {
-                Section("LLM Provider") {
+                Section("AI Coach") {
                     Picker("Provider", selection: $s.llmProvider) {
-                        Text("Auto-detect").tag("auto")
-                        Text("On-Device (Qwen3-4B)").tag("onDevice")
-                        Text("Ollama (Local/DGX)").tag("ollama")
-                        Text("Claude API").tag("claude")
+                        Text("On-Device").tag("onDevice")
+                        Text("Cloud (Claude)").tag("claude")
+                        Text("Local Server").tag("ollama")
                     }
+                }
 
-                    if let detected = detectedProvider {
+                DisclosureGroup("Advanced") {
+                    Section {
                         HStack {
-                            Text("Active")
-                            Spacer()
-                            Text(detected)
-                                .foregroundStyle(.secondary)
+                            if showingAPIKey {
+                                TextField("sk-ant-...", text: $s.claudeAPIKey)
+                                    .autocorrectionDisabled()
+                            } else {
+                                SecureField("sk-ant-...", text: $s.claudeAPIKey)
+                            }
+                            Button {
+                                showingAPIKey.toggle()
+                            } label: {
+                                Image(systemName: showingAPIKey ? "eye.slash" : "eye")
+                                    .foregroundStyle(.secondary)
+                            }
                         }
-                    }
-                }
 
-                Section("Claude API Key") {
-                    HStack {
-                        if showingAPIKey {
-                            TextField("sk-ant-...", text: $s.claudeAPIKey)
-                                .autocorrectionDisabled()
+                        if s.claudeAPIKey.isEmpty {
+                            Text("Required for Cloud mode. Get a key at console.anthropic.com")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
                         } else {
-                            SecureField("sk-ant-...", text: $s.claudeAPIKey)
+                            Label("Key saved", systemImage: "checkmark.circle.fill")
+                                .font(.caption)
+                                .foregroundStyle(.green)
                         }
-                        Button {
-                            showingAPIKey.toggle()
-                        } label: {
-                            Image(systemName: showingAPIKey ? "eye.slash" : "eye")
+                    }
+
+                    Section {
+                        HStack {
+                            Text("Local Server")
+                            Spacer()
+                            TextField("host:port", text: $s.ollamaHost)
+                                .multilineTextAlignment(.trailing)
                                 .foregroundStyle(.secondary)
+                                .autocorrectionDisabled()
+                                .textInputAutocapitalization(.never)
                         }
-                    }
-
-                    if s.claudeAPIKey.isEmpty {
-                        Text("Required when Ollama is unavailable. Get a key at console.anthropic.com")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    } else {
-                        Label("Key saved", systemImage: "checkmark.circle.fill")
-                            .font(.caption)
-                            .foregroundStyle(.green)
-                    }
-                }
-
-                Section("Ollama Settings") {
-                    HStack {
-                        Text("Server")
-                        Spacer()
-                        TextField("host:port", text: $s.ollamaHost)
-                            .multilineTextAlignment(.trailing)
-                            .foregroundStyle(.secondary)
-                            .autocorrectionDisabled()
-                            .textInputAutocapitalization(.never)
-                    }
-                    HStack {
-                        Text("Model")
-                        Spacer()
-                        TextField("model name", text: $s.ollamaModel)
-                            .multilineTextAlignment(.trailing)
-                            .foregroundStyle(.secondary)
-                            .autocorrectionDisabled()
-                            .textInputAutocapitalization(.never)
+                        HStack {
+                            Text("Model")
+                            Spacer()
+                            TextField("model name", text: $s.ollamaModel)
+                                .multilineTextAlignment(.trailing)
+                                .foregroundStyle(.secondary)
+                                .autocorrectionDisabled()
+                                .textInputAutocapitalization(.never)
+                        }
                     }
                 }
             } else {
@@ -164,6 +148,16 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                 }
             }
+
+            #if DEBUG
+            Section("Developer") {
+                NavigationLink {
+                    DebugStateView()
+                } label: {
+                    Label("Debug States", systemImage: "ladybug")
+                }
+            }
+            #endif
         }
         .navigationTitle("Settings")
         .sheet(isPresented: $showProUpgrade) {
@@ -171,17 +165,6 @@ struct SettingsView: View {
         }
         .fullScreenCover(isPresented: $showOnboarding) {
             OnboardingView()
-        }
-        .task {
-            if subscriptionService.isPro {
-                let config = LLMConfig()
-                let provider = await config.detectProvider()
-                switch provider {
-                case .onDevice: detectedProvider = "On-Device (Qwen3-4B)"
-                case .ollama: detectedProvider = "Ollama"
-                case .claude: detectedProvider = "Claude"
-                }
-            }
         }
     }
 }

@@ -1,0 +1,605 @@
+{
+  "id": "queens-gambit",
+  "name": "Queen's Gambit",
+  "description": "A classical opening where White offers a pawn to gain central control and piece activity.",
+  "color": "white",
+  "difficulty": 2,
+  "tree": {
+    "id": "queens-gambit/root",
+    "children": [
+      {
+        "id": "queens-gambit/d2d4",
+        "move": {
+          "uci": "d2d4",
+          "san": "d4",
+          "explanation": "Control the center with the queen's pawn — the first step toward the most respected opening in chess history!"
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "queens-gambit/d2d4/d7d5",
+            "move": {
+              "uci": "d7d5",
+              "san": "d5",
+              "explanation": "Black matches your center pawn — both sides stake a claim in the middle of the board."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "queens-gambit/d2d4/d7d5/c2c4",
+                "move": {
+                  "uci": "c2c4",
+                  "san": "c4",
+                  "explanation": "The Queen's Gambit! You offer your c-pawn to pull Black's d5 pawn away from the center. It is not really a gambit — if Black takes, you win the pawn back easily!"
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "queens-gambit/d2d4/d7d5/c2c4/e7e6",
+                    "move": {
+                      "uci": "e7e6",
+                      "san": "e6",
+                      "explanation": "The Queen's Gambit Declined! Black supports the d5 pawn and prepares to develop the dark-squared bishop. A solid, classical choice."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "queens-gambit/d2d4/d7d5/c2c4/e7e6/b1c3",
+                        "move": {
+                          "uci": "b1c3",
+                          "san": "Nc3",
+                          "explanation": "Develop the queen's knight to its natural square, attacking d5 and supporting your c4 pawn. The battle for the center heats up!"
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "queens-gambit/d2d4/d7d5/c2c4/e7e6/b1c3/g8f6",
+                            "move": {
+                              "uci": "g8f6",
+                              "san": "Nf6",
+                              "explanation": "Black develops the knight and puts more pressure on d4. Now both sides are developing actively."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "queens-gambit/d2d4/d7d5/c2c4/e7e6/b1c3/g8f6/c1g5",
+                                "move": {
+                                  "uci": "c1g5",
+                                  "san": "Bg5",
+                                  "explanation": "The classical approach — pin Black's knight to the queen. If Black ever plays ...dxc4, you can recover the pawn easily. This move creates long-term pressure."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "queens-gambit/d2d4/d7d5/c2c4/e7e6/b1c3/g8f6/c1g5/f8e7",
+                                    "move": {
+                                      "uci": "f8e7",
+                                      "san": "Be7",
+                                      "explanation": "Black breaks the pin with the bishop, developing solidly. This is the Orthodox Defense — the most classical and trustworthy way to play the QGD."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "queens-gambit/d2d4/d7d5/c2c4/e7e6/b1c3/g8f6/c1g5/f8e7/e2e3",
+                                        "move": {
+                                          "uci": "e2e3",
+                                          "san": "e3",
+                                          "explanation": "Solidify your pawn center and prepare to develop your last minor piece — the f1 bishop. Your position is very stable and well-coordinated."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "queens-gambit/d2d4/d7d5/c2c4/e7e6/b1c3/g8f6/c1g5/f8e7/e2e3/e8g8",
+                                            "move": {
+                                              "uci": "e8g8",
+                                              "san": "O-O",
+                                              "explanation": "Black castles — king safety first! A very natural response, and now Black's position is very solid."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "queens-gambit/d2d4/d7d5/c2c4/e7e6/b1c3/g8f6/c1g5/f8e7/e2e3/e8g8/g1f3",
+                                                "move": {
+                                                  "uci": "g1f3",
+                                                  "san": "Nf3",
+                                                  "explanation": "Develop the king's knight. All your pieces are working together beautifully — a hallmark of the Queen's Gambit."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "queens-gambit/d2d4/d7d5/c2c4/e7e6/b1c3/g8f6/c1g5/f8e7/e2e3/e8g8/g1f3/b8d7",
+                                                    "move": {
+                                                      "uci": "b8d7",
+                                                      "san": "Nbd7",
+                                                      "explanation": "Black develops the queen's knight to d7 — not c6, which would block the c7-c6 break. This is the Orthodox Defense. Black is ready to play ...c6 or ...dxc4 at the right moment."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "queens-gambit/d2d4/d7d5/c2c4/d5c4",
+                    "move": {
+                      "uci": "d5c4",
+                      "san": "dxc4",
+                      "explanation": "The Queen's Gambit Accepted! Black grabs the pawn, giving up the center to get quick development. A sharp and principled response."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "variationName": "Queen's Gambit Accepted",
+                    "children": [
+                      {
+                        "id": "queens-gambit/d2d4/d7d5/c2c4/d5c4/e2e4",
+                        "move": {
+                          "uci": "e2e4",
+                          "san": "e4",
+                          "explanation": "Seize the center! With Black's d-pawn gone, you can build a massive pawn center with both e4 and d4. This is very powerful!"
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "queens-gambit/d2d4/d7d5/c2c4/d5c4/e2e4/e7e5",
+                            "move": {
+                              "uci": "e7e5",
+                              "san": "e5",
+                              "explanation": "Black fights back in the center! By challenging e4, Black hopes to disrupt White's massive center before it becomes overwhelming."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "queens-gambit/d2d4/d7d5/c2c4/d5c4/e2e4/e7e5/g1f3",
+                                "move": {
+                                  "uci": "g1f3",
+                                  "san": "Nf3",
+                                  "explanation": "Develop and attack the e5 pawn. The game is getting sharp — Black has counterplay but you have a big center."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "queens-gambit/d2d4/d7d5/c2c4/d5c4/e2e4/e7e5/g1f3/e5d4",
+                                    "move": {
+                                      "uci": "e5d4",
+                                      "san": "exd4",
+                                      "explanation": "Black trades the e5 pawn for your d4 pawn, relieving some central tension. Now you recapture and pick up the c4 pawn too."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "queens-gambit/d2d4/d7d5/c2c4/d5c4/e2e4/e7e5/g1f3/e5d4/f1c4",
+                                        "move": {
+                                          "uci": "f1c4",
+                                          "san": "Bxc4",
+                                          "explanation": "Develop the bishop and recapture the c4 pawn! Now your bishop eyes f7 and your position is very active — almost like an Italian Game."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "queens-gambit/d2d4/d7d5/c2c4/c7c5",
+                    "move": {
+                      "uci": "c7c5",
+                      "san": "c5",
+                      "explanation": "The Tarrasch Defense! Black immediately counterattacks in the center, accepting an isolated queen's pawn (IQP) in exchange for active piece play."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "variationName": "Tarrasch Defense",
+                    "children": [
+                      {
+                        "id": "queens-gambit/d2d4/d7d5/c2c4/c7c5/c4d5",
+                        "move": {
+                          "uci": "c4d5",
+                          "san": "cxd5",
+                          "explanation": "Capture in the center! After Black recaptures with a pawn, Black will have an isolated d5 pawn — a long-term weakness you can target."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "queens-gambit/d2d4/d7d5/c2c4/c7c5/c4d5/e7e6",
+                            "move": {
+                              "uci": "e7e6",
+                              "san": "e6",
+                              "explanation": "Black recaptures with the pawn on e6, creating an isolated d5 pawn. Black has active pieces as compensation."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "queens-gambit/d2d4/d7d5/c2c4/c7c5/c4d5/e7e6/g1f3",
+                                "move": {
+                                  "uci": "g1f3",
+                                  "san": "Nf3",
+                                  "explanation": "Develop naturally. Your plan is to target the isolated d5 pawn — blockade it with a knight on d4 and then attack it with pieces."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "queens-gambit/d2d4/d7d5/c2c4/c7c5/c4d5/e7e6/g1f3/b8c6",
+                                    "move": {
+                                      "uci": "b8c6",
+                                      "san": "Nc6",
+                                      "explanation": "Black develops and defends d5 with the knight. The Tarrasch position is dynamic — Black has space and piece activity but the isolated pawn is a long-term target."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "queens-gambit/d2d4/d7d5/c2c4/c7c5/c4d5/e7e6/g1f3/b8c6/g2g3",
+                                        "move": {
+                                          "uci": "g2g3",
+                                          "san": "g3",
+                                          "explanation": "Fianchetto the bishop! This is a great plan in the Tarrasch — the bishop on g2 will help blockade and attack the isolated d5 pawn from a distance."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "queens-gambit/d2d4/d7d5/c2c4/c7c6",
+                    "move": {
+                      "uci": "c7c6",
+                      "san": "c6",
+                      "explanation": "The Slav Defense! Black solidly supports the d5 pawn with the c-pawn. This keeps the c8 bishop's diagonal open, unlike the QGD with ...e6."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "variationName": "Slav-like ...c6",
+                    "children": [
+                      {
+                        "id": "queens-gambit/d2d4/d7d5/c2c4/c7c6/g1f3",
+                        "move": {
+                          "uci": "g1f3",
+                          "san": "Nf3",
+                          "explanation": "Develop normally. In the Slav, you continue developing and prepare to open the center at the right moment."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "queens-gambit/d2d4/d7d5/c2c4/c7c6/g1f3/g8f6",
+                            "move": {
+                              "uci": "g8f6",
+                              "san": "Nf6",
+                              "explanation": "Black develops and both sides are building up. The Slav is one of the most solid defenses to the Queen's Gambit."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "queens-gambit/d2d4/d7d5/c2c4/c7c6/g1f3/g8f6/e2e3",
+                                "move": {
+                                  "uci": "e2e3",
+                                  "san": "e3",
+                                  "explanation": "A solid response — support your center and prepare to develop the bishop. You avoid the sharpest Slav lines with this quiet move."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "queens-gambit/d2d4/d7d5/c2c4/c7c6/g1f3/g8f6/e2e3/c8f5",
+                                    "move": {
+                                      "uci": "c8f5",
+                                      "san": "Bf5",
+                                      "explanation": "Black develops the light-squared bishop before closing it in with ...e6 — a key idea of the Slav Defense! Black has solved their biggest problem."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "queens-gambit/d2d4/d7d5/c2c4/c7c6/g1f3/g8f6/e2e3/c8f5/c4d5",
+                                        "move": {
+                                          "uci": "c4d5",
+                                          "san": "cxd5",
+                                          "explanation": "Exchange in the center! This opens the position where your pieces can become more active. After cxd5 cxd5, you get a symmetrical center."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Offer the c4 pawn to dominate the center, develop all pieces harmoniously, pressure Black's cramped position with the bishop pin on g5, and use your space advantage to build a lasting strategic edge.",
+    "strategicGoals": [
+      { "description": "Control the center with pawns on d4 and c4 — the Queen's Gambit pawn duo", "priority": 1 },
+      { "description": "Develop both knights to c3 and f3 before moving bishops", "priority": 2 },
+      { "description": "Pin Black's knight with Bg5 to restrict Black's defense of d5", "priority": 3 },
+      { "description": "Castle queenside or kingside depending on how the game develops", "priority": 4 }
+    ],
+    "pawnStructureTarget": "d4/c4 pawn duo controlling d5 and exerting central space",
+    "keySquares": ["d4", "c4", "d5", "e4"],
+    "pieceTargets": [
+      { "piece": "dark-squared bishop", "idealSquares": ["g5", "f4"], "reasoning": "Bg5 pins Black's knight to the queen, restricting Black's active defense of the center" },
+      { "piece": "queen's knight", "idealSquares": ["c3"], "reasoning": "Supports c4 and d4, battles for control of d5, and prepares e4" },
+      { "piece": "king's knight", "idealSquares": ["f3"], "reasoning": "Controls d4 and e5, defends the king, and supports the central pawn structure" }
+    ],
+    "typicalPlans": [
+      "After full development, play e4 to establish a massive pawn center",
+      "Use the minority attack: push b4-b5 to crack Black's queenside pawn structure",
+      "Against the IQP (isolated queen's pawn) positions, blockade d5 with a knight and attack it with rooks and bishop",
+      "In the Orthodox Defense, look for a timely c4xd5 to change the pawn structure favorably"
+    ],
+    "commonMistakes": [
+      "Capturing dxc4 immediately — let Black take your c4 pawn if they want it, you'll win it back",
+      "Playing c5 too early before your pieces are ready to support it",
+      "Forgetting to castle — the center is open and your king needs safety",
+      "Moving the same piece twice instead of developing new pieces"
+    ],
+    "historicalNote": "The Queen's Gambit has been the most important opening in chess history for over 500 years. It was first analyzed by the Göttingen manuscript around 1490. The name 'gambit' is a misnomer — if Black takes the pawn, White almost always wins it back. It was the main battleground of the World Championship matches between Kasparov, Karpov, Fischer, and many others.",
+    "planLessons": [
+      {
+        "title": "The Queen's Gambit Offer",
+        "description": "After 1.d4 d5 2.c4, you offer the c-pawn! If Black takes it with dxc4, you get to build a massive center with e4. This is not a true gambit — you get the pawn back easily.",
+        "fen": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3 0 2",
+        "highlights": ["c4", "d5"],
+        "arrows": [{"from": "c4", "to": "d5"}, {"from": "d5", "to": "c4"}],
+        "style": "good"
+      },
+      {
+        "title": "The Bishop Pin — Bg5",
+        "description": "After Bg5, your bishop pins Black's f6 knight to the queen. Black can't easily move the knight to defend d5, giving you lasting central control.",
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p2B1/2PP4/2N5/PP2PPPP/R2QKBNR b KQkq - 3 5",
+        "highlights": ["g5", "f6"],
+        "arrows": [{"from": "g5", "to": "f6"}, {"from": "f6", "to": "d7"}],
+        "style": "good"
+      },
+      {
+        "title": "Minority Attack on the Queenside",
+        "description": "In typical QGD positions, White uses the minority attack: push b4-b5 to attack Black's c6 pawn. This creates weaknesses in Black's queenside pawn structure.",
+        "fen": "r1bq1rk1/pp3ppp/2n1pn2/3p4/1bPP4/2NBP N2/PP3PPP/R1BQ1RK1 w - - 0 10",
+        "highlights": ["b4", "c6"],
+        "arrows": [{"from": "b2", "to": "b4"}, {"from": "b4", "to": "b5"}],
+        "style": "good"
+      },
+      {
+        "title": "Fighting the Isolated Pawn",
+        "description": "When Black has an isolated d5 pawn (IQP), your plan is to blockade it with a knight on d4 and then attack it with all your pieces. The IQP cannot advance and eventually becomes a weakness.",
+        "fen": "r1bqr1k1/pp3ppp/2n2n2/3p4/3P4/2NB1N2/PP2QPPP/R1B2RK1 w - - 0 12",
+        "highlights": ["d5", "d4"],
+        "arrows": [{"from": "f3", "to": "d4"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Exchange in the Center Too Early",
+        "description": "Playing cxd5 too early gives Black easy development after ...exd5. Keep the tension! Your c4 pawn pressures d5 better when it stays on the board.",
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+        "highlights": ["c4", "d5"],
+        "arrows": [{"from": "c4", "to": "d5"}],
+        "style": "bad"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3 0 2",
+        "prompt": "Black plays dxc4, accepting the Queen's Gambit. What should White do?",
+        "choices": [
+          {"text": "Play e4 — grab the whole center!", "isCorrect": true},
+          {"text": "Immediately take back with Qxc4", "isCorrect": false},
+          {"text": "Play Nf3 and develop slowly", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "After dxc4, the best move is e4! You build a massive pawn center on d4 and e4. Don't rush to recapture the c4 pawn — your strong center is more valuable.",
+        "boardHighlightsOnReveal": ["e4", "d4"],
+        "arrowsOnReveal": [{"from": "e2", "to": "e4"}]
+      },
+      {
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+        "prompt": "You have Nc3 and the center secured. Where does the bishop go next for maximum pressure?",
+        "choices": [
+          {"text": "Bg5 — pin the knight to Black's queen", "isCorrect": true},
+          {"text": "Bf4 — develop to a safe square", "isCorrect": false},
+          {"text": "Be2 — prepare to castle", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Bg5 is the classical and most powerful choice! It pins Black's f6 knight to the queen. Black can't use the knight to defend d5 effectively, giving you long-term central control.",
+        "boardHighlightsOnReveal": ["g5", "f6"],
+        "arrowsOnReveal": [{"from": "c1", "to": "g5"}]
+      },
+      {
+        "fen": "r1bqkb1r/ppp1pppp/2n2n2/3p4/2PP4/2N3P1/PP2PP1P/R1BQKBNR b KQkq - 0 5",
+        "prompt": "Black plays ...c5 in the Tarrasch Defense. What will Black's long-term weakness be?",
+        "choices": [
+          {"text": "An isolated d5 pawn that is hard to defend", "isCorrect": true},
+          {"text": "A weak king on the h-file", "isCorrect": false},
+          {"text": "Doubled pawns on the c-file", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "After cxd5 and ...exd5, Black has an isolated d5 pawn — it has no neighboring pawns to protect it! White's plan is to blockade it with a knight on d4 and attack it with rooks and bishops.",
+        "boardHighlightsOnReveal": ["d5"],
+        "arrowsOnReveal": [{"from": "f3", "to": "d4"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Queen's Gambit Declined — Orthodox Defense (D50-D69)",
+        "description": "After 1.d4 d5 2.c4 e6 3.Nc3 Nf6 4.Bg5 Be7, Black develops solidly. This Orthodox Defense is one of the most deeply analyzed positions in chess history, used by World Champions for over a century.",
+        "fen": "rnbqk2r/ppp1bppp/4pn2/3p2B1/2PP4/2N5/PP2PPPP/R2QKBNR w KQkq - 4 6",
+        "highlights": ["e7", "g5"],
+        "arrows": [{"from": "g5", "to": "f6"}, {"from": "e3", "to": "e3"}],
+        "style": "theory"
+      },
+      {
+        "title": "Queen's Gambit Accepted (D20-D29)",
+        "description": "After 2...dxc4, Black takes the pawn! White plays 3.e4 to grab the center, then develops rapidly to recapture the pawn with Bxc4. The game is sharp and tactical — great for attacking players.",
+        "fen": "rnbqkbnr/ppp1pppp/8/8/2pPP3/8/PP3PPP/RNBQKBNR b KQkq e3 0 3",
+        "highlights": ["e4", "d4", "c4"],
+        "arrows": [{"from": "f1", "to": "c4"}],
+        "style": "theory"
+      },
+      {
+        "title": "Tarrasch Defense (D32-D34)",
+        "description": "After 2...c5, Black plays the Tarrasch Defense! Named after Siegbert Tarrasch, this gives Black an isolated d-pawn but lots of active piece play. White's plan: blockade and target the isolated pawn.",
+        "fen": "rnbqkbnr/pp2pppp/8/2pp4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq c6 0 3",
+        "highlights": ["c5", "d5"],
+        "arrows": [{"from": "c4", "to": "d5"}, {"from": "f3", "to": "d4"}],
+        "style": "theory"
+      },
+      {
+        "title": "Slav Defense (D10-D19)",
+        "description": "The Slav (2...c6) is one of the most popular defenses. Black supports d5 and — unlike the QGD with ...e6 — keeps the light-squared bishop free. The key idea is ...Bf5 before closing the diagonal.",
+        "fen": "rnbqkbnr/pp2pppp/2p5/3p4/2PP4/5N2/PP2PPPP/RNBQKB1R b KQkq - 1 3",
+        "highlights": ["c6", "d5"],
+        "arrows": [{"from": "c8", "to": "f5"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3 0 2",
+        "prompt": "Black just played d5. White plays c4 — what is Black's most popular response?",
+        "choices": [
+          {"text": "e6 — Queen's Gambit Declined, solidly supporting d5", "isCorrect": true},
+          {"text": "dxc4 — Queen's Gambit Accepted", "isCorrect": false},
+          {"text": "c5 — Tarrasch Defense", "isCorrect": false},
+          {"text": "c6 — Slav Defense", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The Queen's Gambit Declined with ...e6 is Black's most popular response, occurring in roughly 50% of games at the top level. It solidly defends d5 and prepares to develop the dark-squared bishop to e7 or d6.",
+        "boardHighlightsOnReveal": ["e6", "d5"],
+        "arrowsOnReveal": [{"from": "e7", "to": "e6"}]
+      },
+      {
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p2B1/2PP4/2N5/PP2PPPP/R2QKBNR b KQkq - 3 5",
+        "prompt": "White has Bg5 pinning the knight. Black plays ...Be7. What variation is this?",
+        "choices": [
+          {"text": "Orthodox Defense (QGD)", "isCorrect": true},
+          {"text": "Nimzo-Indian Defense", "isCorrect": false},
+          {"text": "Cambridge Springs Defense", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "After 1.d4 d5 2.c4 e6 3.Nc3 Nf6 4.Bg5 Be7, this is the Orthodox Defense of the Queen's Gambit Declined (D50-D69). It is one of the most analyzed positions in all of chess theory!",
+        "boardHighlightsOnReveal": ["e7", "g5", "f6"],
+        "arrowsOnReveal": []
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["d2d4", "d7d5", "c2c4", "e7e6"],
+    "responses": [
+      {
+        "id": "qgd-orthodox",
+        "move": {
+          "uci": "b1c3",
+          "san": "Nc3",
+          "explanation": "Develop the queen's knight to fight for the center alongside c4 and d4."
+        },
+        "name": "Orthodox QGD (Nc3 main line)",
+        "eco": "D50",
+        "frequency": 0.50,
+        "description": "The main line with Nc3, leading to rich positional battles.",
+        "planAdjustment": "After Nc3 Nf6 Bg5, continue with e3, Nf3, and Be2 or Bd3. Look for the minority attack on the queenside after castling."
+      },
+      {
+        "id": "qga-response",
+        "move": {
+          "uci": "d5c4",
+          "san": "dxc4",
+          "explanation": "Black accepts the gambit! The c4 pawn is captured, giving White a free hand in the center."
+        },
+        "name": "Queen's Gambit Accepted",
+        "eco": "D20",
+        "frequency": 0.25,
+        "description": "Black grabs the pawn and gives White a free center. White recaptures the pawn and gets active play.",
+        "planAdjustment": "Play e4 immediately to build a massive center! Then develop rapidly — Nf3, Bxc4, Nc3, O-O — and your superior center will give you a lasting advantage."
+      },
+      {
+        "id": "slav-defense",
+        "move": {
+          "uci": "c7c6",
+          "san": "c6",
+          "explanation": "The Slav Defense — Black supports d5 with the c-pawn, keeping the light-squared bishop's diagonal open."
+        },
+        "name": "Slav Defense",
+        "eco": "D10",
+        "frequency": 0.15,
+        "description": "A solid and popular defense where Black keeps more options than in the QGD.",
+        "planAdjustment": "Continue with Nf3 and e3. If Black plays ...Bf5, accept the bishop development and play Nc3, then castle. Look for a central break with e4 when ready."
+      },
+      {
+        "id": "tarrasch",
+        "move": {
+          "uci": "c7c5",
+          "san": "c5",
+          "explanation": "The Tarrasch Defense — Black immediately challenges your center, accepting an isolated d-pawn."
+        },
+        "name": "Tarrasch Defense",
+        "eco": "D32",
+        "frequency": 0.10,
+        "description": "Active play from Black at the cost of a potential isolated d-pawn weakness.",
+        "planAdjustment": "Play cxd5, then develop rapidly. After ...exd5, Black has the IQP. Blockade it with a knight on d4, then pile up your pieces against the isolated pawn."
+      }
+    ]
+  }
+}

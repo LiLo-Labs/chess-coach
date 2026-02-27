@@ -8,7 +8,7 @@ struct CoachingServiceTests {
         let italian = db.opening(named: "Italian Game")!
         let curriculum = CurriculumService(opening: italian, phase: .learningMainLine)
         let llm = LLMService()
-        let coaching = CoachingService(llmService: llm, curriculumService: curriculum)
+        let coaching = CoachingService(llmService: llm, curriculumService: curriculum, featureAccess: UnlockedAccess())
 
         let should = await coaching.shouldCoach(moveCategory: .goodMove, phase: .learningMainLine)
         #expect(should)
@@ -19,7 +19,7 @@ struct CoachingServiceTests {
         let italian = db.opening(named: "Italian Game")!
         let curriculum = CurriculumService(opening: italian, phase: .freePlay)
         let llm = LLMService()
-        let coaching = CoachingService(llmService: llm, curriculumService: curriculum)
+        let coaching = CoachingService(llmService: llm, curriculumService: curriculum, featureAccess: UnlockedAccess())
 
         let should = await coaching.shouldCoach(moveCategory: .goodMove, phase: .freePlay)
         #expect(!should)
@@ -30,7 +30,7 @@ struct CoachingServiceTests {
         let italian = db.opening(named: "Italian Game")!
         let curriculum = CurriculumService(opening: italian, phase: .freePlay)
         let llm = LLMService()
-        let coaching = CoachingService(llmService: llm, curriculumService: curriculum)
+        let coaching = CoachingService(llmService: llm, curriculumService: curriculum, featureAccess: UnlockedAccess())
 
         let should = await coaching.shouldCoach(moveCategory: .mistake, phase: .freePlay)
         #expect(should)
