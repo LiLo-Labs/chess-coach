@@ -12,16 +12,23 @@ actor OnDeviceLLMService {
 
     static let modelFilename = AppConfig.llm.onDeviceModelFilename
 
-    /// Check whether the GGUF model file is bundled in the app.
+    /// Check whether the GGUF model file is available (downloaded or bundled).
     nonisolated static var isModelAvailable: Bool {
+        ModelDownloadService.downloadedModelPath != nil ||
         Bundle.main.path(forResource: modelFilename, ofType: "gguf") != nil
     }
 
-    /// Load the model from the app bundle. Call once at session start.
+    /// Resolve model path: prefer downloaded (Documents) over bundled.
+    nonisolated static var resolvedModelPath: String? {
+        ModelDownloadService.downloadedModelPath ??
+        Bundle.main.path(forResource: modelFilename, ofType: "gguf")
+    }
+
+    /// Load the model from Documents or app bundle. Call once at session start.
     func loadModel() throws {
         guard !isLoaded else { return }
 
-        guard let path = Bundle.main.path(forResource: Self.modelFilename, ofType: "gguf") else {
+        guard let path = Self.resolvedModelPath else {
             throw OnDeviceLLMError.modelNotFound
         }
 

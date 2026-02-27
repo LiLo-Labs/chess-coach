@@ -88,6 +88,7 @@
 		8E242137DD49CC9A1D211558 /* FeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FDC260D734D8B831132CF4 /* FeedbackService.swift */; };
 		8E75F54BDD3411D67906D1A8 /* CurriculumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265BE80A3610E556D8016C1 /* CurriculumService.swift */; };
 		9088B40A68C9CAA472A56AC1 /* OpeningDatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76277F12D9B972F0673B3062 /* OpeningDatabaseTests.swift */; };
+		913478600DA644BA5F5ECC9A /* ModelDownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3017C504F70C847181883F /* ModelDownloadService.swift */; };
 		918079F62DB0DB431E5F7495 /* kings-gambit.json in Resources */ = {isa = PBXBuildFile; fileRef = 38A34769ED7F66D990194939 /* kings-gambit.json */; };
 		92F5C48B9D3698ABFE1A4F00 /* ProUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5E830DC295EDA7A958A13D /* ProUpgradeView.swift */; };
 		97E21CC033EBE22F9F6B56C1 /* VariedOpponentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072A187FE3EB5E259BAD36A4 /* VariedOpponentService.swift */; };
@@ -295,6 +296,7 @@
 		B5FAFD7D4F63B74DC3C09297 /* HelpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		B7683B69C4DA5725C86821CF /* LLMService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLMService.swift; sourceTree = "<group>"; };
 		B8C29BA1613ECAC66CAEBEA6 /* ChessCoachTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessCoachTests.swift; sourceTree = "<group>"; };
+		BD3017C504F70C847181883F /* ModelDownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDownloadService.swift; sourceTree = "<group>"; };
 		BDCCE62F13ED6CDC63D415EA /* Qwen3-4B-Q4_K_M.gguf */ = {isa = PBXFileReference; path = "Qwen3-4B-Q4_K_M.gguf"; sourceTree = "<group>"; };
 		BF3A08FCE3DF73D1A1E64206 /* OpeningMastery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningMastery.swift; sourceTree = "<group>"; };
 		C02CC47001BB8CA0952CF358 /* ChessCoachApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessCoachApp.swift; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 			children = (
 				171B2A4C0057D368799590D2 /* AppSettings.swift */,
 				45FDC260D734D8B831132CF4 /* FeedbackService.swift */,
+				BD3017C504F70C847181883F /* ModelDownloadService.swift */,
 				4C2FE0FAE5C3A682629D3BBD /* PersistenceService.swift */,
 				93F01EB13F3A5591B7E7C204 /* PlanScoringService.swift */,
 				5447FBC8446FAD0562EDDA00 /* PuzzleService.swift */,
@@ -998,6 +1001,7 @@
 				E359C441FD518D7D63D37D7B /* Maia2Blitz.mlpackage in Sources */,
 				102910341A4AB6C6C65DB30C /* MaiaService.swift in Sources */,
 				311E72D628DE16D4B4CF5AA9 /* MistakeTracker.swift in Sources */,
+				913478600DA644BA5F5ECC9A /* ModelDownloadService.swift in Sources */,
 				A8709D770A6275E437B9E05B /* MoveArrowOverlay.swift in Sources */,
 				FA80FB61085AB7ABBFF49182 /* MultiArrowOverlay.swift in Sources */,
 				6BBB8C92AA455B052EB164BF /* OnDeviceLLMService.swift in Sources */,

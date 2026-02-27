@@ -6,6 +6,7 @@ struct ChessCoachApp: App {
     @State private var appSettings = AppSettings()
     @State private var appServices = AppServices()
     @State private var tokenService = TokenService()
+    @State private var modelDownloadService = ModelDownloadService()
 
     init() {
         // One-time migration: clear review items saved with wrong FENs (pre-fix)
@@ -23,6 +24,7 @@ struct ChessCoachApp: App {
                 .environment(appSettings)
                 .environment(appServices)
                 .environment(tokenService)
+                .environment(modelDownloadService)
         }
     }
 }

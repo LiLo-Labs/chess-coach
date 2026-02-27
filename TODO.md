@@ -23,7 +23,7 @@
 
 ## Queued
 - [x] HomeView modes section added with Puzzle and Trainer card links
-- [ ] Real bots with varying skill levels — actual win condition, not just opening trainer
+- [x] Real bots with varying skill levels — actual win condition, not just opening trainer
 - [ ] PES rethink:
   - Don't ask user to self-identify the opening
   - Auto-identify which opening the user is playing
@@ -66,7 +66,7 @@
 - [ ] Piece animations: smooth move animations, capture effects
 
 ## Infrastructure
-- [ ] LLM model as background download asset: don't bundle the 3.2GB GGUF in the app binary. When user unlocks on-device AI tier, trigger a background download. Support model updates and potentially additional/alternative models in the future.
+- [x] LLM model as background download asset: ModelDownloadService downloads GGUF to Documents directory on demand. OnDeviceLLMService checks Documents first, then Bundle. Download progress UI in Settings. Delete option to free space.
 
 ## Performance
 - [ ] Coach chat response is very slow — investigate CoachChatPanel latency (LLM init on first message, provider detection, inference speed). Tackle at end.

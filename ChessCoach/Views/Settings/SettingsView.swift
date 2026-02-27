@@ -3,6 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(SubscriptionService.self) private var subscriptionService
+    @Environment(ModelDownloadService.self) private var modelDownloadService
 
     @State private var showingAPIKey = false
     @State private var showOnboarding = false
@@ -65,6 +66,11 @@ struct SettingsView: View {
                         Text("On-Device").tag("onDevice")
                         Text("Cloud (Claude)").tag("claude")
                         Text("Local Server").tag("ollama")
+                    }
+
+                    // On-device model download status
+                    if s.llmProvider == "onDevice" {
+                        modelDownloadRow
                     }
                 }
 
@@ -169,6 +175,85 @@ struct SettingsView: View {
         }
         .fullScreenCover(isPresented: $showOnboarding) {
             OnboardingView()
+        }
+    }
+
+    // MARK: - Model Download
+
+    private var modelDownloadRow: some View {
+        Group {
+            switch modelDownloadService.state {
+            case .downloaded:
+                HStack {
+                    Label("AI Model Ready", systemImage: "checkmark.circle.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(.green)
+                    Spacer()
+                    if let size = modelDownloadService.downloadedModelSize {
+                        Text(ByteCountFormatter.string(fromByteCount: size, countStyle: .file))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                if ModelDownloadService.downloadedModelPath != nil,
+                   ModelDownloadService.bundledModelPath != nil {
+                    Button(role: .destructive) {
+                        modelDownloadService.deleteDownloadedModel()
+                    } label: {
+                        Label("Delete Downloaded Model (using bundled)", systemImage: "trash")
+                            .font(.subheadline)
+                    }
+                }
+
+            case .notDownloaded:
+                VStack(alignment: .leading, spacing: 4) {
+                    Button {
+                        modelDownloadService.startDownload()
+                    } label: {
+                        Label("Download AI Model", systemImage: "arrow.down.circle.fill")
+                            .font(.subheadline)
+                    }
+                    Text("~\(ByteCountFormatter.string(fromByteCount: AppConfig.modelDownload.expectedSizeBytes, countStyle: .file)) — Wi-Fi recommended")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+            case .downloading(let progress):
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Text("Downloading AI Model...")
+                            .font(.subheadline)
+                        Spacer()
+                        Text("\(Int(progress * 100))%")
+                            .font(.caption.monospacedDigit())
+                            .foregroundStyle(.secondary)
+                    }
+                    ProgressView(value: progress)
+                        .tint(.cyan)
+
+                    Button("Cancel", role: .destructive) {
+                        modelDownloadService.cancelDownload()
+                    }
+                    .font(.caption)
+                }
+
+            case .failed(let message):
+                VStack(alignment: .leading, spacing: 4) {
+                    Label("Download Failed", systemImage: "exclamationmark.triangle.fill")
+                        .font(.subheadline)
+                        .foregroundStyle(.orange)
+                    Text(message)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Button {
+                        modelDownloadService.startDownload()
+                    } label: {
+                        Text("Retry")
+                            .font(.subheadline)
+                    }
+                }
+            }
         }
     }
 
