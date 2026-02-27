@@ -20,6 +20,7 @@
 		1453315DFD8DCD47720F1396 /* ruy-lopez.json in Resources */ = {isa = PBXBuildFile; fileRef = 66B78C9830B86C4B833EC635 /* ruy-lopez.json */; };
 		153407464C23E1214B8097CA /* LLMServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43293FAD4058537CD08C844 /* LLMServiceTests.swift */; };
 		1600D11F53255E67DB71C598 /* vienna.json in Resources */ = {isa = PBXBuildFile; fileRef = 2CD82359955074892F6D0D84 /* vienna.json */; };
+		19C94F7D53A9777AFA4FB263 /* PuzzleModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1433100DC8C346D9659D68 /* PuzzleModeView.swift */; };
 		1A5406F5F565EF0BCA18C513 /* nimzo-indian.json in Resources */ = {isa = PBXBuildFile; fileRef = 0CBAC99CDFF834C696E1736D /* nimzo-indian.json */; };
 		1B2B9B24A0F296310D363E74 /* OpeningDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B4A2582942F5C8B3786338 /* OpeningDetailView.swift */; };
 		1B8B5B3C655E0E3C2850BB1C /* DebugStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2797B55324C34157D183BBB3 /* DebugStateView.swift */; };
@@ -37,6 +38,7 @@
 		355040BF8BC427A70828E9AF /* petroff.json in Resources */ = {isa = PBXBuildFile; fileRef = 63F0696157AF8742277BE2F3 /* petroff.json */; };
 		3764BEB3B07F45F498D16C41 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DC358B97212CECFA3EB23D /* ContentView.swift */; };
 		38B3EDB17E4D15938A6B508E /* caro-kann.json in Resources */ = {isa = PBXBuildFile; fileRef = 019B60D3A402F6B4859D9613 /* caro-kann.json */; };
+		3AEE87A54266DB3102736C3D /* TrainerModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB0E2F8DAB6D71268CA3DC0 /* TrainerModeView.swift */; };
 		3B66D47BFD91E583E54DC6EB /* LineStudyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1D9F04BDD5A2F1B0DED822 /* LineStudyView.swift */; };
 		3DEEDF8A0704823CDBF74A76 /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBF9D6D39298823A76C9C11 /* GameBoardView.swift */; };
 		3FEEF58886C82EC691F900A4 /* ReviewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E88367DED4C074D18B8746EC /* ReviewItem.swift */; };
@@ -225,6 +227,8 @@
 		51BEE1049F2990DDB40D8212 /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
 		541D1FEE8D9F636409553F01 /* TheoryDiscoveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoryDiscoveryView.swift; sourceTree = "<group>"; };
 		5AF349EACF6870397174001C /* maia2_moves.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = maia2_moves.txt; sourceTree = "<group>"; };
+		5B1433100DC8C346D9659D68 /* PuzzleModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleModeView.swift; sourceTree = "<group>"; };
+		5FB0E2F8DAB6D71268CA3DC0 /* TrainerModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainerModeView.swift; sourceTree = "<group>"; };
 		5FFCFE25741ACBCE53F7DE9A /* FeedbackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackButton.swift; sourceTree = "<group>"; };
 		61DC2C3E437999AA10190EAC /* SubscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionService.swift; sourceTree = "<group>"; };
 		63986DB03379A8FF05B3D4DC /* italian.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = italian.json; sourceTree = "<group>"; };
@@ -547,6 +551,8 @@
 				28B4A2582942F5C8B3786338 /* OpeningDetailView.swift */,
 				B07C0DF8A8FA939CCB145DDF /* OpeningPreviewBoard.swift */,
 				97D53FEC7503128FABA4EACB /* OpeningSettingsView.swift */,
+				5B1433100DC8C346D9659D68 /* PuzzleModeView.swift */,
+				5FB0E2F8DAB6D71268CA3DC0 /* TrainerModeView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -969,6 +975,7 @@
 				EAA5B35C49028F7F9E853316 /* ProFeature.swift in Sources */,
 				92F5C48B9D3698ABFE1A4F00 /* ProUpgradeView.swift in Sources */,
 				9DE007C315CE0176CCF6A874 /* PromptCatalog.swift in Sources */,
+				19C94F7D53A9777AFA4FB263 /* PuzzleModeView.swift in Sources */,
 				213ADC654DDA0B2E8165A6EB /* QuickReviewView.swift in Sources */,
 				5BEA4235474CF69DE1E214AE /* QuizLessonCard.swift in Sources */,
 				3FEEF58886C82EC691F900A4 /* ReviewItem.swift in Sources */,
@@ -986,6 +993,7 @@
 				1C83BCB614122ACFDC1F27CB /* SubscriptionService.swift in Sources */,
 				9ACEA7FF2727CD07243FDA55 /* TheoryDiscoveryView.swift in Sources */,
 				BE8B981527187F6DC4721CCF /* ThinkingDotsView.swift in Sources */,
+				3AEE87A54266DB3102736C3D /* TrainerModeView.swift in Sources */,
 				451B2F2DF43724C2585B0AEE /* UserProgress.swift in Sources */,
 				97E21CC033EBE22F9F6B56C1 /* VariedOpponentService.swift in Sources */,
 			);
