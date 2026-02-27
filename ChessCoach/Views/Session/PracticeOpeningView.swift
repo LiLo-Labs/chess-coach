@@ -100,6 +100,7 @@ struct PracticeOpeningView: View {
         .ignoresSafeArea(edges: .top)
         .background(AppColor.background)
         .preferredColorScheme(.dark)
+        .conceptIntro(.whatIsPractice)
         .overlay {
             if viewModel.sessionComplete {
                 practiceCompleteOverlay

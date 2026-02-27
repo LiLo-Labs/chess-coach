@@ -104,6 +104,7 @@ struct OpeningDetailView: View {
             OpeningSettingsView(opening: opening)
         }
         .onAppear { refreshData() }
+        .conceptIntro(.whatAreOpenings)
         .fullScreenCover(item: $activeNavigation) { nav in
             navigationDestination(for: nav)
         }
