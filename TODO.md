@@ -37,7 +37,6 @@
   - Added help buttons to HomeView (streak), QuickReviewView (toolbar), PracticeOpeningView
 - [x] Feedback bug icon: Beta shows everywhere (toolbar + session menu), Release only in Settings + SessionComplete
 - [x] LLM upsell: locked sparkle visible to free users, tapping shows paywall
-  - [ ] Future: animated video demo of AI coaching quality in the paywall
 - [x] Side panel chat: CoachChatPanel integrated into SessionView with spring animation, full board context, Pro-gated
 - [x] Feed entry titles: human-friendly names ("Knight to f3") instead of raw algebraic notation
   - Algebraic notation still visible as secondary/optional text
@@ -62,7 +61,7 @@
 
 ## Assets & Polish
 - [x] Pro board styles: Walnut, Marble, Tournament color schemes added with pro-gating + lock icons in Settings picker. Enum infrastructure ready for texture-based boards when assets are available.
-- [x] Pro piece styles: Staunton, Modern, Wood, Metal enum cases added with isPro gating and assetFolder mapping. Awaiting art assets to bundle.
+- [x] Pro piece styles: 5 styles using free Lichess assets (cburnett, merida, staunty, california + classic USCF). GPLv2+. Picker in Settings with pro-gating.
 - [x] Piece animations: smooth move spring animation (already existed in ChessboardKit), capture burst ring effect added
 
 ## Infrastructure
@@ -70,3 +69,52 @@
 
 ## Performance
 - [x] Coach chat response is very slow — fixed: CoachChatPanel now reuses shared LLMService from AppServices instead of creating a new one + re-detecting provider on every first message. Eliminates ~500ms redundant model init.
+
+## UX / Design
+- [ ] Settings page cleanup: too busy and disorganized — needs logical grouping, collapsing sections, visual hierarchy
+- [ ] Puzzle/Trainer navigation bugs: clicking Puzzle from HomeView has weird navigation issues — broken push/presentation
+
+## Trainer Mode — Make It Fun
+Currently clinical and lifeless. Engine setup is right (Maia + Stockfish), experience is wrong.
+
+### Engine Mode as a Differentiator
+No other app lets you choose between a perfect engine and a human-like opponent. This is our unique selling point.
+- [ ] **Dual engine mode picker**: before each game, user picks "Human-Like" (Maia — plays like a real person at that ELO, makes human mistakes, has human tendencies) vs "Engine" (Stockfish — plays perfectly at capped strength, punishes every mistake). Clear UI explaining the difference.
+- [ ] **Separate stat tracks**: independent ELO, win rate, and game history for Human-Like vs Engine games. "You beat 1200 humans consistently but struggle against 1000 engines" is actionable insight.
+- [ ] **Engine mode descriptions**: Human-Like = "Plays like a real opponent at this level — makes natural mistakes, has preferences." Engine = "Pure calculation — finds the best move every time, scaled to this level."
+
+### Bugs
+- [ ] **1600 bot knight repetition**: bot at 1600 ELO just moves knight back and forth — likely Maia returning same top prediction in a loop with no anti-repetition logic. Need: detect repeated move sequences and force alternative moves (pick 2nd/3rd Maia prediction, or fall back to Stockfish).
+
+### Experience & Polish
+- [ ] **Bot move pacing**: add realistic "thinking" delay (0.5-2s scaled by difficulty), bot move should animate smoothly onto the board, not snap
+- [ ] **Bot personalities with character**: unique avatars/icons per bot, chat bubbles with personality-flavored reactions ("Nice move!", "Hmm, interesting...", "I didn't see that coming"), emoji reactions to captures/checks
+- [ ] **Bot move animations**: smooth spring animation with proper timing, not instant snap. Coordinate with sound effects.
+- [ ] **Game atmosphere**: move sounds, capture effects, check warnings, endgame tension
+
+### Coaching Integration
+- [ ] **Opening detection during play**: auto-identify which opening the user is playing in real time by matching move sequences against opening book. Core building block for everything below.
+- [ ] **Cross-correlation with learning**: when user plays an opening they've studied, recognize it and coach them: "You're in the Italian Game! Remember, your plan is to target f7." When they deviate from what they learned: "You learned Bc4 here — you played d3. Here's why Bc4 is stronger."
+- [ ] **Coaching during bot play**: if LLM is available, bring in the chat panel + per-move explanations. Even without LLM, show basic tips from opening data (plan reminders, key squares).
+- [ ] **Post-game review**: tie game moves back to studied openings — show where they followed/deviated from their repertoire, highlight key moments, suggest what to practice next
+
+## The Core Loop: Learn → Play → See Progress → Learn More
+The retention engine. What makes this worth paying for and opening every day.
+- [ ] **Opening detection engine**: auto-identify which opening the user is playing from move sequences. Detect transpositions. Know when they've left book. This is the foundation — everything below depends on it.
+- [ ] **Progress analytics & ELO estimation**: estimated ELO from bot games (win/loss/draw vs known bot ELO using Glicko-2 or similar), per-opening accuracy trends, mastery percentages, improvement velocity over time
+- [ ] **Home screen dashboard**: visual progress — ELO trend chart, per-opening mastery rings, streak, weekly improvement, personalized suggestions ("You're struggling with the Sicilian after move 6 — practice this variation?")
+- [ ] **Spaced rep feedback loop**: failed bot game positions feed back into review queue. Openings where user deviates get bumped up in practice priority.
+- [ ] **Post-game → learning connection**: after bot game, show which opening was played, compare to what they studied, offer to drill the variation they got wrong
+
+## New Features
+
+### Chess.com / Lichess Account Connection
+- [ ] **Account linking**: connect Chess.com and/or Lichess accounts (both have public APIs — Chess.com REST, Lichess OAuth + API)
+- [ ] **Import game history**: pull recent games, filter by time control, show in a browsable list
+- [ ] **Collaborative game review**: walk through an imported game move-by-move WITH AI coaching — "Here you played d4, but your Italian Game plan calls for Bc4. Let's look at why."
+- [ ] **Opening detection on imported games**: auto-identify which openings they played, cross-reference with what they've studied in ChessCoach, surface gaps ("You played the Sicilian 12 times this week but haven't studied it yet")
+- [ ] **Pull real ELO**: import their actual Chess.com/Lichess rating to calibrate bot difficulty and coaching level
+- [ ] **Track improvement**: show their online rating trend alongside their ChessCoach practice — "You drilled the Italian for 2 weeks and your blitz rating went up 50 points"
+
+### Other
+- [ ] Future: animated video demo of AI coaching quality in the paywall

@@ -7,6 +7,7 @@ struct TrainerGameResult: Codable, Sendable, Identifiable {
     let playerColor: String   // "white" or "black"
     let botELO: Int
     let botName: String
+    let engineMode: String    // "humanLike" or "engine"
     let outcome: Outcome
     let moveCount: Int
 
@@ -17,18 +18,19 @@ struct TrainerGameResult: Codable, Sendable, Identifiable {
         case resigned
     }
 
-    init(playerColor: String, botELO: Int, botName: String, outcome: Outcome, moveCount: Int) {
+    init(playerColor: String, botELO: Int, botName: String, engineMode: TrainerEngineMode, outcome: Outcome, moveCount: Int) {
         self.id = UUID()
         self.date = Date()
         self.playerColor = playerColor
         self.botELO = botELO
         self.botName = botName
+        self.engineMode = engineMode.rawValue
         self.outcome = outcome
         self.moveCount = moveCount
     }
 }
 
-/// Trainer stats tracked across games.
+/// Trainer stats tracked across games, separate for each engine mode.
 struct TrainerStats: Codable, Sendable {
     var wins: Int = 0
     var losses: Int = 0

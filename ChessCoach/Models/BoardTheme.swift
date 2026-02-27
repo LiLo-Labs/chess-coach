@@ -105,20 +105,20 @@ enum BoardTheme: String, CaseIterable, Identifiable, Sendable {
 }
 
 /// User-selectable piece style.
-/// Classic (USCF) is available for free. Pro styles require paid tier + bundled assets.
+/// All styles use free open-source assets (Lichess, GPLv2+).
 enum PieceStyle: String, CaseIterable, Identifiable, Sendable {
-    case classic    = "classic"
-    // Pro styles (require premium tier + bundled art)
-    case staunton   = "staunton"
-    case modern     = "modern"
-    case wood       = "wood"
-    case metal      = "metal"
+    case classic    = "classic"     // USCF-style (bundled)
+    case cburnett   = "cburnett"    // Lichess default (Colin M.L. Burnett, GPLv2+)
+    case merida     = "merida"      // Traditional Staunton-like (GPLv2+)
+    case staunty    = "staunty"     // Modern clean Staunton
+    case california = "california"  // Rounded friendly style
 
     var id: String { rawValue }
 
+    /// Whether this style requires a paid tier.
     var isPro: Bool {
         switch self {
-        case .classic: return false
+        case .classic, .cburnett: return false
         default: return true
         }
     }
@@ -128,22 +128,22 @@ enum PieceStyle: String, CaseIterable, Identifiable, Sendable {
 
     var displayName: String {
         switch self {
-        case .classic:   return "Classic"
-        case .staunton:  return "Staunton"
-        case .modern:    return "Modern"
-        case .wood:      return "Wood"
-        case .metal:     return "Metal"
+        case .classic:    return "Classic"
+        case .cburnett:   return "Lichess"
+        case .merida:     return "Merida"
+        case .staunty:    return "Staunty"
+        case .california: return "California"
         }
     }
 
     /// Asset folder name within ChessboardKit/Assets/Pieces/
     var assetFolder: String {
         switch self {
-        case .classic:  return "uscf"
-        case .staunton: return "staunton"
-        case .modern:   return "modern"
-        case .wood:     return "wood"
-        case .metal:    return "metal"
+        case .classic:    return "uscf"
+        case .cburnett:   return "cburnett"
+        case .merida:     return "merida"
+        case .staunty:    return "staunty"
+        case .california: return "california"
         }
     }
 }

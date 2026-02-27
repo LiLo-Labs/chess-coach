@@ -67,8 +67,12 @@ struct GameBoardView: View {
             .onChange(of: settings.boardTheme) { _, newTheme in
                 boardModel.colorScheme = newTheme.colorScheme
             }
+            .onChange(of: settings.pieceStyle) { _, newStyle in
+                boardModel.pieceStyleFolder = newStyle.assetFolder
+            }
             .onAppear {
                 boardModel.colorScheme = settings.boardTheme.colorScheme
+                boardModel.pieceStyleFolder = settings.pieceStyle.assetFolder
             }
             .accessibilityElement(children: .contain)
             .accessibilityLabel("Chess board")

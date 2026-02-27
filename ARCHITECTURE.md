@@ -144,7 +144,7 @@ Debug: `DebugStateView` has presets for each tier. `AppSettings.debugTierOverrid
 11 themes available: 8 free (Chess.com default, Classic, Dark, Blue, Green, Purple, Orange, Red) + 3 pro (Walnut, Marble, Tournament).
 Pro themes gated by `isPro` flag, shown with lock icon in Settings for free users.
 Selected via `AppSettings.boardTheme`. Applied to `GameBoardView` via environment.
-Piece styles: Classic (USCF, free) + 4 pro placeholders (Staunton, Modern, Wood, Metal) awaiting art assets.
+Piece styles: 5 styles using free Lichess assets (GPLv2+). Free: Classic (USCF), Lichess (cburnett). Pro: Merida, Staunty, California. Selected via `AppSettings.pieceStyle`, applied to `ChessboardModel.pieceStyleFolder`.
 
 ## Onboarding Flow
 

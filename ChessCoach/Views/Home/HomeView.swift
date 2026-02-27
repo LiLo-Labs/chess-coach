@@ -120,6 +120,14 @@ struct HomeView: View {
             .navigationDestination(for: Opening.self) { opening in
                 OpeningDetailView(opening: opening)
             }
+            .navigationDestination(for: ModeDestination.self) { mode in
+                switch mode {
+                case .puzzles:
+                    PuzzleModeView()
+                case .trainer:
+                    TrainerModeView()
+                }
+            }
             .onAppear {
                 refreshData()
                 checkForSavedSession()
@@ -288,6 +296,11 @@ struct HomeView: View {
 
     // MARK: - Modes
 
+    private enum ModeDestination: Hashable {
+        case puzzles
+        case trainer
+    }
+
     private var modesSection: some View {
         Section {
             HStack(spacing: AppSpacing.md) {
@@ -296,7 +309,7 @@ struct HomeView: View {
                     title: "Puzzles",
                     subtitle: "Tactics training",
                     color: .orange,
-                    destination: { PuzzleModeView() }
+                    destination: .puzzles
                 )
 
                 modeCard(
@@ -304,7 +317,7 @@ struct HomeView: View {
                     title: "Trainer",
                     subtitle: "Play a full game",
                     color: .cyan,
-                    destination: { TrainerModeView() }
+                    destination: .trainer
                 )
             }
             .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
@@ -312,14 +325,14 @@ struct HomeView: View {
         .listRowBackground(Color.clear)
     }
 
-    private func modeCard<Destination: View>(
+    private func modeCard(
         icon: String,
         title: String,
         subtitle: String,
         color: Color,
-        @ViewBuilder destination: @escaping () -> Destination
+        destination: ModeDestination
     ) -> some View {
-        NavigationLink(destination: destination) {
+        NavigationLink(value: destination) {
             VStack(spacing: AppSpacing.xs) {
                 Image(systemName: icon)
                     .font(.title2)

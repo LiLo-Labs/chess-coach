@@ -53,8 +53,11 @@ public class ChessboardModel {
     }
     
     public var size: CGFloat = 0
-    
+
     public var colorScheme: ChessboardColorScheme = .light
+
+    /// Piece style folder name (e.g. "uscf", "cburnett", "merida", "staunty", "california").
+    public var pieceStyleFolder: String = "uscf"
     
     public var perspective: PieceColor
     public var turn: PieceColor { game.position.state.turn }
@@ -353,6 +356,22 @@ public class ChessboardModel {
             inWaiting = false
         }
     }
+
+    /// Load a piece image from the ChessboardKit bundle.
+    /// - Parameters:
+    ///   - name: Image name, e.g. "wK", "bQ"
+    ///   - folder: Piece style folder, e.g. "uscf", "cburnett"
+    public static func pieceImage(named name: String, folder: String = "uscf") -> UIImage? {
+        if let url = Bundle.module.url(forResource: name, withExtension: "png", subdirectory: folder),
+           let image = UIImage(contentsOfFile: url.path) {
+            return image
+        }
+        if let url = Bundle.module.url(forResource: name, withExtension: "png"),
+           let image = UIImage(contentsOfFile: url.path) {
+            return image
+        }
+        return nil
+    }
 }
 
 private struct MovingPieceView: View {
@@ -511,7 +530,7 @@ public struct Chessboard: View {
                             let imageName = "\(chessboardModel.perspective == PieceColor.white ? "w" : "b")\(String(describing: piece).uppercased())"
 
                             ZStack {
-                                if let uiImage = ChessPieceView.loadPieceImage(named: imageName) {
+                                if let uiImage = ChessPieceView.loadPieceImage(named: imageName, folder: chessboardModel.pieceStyleFolder) {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .frame(width: chessboardModel.size / 8,
@@ -770,7 +789,7 @@ private struct ChessPieceView: View {
             if let piece {
                 let imageName = "\(piece.color == PieceColor.white ? "w" : "b")\(String(describing: piece).uppercased())"
 
-                if let image = Self.loadPieceImage(named: imageName) {
+                if let image = Self.loadPieceImage(named: imageName, folder: chessboardModel.pieceStyleFolder) {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
@@ -796,14 +815,19 @@ private struct ChessPieceView: View {
         .gesture(dragGesture)
     }
     
-    /// Load a piece image from the bundle, trying file URL first then asset catalog.
-    static func loadPieceImage(named imageName: String) -> UIImage? {
-        // Try loading from file URL (works with .copy() resources)
+    /// Load a piece image from the bundle for the given style folder.
+    static func loadPieceImage(named imageName: String, folder: String = "uscf") -> UIImage? {
+        // .copy() resources: folder is a directory in the bundle
+        if let url = Bundle.module.url(forResource: imageName, withExtension: "png", subdirectory: folder),
+           let image = UIImage(contentsOfFile: url.path) {
+            return image
+        }
+        // Fallback: try without subdirectory (legacy .process() layout)
         if let url = Bundle.module.url(forResource: imageName, withExtension: "png"),
            let image = UIImage(contentsOfFile: url.path) {
             return image
         }
-        // Try loading from asset catalog (works with .process() resources)
+        // Fallback: asset catalog
         if let image = UIImage(named: imageName, in: .module, compatibleWith: nil) {
             return image
         }
