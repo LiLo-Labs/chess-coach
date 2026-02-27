@@ -1,6 +1,6 @@
 # ChessCoach Architecture
 
-> Auto-maintained. Last updated: 2026-02-26
+> Auto-maintained. Last updated: 2026-02-26 (session 2)
 
 ## Tech Stack
 
@@ -62,8 +62,8 @@ ChessCoach/
 │   ├── Components/               # HelpButton, FeedbackButton, BoardLessonCard, QuizLessonCard
 │   ├── Effects/                  # ConfettiView
 │   ├── Home/                     # HomeView, OpeningDetailView, OpeningPreviewBoard
-│   ├── Onboarding/               # OnboardingView (4-page tutorial)
-│   ├── Paywall/                  # ProUpgradeView
+│   ├── Onboarding/               # OnboardingView (6-page), FreeOpeningPickerView
+│   ├── Paywall/                  # ProUpgradeView (multi-tier + per-path unlock)
 │   ├── Review/                   # QuickReviewView (spaced repetition)
 │   ├── Session/                  # SessionView, SessionViewModel, CoachChatPanel, LineStudy, etc.
 │   └── Settings/                 # SettingsView, DebugStateView
@@ -137,7 +137,7 @@ Debug: `DebugStateView` has presets for each tier. `AppSettings.debugTierOverrid
 Selected via `AppSettings.boardTheme`. Applied to `GameBoardView` via environment.
 Piece style: only Classic/USCF bundled (prepared for expansion).
 
-## Onboarding (6 pages)
+## Onboarding Flow
 
 1. Welcome — animated crown, warm greeting
 2. What Are Openings — explains the concept for complete beginners
@@ -145,6 +145,9 @@ Piece style: only Classic/USCF bundled (prepared for expansion).
 4. How It Works — 4-step learning journey overview
 5. Privacy Promise — heartfelt data pledge (no tracking, no selling, on-device AI)
 6. Skill Level — adjustable ELO picker
+7. **Free Opening Picker** (free tier only) — choose ONE opening to fully unlock
+
+`OnboardingView.onComplete` callback → ContentView decides whether to show picker or go straight to HomeView.
 
 ## Concept Intro System
 
@@ -165,6 +168,27 @@ Applied on: OpeningDetailView (.whatAreOpenings), PracticeOpeningView (.whatIsPr
 ## Free Tier Gating
 
 - 3 free openings: Italian, London, Sicilian (configured in AppConfig)
-- HomeView shows lock icons on non-free openings, tapping opens paywall
-- `SubscriptionService.isOpeningAccessible()` checks tier + per-path unlocks
+- **Free opening pick**: Post-onboarding, free users choose ONE additional opening to unlock fully
+  - Stored in `AppSettings.pickedFreeOpeningID`
+  - `FreeOpeningPickerView` shown between onboarding and HomeView for free tier
+- HomeView shows lock icons on non-free openings, tapping opens paywall with per-path option
+- `SubscriptionService.isOpeningAccessible()` checks: tier + free IDs + picked free + per-path unlocks
 - AI features gated by `hasAI` (tier != .free)
+
+## Per-Path Unlock (à la carte)
+
+- `SubscriptionService.purchasePath(openingID:)` — StoreKit non-consumable IAP
+- Product IDs follow convention: `com.chesscoach.opening.<openingID>`
+- ProUpgradeView shows "Just this opening" card when launched for a specific locked opening
+- Users can choose per-path purchase OR tier upgrade from the same paywall
+
+## Move Display Convention
+
+Human-friendly names shown first everywhere ("Knight to f3"), algebraic notation as secondary text.
+Canonical converter: `OpeningMove.friendlyName(from:)` — handles captures, promotions, castling.
+Applied in: LineStudyView, OpeningPreviewBoard, SessionView feed, deviation banners.
+
+## Overlay Close Buttons
+
+All full-screen overlays have an X close button at top-right:
+- SessionCompleteView, PracticeOpeningView completion, ConceptIntroView
