@@ -63,7 +63,7 @@
 ## Assets & Polish
 - [ ] More chess piece styles: pro/premium piece art sets (Staunton, modern, wood, metal, etc.) — gated by tier
 - [ ] Pro board styles: premium board textures (wood grain, marble, tournament green) beyond the flat color schemes
-- [ ] Piece animations: smooth move animations, capture effects
+- [x] Piece animations: smooth move spring animation (already existed in ChessboardKit), capture burst ring effect added
 
 ## Infrastructure
 - [x] LLM model as background download asset: ModelDownloadService downloads GGUF to Documents directory on demand. OnDeviceLLMService checks Documents first, then Bundle. Download progress UI in Settings. Delete option to free space.
