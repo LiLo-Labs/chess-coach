@@ -43,6 +43,8 @@ ChessCoach/
 │   ├── Scoring/                  # PlanExecutionScore, PopularityService, SoundnessCalculator
 │   ├── SpacedRep/                # ReviewItem, SpacedRepScheduler
 │   ├── Tokens/                  # TokenBalance, TokenTransaction, TokenError
+│   ├── Puzzle/                  # Puzzle model (FEN, solution, theme, difficulty)
+│   ├── Trainer/                 # TrainerGameResult, TrainerStats
 │   ├── BoardTheme.swift          # Board color theme enum (8 themes)
 │   └── OpponentPersonality.swift # Bot personality traits
 │
@@ -57,13 +59,14 @@ ChessCoach/
 │   ├── CurriculumService/        # Learning phase progression logic
 │   ├── LLMService/               # Provider abstraction (on-device, Claude, Ollama)
 │   ├── TokenService.swift        # Token economy: balance, StoreKit consumable packs, rewards
+│   ├── PuzzleService.swift       # Puzzle generation from openings, mistakes, Stockfish
 │   └── Subscription/             # SubscriptionService, FeatureAccess, ProFeature, tiers
 │
 ├── Views/
 │   ├── Board/                    # GameBoardView, arrow overlays, square highlights
 │   ├── Components/               # HelpButton, FeedbackButton, BoardLessonCard, QuizLessonCard
 │   ├── Effects/                  # ConfettiView
-│   ├── Home/                     # HomeView, OpeningDetailView, OpeningPreviewBoard
+│   ├── Home/                     # HomeView, OpeningDetailView, PuzzleModeView, TrainerModeView
 │   ├── Onboarding/               # OnboardingView (6-page), FreeOpeningPickerView
 │   ├── Paywall/                  # ProUpgradeView (multi-tier + per-path + token unlock), TokenStoreView
 │   ├── Review/                   # QuickReviewView (spaced repetition)
@@ -198,6 +201,24 @@ Applied on: OpeningDetailView (.whatAreOpenings), PracticeOpeningView (.whatIsPr
 - Persistence: UserDefaults (balance + last 100 transactions)
 - HomeView stats section shows token balance with tap-to-open store
 - ProUpgradeView per-path card includes "Use Tokens" button alongside IAP purchase
+
+## Puzzle Mode
+
+- `PuzzleService` generates puzzles from 3 sources:
+  1. **Opening Knowledge** — positions from opening book, user finds the book move
+  2. **Mistake Review** — positions where user historically makes errors (from MistakeTracker)
+  3. **Find the Best Move** — Stockfish-evaluated positions with clear best move (>30cp advantage)
+- `Puzzle` model: FEN, solutionUCI/SAN, theme, difficulty (1-5), optional explanation
+- `PuzzleModeView`: interactive board, progress bar, streak tracking, hints, feedback, session results
+- Free: 5 puzzles/day. Pro: unlimited (gated via `ProFeature.unlimitedPuzzles`)
+
+## Trainer Mode
+
+- Full games against bots with Maia (human-like play) + Stockfish fallback
+- 6 bot difficulties: 500-1600 ELO, each with `OpponentPersonality` name/description
+- Player chooses color and opponent, plays until checkmate/stalemate/resign
+- `TrainerGameResult` persisted (date, outcome, bot ELO, move count)
+- `TrainerStats` — wins/losses/draws/win rate across all games
 
 ## Move Display Convention
 

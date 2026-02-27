@@ -106,6 +106,7 @@
 		A8709D770A6275E437B9E05B /* MoveArrowOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2D65DF5788AE7C8BDB8D95 /* MoveArrowOverlay.swift */; };
 		A8AC396EBD6CE277F2E65398 /* queens-indian.json in Resources */ = {isa = PBXBuildFile; fileRef = F4ED00D26525A66E0521FB1C /* queens-indian.json */; };
 		AB56D92FC2A21D897EDD0D57 /* TokenStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DCAB1D24EB2A2A061A8019 /* TokenStoreView.swift */; };
+		AB8A5423233C85DAA6EF389B /* TrainerGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC874EC3E7E86991AB1C047 /* TrainerGame.swift */; };
 		ABD380CAB30C6D3F85D6C21E /* d.tsv in Resources */ = {isa = PBXBuildFile; fileRef = 1867A0DA1022B6A0D88542F6 /* d.tsv */; };
 		B0C1DBEC59D44DEFF1B77568 /* LLMConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C770663D937BE38E72D9613 /* LLMConfig.swift */; };
 		B1A90672488F161FA789E763 /* english.json in Resources */ = {isa = PBXBuildFile; fileRef = 8DA00C7F6D1D7DF09E5B556E /* english.json */; };
@@ -203,6 +204,7 @@
 		27D9D642B31BB2DEE4B7EFB3 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		28B4A2582942F5C8B3786338 /* OpeningDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningDetailView.swift; sourceTree = "<group>"; };
 		2A122CCB6DE1BFFF83D93127 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
+		2BC874EC3E7E86991AB1C047 /* TrainerGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainerGame.swift; sourceTree = "<group>"; };
 		2CD82359955074892F6D0D84 /* vienna.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = vienna.json; sourceTree = "<group>"; };
 		2D38846C538E23A6BABEA968 /* CoachingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachingServiceTests.swift; sourceTree = "<group>"; };
 		31501E26BAA6604484201596 /* french.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = french.json; sourceTree = "<group>"; };
@@ -482,6 +484,14 @@
 			path = Board;
 			sourceTree = "<group>";
 		};
+		1F3670D43437E63935B4A936 /* Trainer */ = {
+			isa = PBXGroup;
+			children = (
+				2BC874EC3E7E86991AB1C047 /* TrainerGame.swift */,
+			);
+			path = Trainer;
+			sourceTree = "<group>";
+		};
 		32EB895D4D86CCE9DB1EDDF9 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -556,6 +566,7 @@
 				009532B9F97F69EB6F95ED95 /* Scoring */,
 				F6463628D9C64D658920CD49 /* SpacedRep */,
 				CC05F682F9B70330A831F1CC /* Tokens */,
+				1F3670D43437E63935B4A936 /* Trainer */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1033,6 +1044,7 @@
 				133353545E01826BFF95B491 /* TokenBalance.swift in Sources */,
 				A3B6271A8771F673FA5A6914 /* TokenService.swift in Sources */,
 				AB56D92FC2A21D897EDD0D57 /* TokenStoreView.swift in Sources */,
+				AB8A5423233C85DAA6EF389B /* TrainerGame.swift in Sources */,
 				3AEE87A54266DB3102736C3D /* TrainerModeView.swift in Sources */,
 				451B2F2DF43724C2585B0AEE /* UserProgress.swift in Sources */,
 				97E21CC033EBE22F9F6B56C1 /* VariedOpponentService.swift in Sources */,
