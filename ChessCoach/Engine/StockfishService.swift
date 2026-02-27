@@ -235,11 +235,17 @@ actor StockfishService: PositionEvaluating {
             staleCont.resume()
         }
 
+        // C-3: Ensure engine is idle before starting a new search.
+        // After a timeout, the engine may still be processing the old search.
+        // Sending stop + isready guarantees any stale state is flushed before
+        // we send new position/go commands.
+        await ensureEngineIdle()
+
         debugLog("runSearch starting with \(commands.count) commands")
         collectedResponses = []
         waitingForBestMove = true
 
-        // C-3: Set continuation BEFORE sending commands. This closes the race
+        // C-4: Set continuation BEFORE sending commands. This closes the race
         // where bestmove arrives between engine.send() and withCheckedContinuation.
         // Commands are sent from a Task that executes after this method suspends.
         let timeoutTask = Task { [weak self] in
@@ -270,16 +276,47 @@ actor StockfishService: PositionEvaluating {
         return results
     }
 
+    /// Sends `stop` + `isready` and waits for `readyok`.
+    /// This guarantees the engine has fully flushed any in-flight search
+    /// (e.g. from a previous timeout) before we begin a new one.
+    /// Cost: ~1ms roundtrip — negligible compared to search time.
+    private func ensureEngineIdle() async {
+        guard let engine else { return }
+        await engine.send(command: .stop)
+
+        // Wait for engine to confirm it's idle
+        waitingForReady = true
+        let idleTimeout = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(2))
+            await self?.handleReadyTimeout()
+        }
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            pendingContinuation = cont
+            Task { [engine] in
+                await engine.send(command: .isready)
+            }
+        }
+        idleTimeout.cancel()
+        debugLog("ensureEngineIdle: engine confirmed idle")
+    }
+
     private func handleSearchTimeout() {
         debugLog("[SF] handleSearchTimeout: waitingForBestMove=\(waitingForBestMove), hasCont=\(pendingContinuation != nil)")
         guard waitingForBestMove else { return }
         waitingForBestMove = false
+
+        // CRITICAL: Tell the engine to stop searching so it doesn't keep
+        // running in the background and corrupt subsequent searches.
+        Task { [engine] in
+            await engine?.send(command: .stop)
+        }
+
         let cont = pendingContinuation
         pendingContinuation = nil
         cont?.resume()
-        debugLog("[SF] handleSearchTimeout: resumed continuation")
+        debugLog("[SF] handleSearchTimeout: resumed continuation after sending stop")
         #if DEBUG
-        print("[ChessCoach] Stockfish: search timeout after \(Int(searchTimeout))s")
+        print("[ChessCoach] Stockfish: search timeout after \(Int(searchTimeout))s — engine stopped")
         #endif
     }
 }

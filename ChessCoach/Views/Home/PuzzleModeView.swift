@@ -273,15 +273,20 @@ struct PuzzleModeView: View {
     // MARK: - Logic
 
     private func loadPuzzles() async {
+        guard !Task.isCancelled else { return }
+
         let service = PuzzleService(stockfish: appServices.stockfish)
         puzzleService = service
         puzzles = await service.generatePuzzles(count: 10, userELO: settings.userELO)
+
+        guard !Task.isCancelled else { return }
 
         if let first = puzzles.first {
             gameState = GameState(fen: first.fen)
             phase = .solving
             showHint = false
         } else {
+            // No puzzles generated — show complete rather than spin forever
             phase = .complete
         }
     }

@@ -83,7 +83,7 @@ enum AppConfig {
     }
 
     static let engine = Engine(
-        searchTimeout: 5,
+        searchTimeout: 15,
         readyTimeout: 10,
         defaultDepth: 15,
         opponentMoveDepth: 10,

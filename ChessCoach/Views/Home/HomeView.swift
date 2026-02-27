@@ -126,14 +126,8 @@ struct HomeView: View {
             .navigationDestination(for: Opening.self) { opening in
                 OpeningDetailView(opening: opening)
             }
-            .navigationDestination(for: ModeDestination.self) { mode in
-                switch mode {
-                case .puzzles:
-                    PuzzleModeView()
-                case .trainer:
-                    TrainerModeView()
-                }
-            }
+            // Modes use direct destination NavigationLinks (not value-based)
+            // to avoid SwiftUI routing bugs with private enum Hashable conformance.
             .onAppear {
                 refreshData()
                 checkForSavedSession()
@@ -433,59 +427,58 @@ struct HomeView: View {
 
     // MARK: - Modes
 
-    private enum ModeDestination: Hashable {
-        case puzzles
-        case trainer
-    }
-
     private var modesSection: some View {
         Section {
             HStack(spacing: AppSpacing.md) {
-                modeCard(
-                    icon: "puzzlepiece.fill",
-                    title: "Puzzles",
-                    subtitle: "Tactics training",
-                    color: .orange,
-                    destination: .puzzles
-                )
+                NavigationLink {
+                    PuzzleModeView()
+                } label: {
+                    modeCardLabel(
+                        icon: "puzzlepiece.fill",
+                        title: "Puzzles",
+                        subtitle: "Tactics training",
+                        color: .orange
+                    )
+                }
+                .buttonStyle(.plain)
 
-                modeCard(
-                    icon: "figure.fencing",
-                    title: "Trainer",
-                    subtitle: "Play a full game",
-                    color: .cyan,
-                    destination: .trainer
-                )
+                NavigationLink {
+                    TrainerModeView()
+                } label: {
+                    modeCardLabel(
+                        icon: "figure.fencing",
+                        title: "Trainer",
+                        subtitle: "Play a full game",
+                        color: .cyan
+                    )
+                }
+                .buttonStyle(.plain)
             }
             .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
         }
         .listRowBackground(Color.clear)
     }
 
-    private func modeCard(
+    private func modeCardLabel(
         icon: String,
         title: String,
         subtitle: String,
-        color: Color,
-        destination: ModeDestination
+        color: Color
     ) -> some View {
-        NavigationLink(value: destination) {
-            VStack(spacing: AppSpacing.xs) {
-                Image(systemName: icon)
-                    .font(.title2)
-                    .foregroundStyle(color)
-                Text(title)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(AppColor.primaryText)
-                Text(subtitle)
-                    .font(.caption2)
-                    .foregroundStyle(AppColor.tertiaryText)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, AppSpacing.md)
-            .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.md))
+        VStack(spacing: AppSpacing.xs) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundStyle(color)
+            Text(title)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(AppColor.primaryText)
+            Text(subtitle)
+                .font(.caption2)
+                .foregroundStyle(AppColor.tertiaryText)
         }
-        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, AppSpacing.md)
+        .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.md))
     }
 
     // MARK: - Picker

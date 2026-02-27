@@ -21,14 +21,25 @@ final class PuzzleService {
         let openingPuzzles = generateOpeningPuzzles(count: max(count / 2, 3), userELO: userELO)
         puzzles.append(contentsOf: openingPuzzles)
 
+        guard !Task.isCancelled else { return puzzles.shuffled() }
+
         let mistakePuzzles = generateMistakePuzzles(count: max(count / 3, 2))
         puzzles.append(contentsOf: mistakePuzzles)
 
-        // Fill remaining with best-move puzzles from opening positions
+        guard !Task.isCancelled else { return puzzles.shuffled() }
+
+        // Fill remaining with best-move puzzles from opening positions.
+        // These require Stockfish so only attempt if we genuinely need more.
         let remaining = count - puzzles.count
         if remaining > 0 {
             let bestMovePuzzles = await generateBestMovePuzzles(count: remaining, userELO: userELO)
             puzzles.append(contentsOf: bestMovePuzzles)
+        }
+
+        // If we still have too few, pad with more opening puzzles (no engine needed)
+        if puzzles.count < 3 {
+            let extra = generateOpeningPuzzles(count: count, userELO: userELO)
+            puzzles.append(contentsOf: extra)
         }
 
         return puzzles.shuffled()
@@ -164,7 +175,7 @@ final class PuzzleService {
         var puzzles: [Puzzle] = []
 
         for _ in 0..<(count * 3) {
-            guard puzzles.count < count else { break }
+            guard puzzles.count < count, !Task.isCancelled else { break }
             guard let opening = allOpenings.randomElement() else { continue }
 
             let moves: [OpeningMove]
