@@ -13,12 +13,11 @@
 - [x] LLM warmup skipped for free users (ContentView + SessionViewModel)
 
 ## Subscription Tiers (new model)
-- [ ] **Free**: No LLM, no AI features. Book explanations, arrows, hints, template coaching. Limited openings.
-- [ ] **On-Device AI**: Bundled on-device LLM (Qwen3-4B). AI coaching, explanations, sparkle per-move.
-- [ ] **Cloud AI**: Add your own Anthropic key or Ollama server. Better quality AI coaching.
-- [ ] **Per-Path Unlock**: Buy individual opening paths à la carte (for users who want just one opening).
-- [ ] **Pro**: Everything + all future updates.
-- [ ] Need testable/debuggable states for each tier — easy to switch in debug builds.
+- [x] **Tier enum + service**: SubscriptionTier (free/onDeviceAI/cloudAI/pro), SubscriptionService with multi-tier StoreKit 2
+- [x] **ProUpgradeView**: Multi-tier paywall with tier cards, per-tier pricing, feature lists
+- [x] **Debug states**: DebugStateView with presets for each tier, debugTierOverride in AppSettings
+- [ ] **Per-Path Unlock**: Buy individual opening paths à la carte (StoreKit product per path)
+- [ ] **Free tier opening limits**: Enforce freeOpeningIDs gating in HomeView/OpeningDetailView
 
 ## Queued
 - [ ] HomeView needs full rework
