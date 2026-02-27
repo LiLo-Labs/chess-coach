@@ -44,6 +44,12 @@ enum HelpTopic {
     case sparkleExplain
     case paths
     case skillLevel
+    case streak
+    case dailyGoal
+    case evalBar
+    case review
+    case practiceMode
+    case accuracy
 
     var title: String {
         switch self {
@@ -56,6 +62,12 @@ enum HelpTopic {
         case .sparkleExplain: return "AI Explanation"
         case .paths: return "Paths"
         case .skillLevel: return "Skill Level"
+        case .streak: return "Streak"
+        case .dailyGoal: return "Daily Goal"
+        case .evalBar: return "Evaluation Bar"
+        case .review: return "Review"
+        case .practiceMode: return "Practice Mode"
+        case .accuracy: return "Accuracy"
         }
     }
 
@@ -79,6 +91,18 @@ enum HelpTopic {
             return "Paths are different move sequences within an opening. Each path represents a different way the game can develop based on your opponent's choices."
         case .skillLevel:
             return "Your skill level adjusts the coaching difficulty and opponent strength. Don't worry about getting it exactly right — you can change it anytime in Settings."
+        case .streak:
+            return "Your streak counts how many days in a row you've practiced. Keep it going to build strong habits!"
+        case .dailyGoal:
+            return "Set a daily goal for how many games to play each day. You can adjust this in Settings."
+        case .evalBar:
+            return "The bar on the side shows which player has the advantage. White at the top means white is winning, black at the bottom means black is ahead. The number is the advantage in \"pawns\" — a chess unit of measurement."
+        case .review:
+            return "Review uses spaced repetition — you'll see positions again at increasing intervals to lock them into long-term memory. Get them right to space them out further."
+        case .practiceMode:
+            return "In practice mode, there are no hints. Your opponent will play different responses to test your understanding. Try to remember the plan!"
+        case .accuracy:
+            return "Accuracy shows the percentage of moves you played correctly. Don't worry about being perfect — even grandmasters make mistakes."
         }
     }
 }

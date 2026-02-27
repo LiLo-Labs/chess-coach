@@ -190,6 +190,8 @@ struct HomeView: View {
                         .foregroundStyle(streak.currentStreak > 0 ? .orange : AppColor.tertiaryText)
                 }
 
+                HelpButton(topic: .streak)
+
                 Spacer()
 
                 let goalTarget = settings.dailyGoalTarget

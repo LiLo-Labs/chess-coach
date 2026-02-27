@@ -74,9 +74,12 @@ struct PracticeOpeningView: View {
                                 Image(systemName: "target")
                                     .font(.title2)
                                     .foregroundStyle(AppColor.practice)
-                                Text("Practice Mode")
-                                    .font(.subheadline.weight(.semibold))
-                                    .foregroundStyle(AppColor.practice)
+                                HStack(spacing: 4) {
+                                    Text("Practice Mode")
+                                        .font(.subheadline.weight(.semibold))
+                                        .foregroundStyle(AppColor.practice)
+                                    HelpButton(topic: .practiceMode)
+                                }
                                 Text("No hints — your opponent will surprise you with different responses. Show what you know!")
                                     .font(.caption)
                                     .foregroundStyle(AppColor.secondaryText)
