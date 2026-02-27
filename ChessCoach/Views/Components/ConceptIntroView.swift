@@ -87,6 +87,28 @@ struct ConceptIntroView: View {
             AppColor.background
                 .ignoresSafeArea()
 
+            // Close button at top-right
+            VStack {
+                HStack {
+                    Spacer()
+                    Button {
+                        concept.markSeen()
+                        onDismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(AppColor.secondaryText)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Close")
+                }
+                .padding(.top, AppSpacing.xxxl)
+                .padding(.trailing, AppSpacing.screenPadding)
+                Spacer()
+            }
+            .zIndex(1)
+
             VStack(spacing: AppSpacing.xxl) {
                 Spacer()
 

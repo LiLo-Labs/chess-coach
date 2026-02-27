@@ -222,8 +222,8 @@ struct SessionView: View {
         let blackSAN = entry.blackSAN
 
         // Human-friendly move descriptions
-        let whiteFriendly = friendlyMoveName(whiteSAN)
-        let blackFriendly = blackSAN.map { friendlyMoveName($0) }
+        let whiteFriendly = OpeningMove.friendlyName(from: whiteSAN)
+        let blackFriendly = blackSAN.map { OpeningMove.friendlyName(from: $0) }
 
         // Algebraic notation (secondary)
         let algebraic = blackSAN.map { "\(entry.moveNumber). \(whiteSAN) \($0)" }
@@ -335,55 +335,6 @@ struct SessionView: View {
     // MARK: - Move Name Helpers
 
     /// Convert SAN notation (e.g. "Nf3", "e4", "O-O") to human-friendly text (e.g. "Knight to f3", "Pawn to e4", "Castle kingside")
-    private func friendlyMoveName(_ san: String) -> String {
-        // Handle castling
-        if san == "O-O" || san == "0-0" { return "Castle short" }
-        if san == "O-O-O" || san == "0-0-0" { return "Castle long" }
-
-        // Strip check/checkmate symbols and capture marker
-        var cleaned = san.replacingOccurrences(of: "+", with: "")
-            .replacingOccurrences(of: "#", with: "")
-
-        // Handle promotion (e.g. "e8=Q")
-        var promotion: String?
-        if let eqIdx = cleaned.firstIndex(of: "=") {
-            let promoChar = cleaned[cleaned.index(after: eqIdx)]
-            promotion = pieceFullName(promoChar)
-            cleaned = String(cleaned[cleaned.startIndex..<eqIdx])
-        }
-
-        let piece: String
-        let destination: String
-
-        if let first = cleaned.first, first.isUppercase {
-            // Piece move (N, B, R, Q, K)
-            piece = pieceFullName(first)
-            // Destination is the last 2 characters
-            let stripped = cleaned.replacingOccurrences(of: "x", with: "")
-            destination = String(stripped.suffix(2))
-        } else {
-            // Pawn move
-            piece = "Pawn"
-            let stripped = cleaned.replacingOccurrences(of: "x", with: "")
-            destination = String(stripped.suffix(2))
-        }
-
-        let captures = san.contains("x") ? " takes" : " to"
-        let promoText = promotion.map { ", promotes to \($0)" } ?? ""
-
-        return "\(piece)\(captures) \(destination)\(promoText)"
-    }
-
-    private func pieceFullName(_ char: Character) -> String {
-        switch char {
-        case "K": return "King"
-        case "Q": return "Queen"
-        case "R": return "Rook"
-        case "B": return "Bishop"
-        case "N": return "Knight"
-        default: return "Pawn"
-        }
-    }
 
     // MARK: - Status Banners
 
@@ -392,8 +343,8 @@ struct SessionView: View {
 
         return VStack(alignment: .leading, spacing: 4) {
             Text(isUnguided
-                 ? "Recommended move was \(expected.san)"
-                 : "The plan plays \(expected.san) here")
+                 ? "Recommended move was \(expected.friendlyName)"
+                 : "The plan plays \(expected.friendlyName) here")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.orange)
 
@@ -410,7 +361,7 @@ struct SessionView: View {
 
     private func opponentDeviationBanner(expected: OpeningMove, played: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Opponent played \(played) instead of \(expected.san)")
+            Text("Opponent played \(OpeningMove.friendlyName(from: played)) instead of \(expected.friendlyName)")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.mint)
 
