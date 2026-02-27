@@ -5,15 +5,13 @@ import ChessKit
 /// Throws everything at the user — opponent mixes up responses across all learned lines.
 struct PracticeOpeningView: View {
     let opening: Opening
-    let isPro: Bool
 
     @State private var viewModel: PracticeSessionViewModel
     @Environment(\.dismiss) private var dismiss
 
-    init(opening: Opening, isPro: Bool = true, stockfish: StockfishService? = nil) {
+    init(opening: Opening, stockfish: StockfishService? = nil) {
         self.opening = opening
-        self.isPro = isPro
-        self._viewModel = State(initialValue: PracticeSessionViewModel(opening: opening, isPro: isPro, stockfish: stockfish))
+        self._viewModel = State(initialValue: PracticeSessionViewModel(opening: opening, stockfish: stockfish))
     }
 
     var body: some View {

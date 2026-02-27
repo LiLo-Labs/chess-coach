@@ -181,7 +181,7 @@ struct OpeningDetailView: View {
             SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .unguided, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .practice:
-            PracticeOpeningView(opening: opening, isPro: subscriptionService.isPro, stockfish: appServices.stockfish)
+            PracticeOpeningView(opening: opening, stockfish: appServices.stockfish)
         }
     }
 
