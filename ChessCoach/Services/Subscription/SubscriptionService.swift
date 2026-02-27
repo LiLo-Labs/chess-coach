@@ -110,10 +110,20 @@ final class SubscriptionService {
     static let freeOpeningIDs: Set<String> = AppConfig.pro.freeOpeningIDs
 
     /// Check if an opening is accessible in the current tier.
+    /// Access policy is centralized here — change this method to adjust paywalling.
     func isOpeningAccessible(_ openingID: String) -> Bool {
         currentTier.hasAllOpenings
         || Self.freeOpeningIDs.contains(openingID)
         || unlockedPaths.contains(openingID)
+        || isPickedFreeOpening(openingID)
+    }
+
+    /// Check if this is the user's one free-pick opening.
+    private func isPickedFreeOpening(_ openingID: String) -> Bool {
+        guard let picked = UserDefaults.standard.string(forKey: AppSettings.Key.pickedFreeOpeningID) else {
+            return false
+        }
+        return picked == openingID
     }
 
     /// Check if a learning layer is accessible in the current tier.

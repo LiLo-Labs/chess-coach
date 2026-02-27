@@ -37,6 +37,8 @@ final class AppSettings {
         static let bestReviewStreak = "best_review_streak"
         static let boardTheme = "board_theme"
         static let pieceStyle = "piece_style"
+        static let hasPickedFreeOpening = "has_picked_free_opening"
+        static let pickedFreeOpeningID = "picked_free_opening_id"
     }
 
     @ObservationIgnored private let defaults = UserDefaults.standard
@@ -85,6 +87,16 @@ final class AppSettings {
 
     var pieceStyle: PieceStyle {
         didSet { defaults.set(pieceStyle.rawValue, forKey: Key.pieceStyle) }
+    }
+
+    // MARK: - Free Opening Pick
+
+    var hasPickedFreeOpening: Bool {
+        didSet { defaults.set(hasPickedFreeOpening, forKey: Key.hasPickedFreeOpening) }
+    }
+
+    var pickedFreeOpeningID: String? {
+        didSet { defaults.set(pickedFreeOpeningID, forKey: Key.pickedFreeOpeningID) }
     }
 
     // MARK: - LLM
@@ -199,6 +211,8 @@ final class AppSettings {
         self.bestReviewStreak = d.integer(forKey: Key.bestReviewStreak)
         self.boardTheme = d.string(forKey: Key.boardTheme).flatMap { BoardTheme(rawValue: $0) } ?? .chessCom
         self.pieceStyle = d.string(forKey: Key.pieceStyle).flatMap { PieceStyle(rawValue: $0) } ?? .classic
+        self.hasPickedFreeOpening = d.bool(forKey: Key.hasPickedFreeOpening)
+        self.pickedFreeOpeningID = d.string(forKey: Key.pickedFreeOpeningID)
 
         // Daily goal: reset if date changed
         let today = Self.todayString

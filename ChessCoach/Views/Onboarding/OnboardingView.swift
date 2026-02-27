@@ -5,6 +5,10 @@ struct OnboardingView: View {
     @Environment(AppSettings.self) private var settings
     @State private var page = 0
 
+    /// Called when the user finishes onboarding. The caller decides what comes next
+    /// (e.g. opening picker for free users, or straight to HomeView for paid users).
+    var onComplete: () -> Void = {}
+
     private let totalPages = 6
 
     var body: some View {
@@ -28,7 +32,7 @@ struct OnboardingView: View {
                 HStack(alignment: .center) {
                     if page < totalPages - 1 {
                         Button("Skip") {
-                            settings.hasSeenOnboarding = true
+                            onComplete()
                         }
                         .font(.subheadline)
                         .foregroundStyle(AppColor.secondaryText)
@@ -291,7 +295,7 @@ struct OnboardingView: View {
 
             Button {
                 withAnimation {
-                    settings.hasSeenOnboarding = true
+                    onComplete()
                 }
             } label: {
                 Text("Let's Go!")
