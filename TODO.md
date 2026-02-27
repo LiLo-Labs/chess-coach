@@ -36,7 +36,8 @@
   - Added 6 new topics: streak, dailyGoal, evalBar, review, practiceMode, accuracy
   - Added help buttons to HomeView (streak), QuickReviewView (toolbar), PracticeOpeningView
 - [x] Feedback bug icon: Beta shows everywhere (toolbar + session menu), Release only in Settings + SessionComplete
-- [ ] LLM upsell: when user taps locked sparkle, show animated video demo of AI coaching quality
+- [x] LLM upsell: locked sparkle visible to free users, tapping shows paywall
+  - [ ] Future: animated video demo of AI coaching quality in the paywall
 - [x] Side panel chat: CoachChatPanel integrated into SessionView with spring animation, full board context, Pro-gated
 - [x] Feed entry titles: human-friendly names ("Knight to f3") instead of raw algebraic notation
   - Algebraic notation still visible as secondary/optional text
