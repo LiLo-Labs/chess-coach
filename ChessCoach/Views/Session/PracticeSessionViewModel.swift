@@ -11,7 +11,6 @@ final class PracticeSessionViewModel {
     private let stockfish: StockfishService
     private let variedOpponent: VariedOpponentService
     private var maiaService: MaiaService?
-    private(set) var isPro: Bool
 
     // Line detection
     private(set) var currentLineName: String?
@@ -54,9 +53,8 @@ final class PracticeSessionViewModel {
         return "\(sign)\(String(format: "%.1f", pawns))"
     }
 
-    init(opening: Opening, isPro: Bool = true, stockfish: StockfishService? = nil) {
+    init(opening: Opening, stockfish: StockfishService? = nil) {
         self.opening = opening
-        self.isPro = isPro
         self.gameState = GameState()
         self.stockfish = stockfish ?? StockfishService()
         self.variedOpponent = VariedOpponentService(opening: opening)

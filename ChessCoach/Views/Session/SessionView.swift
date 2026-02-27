@@ -99,7 +99,6 @@ struct SessionView: View {
                     fen: viewModel.displayGameState.fen,
                     moveHistory: viewModel.moveHistorySAN,
                     currentPly: viewModel.moveCount,
-                    isPro: viewModel.isPro,
                     isPresented: $showChatPanel
                 )
                 .transition(.move(edge: .trailing).combined(with: .opacity))

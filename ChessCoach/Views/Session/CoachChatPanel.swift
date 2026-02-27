@@ -7,7 +7,6 @@ struct CoachChatPanel: View {
     let fen: String
     let moveHistory: [String]
     let currentPly: Int
-    let isPro: Bool
     @Binding var isPresented: Bool
 
     @State private var messages: [(role: String, text: String)] = []
