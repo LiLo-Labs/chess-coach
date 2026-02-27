@@ -60,6 +60,7 @@ struct QuickReviewView: View {
                 HelpButton(topic: .review)
             }
         }
+        .conceptIntro(.whatIsReview)
         .onAppear {
             loadItems()
         }

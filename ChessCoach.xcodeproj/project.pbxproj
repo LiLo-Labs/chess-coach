@@ -137,6 +137,7 @@
 		EBBD4BEC6D778B047A23EE4C /* LessonQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8AEA095744E391EBCC764E /* LessonQuiz.swift */; };
 		ED3E3A465937D62718F02044 /* OpeningDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA7D84DDE88CFD5FD7B7A59 /* OpeningDatabase.swift */; };
 		EE58E155166AAB7026298D5D /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1776DA363A06F2C7CC25093 /* AppConfig.swift */; };
+		F3D3B47863D2144F4DAD6013 /* ConceptIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4AA3F2F495DCEE68EC8C59 /* ConceptIntroView.swift */; };
 		F67A6F94506D97F3671C024E /* CoachingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D38846C538E23A6BABEA968 /* CoachingServiceTests.swift */; };
 		FA80FB61085AB7ABBFF49182 /* MultiArrowOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC292A6050005623D5DD1496 /* MultiArrowOverlay.swift */; };
 		FF125D4E0D68D791E1BF1211 /* OpponentPersonality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C7909A7C6642F8270FD00 /* OpponentPersonality.swift */; };
@@ -305,6 +306,7 @@
 		F1776DA363A06F2C7CC25093 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		F4ED00D26525A66E0521FB1C /* queens-indian.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "queens-indian.json"; sourceTree = "<group>"; };
 		FC292A6050005623D5DD1496 /* MultiArrowOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiArrowOverlay.swift; sourceTree = "<group>"; };
+		FE4AA3F2F495DCEE68EC8C59 /* ConceptIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConceptIntroView.swift; sourceTree = "<group>"; };
 		FF0CC07054E86C382A99D579 /* sicilian.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sicilian.json; sourceTree = "<group>"; };
 		FFFB3DE6F0EF145A730450D0 /* QuickReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickReviewView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -716,6 +718,7 @@
 			isa = PBXGroup;
 			children = (
 				EF5DE9169AE97318198EF9AB /* BoardLessonCard.swift */,
+				FE4AA3F2F495DCEE68EC8C59 /* ConceptIntroView.swift */,
 				5FFCFE25741ACBCE53F7DE9A /* FeedbackButton.swift */,
 				B5FAFD7D4F63B74DC3C09297 /* HelpButton.swift */,
 				8AF52780F2224A71D49EF5F1 /* QuizLessonCard.swift */,
@@ -917,6 +920,7 @@
 				C1BBAF99A37D7FCD2121B484 /* CoachChatPanel.swift in Sources */,
 				4A7034C003AE7DE4915EB4C1 /* CoachingService.swift in Sources */,
 				8CE08A1FABED074CF7F2E648 /* CoachingValidator.swift in Sources */,
+				F3D3B47863D2144F4DAD6013 /* ConceptIntroView.swift in Sources */,
 				9F02B680172D49DE83F07D7A /* ConfettiView.swift in Sources */,
 				3764BEB3B07F45F498D16C41 /* ContentView.swift in Sources */,
 				8E75F54BDD3411D67906D1A8 /* CurriculumService.swift in Sources */,

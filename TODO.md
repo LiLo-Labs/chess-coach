@@ -30,7 +30,7 @@
   - Collapse opening identification into PES scoring
   - How to calculate PES after the opening sequence is complete (middlegame?)
   - PES belongs on front/home screen only, and only for bot/practice games
-- [ ] Introductory screens: what are openings, what is PES, key concepts explained before user encounters them
+- [x] Introductory screens: one-time concept intros (openings, practice, review) shown via ConceptIntroView before user first encounters each area
 - [x] Help icon (?) accessible in every area where user might be confused — contextual tooltips/popovers
   - Added 6 new topics: streak, dailyGoal, evalBar, review, practiceMode, accuracy
   - Added help buttons to HomeView (streak), QuickReviewView (toolbar), PracticeOpeningView
@@ -46,6 +46,14 @@
   - Puzzle mode: tactical puzzles (pin, fork, skewer, mate-in-N), difficulty scaling, daily puzzle
   - Trainer mode: practice openings against bot with real win/loss condition
   - These should be prominent entry points alongside the learning journey
+
+## First-Time User Experience (FTU) Rework
+- [ ] Onboarding doesn't explain what the app does — needs a clear "here's what you'll get" screen
+- [ ] Missing context on what experience level is expected, what openings are, why they matter
+- [ ] Should be animated and fun, not static text walls
+- [ ] Add a personal philosophy screen: "We believe you learn best when you understand WHY — not by memorizing moves"
+- [ ] Add a heartfelt, caring privacy notice: "We will never use your data for anything. Your progress is yours."
+- [ ] Overall FTU should feel warm, inviting, and build excitement
 
 ## Assets & Polish
 - [ ] More chess piece styles: pro/premium piece art sets (Staunton, modern, wood, metal, etc.) — gated by tier
