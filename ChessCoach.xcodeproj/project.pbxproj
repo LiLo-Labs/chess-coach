@@ -113,6 +113,7 @@
 		BE250094E8078458F5CFE5DA /* SoundnessCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06876DFC0017EDF3897EC0E /* SoundnessCalculator.swift */; };
 		BE8B981527187F6DC4721CCF /* ThinkingDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C203FCEDF3390BF9FA4A76 /* ThinkingDotsView.swift */; };
 		BF2D7443ACC26DFE2F8B00DF /* StreakTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4516A86DC281293B8DCB2EE3 /* StreakTrackerTests.swift */; };
+		C1BBAF99A37D7FCD2121B484 /* CoachChatPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CDC00327D31A16EC0949F2 /* CoachChatPanel.swift */; };
 		C226BF43E4A3BEDED991BF97 /* london.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CBD7CCCAE6E9DA102C0CC18 /* london.json */; };
 		C813F078DC8823DE7E51CAF0 /* LineProgressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DCA1751180E5E8592B0754 /* LineProgressTests.swift */; };
 		C95BB4331F3DFDA44B2DE55D /* LLMService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7683B69C4DA5725C86821CF /* LLMService.swift */; };
@@ -196,6 +197,7 @@
 		341B1A08A7983B4F1184C6DE /* CoachingValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachingValidator.swift; sourceTree = "<group>"; };
 		38878C966F69C0C1EC11776A /* Maia2Blitz.mlpackage */ = {isa = PBXFileReference; path = Maia2Blitz.mlpackage; sourceTree = "<group>"; };
 		38A34769ED7F66D990194939 /* kings-gambit.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "kings-gambit.json"; sourceTree = "<group>"; };
+		39CDC00327D31A16EC0949F2 /* CoachChatPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachChatPanel.swift; sourceTree = "<group>"; };
 		3A39B17C19E09E33A7E27276 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B48861941161F981027DE30 /* StockfishService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockfishService.swift; sourceTree = "<group>"; };
 		3DED9F25CC7B1E674F3F0BD9 /* PracticeOpeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeOpeningView.swift; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 		03A9D869EE07FDD99DF1ED67 /* Session */ = {
 			isa = PBXGroup;
 			children = (
+				39CDC00327D31A16EC0949F2 /* CoachChatPanel.swift */,
 				118DA53BC288ED92A432399E /* LineChatView.swift */,
 				EC1D9F04BDD5A2F1B0DED822 /* LineStudyView.swift */,
 				AD7866AAC750CB72C5AC93DE /* PlanUnderstandingView.swift */,
@@ -907,6 +910,7 @@
 				042AC44FFEA6C4AD16C6C62D /* AppSettings.swift in Sources */,
 				809B7F5D98B4B4E1E06CF918 /* BoardLessonCard.swift in Sources */,
 				D87BBC030D64DC6C0EE2DA3D /* ChessCoachApp.swift in Sources */,
+				C1BBAF99A37D7FCD2121B484 /* CoachChatPanel.swift in Sources */,
 				4A7034C003AE7DE4915EB4C1 /* CoachingService.swift in Sources */,
 				8CE08A1FABED074CF7F2E648 /* CoachingValidator.swift in Sources */,
 				9F02B680172D49DE83F07D7A /* ConfettiView.swift in Sources */,

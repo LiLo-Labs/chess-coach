@@ -218,6 +218,11 @@ final class SessionViewModel {
 
     var displayGameState: GameState { replayGameState ?? gameState }
 
+    /// Move history as UCI strings for chat context.
+    var moveHistorySAN: [String] {
+        gameState.moveHistory.map { $0.from + $0.to }
+    }
+
     var displayUserCoaching: String? {
         guard let ply = replayPly else { return userCoachingText }
         return undoStack.last(where: { $0.ply == ply })?.userCoachingText

@@ -7,6 +7,7 @@ struct SessionView: View {
     @State private var showProUpgrade = false
     @State private var navigateToNextStage = false
     @State private var showFeedbackForm = false
+    @State private var showChatPanel = false
     @Environment(\.dismiss) private var dismiss
     @Environment(SubscriptionService.self) private var subscriptionService
 
@@ -89,6 +90,22 @@ struct SessionView: View {
         .overlay {
             if viewModel.sessionComplete {
                 sessionCompleteOverlay
+            }
+        }
+        .overlay(alignment: .trailing) {
+            if showChatPanel {
+                CoachChatPanel(
+                    opening: viewModel.opening,
+                    fen: viewModel.displayGameState.fen,
+                    moveHistory: viewModel.moveHistorySAN,
+                    currentPly: viewModel.moveCount,
+                    isPro: viewModel.isPro,
+                    isPresented: $showChatPanel
+                )
+                .transition(.move(edge: .trailing).combined(with: .opacity))
+                .padding(.top, 60)
+                .padding(.bottom, 8)
+                .padding(.trailing, 4)
             }
         }
         .sensoryFeedback(.impact(weight: .light), trigger: viewModel.correctMoveTrigger)
@@ -570,6 +587,23 @@ struct SessionView: View {
 
             Spacer()
 
+            // Chat panel toggle (AI tiers only)
+            if viewModel.isPro {
+                Button {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
+                        showChatPanel.toggle()
+                    }
+                } label: {
+                    Image(systemName: showChatPanel ? "bubble.left.and.bubble.right.fill" : "bubble.left.and.bubble.right")
+                        .font(.body)
+                        .foregroundStyle(showChatPanel ? AppColor.practice : .secondary)
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(showChatPanel ? "Close coach chat" : "Open coach chat")
+            }
+
             Menu {
                 Button { viewModel.undoMove() } label: {
                     Label("Undo Move", systemImage: "arrow.uturn.backward")
@@ -590,7 +624,7 @@ struct SessionView: View {
                 }
 
                 Button { showFeedbackForm = true } label: {
-                    Label("Send Feedback", systemImage: "questionmark.circle")
+                    Label("Report Bug", systemImage: "ladybug.fill")
                 }
             } label: {
                 Image(systemName: "ellipsis.circle")
