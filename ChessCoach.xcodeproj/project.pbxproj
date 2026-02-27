@@ -10,6 +10,8 @@
 		042AC44FFEA6C4AD16C6C62D /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171B2A4C0057D368799590D2 /* AppSettings.swift */; };
 		077FD1402D6C45EB5932885A /* bishops-opening.json in Resources */ = {isa = PBXBuildFile; fileRef = C2273A96A2E6F388DFEF21BC /* bishops-opening.json */; };
 		097E8EF541FE0976FB9D105E /* SoundService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A16F974A31DFE2F93A948B /* SoundService.swift */; };
+		AAAA000001000000AAAA0001 /* OpeningDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA000002000000AAAA0002 /* OpeningDetector.swift */; };
+		AAAA000003000000AAAA0003 /* PlayerProgressService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA000004000000AAAA0004 /* PlayerProgressService.swift */; };
 		0B07A869013B5D2B9B20A5F3 /* GameStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BEE1049F2990DDB40D8212 /* GameStateTests.swift */; };
 		0D39B083CA933D33F7E6D690 /* ChessCoachTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C29BA1613ECAC66CAEBEA6 /* ChessCoachTests.swift */; };
 		102910341A4AB6C6C65DB30C /* MaiaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D827EA25178F98B49D6117F /* MaiaService.swift */; };
@@ -229,6 +231,8 @@
 		45FDC260D734D8B831132CF4 /* FeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackService.swift; sourceTree = "<group>"; };
 		472C5C258764CE3A09C6C208 /* dutch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = dutch.json; sourceTree = "<group>"; };
 		4C2FE0FAE5C3A682629D3BBD /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		AAAA000002000000AAAA0002 /* OpeningDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningDetector.swift; sourceTree = "<group>"; };
+		AAAA000004000000AAAA0004 /* PlayerProgressService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProgressService.swift; sourceTree = "<group>"; };
 		4D3394090AB7EA057C3B70C3 /* Opening.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Opening.swift; sourceTree = "<group>"; };
 		4D5BC5D7B59BA70529A36D27 /* benoni.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = benoni.json; sourceTree = "<group>"; };
 		4E3A28BF244F5905997ACD78 /* AppServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppServices.swift; sourceTree = "<group>"; };
@@ -454,7 +458,9 @@
 				171B2A4C0057D368799590D2 /* AppSettings.swift */,
 				45FDC260D734D8B831132CF4 /* FeedbackService.swift */,
 				BD3017C504F70C847181883F /* ModelDownloadService.swift */,
+				AAAA000002000000AAAA0002 /* OpeningDetector.swift */,
 				4C2FE0FAE5C3A682629D3BBD /* PersistenceService.swift */,
+				AAAA000004000000AAAA0004 /* PlayerProgressService.swift */,
 				93F01EB13F3A5591B7E7C204 /* PlanScoringService.swift */,
 				5447FBC8446FAD0562EDDA00 /* PuzzleService.swift */,
 				B1A16F974A31DFE2F93A948B /* SoundService.swift */,
@@ -1015,7 +1021,9 @@
 				9D4FD434BB217352E32CC783 /* OpeningSettingsView.swift in Sources */,
 				FF125D4E0D68D791E1BF1211 /* OpponentPersonality.swift in Sources */,
 				5B85AF6EFF77D434E319985A /* OpponentResponse.swift in Sources */,
+				AAAA000001000000AAAA0001 /* OpeningDetector.swift in Sources */,
 				A205E89EF91E7BEE73768E7B /* PersistenceService.swift in Sources */,
+				AAAA000003000000AAAA0003 /* PlayerProgressService.swift in Sources */,
 				12838077B7C6EDF58262DFD1 /* PlanExecutionScore.swift in Sources */,
 				422B0CE6D2093EE75056135F /* PlanScoringService.swift in Sources */,
 				4A10FA4EA488736A13142F3F /* PlanUnderstandingView.swift in Sources */,

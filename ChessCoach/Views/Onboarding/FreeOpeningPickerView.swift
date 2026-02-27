@@ -5,6 +5,8 @@ import SwiftUI
 /// This view is modular — the access policy is centralized in SubscriptionService,
 /// so paywall behavior can be changed independently of this picker.
 struct FreeOpeningPickerView: View {
+    var onComplete: () -> Void = {}
+
     @Environment(AppSettings.self) private var settings
     @Environment(SubscriptionService.self) private var subscriptionService
 
@@ -233,12 +235,12 @@ struct FreeOpeningPickerView: View {
         // Save the user's pick — SubscriptionService checks this
         settings.pickedFreeOpeningID = openingID
         settings.hasPickedFreeOpening = true
-        settings.hasSeenOnboarding = true
+        onComplete()
     }
 
     private func skipSelection() {
         // User skipped — they still get the default free openings
         settings.hasPickedFreeOpening = true
-        settings.hasSeenOnboarding = true
+        onComplete()
     }
 }

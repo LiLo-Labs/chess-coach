@@ -14,25 +14,12 @@ struct SettingsView: View {
         @Bindable var s = settings
 
         Form {
-            Section("Player Settings") {
-                Stepper("Your Skill Level: \(s.userELO)", value: $s.userELO, in: 400...2000, step: 100)
-                Stepper("Opponent Level: \(s.opponentELO)", value: $s.opponentELO, in: 800...2000, step: 100)
-                Text("The AI opponent adjusts to match the skill level")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+            // MARK: - Appearance
 
-            Section("Sound & Haptics") {
-                Toggle("Sound Effects", isOn: $s.soundEnabled)
-                Toggle("Haptic Feedback", isOn: $s.hapticsEnabled)
-            }
-
-            Section("Daily Goal") {
-                Stepper("Target: \(s.dailyGoalTarget) games/day", value: $s.dailyGoalTarget, in: 1...10)
-            }
-
-            Section("Board Theme") {
+            Section {
                 boardThemePicker
+            } header: {
+                Label("Board Theme", systemImage: "checkerboard.rectangle")
             }
 
             Section("Piece Style") {
@@ -45,17 +32,29 @@ struct SettingsView: View {
                     Text("English (Knight f3)").tag("english")
                     Text("UCI (g1f3)").tag("uci")
                 }
+                Toggle("Show Legal Moves", isOn: $s.showLegalMovesImmediately)
+                Toggle("Celebration Effects", isOn: $s.confettiEnabled)
                 Toggle("Color-Blind Friendly", isOn: $s.colorblindMode)
                 if s.colorblindMode {
                     Text("Stage indicators use shapes in addition to colors")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
-                Toggle("Show Legal Moves", isOn: $s.showLegalMovesImmediately)
-                Toggle("Celebration Effects", isOn: $s.confettiEnabled)
             }
 
-            Section("Path Study") {
+            // MARK: - Gameplay
+
+            Section("Player") {
+                Stepper("Your Skill Level: \(s.userELO)", value: $s.userELO, in: 400...2000, step: 100)
+                Stepper("Opponent Level: \(s.opponentELO)", value: $s.opponentELO, in: 800...2000, step: 100)
+                Text("The AI opponent adjusts to match the skill level")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section("Goals & Preferences") {
+                Stepper("Daily Goal: \(s.dailyGoalTarget) games/day", value: $s.dailyGoalTarget, in: 1...10)
+
                 HStack {
                     Text("Auto-play Speed")
                     Spacer()
@@ -63,24 +62,26 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                 }
                 Slider(value: $s.autoPlaySpeed, in: 1.0...6.0, step: 0.5)
+
+                Toggle("Sound Effects", isOn: $s.soundEnabled)
+                Toggle("Haptic Feedback", isOn: $s.hapticsEnabled)
             }
 
+            // MARK: - AI Coach
+
             if subscriptionService.isPro {
-                Section("AI Coach") {
+                Section {
                     Picker("Provider", selection: $s.llmProvider) {
                         Text("On-Device").tag("onDevice")
                         Text("Cloud (Claude)").tag("claude")
                         Text("Local Server").tag("ollama")
                     }
 
-                    // On-device model download status
                     if s.llmProvider == "onDevice" {
                         modelDownloadRow
                     }
-                }
 
-                DisclosureGroup("Advanced") {
-                    Section {
+                    if s.llmProvider == "claude" {
                         HStack {
                             if showingAPIKey {
                                 TextField("sk-ant-...", text: $s.claudeAPIKey)
@@ -107,9 +108,9 @@ struct SettingsView: View {
                         }
                     }
 
-                    Section {
+                    if s.llmProvider == "ollama" {
                         HStack {
-                            Text("Local Server")
+                            Text("Server")
                             Spacer()
                             TextField("host:port", text: $s.ollamaHost)
                                 .multilineTextAlignment(.trailing)
@@ -127,12 +128,16 @@ struct SettingsView: View {
                                 .textInputAutocapitalization(.never)
                         }
                     }
+                } header: {
+                    Label("AI Coach", systemImage: "brain.head.profile")
                 }
             } else {
                 Section("AI Coaching") {
                     ProGateBanner(feature: "AI coaching settings")
                 }
             }
+
+            // MARK: - Account & Info
 
             if subscriptionService.isPro {
                 Section {
