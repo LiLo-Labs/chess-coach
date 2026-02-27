@@ -101,6 +101,22 @@ final class GameState: @unchecked Sendable {
         return state.sanForUCI(uci) ?? uci
     }
 
+    /// Check if a UCI move is a capture in the current position.
+    func isCapture(_ uci: String) -> Bool {
+        let to = String(uci.dropFirst(2).prefix(2))
+        let toSquare = Square(coordinate: to)
+        // Piece on destination = capture (also handles en passant approximately)
+        if game.position.board[toSquare] != nil { return true }
+        // En passant: pawn moves diagonally to empty square
+        let from = String(uci.prefix(2))
+        let fromSquare = Square(coordinate: from)
+        if let piece = game.position.board[fromSquare], piece.kind == .pawn,
+           fromSquare.file != toSquare.file {
+            return true // Diagonal pawn move = capture (en passant)
+        }
+        return false
+    }
+
     func reset(fen: String? = nil) {
         let fenStr = fen ?? "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         let position = FenSerialization.default.deserialize(fen: fenStr)
