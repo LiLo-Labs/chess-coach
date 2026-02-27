@@ -151,69 +151,80 @@ struct FreeOpeningPickerView: View {
         let isSelected = selectedID == opening.id
         let isFreeAlready = SubscriptionService.freeOpeningIDs.contains(opening.id)
 
-        return Button {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                selectedID = opening.id
-            }
-        } label: {
-            HStack(spacing: AppSpacing.md) {
-                // Color indicator
-                Circle()
-                    .fill(opening.color == .white ? .white : Color(white: 0.3))
-                    .frame(width: 12, height: 12)
-
-                VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
-                    HStack(spacing: AppSpacing.xs) {
-                        Text(opening.name)
-                            .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(AppColor.primaryText)
-
-                        if isFreeAlready {
-                            Text("FREE")
-                                .font(.system(size: 9, weight: .bold))
-                                .foregroundStyle(AppColor.success)
-                                .padding(.horizontal, 5)
-                                .padding(.vertical, 2)
-                                .background(AppColor.success.opacity(0.15), in: Capsule())
-                        }
-                    }
-
-                    Text(opening.description)
-                        .font(.caption)
-                        .foregroundStyle(AppColor.secondaryText)
-                        .lineLimit(2)
-
-                    // Difficulty dots
-                    HStack(spacing: 3) {
-                        Text("Difficulty")
-                            .font(.system(size: 9))
-                            .foregroundStyle(AppColor.tertiaryText)
-                        ForEach(1...5, id: \.self) { level in
-                            Circle()
-                                .fill(level <= opening.difficulty ? AppColor.gold : AppColor.tertiaryText.opacity(0.3))
-                                .frame(width: 5, height: 5)
-                        }
-                    }
+        return VStack(spacing: 0) {
+            Button {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                    selectedID = selectedID == opening.id ? nil : opening.id
                 }
+            } label: {
+                HStack(spacing: AppSpacing.md) {
+                    // Color indicator
+                    Circle()
+                        .fill(opening.color == .white ? .white : Color(white: 0.3))
+                        .frame(width: 12, height: 12)
 
-                Spacer()
+                    VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
+                        HStack(spacing: AppSpacing.xs) {
+                            Text(opening.name)
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(AppColor.primaryText)
 
-                // Selection indicator
-                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .font(.title3)
-                    .foregroundStyle(isSelected ? AppColor.success : AppColor.tertiaryText)
+                            if isFreeAlready {
+                                Text("FREE")
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundStyle(AppColor.success)
+                                    .padding(.horizontal, 5)
+                                    .padding(.vertical, 2)
+                                    .background(AppColor.success.opacity(0.15), in: Capsule())
+                            }
+                        }
+
+                        Text(opening.description)
+                            .font(.caption)
+                            .foregroundStyle(AppColor.secondaryText)
+                            .lineLimit(isSelected ? 10 : 2)
+
+                        // Difficulty dots
+                        HStack(spacing: 3) {
+                            Text("Difficulty")
+                                .font(.system(size: 9))
+                                .foregroundStyle(AppColor.tertiaryText)
+                            ForEach(1...5, id: \.self) { level in
+                                Circle()
+                                    .fill(level <= opening.difficulty ? AppColor.gold : AppColor.tertiaryText.opacity(0.3))
+                                    .frame(width: 5, height: 5)
+                            }
+                        }
+                    }
+
+                    Spacer()
+
+                    // Selection indicator
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                        .font(.title3)
+                        .foregroundStyle(isSelected ? AppColor.success : AppColor.tertiaryText)
+                }
+                .padding(AppSpacing.cardPadding)
             }
-            .padding(AppSpacing.cardPadding)
-            .background(
-                RoundedRectangle(cornerRadius: AppRadius.md)
-                    .fill(isSelected ? AppColor.success.opacity(0.08) : AppColor.cardBackground)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: AppRadius.md)
-                    .stroke(isSelected ? AppColor.success.opacity(0.4) : Color.clear, lineWidth: 1.5)
-            )
+            .buttonStyle(.plain)
+
+            // Preview board — shows when selected so user can see the opening played through
+            if isSelected {
+                OpeningPreviewBoard(opening: opening)
+                    .padding(.horizontal, AppSpacing.xs)
+                    .padding(.bottom, AppSpacing.sm)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
         }
-        .buttonStyle(.plain)
+        .background(
+            RoundedRectangle(cornerRadius: AppRadius.md)
+                .fill(isSelected ? AppColor.success.opacity(0.08) : AppColor.cardBackground)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: AppRadius.md)
+                .stroke(isSelected ? AppColor.success.opacity(0.4) : Color.clear, lineWidth: 1.5)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: AppRadius.md))
     }
 
     // MARK: - Actions
