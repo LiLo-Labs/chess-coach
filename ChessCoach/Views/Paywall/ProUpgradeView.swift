@@ -1,76 +1,75 @@
 import SwiftUI
 import StoreKit
 
-/// Reusable paywall sheet for upgrading to Pro.
+/// Multi-tier paywall showing all subscription options.
 struct ProUpgradeView: View {
     @Environment(SubscriptionService.self) private var subscriptionService
     @Environment(\.dismiss) private var dismiss
     @State private var errorMessage: String?
+    @State private var selectedTier: SubscriptionTier = .pro
 
     var body: some View {
         ScrollView {
             VStack(spacing: AppSpacing.xxl) {
-                Spacer(minLength: AppSpacing.xxxl)
+                Spacer(minLength: AppSpacing.lg)
 
-                // Icon
+                // Header
                 Image(systemName: "crown.fill")
-                    .font(.system(size: 56))
+                    .font(.system(size: 48))
                     .foregroundStyle(AppColor.gold)
 
-                // Title
-                Text("Unlock ChessCoach Pro")
+                Text("Choose Your Plan")
                     .font(.title2.weight(.bold))
                     .foregroundStyle(AppColor.primaryText)
-                    .multilineTextAlignment(.center)
 
-                // Subtitle
-                Text("Master openings faster with AI-powered coaching")
+                Text("Learn openings your way — upgrade anytime")
                     .font(.subheadline)
                     .foregroundStyle(AppColor.secondaryText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, AppSpacing.xxl)
 
-                // Features list
-                VStack(alignment: .leading, spacing: AppSpacing.md) {
-                    featureRow(icon: "brain", text: "AI-powered coaching explanations")
-                    featureRow(icon: "sparkles", text: "Deep \"Explain why\" analysis")
-                    featureRow(icon: "cpu", text: "On-device AI model")
-                    featureRow(icon: "server.rack", text: "Ollama & Claude API support")
+                // Tier cards
+                VStack(spacing: AppSpacing.md) {
+                    tierCard(
+                        tier: .onDeviceAI,
+                        icon: "cpu",
+                        color: .cyan,
+                        features: [
+                            "AI coaching runs privately on your device",
+                            "\"Explain why\" move analysis",
+                            "Ask Coach chat during sessions"
+                        ]
+                    )
+
+                    tierCard(
+                        tier: .cloudAI,
+                        icon: "cloud",
+                        color: .blue,
+                        features: [
+                            "Everything in On-Device AI",
+                            "Connect Claude API or Ollama",
+                            "Higher quality AI responses"
+                        ]
+                    )
+
+                    tierCard(
+                        tier: .pro,
+                        icon: "crown.fill",
+                        color: AppColor.gold,
+                        badge: "Best Value",
+                        features: [
+                            "Everything in Cloud AI",
+                            "All openings unlocked",
+                            "Advanced learning layers",
+                            "All future updates included"
+                        ]
+                    )
                 }
-                .padding(.horizontal, AppSpacing.xxl)
-
-                // Free vs Pro comparison table
-                comparisonTable
-                    .padding(.horizontal, AppSpacing.xxl)
-
-                Spacer(minLength: AppSpacing.sm)
+                .padding(.horizontal, AppSpacing.screenPadding)
 
                 // Purchase button
-                if let product = subscriptionService.product {
-                    Button {
-                        Task { await subscriptionService.purchase() }
-                    } label: {
-                        HStack {
-                            if subscriptionService.purchaseState == .purchasing {
-                                ProgressView()
-                                    .controlSize(.small)
-                                    .tint(.white)
-                            }
-                            Text("Unlock Pro — \(product.displayPrice)")
-                                .font(.body.weight(.semibold))
-                        }
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(AppColor.guided, in: RoundedRectangle(cornerRadius: AppRadius.lg))
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(subscriptionService.purchaseState == .purchasing)
+                purchaseButton
                     .padding(.horizontal, AppSpacing.xxl)
-                } else {
-                    ProgressView("Loading...")
-                        .padding()
-                }
 
                 // Restore
                 Button("Restore Purchase") {
@@ -85,13 +84,10 @@ struct ProUpgradeView: View {
                         .foregroundStyle(AppColor.error)
                 }
 
-                // Legal disclosures
-                VStack(spacing: AppSpacing.xxs) {
-                    Text("One-time purchase. No subscription.")
-                        .font(.caption2)
-                        .foregroundStyle(AppColor.tertiaryText)
-                }
-                .padding(.horizontal, AppSpacing.xxl)
+                // Legal
+                Text("One-time purchase. No subscription.")
+                    .font(.caption2)
+                    .foregroundStyle(AppColor.tertiaryText)
 
                 Spacer(minLength: AppSpacing.lg)
             }
@@ -100,13 +96,13 @@ struct ProUpgradeView: View {
         .preferredColorScheme(.dark)
         .task {
             do {
-                try await subscriptionService.loadProduct()
+                try await subscriptionService.loadProducts()
             } catch {
                 errorMessage = error.localizedDescription
             }
         }
-        .onChange(of: subscriptionService.isPro) { _, newValue in
-            if newValue { dismiss() }
+        .onChange(of: subscriptionService.currentTier) { _, newTier in
+            if newTier != .free { dismiss() }
         }
         .alert("Error", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
             Button("OK", role: .cancel) { errorMessage = nil }
@@ -115,95 +111,143 @@ struct ProUpgradeView: View {
         }
     }
 
-    // MARK: - Comparison Table
+    // MARK: - Tier Card
 
-    private var comparisonTable: some View {
-        VStack(spacing: AppSpacing.sm) {
-            // Header row
-            HStack(spacing: 0) {
-                Text("Feature")
-                    .font(.caption.weight(.bold))
-                    .foregroundStyle(AppColor.secondaryText)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Text("Free")
-                    .font(.caption.weight(.bold))
-                    .foregroundStyle(AppColor.secondaryText)
-                    .frame(width: 44, alignment: .center)
-                Text("Pro")
-                    .font(.caption.weight(.bold))
-                    .foregroundStyle(AppColor.gold)
-                    .frame(width: 44, alignment: .center)
+    private func tierCard(
+        tier: SubscriptionTier,
+        icon: String,
+        color: Color,
+        badge: String? = nil,
+        features: [String]
+    ) -> some View {
+        let isSelected = selectedTier == tier
+        let isOwned = subscriptionService.currentTier == tier
+
+        return Button {
+            withAnimation(.easeInOut(duration: 0.15)) { selectedTier = tier }
+        } label: {
+            VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                HStack {
+                    Image(systemName: icon)
+                        .font(.title3)
+                        .foregroundStyle(color)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: AppSpacing.xs) {
+                            Text(tier.displayName)
+                                .font(.headline.weight(.semibold))
+                                .foregroundStyle(AppColor.primaryText)
+
+                            if let badge {
+                                Text(badge)
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(color, in: Capsule())
+                            }
+
+                            if isOwned {
+                                Text("Current")
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(AppColor.success, in: Capsule())
+                            }
+                        }
+
+                        if let product = subscriptionService.products[productID(for: tier)] {
+                            Text(product.displayPrice)
+                                .font(.caption)
+                                .foregroundStyle(AppColor.secondaryText)
+                        }
+                    }
+
+                    Spacer()
+
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                        .font(.title3)
+                        .foregroundStyle(isSelected ? color : AppColor.tertiaryText)
+                }
+
+                ForEach(features, id: \.self) { feature in
+                    HStack(spacing: AppSpacing.xs) {
+                        Image(systemName: "checkmark")
+                            .font(.caption2.weight(.bold))
+                            .foregroundStyle(color.opacity(0.8))
+                        Text(feature)
+                            .font(.caption)
+                            .foregroundStyle(AppColor.secondaryText)
+                    }
+                }
             }
-            .padding(.horizontal, AppSpacing.md)
-            .padding(.bottom, AppSpacing.xxs)
-
-            Divider()
-                .background(AppColor.secondaryText.opacity(0.3))
-
-            // Feature rows
-            comparisonRow("All openings",        free: true,  pro: true)
-            comparisonRow("Board + spaced rep",  free: true,  pro: true)
-            comparisonRow("Hardcoded coaching",  free: true,  pro: false)
-            comparisonRow("AI coaching",         free: false, pro: true)
-            comparisonRow("Deep explanations",   free: false, pro: true)
-            comparisonRow("Ask Coach chat",       free: false, pro: true)
-            comparisonRow("On-device AI model",  free: false, pro: true)
+            .padding(AppSpacing.cardPadding)
+            .background(
+                isSelected ? color.opacity(0.08) : AppColor.cardBackground,
+                in: RoundedRectangle(cornerRadius: AppRadius.md)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: AppRadius.md)
+                    .stroke(isSelected ? color : .clear, lineWidth: 1.5)
+            )
         }
-        .padding(AppSpacing.md)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+        .buttonStyle(.plain)
+        .disabled(isOwned)
     }
 
-    private func comparisonRow(_ label: String, free: Bool, pro: Bool) -> some View {
-        HStack(spacing: 0) {
-            Text(label)
+    // MARK: - Purchase Button
+
+    @ViewBuilder
+    private var purchaseButton: some View {
+        let tierOwned = subscriptionService.currentTier == selectedTier
+        let product = subscriptionService.products[productID(for: selectedTier)]
+
+        if tierOwned {
+            Text("You already have \(selectedTier.displayName)")
                 .font(.subheadline)
-                .foregroundStyle(AppColor.primaryText)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            checkmark(enabled: free)
-                .frame(width: 44, alignment: .center)
-                .accessibilityLabel(free ? "Included in Free" : "Not included in Free")
-            checkmark(enabled: pro, highlightColor: AppColor.gold)
-                .frame(width: 44, alignment: .center)
-                .accessibilityLabel(pro ? "Included in Pro" : "Not included in Pro")
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(label): \(free ? "included" : "not included") in Free, \(pro ? "included" : "not included") in Pro")
-        .padding(.horizontal, AppSpacing.md)
-        .padding(.vertical, AppSpacing.xxs)
-    }
-
-    private func checkmark(enabled: Bool, highlightColor: Color = AppColor.success) -> some View {
-        Group {
-            if enabled {
-                Image(systemName: "checkmark")
-                    .font(.caption.weight(.bold))
-                    .foregroundStyle(highlightColor)
-            } else {
-                Image(systemName: "xmark")
-                    .font(.caption)
-                    .foregroundStyle(AppColor.tertiaryText)
+                .foregroundStyle(AppColor.secondaryText)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+        } else if let product {
+            Button {
+                Task { await subscriptionService.purchase(productID: product.id) }
+            } label: {
+                HStack {
+                    if subscriptionService.purchaseState == .purchasing {
+                        ProgressView()
+                            .controlSize(.small)
+                            .tint(.white)
+                    }
+                    Text("Unlock \(selectedTier.displayName) — \(product.displayPrice)")
+                        .font(.body.weight(.semibold))
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(AppColor.guided, in: RoundedRectangle(cornerRadius: AppRadius.lg))
             }
+            .buttonStyle(.plain)
+            .disabled(subscriptionService.purchaseState == .purchasing)
+        } else {
+            ProgressView("Loading prices...")
+                .padding()
         }
     }
 
-    // MARK: - Feature Row
+    // MARK: - Helpers
 
-    private func featureRow(icon: String, text: String) -> some View {
-        HStack(spacing: AppSpacing.md) {
-            Image(systemName: icon)
-                .font(.body)
-                .foregroundStyle(AppColor.gold)
-                .frame(width: 24)
-                .accessibilityHidden(true)
-            Text(text)
-                .font(.subheadline)
-                .foregroundStyle(AppColor.primaryText)
+    private func productID(for tier: SubscriptionTier) -> String {
+        switch tier {
+        case .onDeviceAI: return SubscriptionService.onDeviceProductID
+        case .cloudAI: return SubscriptionService.cloudProductID
+        case .pro: return SubscriptionService.proProductID
+        case .free: return ""
         }
-        .accessibilityElement(children: .combine)
     }
 }
 
-/// Small inline prompt for gated features — shows a lock + "Unlock Pro" button.
+/// Small inline prompt for gated features — shows a lock + "Unlock" button.
 struct ProGateBanner: View {
     @Environment(SubscriptionService.self) private var subscriptionService
     @State private var showPaywall = false
@@ -218,7 +262,7 @@ struct ProGateBanner: View {
                 Image(systemName: "lock.fill")
                     .font(.caption)
                     .foregroundStyle(AppColor.gold)
-                Text("\(feature) requires Pro")
+                Text("\(feature) requires upgrade")
                     .font(.caption)
                     .foregroundStyle(AppColor.secondaryText)
                 Spacer()
