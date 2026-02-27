@@ -265,6 +265,21 @@ enum AppConfig {
         ]
     )
 
+    // MARK: - Model Download
+
+    struct ModelDownload: Sendable {
+        /// Remote URL for the GGUF model file.
+        /// Replace with your CDN/storage URL before release.
+        let remoteURL: String
+        /// Expected file size in bytes (for display to user).
+        let expectedSizeBytes: Int64
+    }
+
+    static let modelDownload = ModelDownload(
+        remoteURL: "https://cdn.chesscoach.app/models/Qwen3-4B-Q4_K_M.gguf",
+        expectedSizeBytes: 2_684_354_560 // ~2.5 GB
+    )
+
     // MARK: - Feedback
 
     struct Feedback: Sendable {

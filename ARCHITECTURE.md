@@ -60,6 +60,7 @@ ChessCoach/
 │   ├── LLMService/               # Provider abstraction (on-device, Claude, Ollama)
 │   ├── TokenService.swift        # Token economy: balance, StoreKit consumable packs, rewards
 │   ├── PuzzleService.swift       # Puzzle generation from openings, mistakes, Stockfish
+│   ├── ModelDownloadService.swift # Background download of GGUF model to Documents
 │   └── Subscription/             # SubscriptionService, FeatureAccess, ProFeature, tiers
 │
 ├── Views/
@@ -87,6 +88,7 @@ ChessCoach/
 AppSettings (UserDefaults) ──┐
 SubscriptionService (StoreKit) ──┤── injected via .environment() at WindowGroup
 TokenService (token economy) ──┤
+ModelDownloadService ──┤
 AppServices (Stockfish + LLM) ──┘
 
 ContentView
@@ -230,3 +232,13 @@ Applied in: LineStudyView, OpeningPreviewBoard, SessionView feed, deviation bann
 
 All full-screen overlays have an X close button at top-right:
 - SessionCompleteView, PracticeOpeningView completion, ConceptIntroView
+
+## On-Device Model Download
+
+Instead of bundling the ~2.5GB GGUF model in the app binary, `ModelDownloadService` supports downloading it on demand:
+- **Downloaded model** stored in Documents directory, preferred over bundled copy
+- `OnDeviceLLMService.resolvedModelPath` checks Documents first, then Bundle
+- Download progress shown in Settings (AI Coach section) when provider is "On-Device"
+- Config: `AppConfig.modelDownload` (remote URL, expected size)
+- Gated by `ProFeature.onDeviceModelDownload` (requires onDeviceAI tier or higher)
+- User can delete downloaded model to free space (falls back to bundled if available)
