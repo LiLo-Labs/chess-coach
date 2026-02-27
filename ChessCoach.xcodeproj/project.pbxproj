@@ -50,6 +50,7 @@
 		449DCC65F1D994261FE9D468 /* PopularityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD76113945C7E92BAEA4F7E3 /* PopularityService.swift */; };
 		451B2F2DF43724C2585B0AEE /* UserProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2DBE99E98075DDBDFF443F /* UserProgress.swift */; };
 		456310C901C8DB9962EAC7E4 /* slav.json in Resources */ = {isa = PBXBuildFile; fileRef = D02EB7DA27CFF167257CA7EB /* slav.json */; };
+		46EE8366FC07C18EACBEEF3F /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFED375BD95512722E070E26 /* Puzzle.swift */; };
 		498D01D731A3EE4ADEDD2EE9 /* reti.json in Resources */ = {isa = PBXBuildFile; fileRef = 9184DFCBC4771D026AF80AA2 /* reti.json */; };
 		4A10FA4EA488736A13142F3F /* PlanUnderstandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD7866AAC750CB72C5AC93DE /* PlanUnderstandingView.swift */; };
 		4A7034C003AE7DE4915EB4C1 /* CoachingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AF1BAD455BC18D3532DEB0 /* CoachingService.swift */; };
@@ -109,6 +110,7 @@
 		B0C1DBEC59D44DEFF1B77568 /* LLMConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C770663D937BE38E72D9613 /* LLMConfig.swift */; };
 		B1A90672488F161FA789E763 /* english.json in Resources */ = {isa = PBXBuildFile; fileRef = 8DA00C7F6D1D7DF09E5B556E /* english.json */; };
 		B2953DCC6B6DF37CBD5E613A /* italian.json in Resources */ = {isa = PBXBuildFile; fileRef = 63986DB03379A8FF05B3D4DC /* italian.json */; };
+		B2F12E1D84CC6F8C3B14F778 /* PuzzleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5447FBC8446FAD0562EDDA00 /* PuzzleService.swift */; };
 		B4091D9860A2658459368FC0 /* EngineProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA4E18D85E23EC83BCF6411 /* EngineProtocols.swift */; };
 		B4BFBDC1F762CDD18CE6D3D3 /* SessionCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AF94834BD032584AD3853A /* SessionCompleteView.swift */; };
 		B5366C62CBE6D18624506D3D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 27D9D642B31BB2DEE4B7EFB3 /* PrivacyInfo.xcprivacy */; };
@@ -233,6 +235,7 @@
 		4F5E830DC295EDA7A958A13D /* ProUpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProUpgradeView.swift; sourceTree = "<group>"; };
 		51BEE1049F2990DDB40D8212 /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
 		541D1FEE8D9F636409553F01 /* TheoryDiscoveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheoryDiscoveryView.swift; sourceTree = "<group>"; };
+		5447FBC8446FAD0562EDDA00 /* PuzzleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleService.swift; sourceTree = "<group>"; };
 		5AF349EACF6870397174001C /* maia2_moves.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = maia2_moves.txt; sourceTree = "<group>"; };
 		5B1433100DC8C346D9659D68 /* PuzzleModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleModeView.swift; sourceTree = "<group>"; };
 		5FB0E2F8DAB6D71268CA3DC0 /* TrainerModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainerModeView.swift; sourceTree = "<group>"; };
@@ -281,6 +284,7 @@
 		AD7866AAC750CB72C5AC93DE /* PlanUnderstandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanUnderstandingView.swift; sourceTree = "<group>"; };
 		AF1C710A917AAC4858873282 /* chesskit-engine */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "chesskit-engine"; path = "LocalPackages/chesskit-engine"; sourceTree = SOURCE_ROOT; };
 		AFA4E18D85E23EC83BCF6411 /* EngineProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineProtocols.swift; sourceTree = "<group>"; };
+		AFED375BD95512722E070E26 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
 		B07C0DF8A8FA939CCB145DDF /* OpeningPreviewBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningPreviewBoard.swift; sourceTree = "<group>"; };
 		B0A65E58BA9BE1F5FDFC6B99 /* e.tsv */ = {isa = PBXFileReference; path = e.tsv; sourceTree = "<group>"; };
 		B1A16F974A31DFE2F93A948B /* SoundService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundService.swift; sourceTree = "<group>"; };
@@ -447,6 +451,7 @@
 				45FDC260D734D8B831132CF4 /* FeedbackService.swift */,
 				4C2FE0FAE5C3A682629D3BBD /* PersistenceService.swift */,
 				93F01EB13F3A5591B7E7C204 /* PlanScoringService.swift */,
+				5447FBC8446FAD0562EDDA00 /* PuzzleService.swift */,
 				B1A16F974A31DFE2F93A948B /* SoundService.swift */,
 				74ACFC1FF51C421C31619C19 /* TokenService.swift */,
 				072A187FE3EB5E259BAD36A4 /* VariedOpponentService.swift */,
@@ -547,6 +552,7 @@
 				E95DA3A801E713396E2CCBC6 /* Chess */,
 				7A53D875D663C7CA25F75D56 /* Opening */,
 				FE8991AC59F724526F463E46 /* Progress */,
+				E11D1506665354B217501D8D /* Puzzle */,
 				009532B9F97F69EB6F95ED95 /* Scoring */,
 				F6463628D9C64D658920CD49 /* SpacedRep */,
 				CC05F682F9B70330A831F1CC /* Tokens */,
@@ -686,6 +692,14 @@
 				7D28EFD69B9A9AC6E2DCD75B /* llama.xcframework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E11D1506665354B217501D8D /* Puzzle */ = {
+			isa = PBXGroup;
+			children = (
+				AFED375BD95512722E070E26 /* Puzzle.swift */,
+			);
+			path = Puzzle;
 			sourceTree = "<group>";
 		};
 		E3A569EB3DC49F2DD16440BF /* Resources */ = {
@@ -996,7 +1010,9 @@
 				EAA5B35C49028F7F9E853316 /* ProFeature.swift in Sources */,
 				92F5C48B9D3698ABFE1A4F00 /* ProUpgradeView.swift in Sources */,
 				9DE007C315CE0176CCF6A874 /* PromptCatalog.swift in Sources */,
+				46EE8366FC07C18EACBEEF3F /* Puzzle.swift in Sources */,
 				19C94F7D53A9777AFA4FB263 /* PuzzleModeView.swift in Sources */,
+				B2F12E1D84CC6F8C3B14F778 /* PuzzleService.swift in Sources */,
 				213ADC654DDA0B2E8165A6EB /* QuickReviewView.swift in Sources */,
 				5BEA4235474CF69DE1E214AE /* QuizLessonCard.swift in Sources */,
 				3FEEF58886C82EC691F900A4 /* ReviewItem.swift in Sources */,
