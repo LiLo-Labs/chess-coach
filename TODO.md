@@ -46,7 +46,7 @@
 - [x] Themes: user-selectable board color themes (8 options with visual swatch picker in Settings). Piece style enum prepared for future expansion (only Classic/USCF currently bundled).
 - [x] HomeView modes: Puzzle and Trainer cards as prominent entries (stub views with "Coming soon")
   - [x] Puzzle mode implementation: puzzle database, solving UI, difficulty scaling, daily puzzle
-  - [ ] Trainer mode implementation: bot game loop, varying skill levels, win/loss tracking
+  - [x] Trainer mode implementation: bot game loop, varying skill levels, win/loss tracking
 
 ## First-Time User Experience (FTU) Rework
 - [x] Onboarding rewritten as 6-page flow: Welcome, What Are Openings, Our Belief (learning philosophy), How It Works, Privacy Promise, Skill Level
