@@ -263,7 +263,7 @@ struct SessionView: View {
 
                     Spacer(minLength: 0)
 
-                    // Tappable AI explanation sparkle per entry (pro only)
+                    // Tappable AI explanation sparkle
                     if viewModel.isPro {
                         if entry.isExplaining {
                             ProgressView().controlSize(.mini).tint(.purple)
@@ -281,6 +281,16 @@ struct SessionView: View {
                             }
                             .buttonStyle(.plain)
                         }
+                    } else {
+                        // Show locked sparkle that triggers paywall
+                        Button {
+                            showProUpgrade = true
+                        } label: {
+                            Image(systemName: "sparkles")
+                                .font(.caption2)
+                                .foregroundStyle(AppColor.gold.opacity(0.5))
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
 
