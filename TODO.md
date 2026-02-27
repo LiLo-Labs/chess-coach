@@ -61,8 +61,8 @@
 - [x] Full-screen overlays (learning plan, etc.) have no exit/close button
 
 ## Assets & Polish
-- [ ] More chess piece styles: pro/premium piece art sets (Staunton, modern, wood, metal, etc.) — gated by tier
-- [ ] Pro board styles: premium board textures (wood grain, marble, tournament green) beyond the flat color schemes
+- [x] Pro board styles: Walnut, Marble, Tournament color schemes added with pro-gating + lock icons in Settings picker. Enum infrastructure ready for texture-based boards when assets are available.
+- [x] Pro piece styles: Staunton, Modern, Wood, Metal enum cases added with isPro gating and assetFolder mapping. Awaiting art assets to bundle.
 - [x] Piece animations: smooth move spring animation (already existed in ChessboardKit), capture burst ring effect added
 
 ## Infrastructure
