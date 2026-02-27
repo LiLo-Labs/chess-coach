@@ -148,12 +148,11 @@ Piece styles: Classic (USCF, free) + 4 pro placeholders (Staunton, Modern, Wood,
 
 ## Onboarding Flow
 
-1. Welcome — animated crown, warm greeting
-2. What Are Openings — explains the concept for complete beginners
-3. Our Belief — learning philosophy (understand WHY, not memorize)
-4. How It Works — 4-step learning journey overview
-5. Privacy Promise — heartfelt data pledge (no tracking, no selling, on-device AI)
-6. Skill Level — adjustable ELO picker
+1. Welcome — animated crown, minimal tagline
+2. What Are Openings — 3 animated bullet points (plan, why, obvious)
+3. How It Works — 4-step animated number circles
+4. Your Privacy — 4 animated privacy rows (no selling, no tracking, on-device, yours)
+5. Skill Level — large ELO picker with +/- buttons
 7. **Free Opening Picker** (free tier only) — choose ONE opening to fully unlock
 
 `OnboardingView.onComplete` callback → ContentView decides whether to show picker or go straight to HomeView.
