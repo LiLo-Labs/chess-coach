@@ -18,6 +18,7 @@ struct GameBoardView: View {
     var onMove: ((String, String) -> Void)?
     var allowInteraction: Bool = true
 
+    @Environment(AppSettings.self) private var settings
     @State private var boardModel: ChessboardModel
     @State private var lastSyncedFen: String = ""
 
@@ -62,6 +63,12 @@ struct GameBoardView: View {
                 // Catches undo: moveHistory is a stored property so @Observable tracks it reliably.
                 // gameState.fen is computed and may not trigger onChange on undo.
                 syncBoard()
+            }
+            .onChange(of: settings.boardTheme) { _, newTheme in
+                boardModel.colorScheme = newTheme.colorScheme
+            }
+            .onAppear {
+                boardModel.colorScheme = settings.boardTheme.colorScheme
             }
             .accessibilityElement(children: .contain)
             .accessibilityLabel("Chess board")

@@ -93,6 +93,7 @@
 		9D986ED041BA16E13528BDC2 /* pirc.json in Resources */ = {isa = PBXBuildFile; fileRef = E396489C2128D7F704E5B852 /* pirc.json */; };
 		9DE007C315CE0176CCF6A874 /* PromptCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE30D8A0E555CD9D5A5438CD /* PromptCatalog.swift */; };
 		9F02B680172D49DE83F07D7A /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAE85DE19C554D1AC291F3D /* ConfettiView.swift */; };
+		A07DFC2DC6EC969187E38D3D /* BoardTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A540DE54627154C7E69E6AF /* BoardTheme.swift */; };
 		A205E89EF91E7BEE73768E7B /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2FE0FAE5C3A682629D3BBD /* PersistenceService.swift */; };
 		A2BF1CDCF901BA3987106EA4 /* LessonStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEFF49BF6F36ADFDFF5B260 /* LessonStep.swift */; };
 		A83EDE3FF2558974E8053DDA /* colle.json in Resources */ = {isa = PBXBuildFile; fileRef = C9E0D00426D51F255692AF98 /* colle.json */; };
@@ -199,6 +200,7 @@
 		38A34769ED7F66D990194939 /* kings-gambit.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "kings-gambit.json"; sourceTree = "<group>"; };
 		39CDC00327D31A16EC0949F2 /* CoachChatPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachChatPanel.swift; sourceTree = "<group>"; };
 		3A39B17C19E09E33A7E27276 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3A540DE54627154C7E69E6AF /* BoardTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTheme.swift; sourceTree = "<group>"; };
 		3B48861941161F981027DE30 /* StockfishService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockfishService.swift; sourceTree = "<group>"; };
 		3DED9F25CC7B1E674F3F0BD9 /* PracticeOpeningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeOpeningView.swift; sourceTree = "<group>"; };
 		3EAE85DE19C554D1AC291F3D /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
@@ -525,6 +527,7 @@
 		7C38B364949C78ED746C7DE5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				3A540DE54627154C7E69E6AF /* BoardTheme.swift */,
 				4F5C7909A7C6642F8270FD00 /* OpponentPersonality.swift */,
 				E95DA3A801E713396E2CCBC6 /* Chess */,
 				7A53D875D663C7CA25F75D56 /* Opening */,
@@ -909,6 +912,7 @@
 				D74EEDDD9A5662EB5DE8E266 /* AppServices.swift in Sources */,
 				042AC44FFEA6C4AD16C6C62D /* AppSettings.swift in Sources */,
 				809B7F5D98B4B4E1E06CF918 /* BoardLessonCard.swift in Sources */,
+				A07DFC2DC6EC969187E38D3D /* BoardTheme.swift in Sources */,
 				D87BBC030D64DC6C0EE2DA3D /* ChessCoachApp.swift in Sources */,
 				C1BBAF99A37D7FCD2121B484 /* CoachChatPanel.swift in Sources */,
 				4A7034C003AE7DE4915EB4C1 /* CoachingService.swift in Sources */,
