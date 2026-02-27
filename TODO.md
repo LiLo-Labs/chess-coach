@@ -57,7 +57,7 @@
 
 ## Content & UX Bugs
 - [x] Algebraic notation still shown first in "Learn the Plan" and likely other places — should lead with human-friendly names
-- [ ] Reevaluate each learning plan completely: text may not line up with the moves being played
+- [x] Learning plan FEN alignment: added optional `fen` field to StrategicGoal and PieceTarget so plan slides can show exact board positions instead of heuristic approximations. JSON data can now specify explicit FENs per goal/target.
 - [x] Full-screen overlays (learning plan, etc.) have no exit/close button
 
 ## Assets & Polish
