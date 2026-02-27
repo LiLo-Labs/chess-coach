@@ -42,6 +42,7 @@ ChessCoach/
 │   ├── Progress/                 # UserProgress, SessionResult, LineProgress, LearningPhase
 │   ├── Scoring/                  # PlanExecutionScore, PopularityService, SoundnessCalculator
 │   ├── SpacedRep/                # ReviewItem, SpacedRepScheduler
+│   ├── Tokens/                  # TokenBalance, TokenTransaction, TokenError
 │   ├── BoardTheme.swift          # Board color theme enum (8 themes)
 │   └── OpponentPersonality.swift # Bot personality traits
 │
@@ -55,6 +56,7 @@ ChessCoach/
 │   ├── CoachingService/          # LLM coaching: per-move, batched, chat, alignment
 │   ├── CurriculumService/        # Learning phase progression logic
 │   ├── LLMService/               # Provider abstraction (on-device, Claude, Ollama)
+│   ├── TokenService.swift        # Token economy: balance, StoreKit consumable packs, rewards
 │   └── Subscription/             # SubscriptionService, FeatureAccess, ProFeature, tiers
 │
 ├── Views/
@@ -63,7 +65,7 @@ ChessCoach/
 │   ├── Effects/                  # ConfettiView
 │   ├── Home/                     # HomeView, OpeningDetailView, OpeningPreviewBoard
 │   ├── Onboarding/               # OnboardingView (6-page), FreeOpeningPickerView
-│   ├── Paywall/                  # ProUpgradeView (multi-tier + per-path unlock)
+│   ├── Paywall/                  # ProUpgradeView (multi-tier + per-path + token unlock), TokenStoreView
 │   ├── Review/                   # QuickReviewView (spaced repetition)
 │   ├── Session/                  # SessionView, SessionViewModel, CoachChatPanel, LineStudy, etc.
 │   └── Settings/                 # SettingsView, DebugStateView
@@ -81,6 +83,7 @@ ChessCoach/
 ```
 AppSettings (UserDefaults) ──┐
 SubscriptionService (StoreKit) ──┤── injected via .environment() at WindowGroup
+TokenService (token economy) ──┤
 AppServices (Stockfish + LLM) ──┘
 
 ContentView
@@ -180,7 +183,21 @@ Applied on: OpeningDetailView (.whatAreOpenings), PracticeOpeningView (.whatIsPr
 - `SubscriptionService.purchasePath(openingID:)` — StoreKit non-consumable IAP
 - Product IDs follow convention: `com.chesscoach.opening.<openingID>`
 - ProUpgradeView shows "Just this opening" card when launched for a specific locked opening
-- Users can choose per-path purchase OR tier upgrade from the same paywall
+- Users can choose per-path purchase, token unlock, OR tier upgrade from the same paywall
+
+## Token Economy
+
+- `TokenService` (@Observable, @MainActor) — manages balance, purchases, rewards, daily bonus
+- `TokenBalance` — balance, totalEarned, totalSpent with credit/debit operations
+- `TokenTransaction` — audit trail with reason enum (purchase, dailyBonus, unlockOpening, reward)
+- **Earning tokens**: daily login bonus (5/day), layer completion rewards (25 tokens), StoreKit consumable packs
+- **Spending tokens**: unlock individual openings (100 tokens each)
+- **Token packs**: Small (50), Medium (150), Large (400) — StoreKit consumable IAP
+- `TokenStoreView` — purchase packs, claim daily bonus, view balance and transaction history
+- Config: `AppConfig.tokenEconomy` (costs, rewards, pack definitions — all tunable)
+- Persistence: UserDefaults (balance + last 100 transactions)
+- HomeView stats section shows token balance with tap-to-open store
+- ProUpgradeView per-path card includes "Use Tokens" button alongside IAP purchase
 
 ## Move Display Convention
 

@@ -238,6 +238,33 @@ enum AppConfig {
         explanation: 200
     )
 
+    // MARK: - Token Economy
+
+    struct TokenEconomy: Sendable {
+        /// Cost to unlock one opening with tokens
+        let openingUnlockCost: Int
+
+        /// Daily login bonus (free tokens)
+        let dailyBonusAmount: Int
+
+        /// Reward for completing a learning layer
+        let layerCompletionReward: Int
+
+        /// Token packs available for purchase (StoreKit product ID → token amount)
+        let packs: [(productID: String, amount: Int, label: String)]
+    }
+
+    static let tokenEconomy = TokenEconomy(
+        openingUnlockCost: 100,
+        dailyBonusAmount: 5,
+        layerCompletionReward: 25,
+        packs: [
+            (productID: "com.chesscoach.tokens.small", amount: 50, label: "50 Tokens"),
+            (productID: "com.chesscoach.tokens.medium", amount: 150, label: "150 Tokens"),
+            (productID: "com.chesscoach.tokens.large", amount: 400, label: "400 Tokens"),
+        ]
+    )
+
     // MARK: - Feedback
 
     struct Feedback: Sendable {
