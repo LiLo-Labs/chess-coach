@@ -47,12 +47,11 @@
   - These should be prominent entry points alongside the learning journey
 
 ## First-Time User Experience (FTU) Rework
-- [ ] Onboarding doesn't explain what the app does — needs a clear "here's what you'll get" screen
-- [ ] Missing context on what experience level is expected, what openings are, why they matter
-- [ ] Should be animated and fun, not static text walls
-- [ ] Add a personal philosophy screen: "We believe you learn best when you understand WHY — not by memorizing moves"
-- [ ] Add a heartfelt, caring privacy notice: "We will never use your data for anything. Your progress is yours."
-- [ ] Overall FTU should feel warm, inviting, and build excitement
+- [x] Onboarding rewritten as 6-page flow: Welcome, What Are Openings, Our Belief (learning philosophy), How It Works, Privacy Promise, Skill Level
+- [x] Philosophy page: "We believe you learn best when you understand WHY — not by memorizing moves"
+- [x] Privacy page: heartfelt notice — no data selling, no tracking, on-device AI, your progress is yours
+- [x] Explains what openings are and why they matter before user starts
+- [ ] Animations: should be more animated and playful (pulse effects added, but could do more with Lottie/custom transitions)
 
 ## Assets & Polish
 - [ ] More chess piece styles: pro/premium piece art sets (Staunton, modern, wood, metal, etc.) — gated by tier
