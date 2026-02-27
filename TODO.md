@@ -17,7 +17,7 @@
 - [x] **ProUpgradeView**: Multi-tier paywall with tier cards, per-tier pricing, feature lists
 - [x] **Debug states**: DebugStateView with presets for each tier, debugTierOverride in AppSettings
 - [ ] **Per-Path Unlock**: Buy individual opening paths à la carte (StoreKit product per path)
-- [ ] **Free tier opening limits**: Enforce freeOpeningIDs gating in HomeView/OpeningDetailView
+- [x] **Free tier opening limits**: Lock icon + paywall on non-free openings in HomeView, accessible openings checked via SubscriptionService
 
 ## Queued
 - [ ] HomeView needs full rework

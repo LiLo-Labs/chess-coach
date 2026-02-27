@@ -11,6 +11,7 @@ struct HomeView: View {
     @State private var allMastery: [String: OpeningMastery] = [:]
     @State private var searchText = ""
     @State private var selectedColor: Opening.PlayerColor = .white
+    @State private var showLockedOpening = false
     @Environment(SubscriptionService.self) private var subscriptionService
     @Environment(AppSettings.self) private var settings
     @Environment(AppServices.self) private var appServices
@@ -74,10 +75,20 @@ struct HomeView: View {
                 ForEach(groups, id: \.title) { title, openings in
                     Section(title) {
                         ForEach(openings) { opening in
-                            NavigationLink(value: opening) {
-                                openingRow(opening: opening)
+                            let accessible = subscriptionService.isOpeningAccessible(opening.id)
+                            if accessible {
+                                NavigationLink(value: opening) {
+                                    openingRow(opening: opening, locked: false)
+                                }
+                                .listRowBackground(AppColor.cardBackground)
+                            } else {
+                                Button {
+                                    showLockedOpening = true
+                                } label: {
+                                    openingRow(opening: opening, locked: true)
+                                }
+                                .listRowBackground(AppColor.cardBackground)
                             }
-                            .listRowBackground(AppColor.cardBackground)
                         }
                     }
                 }
@@ -111,6 +122,9 @@ struct HomeView: View {
             .fullScreenCover(item: $selectedOpening) { opening in
                 SessionView(opening: opening, lineID: resumeLineID, isPro: subscriptionService.isPro, stockfish: appServices.stockfish, llmService: appServices.llmService)
                     .environment(subscriptionService)
+            }
+            .sheet(isPresented: $showLockedOpening) {
+                ProUpgradeView()
             }
         }
     }
@@ -265,7 +279,7 @@ struct HomeView: View {
 
     // MARK: - Opening Row
 
-    private func openingRow(opening: Opening) -> some View {
+    private func openingRow(opening: Opening, locked: Bool = false) -> some View {
         let mastery = allMastery[opening.id]
         let sessions = mastery?.sessionsPlayed ?? 0
 
@@ -283,9 +297,14 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(opening.name)
                     .font(.body)
-                    .foregroundStyle(AppColor.primaryText)
+                    .foregroundStyle(locked ? AppColor.tertiaryText : AppColor.primaryText)
 
-                if sessions > 0, let mastery {
+                if locked {
+                    Text(opening.description)
+                        .font(.caption)
+                        .foregroundStyle(AppColor.tertiaryText)
+                        .lineLimit(1)
+                } else if sessions > 0, let mastery {
                     Text(mastery.currentLayer.displayName)
                         .font(.caption)
                         .foregroundStyle(AppColor.layer(mastery.currentLayer))
@@ -296,8 +315,16 @@ struct HomeView: View {
                         .lineLimit(1)
                 }
             }
+
+            if locked {
+                Spacer()
+                Image(systemName: "lock.fill")
+                    .font(.caption)
+                    .foregroundStyle(AppColor.gold)
+            }
         }
-        .accessibilityLabel("\(opening.name), \(progressText(for: opening.id))")
+        .opacity(locked ? 0.7 : 1.0)
+        .accessibilityLabel("\(opening.name)\(locked ? ", locked" : ""), \(progressText(for: opening.id))")
     }
 
     private func progressText(for openingID: String) -> String {
