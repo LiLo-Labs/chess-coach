@@ -82,6 +82,10 @@ struct DebugStateView: View {
                 Button("Pro — Fully Loaded (all layers, puzzles)", systemImage: "star.fill") {
                     loadProComplete()
                 }
+
+                Button("Pro — With Trainer Progress", systemImage: "figure.fencing") {
+                    loadProWithTrainerProgress()
+                }
             }
 
             Section("Per-Path Unlock") {
@@ -521,6 +525,82 @@ struct DebugStateView: View {
         applyAndDismiss("Loaded: Pro power user, 8 openings")
     }
 
+    // MARK: - Pro + Trainer Progress
+
+    private func loadProWithTrainerProgress() {
+        nuclearReset()
+        enableTier(.pro)
+        settings.hasSeenOnboarding = true
+        settings.userELO = 1200
+
+        // Opening mastery
+        var italian = OpeningMastery(openingID: "italian")
+        italian.planUnderstanding = true
+        italian.currentLayer = .discoverTheory
+        italian.executionScores = [65, 72, 78, 74, 80]
+        italian.sessionsPlayed = 8
+        italian.lastPlayed = Date().addingTimeInterval(-3600)
+        italian.averagePES = 74
+        PersistenceService.shared.saveMastery(italian)
+
+        // Player progress — simulated ELO history
+        var humanELO = ELOEstimate()
+        humanELO.rating = 1050
+        humanELO.gamesPlayed = 18
+        humanELO.peak = 1100
+        humanELO.lastGameDate = Date().addingTimeInterval(-1800)
+        humanELO.recentResults = [1.0, 0.0, 1.0, 1.0, 0.5, 0.0, 1.0, 1.0, 0.0, 1.0]
+
+        var engineELO = ELOEstimate()
+        engineELO.rating = 850
+        engineELO.gamesPlayed = 12
+        engineELO.peak = 900
+        engineELO.lastGameDate = Date().addingTimeInterval(-7200)
+        engineELO.recentResults = [0.0, 1.0, 0.0, 0.0, 1.0, 0.5, 0.0, 1.0]
+
+        if let data = try? JSONEncoder().encode(humanELO) {
+            UserDefaults.standard.set(data, forKey: "player_elo_human")
+        }
+        if let data = try? JSONEncoder().encode(engineELO) {
+            UserDefaults.standard.set(data, forKey: "player_elo_engine")
+        }
+
+        // Opening accuracy
+        let accuracy: [String: OpeningAccuracy] = [
+            "italian": OpeningAccuracy(openingID: "italian", totalGames: 12, wins: 7, losses: 4, draws: 1, lastPlayed: Date()),
+            "london": OpeningAccuracy(openingID: "london", totalGames: 6, wins: 2, losses: 3, draws: 1, lastPlayed: Date().addingTimeInterval(-86400)),
+        ]
+        if let data = try? JSONEncoder().encode(accuracy) {
+            UserDefaults.standard.set(data, forKey: "player_opening_accuracy")
+        }
+
+        // Weekly snapshots
+        let calendar = Calendar.current
+        let now = Date()
+        var snapshots: [WeeklySnapshot] = []
+        for weeksAgo in stride(from: 4, through: 0, by: -1) {
+            let date = calendar.date(byAdding: .weekOfYear, value: -weeksAgo, to: now)!
+            let fmt = DateFormatter()
+            fmt.dateFormat = "yyyy-ww"
+            snapshots.append(WeeklySnapshot(
+                weekKey: fmt.string(from: date),
+                date: date,
+                humanELO: 800 + (4 - weeksAgo) * 60,
+                engineELO: 700 + (4 - weeksAgo) * 35,
+                gamesPlayed: Int.random(in: 3...8)
+            ))
+        }
+        if let data = try? JSONEncoder().encode(snapshots) {
+            UserDefaults.standard.set(data, forKey: "player_weekly_history")
+        }
+
+        var streak = StreakTracker()
+        streak.recordPractice()
+        PersistenceService.shared.saveStreak(streak)
+
+        applyAndDismiss("Loaded: Pro user with trainer progress + ELO history")
+    }
+
     // MARK: - Per-Path Unlock Presets
 
     private func loadPerPathUnlock(_ paths: [String]) {
@@ -561,6 +641,15 @@ struct DebugStateView: View {
             "daily_goal_progress_date",
             "chess_coach_consecutive_correct",
             "chess_coach_schema_version",
+            // PlayerProgressService keys
+            "player_elo_human",
+            "player_elo_engine",
+            "player_opening_accuracy",
+            "player_weekly_history",
+            // Trainer stats keys
+            "chess_coach_trainer_stats_humanLike",
+            "chess_coach_trainer_stats_engine",
+            "chess_coach_trainer_games_v2",
             AppSettings.Key.debugTierOverride,
             AppSettings.Key.debugProOverride,
         ]
@@ -650,6 +739,15 @@ struct DebugStateView: View {
             "daily_goal_progress_date",
             "gesture_hint_shown",
             "best_review_streak",
+            // PlayerProgressService keys
+            "player_elo_human",
+            "player_elo_engine",
+            "player_opening_accuracy",
+            "player_weekly_history",
+            // Trainer stats keys
+            "chess_coach_trainer_stats_humanLike",
+            "chess_coach_trainer_stats_engine",
+            "chess_coach_trainer_games_v2",
             AppSettings.Key.debugTierOverride,
             AppSettings.Key.debugProOverride,
         ]

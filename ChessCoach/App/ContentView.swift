@@ -20,15 +20,20 @@ struct ContentView: View {
                         .id(refreshID)
                         .transition(.opacity)
                 } else if showOpeningPicker {
-                    FreeOpeningPickerView()
-                        .transition(.opacity)
+                    FreeOpeningPickerView(onComplete: {
+                        withAnimation {
+                            showOpeningPicker = false
+                            settings.hasSeenOnboarding = true
+                        }
+                    })
+                    .transition(.opacity)
                 } else {
                     OnboardingView(onComplete: {
                         // Free users go to the opening picker; paid users skip it
                         if subscriptionService.currentTier == .free && !settings.hasPickedFreeOpening {
                             withAnimation { showOpeningPicker = true }
                         } else {
-                            settings.hasSeenOnboarding = true
+                            withAnimation { settings.hasSeenOnboarding = true }
                         }
                     })
                     .transition(.opacity)

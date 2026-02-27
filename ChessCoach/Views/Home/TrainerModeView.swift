@@ -21,6 +21,11 @@ struct TrainerModeView: View {
     @State private var showBotMessage = false
     @State private var moveFlashSquare: String?
 
+    // Coaching integration
+    @State private var currentOpening: OpeningDetection = .none
+    @State private var showCoachChat = false
+    private let openingDetector = OpeningDetector()
+
     // Separate stats per engine mode
     @State private var humanStats = Self.loadStats(mode: .humanLike)
     @State private var engineStats = Self.loadStats(mode: .engine)
@@ -282,6 +287,33 @@ struct TrainerModeView: View {
             .padding(.horizontal, AppSpacing.screenPadding)
             .padding(.vertical, AppSpacing.sm)
 
+            // Opening detection bar
+            if let match = currentOpening.best {
+                HStack(spacing: AppSpacing.xs) {
+                    Image(systemName: "book.fill")
+                        .font(.caption2)
+                        .foregroundStyle(.cyan)
+                    Text(match.variationName ?? match.opening.name)
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(AppColor.primaryText)
+                        .lineLimit(1)
+                    if !match.nextBookMoves.isEmpty {
+                        Text("In book")
+                            .font(.caption2)
+                            .foregroundStyle(AppColor.success)
+                    } else {
+                        Text("Out of book")
+                            .font(.caption2)
+                            .foregroundStyle(AppColor.warning)
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal, AppSpacing.screenPadding)
+                .padding(.vertical, 4)
+                .background(Color.cyan.opacity(0.05))
+                .transition(.opacity)
+            }
+
             // Bot chat bubble
             if showBotMessage, let message = botMessage {
                 HStack {
@@ -329,6 +361,7 @@ struct TrainerModeView: View {
                     SoundService.shared.play(.move)
                     SoundService.shared.hapticPiecePlaced()
 
+                    updateOpeningDetection(gameState: gameState)
                     checkGameEnd(gameState: gameState)
                     if !isGameOver(gameState) {
                         makeBotMove(gameState: gameState)
@@ -342,7 +375,27 @@ struct TrainerModeView: View {
 
             // Bottom bar
             HStack {
-                // Undo (if desired, could add later)
+                // Coach chat toggle (if LLM available)
+                if appServices.llmService != nil, currentOpening.best != nil {
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
+                            showCoachChat.toggle()
+                        }
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "brain.head.profile")
+                                .font(.caption2)
+                            Text("Ask Coach")
+                                .font(.caption.weight(.medium))
+                        }
+                        .foregroundStyle(AppColor.practice)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(AppColor.practice.opacity(0.1), in: Capsule())
+                    }
+                    .buttonStyle(.plain)
+                }
+
                 Spacer()
 
                 Button {
@@ -371,6 +424,18 @@ struct TrainerModeView: View {
             // If bot plays first (player is black), make bot move
             if playerColor == .black && gameState.isWhiteTurn {
                 makeBotMove(gameState: gameState)
+            }
+        }
+        .overlay(alignment: .trailing) {
+            if showCoachChat, let match = currentOpening.best {
+                CoachChatPanel(
+                    opening: match.opening,
+                    fen: gameState.fen,
+                    moveHistory: gameState.moveHistory.map { "\($0.from)\($0.to)" },
+                    currentPly: gameState.plyCount,
+                    isPresented: $showCoachChat
+                )
+                .transition(.move(edge: .trailing).combined(with: .opacity))
             }
         }
     }
@@ -670,8 +735,14 @@ struct TrainerModeView: View {
             }
 
             botThinking = false
+            updateOpeningDetection(gameState: gameState)
             checkGameEnd(gameState: gameState)
         }
+    }
+
+    private func updateOpeningDetection(gameState: GameState) {
+        let uciMoves = gameState.moveHistory.map { "\($0.from)\($0.to)\($0.promotion?.rawValue ?? "")" }
+        currentOpening = openingDetector.detect(moves: uciMoves)
     }
 
     private func isGameOver(_ gameState: GameState) -> Bool {
@@ -737,6 +808,20 @@ struct TrainerModeView: View {
         if games.count > 50 { games = Array(games.prefix(50)) }
         recentGames = games
         Self.saveRecentGames(games)
+
+        // Record game in progress service (ELO estimation, opening accuracy)
+        let uciMoves = gameState.moveHistory.map { "\($0.from)\($0.to)\($0.promotion?.rawValue ?? "")" }
+        let detector = OpeningDetector()
+        let detection = detector.detect(moves: uciMoves)
+        let openingID = detection.best?.opening.id
+
+        PlayerProgressService.shared.recordGame(
+            opponentELO: selectedBotELO,
+            outcome: outcome,
+            engineMode: engineMode,
+            openingID: openingID,
+            moveCount: gameState.plyCount
+        )
 
         withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) { phase = .gameOver }
     }

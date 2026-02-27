@@ -51,11 +51,12 @@ final class PuzzleService {
     // MARK: - Opening Knowledge Puzzles
 
     /// Creates puzzles from opening book moves — "What's the best move here?"
+    /// Requires positions at least 4 plies deep to avoid trivial early-move puzzles.
     private func generateOpeningPuzzles(count: Int, userELO: Int) -> [Puzzle] {
         let allOpenings = database.openings
         var puzzles: [Puzzle] = []
 
-        for _ in 0..<(count * 3) {
+        for _ in 0..<(count * 5) {
             guard puzzles.count < count else { break }
             guard let opening = allOpenings.randomElement() else { continue }
 
@@ -66,10 +67,14 @@ final class PuzzleService {
             } else {
                 moves = opening.mainLine
             }
-            guard moves.count >= 2 else { continue }
+            // Require at least 6 half-moves (3 full moves) so we get meaningful positions
+            guard moves.count >= 6 else { continue }
 
-            // Pick a position mid-opening (not the very first move)
-            let plyIndex = min(Int.random(in: 1..<moves.count), moves.count - 1)
+            // Pick a position at least 4 plies deep (after 2 full moves by each side)
+            let minPly = 4
+            let maxPly = moves.count - 1
+            guard minPly < maxPly else { continue }
+            let plyIndex = Int.random(in: minPly...maxPly)
 
             // Build FEN by replaying moves up to this point
             let gameState = GameState()
@@ -85,13 +90,18 @@ final class PuzzleService {
             let solutionMove = moves[plyIndex]
             let fen = gameState.fen
 
-            let difficulty = min(5, max(1, opening.difficulty + (plyIndex > 6 ? 1 : 0)))
+            // Verify the solution move is legal in this position
+            guard gameState.makeMoveUCI(solutionMove.uci) else { continue }
+            // Compute SAN from actual board position (not from opening data which may differ)
+            let san = GameState.sanForUCI(solutionMove.uci, inFEN: fen)
+
+            let difficulty = min(5, max(1, opening.difficulty + (plyIndex > 8 ? 1 : 0)))
 
             let puzzle = Puzzle(
                 id: "opening_\(opening.id)_\(plyIndex)_\(UUID().uuidString.prefix(4))",
                 fen: fen,
                 solutionUCI: solutionMove.uci,
-                solutionSAN: solutionMove.san,
+                solutionSAN: san,
                 theme: .openingKnowledge,
                 difficulty: difficulty,
                 openingID: opening.id,
