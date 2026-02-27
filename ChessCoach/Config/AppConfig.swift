@@ -191,6 +191,10 @@ enum AppConfig {
         freeOpeningIDs: ["italian", "london", "sicilian"]
     )
 
+    /// Beta flag — controls visibility of debug features like bug report button on all screens.
+    /// Set to false for App Store release builds.
+    static let isBeta = true
+
     // MARK: - Coaching
 
     struct Coaching: Sendable {

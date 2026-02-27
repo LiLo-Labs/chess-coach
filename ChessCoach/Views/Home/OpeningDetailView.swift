@@ -216,6 +216,7 @@ struct OpeningDetailView: View {
                         Text("Difficulty")
                             .font(.system(size: 9, weight: .medium))
                             .foregroundStyle(AppColor.tertiaryText)
+                        HelpButton(topic: .difficulty)
                         ForEach(0..<opening.difficulty, id: \.self) { _ in
                             Circle()
                                 .fill(AppColor.gold)
@@ -355,17 +356,18 @@ struct OpeningDetailView: View {
             // Panel header
             HStack {
                 VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
-                    Text("Learning Journey")
-                        .font(.headline.weight(.semibold))
-                        .foregroundStyle(AppColor.primaryText)
+                    HStack(spacing: AppSpacing.xs) {
+                        Text("Learning Journey")
+                            .font(.headline.weight(.semibold))
+                            .foregroundStyle(AppColor.primaryText)
+                        HelpButton(topic: .learningJourney)
+                    }
                     Text(mastery.currentLayer.displayName)
                         .font(.caption)
                         .foregroundStyle(AppColor.layer(mastery.currentLayer))
                 }
 
                 Spacer()
-
-                // PES score intentionally not shown here — only for bot/practice games
             }
             .padding(.horizontal, AppSpacing.cardPadding)
             .padding(.top, AppSpacing.cardPadding)
@@ -541,9 +543,12 @@ struct OpeningDetailView: View {
             // Panel header
             HStack {
                 VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
-                    Text("Paths")
-                        .font(.headline.weight(.semibold))
-                        .foregroundStyle(AppColor.primaryText)
+                    HStack(spacing: AppSpacing.xs) {
+                        Text("Paths")
+                            .font(.headline.weight(.semibold))
+                            .foregroundStyle(AppColor.primaryText)
+                        HelpButton(topic: .paths)
+                    }
                     Text("Tap to practice")
                         .font(.caption)
                         .foregroundStyle(AppColor.tertiaryText)

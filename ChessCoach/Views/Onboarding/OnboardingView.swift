@@ -125,9 +125,12 @@ struct OnboardingView: View {
             Image(systemName: "person.fill.questionmark")
                 .font(.system(size: 64))
                 .foregroundStyle(AppColor.layer(.handleVariety))
-            Text("What's your level?")
-                .font(.title2.weight(.bold))
-                .foregroundStyle(AppColor.primaryText)
+            HStack(spacing: 6) {
+                Text("What's your level?")
+                    .font(.title2.weight(.bold))
+                    .foregroundStyle(AppColor.primaryText)
+                HelpButton(topic: .skillLevel)
+            }
 
             Text("This helps us adjust coaching and opponent difficulty.")
                 .font(.body)

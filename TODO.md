@@ -41,4 +41,8 @@
   - Algebraic notation still visible as secondary/optional text
   - Black moves have black-tinted header, white moves have white-tinted header
   - Feed tiles use a background color that complements both black and white text
-- [ ] Themes: user-selectable color themes for the app
+- [ ] Themes: user-selectable color themes for the app (including board colors and piece styles)
+- [ ] HomeView modes: Puzzle mode and Trainer mode accessible from home screen
+  - Puzzle mode: tactical puzzles (pin, fork, skewer, mate-in-N), difficulty scaling, daily puzzle
+  - Trainer mode: practice openings against bot with real win/loss condition
+  - These should be prominent entry points alongside the learning journey

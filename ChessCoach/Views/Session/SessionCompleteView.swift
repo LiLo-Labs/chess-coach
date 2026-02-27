@@ -194,9 +194,12 @@ struct SessionCompleteView: View {
 
                 PillBadge(text: cat.rawValue.uppercased(), color: pesColor, fontSize: 12)
 
-                Text("Plan Score")
-                    .font(.caption)
-                    .foregroundStyle(AppColor.secondaryText)
+                HStack(spacing: 4) {
+                    Text("Plan Score")
+                        .font(.caption)
+                        .foregroundStyle(AppColor.secondaryText)
+                    HelpButton(topic: .planScore)
+                }
             }
 
             if let result, result.isPersonalBest {
@@ -226,18 +229,24 @@ struct SessionCompleteView: View {
                     Text("\(avgSoundness)")
                         .font(.title3.weight(.bold).monospacedDigit())
                         .foregroundStyle(.green)
-                    Text("Move Safety")
-                        .font(.caption2)
-                        .foregroundStyle(AppColor.secondaryText)
+                    HStack(spacing: 2) {
+                        Text("Move Safety")
+                            .font(.caption2)
+                            .foregroundStyle(AppColor.secondaryText)
+                        HelpButton(topic: .moveSafety)
+                    }
                 }
 
                 VStack(spacing: AppSpacing.xxxs) {
                     Text("\(avgAlignment)")
                         .font(.title3.weight(.bold).monospacedDigit())
                         .foregroundStyle(.cyan)
-                    Text("Following the Plan")
-                        .font(.caption2)
-                        .foregroundStyle(AppColor.secondaryText)
+                    HStack(spacing: 2) {
+                        Text("Following the Plan")
+                            .font(.caption2)
+                            .foregroundStyle(AppColor.secondaryText)
+                        HelpButton(topic: .followingPlan)
+                    }
                 }
 
                 VStack(spacing: AppSpacing.xxxs) {
