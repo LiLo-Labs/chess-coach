@@ -136,3 +136,35 @@ Debug: `DebugStateView` has presets for each tier. `AppSettings.debugTierOverrid
 8 themes available: Chess.com (default), Classic, Dark, Blue, Green, Purple, Orange, Red.
 Selected via `AppSettings.boardTheme`. Applied to `GameBoardView` via environment.
 Piece style: only Classic/USCF bundled (prepared for expansion).
+
+## Onboarding (6 pages)
+
+1. Welcome — animated crown, warm greeting
+2. What Are Openings — explains the concept for complete beginners
+3. Our Belief — learning philosophy (understand WHY, not memorize)
+4. How It Works — 4-step learning journey overview
+5. Privacy Promise — heartfelt data pledge (no tracking, no selling, on-device AI)
+6. Skill Level — adjustable ELO picker
+
+## Concept Intro System
+
+`ConceptIntroView` + `.conceptIntro()` modifier shows one-time full-screen cards.
+Tracked via UserDefaults keys per `ConceptIntro` enum case.
+Applied on: OpeningDetailView (.whatAreOpenings), PracticeOpeningView (.whatIsPractice), QuickReviewView (.whatIsReview).
+
+## Help System
+
+`HelpButton` with `HelpTopic` enum (15 topics). Contextual popovers throughout:
+- HomeView: streak
+- OnboardingView: skillLevel
+- OpeningDetailView: difficulty, learningJourney, paths
+- SessionCompleteView: planScore, moveSafety, followingPlan
+- PracticeOpeningView: practiceMode
+- QuickReviewView: review (toolbar)
+
+## Free Tier Gating
+
+- 3 free openings: Italian, London, Sicilian (configured in AppConfig)
+- HomeView shows lock icons on non-free openings, tapping opens paywall
+- `SubscriptionService.isOpeningAccessible()` checks tier + per-path unlocks
+- AI features gated by `hasAI` (tier != .free)
