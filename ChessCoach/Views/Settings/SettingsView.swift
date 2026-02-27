@@ -261,46 +261,77 @@ struct SettingsView: View {
 
     private var boardThemePicker: some View {
         let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 4)
-        return LazyVGrid(columns: columns, spacing: 10) {
-            ForEach(BoardTheme.allCases) { theme in
-                Button {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        settings.boardTheme = theme
-                    }
-                } label: {
-                    VStack(spacing: 4) {
-                        // 2x2 mini board swatch
-                        Grid(horizontalSpacing: 0, verticalSpacing: 0) {
-                            GridRow {
-                                theme.lightColor.frame(width: 20, height: 20)
-                                theme.darkColor.frame(width: 20, height: 20)
-                            }
-                            GridRow {
-                                theme.darkColor.frame(width: 20, height: 20)
-                                theme.lightColor.frame(width: 20, height: 20)
-                            }
-                        }
-                        .clipShape(RoundedRectangle(cornerRadius: 4))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 4)
-                                .stroke(
-                                    settings.boardTheme == theme ? Color.accentColor : Color.clear,
-                                    lineWidth: 2
-                                )
-                        )
+        return VStack(alignment: .leading, spacing: 12) {
+            LazyVGrid(columns: columns, spacing: 10) {
+                ForEach(BoardTheme.freeThemes) { theme in
+                    boardThemeSwatch(theme)
+                }
+            }
 
-                        Text(theme.displayName)
-                            .font(.caption2)
-                            .foregroundStyle(
-                                settings.boardTheme == theme
-                                    ? Color.accentColor
-                                    : .secondary
-                            )
+            if !BoardTheme.proThemes.isEmpty {
+                Text("Premium")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+
+                LazyVGrid(columns: columns, spacing: 10) {
+                    ForEach(BoardTheme.proThemes) { theme in
+                        boardThemeSwatch(theme)
                     }
                 }
-                .buttonStyle(.plain)
             }
         }
         .padding(.vertical, 4)
+    }
+
+    private func boardThemeSwatch(_ theme: BoardTheme) -> some View {
+        let locked = theme.isPro && !subscriptionService.isPro
+        return Button {
+            if locked { return }
+            withAnimation(.easeInOut(duration: 0.2)) {
+                settings.boardTheme = theme
+            }
+        } label: {
+            VStack(spacing: 4) {
+                ZStack {
+                    Grid(horizontalSpacing: 0, verticalSpacing: 0) {
+                        GridRow {
+                            theme.lightColor.frame(width: 20, height: 20)
+                            theme.darkColor.frame(width: 20, height: 20)
+                        }
+                        GridRow {
+                            theme.darkColor.frame(width: 20, height: 20)
+                            theme.lightColor.frame(width: 20, height: 20)
+                        }
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 4)
+                            .stroke(
+                                settings.boardTheme == theme ? Color.accentColor : Color.clear,
+                                lineWidth: 2
+                            )
+                    )
+                    .opacity(locked ? 0.5 : 1.0)
+
+                    if locked {
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 10))
+                            .foregroundStyle(.white)
+                            .padding(3)
+                            .background(.black.opacity(0.5), in: Circle())
+                    }
+                }
+
+                Text(theme.displayName)
+                    .font(.caption2)
+                    .foregroundStyle(
+                        settings.boardTheme == theme
+                            ? Color.accentColor
+                            : locked ? .secondary.opacity(0.5) : .secondary
+                    )
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(locked)
     }
 }
