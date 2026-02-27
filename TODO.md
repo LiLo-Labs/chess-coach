@@ -69,4 +69,4 @@
 - [x] LLM model as background download asset: ModelDownloadService downloads GGUF to Documents directory on demand. OnDeviceLLMService checks Documents first, then Bundle. Download progress UI in Settings. Delete option to free space.
 
 ## Performance
-- [ ] Coach chat response is very slow — investigate CoachChatPanel latency (LLM init on first message, provider detection, inference speed). Tackle at end.
+- [x] Coach chat response is very slow — fixed: CoachChatPanel now reuses shared LLMService from AppServices instead of creating a new one + re-detecting provider on every first message. Eliminates ~500ms redundant model init.

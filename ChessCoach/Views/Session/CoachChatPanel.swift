@@ -9,6 +9,8 @@ struct CoachChatPanel: View {
     let currentPly: Int
     @Binding var isPresented: Bool
 
+    @Environment(AppServices.self) private var appServices
+
     @State private var messages: [(role: String, text: String)] = []
     @State private var inputText: String = ""
     @State private var isLoading: Bool = false
@@ -208,8 +210,8 @@ struct CoachChatPanel: View {
 
         Task {
             if coachingService == nil {
-                let llmService = LLMService()
-                await llmService.detectProvider()
+                // Reuse the shared LLM service (already warmed up at app start)
+                let llmService = appServices.llmService
                 let line = opening.lines?.first ?? OpeningLine(
                     id: "\(opening.id)/main",
                     name: opening.name,
