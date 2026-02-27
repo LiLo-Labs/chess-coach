@@ -57,6 +57,9 @@ struct HomeView: View {
                 // Stats
                 statsSection
 
+                // Quick actions: modes
+                modesSection
+
                 // Continue Learning
                 if !inProgressOpenings.isEmpty {
                     continueSection
@@ -262,6 +265,58 @@ struct HomeView: View {
             }
         }
         .listRowBackground(AppColor.cardBackground)
+    }
+
+    // MARK: - Modes
+
+    private var modesSection: some View {
+        Section {
+            HStack(spacing: AppSpacing.md) {
+                modeCard(
+                    icon: "puzzlepiece.fill",
+                    title: "Puzzles",
+                    subtitle: "Tactics training",
+                    color: .orange,
+                    destination: { PuzzleModeView() }
+                )
+
+                modeCard(
+                    icon: "figure.fencing",
+                    title: "Trainer",
+                    subtitle: "Play a full game",
+                    color: .cyan,
+                    destination: { TrainerModeView() }
+                )
+            }
+            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+        }
+        .listRowBackground(Color.clear)
+    }
+
+    private func modeCard<Destination: View>(
+        icon: String,
+        title: String,
+        subtitle: String,
+        color: Color,
+        @ViewBuilder destination: @escaping () -> Destination
+    ) -> some View {
+        NavigationLink(destination: destination) {
+            VStack(spacing: AppSpacing.xs) {
+                Image(systemName: icon)
+                    .font(.title2)
+                    .foregroundStyle(color)
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(AppColor.primaryText)
+                Text(subtitle)
+                    .font(.caption2)
+                    .foregroundStyle(AppColor.tertiaryText)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, AppSpacing.md)
+            .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.md))
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Picker

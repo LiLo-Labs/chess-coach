@@ -20,7 +20,7 @@
 - [x] **Free tier opening limits**: Lock icon + paywall on non-free openings in HomeView, accessible openings checked via SubscriptionService
 
 ## Queued
-- [ ] HomeView needs full rework
+- [x] HomeView modes section added with Puzzle and Trainer card links
 - [ ] Real bots with varying skill levels — actual win condition, not just opening trainer
 - [ ] PES rethink:
   - Don't ask user to self-identify the opening
@@ -41,10 +41,9 @@
   - Black moves have black-tinted header, white moves have white-tinted header
   - Feed tiles use a background color that complements both black and white text
 - [x] Themes: user-selectable board color themes (8 options with visual swatch picker in Settings). Piece style enum prepared for future expansion (only Classic/USCF currently bundled).
-- [ ] HomeView modes: Puzzle mode and Trainer mode accessible from home screen
-  - Puzzle mode: tactical puzzles (pin, fork, skewer, mate-in-N), difficulty scaling, daily puzzle
-  - Trainer mode: practice openings against bot with real win/loss condition
-  - These should be prominent entry points alongside the learning journey
+- [x] HomeView modes: Puzzle and Trainer cards as prominent entries (stub views with "Coming soon")
+  - [ ] Puzzle mode implementation: puzzle database, solving UI, difficulty scaling, daily puzzle
+  - [ ] Trainer mode implementation: bot game loop, varying skill levels, win/loss tracking
 
 ## First-Time User Experience (FTU) Rework
 - [x] Onboarding rewritten as 6-page flow: Welcome, What Are Openings, Our Belief (learning philosophy), How It Works, Privacy Promise, Skill Level
