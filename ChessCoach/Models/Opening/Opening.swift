@@ -9,26 +9,63 @@ struct OpeningMove: Codable, Sendable, Equatable {
     func displayText(style: String) -> String {
         switch style {
         case "uci": return uci
-        case "english": return sanToEnglish(san)
+        case "english": return friendlyName
         default: return san  // "san" or any fallback
         }
     }
 
-    /// Convert SAN like "Nf3" to English-style "Knight f3".
-    private func sanToEnglish(_ san: String) -> String {
-        let pieceMap: [Character: String] = [
-            "K": "King", "Q": "Queen", "R": "Rook",
-            "B": "Bishop", "N": "Knight"
-        ]
-        guard let first = san.first, let pieceName = pieceMap[first] else {
-            // Pawn move or castling
-            if san.hasPrefix("O-O-O") { return "Queenside Castle" }
-            if san.hasPrefix("O-O") { return "Kingside Castle" }
-            return "Pawn " + san.replacingOccurrences(of: "x", with: " takes ")
+    /// Human-friendly move name: "Knight to f3", "Pawn takes e5", "Castle short".
+    /// Use this as the primary display for beginners; show `.san` as secondary.
+    var friendlyName: String {
+        Self.friendlyName(from: san)
+    }
+
+    /// Convert any SAN string to a beginner-friendly name.
+    /// Shared utility — can be called with arbitrary SAN, not just this move's.
+    static func friendlyName(from san: String) -> String {
+        // Castling
+        if san == "O-O" || san == "0-0" { return "Castle short" }
+        if san == "O-O-O" || san == "0-0-0" { return "Castle long" }
+
+        // Strip check/checkmate symbols
+        var cleaned = san.replacingOccurrences(of: "+", with: "")
+            .replacingOccurrences(of: "#", with: "")
+
+        // Handle promotion (e.g. "e8=Q")
+        var promotion: String?
+        if let eqIdx = cleaned.firstIndex(of: "=") {
+            let promoChar = cleaned[cleaned.index(after: eqIdx)]
+            promotion = pieceFullName(promoChar)
+            cleaned = String(cleaned[cleaned.startIndex..<eqIdx])
         }
-        let rest = String(san.dropFirst())
-            .replacingOccurrences(of: "x", with: " takes ")
-        return pieceName + " " + rest
+
+        let piece: String
+        let destination: String
+
+        if let first = cleaned.first, first.isUppercase {
+            piece = pieceFullName(first)
+            let stripped = cleaned.replacingOccurrences(of: "x", with: "")
+            destination = String(stripped.suffix(2))
+        } else {
+            piece = "Pawn"
+            let stripped = cleaned.replacingOccurrences(of: "x", with: "")
+            destination = String(stripped.suffix(2))
+        }
+
+        let captures = san.contains("x") ? " takes" : " to"
+        let promoText = promotion.map { ", promotes to \($0)" } ?? ""
+        return "\(piece)\(captures) \(destination)\(promoText)"
+    }
+
+    private static func pieceFullName(_ char: Character) -> String {
+        switch char {
+        case "K": return "King"
+        case "Q": return "Queen"
+        case "R": return "Rook"
+        case "B": return "Bishop"
+        case "N": return "Knight"
+        default: return "Pawn"
+        }
     }
 }
 

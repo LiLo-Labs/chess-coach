@@ -56,9 +56,9 @@
 - [ ] Animations: should be more animated and playful (pulse effects added, but could do more with Lottie/custom transitions)
 
 ## Content & UX Bugs
-- [ ] Algebraic notation still shown first in "Learn the Plan" and likely other places — should lead with human-friendly names
+- [x] Algebraic notation still shown first in "Learn the Plan" and likely other places — should lead with human-friendly names
 - [ ] Reevaluate each learning plan completely: text may not line up with the moves being played
-- [ ] Full-screen overlays (learning plan, etc.) have no exit/close button
+- [x] Full-screen overlays (learning plan, etc.) have no exit/close button
 
 ## Assets & Polish
 - [ ] More chess piece styles: pro/premium piece art sets (Staunton, modern, wood, metal, etc.) — gated by tier

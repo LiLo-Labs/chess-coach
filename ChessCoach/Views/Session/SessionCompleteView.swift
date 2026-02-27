@@ -27,6 +27,25 @@ struct SessionCompleteView: View {
                     .ignoresSafeArea()
             }
 
+            // Close button at top-right
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: onDone) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(AppColor.secondaryText)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Close")
+                }
+                .padding(.top, AppSpacing.topBarSafeArea)
+                .padding(.trailing, AppSpacing.screenPadding)
+                Spacer()
+            }
+            .zIndex(1)
+
             ScrollView {
                 VStack(spacing: AppSpacing.xl) {
                     Spacer(minLength: AppSpacing.xxxl + AppSpacing.sm)

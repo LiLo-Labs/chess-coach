@@ -29,15 +29,16 @@ struct OpeningPreviewBoard: View {
     }
 
     /// Current move display text (stable layout — always reserves space)
-    private var moveInfoText: (number: String, san: String, explanation: String) {
+    private var moveInfoText: (number: String, friendly: String, san: String, explanation: String) {
         guard currentPly > 0, currentPly <= moves.count else {
-            return ("", "", "Starting position")
+            return ("", "", "", "Starting position")
         }
         let move = moves[currentPly - 1]
         let moveNum = (currentPly - 1) / 2 + 1
         let isWhite = (currentPly - 1) % 2 == 0
         return (
             isWhite ? "\(moveNum)." : "\(moveNum)...",
+            move.friendlyName,
             move.san,
             move.explanation
         )
@@ -98,9 +99,12 @@ struct OpeningPreviewBoard: View {
                             Text(moveInfoText.number)
                                 .font(.caption.monospacedDigit().weight(.medium))
                                 .foregroundStyle(AppColor.secondaryText)
-                            Text(moveInfoText.san)
+                            Text(moveInfoText.friendly)
                                 .font(.subheadline.weight(.bold))
                                 .foregroundStyle(AppColor.primaryText)
+                            Text(moveInfoText.san)
+                                .font(.caption2)
+                                .foregroundStyle(AppColor.tertiaryText)
                         }
                         .opacity(currentPly > 0 ? 1 : 0)
 
