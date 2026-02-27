@@ -24,6 +24,9 @@ struct TrainerModeView: View {
     // Coaching integration
     @State private var currentOpening: OpeningDetection = .none
     @State private var showCoachChat = false
+    @State private var coachingFeed: [TrainerCoachingEntry] = []
+    @State private var isEvaluating = false
+    @State private var lastEvalScore: Int = 0  // Stockfish eval before player's move
     private let openingDetector = OpeningDetector()
 
     // Separate stats per engine mode
@@ -356,12 +359,14 @@ struct TrainerModeView: View {
                 gameState: gameState,
                 perspective: playerColor,
                 allowInteraction: isPlayerTurn && !botThinking,
-                onMove: { _, _ in
+                onMove: { from, to in
                     // Play sound
                     SoundService.shared.play(.move)
                     SoundService.shared.hapticPiecePlaced()
 
+                    let moveUCI = "\(from)\(to)"
                     updateOpeningDetection(gameState: gameState)
+                    evaluatePlayerMove(gameState: gameState, moveUCI: moveUCI)
                     checkGameEnd(gameState: gameState)
                     if !isGameOver(gameState) {
                         makeBotMove(gameState: gameState)
@@ -371,7 +376,13 @@ struct TrainerModeView: View {
             .aspectRatio(1, contentMode: .fit)
             .padding(.horizontal, AppSpacing.sm)
 
-            Spacer()
+            // Coaching feed
+            if !coachingFeed.isEmpty || isEvaluating {
+                TrainerCoachingFeedView(entries: coachingFeed, isLoading: isEvaluating)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+
+            Spacer(minLength: 0)
 
             // Bottom bar
             HStack {
@@ -646,6 +657,13 @@ struct TrainerModeView: View {
         gameResult = nil
         botMessage = nil
         showBotMessage = false
+        currentOpening = .none
+        showCoachChat = false
+        coachingFeed = []
+        isEvaluating = false
+        lastEvalScore = 0
+        moveFlashSquare = nil
+        botThinking = false
 
         // Init Maia for human-like bot play
         if maiaService == nil && engineMode == .humanLike {
@@ -677,16 +695,16 @@ struct TrainerModeView: View {
 
             switch engineMode {
             case .humanLike:
-                // Maia for human-like play
+                // Maia for human-like play — use sampleMove for probabilistic
+                // selection so the bot doesn't play deterministically
                 if let maia = maiaService {
-                    if let predictions = try? await maia.predictMove(
+                    selectedMove = try? await maia.sampleMove(
                         fen: fen,
                         legalMoves: legalMoves,
                         eloSelf: selectedBotELO,
-                        eloOppo: settings.userELO
-                    ), let topMove = predictions.first {
-                        selectedMove = topMove.move
-                    }
+                        eloOppo: settings.userELO,
+                        temperature: 1.0
+                    )
                 }
                 // Fallback to Stockfish if Maia unavailable
                 if selectedMove == nil {
@@ -735,6 +753,13 @@ struct TrainerModeView: View {
             }
 
             botThinking = false
+            if let move = selectedMove {
+                addBotMoveEntry(gameState: gameState, moveUCI: move)
+                // Quick eval to set baseline for next player move's cpLoss
+                if let eval = await appServices.stockfish.evaluate(fen: gameState.fen, depth: 8) {
+                    lastEvalScore = eval.score
+                }
+            }
             updateOpeningDetection(gameState: gameState)
             checkGameEnd(gameState: gameState)
         }
@@ -743,6 +768,140 @@ struct TrainerModeView: View {
     private func updateOpeningDetection(gameState: GameState) {
         let uciMoves = gameState.moveHistory.map { "\($0.from)\($0.to)\($0.promotion?.rawValue ?? "")" }
         currentOpening = openingDetector.detect(moves: uciMoves)
+    }
+
+    // MARK: - Coaching Feed
+
+    /// Evaluate the player's move asynchronously and add a coaching entry.
+    /// Runs Stockfish eval in the background — doesn't block the game.
+    private func evaluatePlayerMove(gameState: GameState, moveUCI: String) {
+        let ply = gameState.plyCount
+        let fen = gameState.fen
+        let moveNumber = (ply + 1) / 2
+        let detection = currentOpening
+        let isInBook = detection.best?.nextBookMoves.isEmpty == false
+        let openingName = detection.best?.opening.name
+        let scoreBefore = lastEvalScore
+        let playerIsWhite = playerColor == .white
+
+        // Quick fallback entry while eval runs
+        let bookMove = detection.best?.nextBookMoves.first
+        let isBookMove = bookMove?.uci == moveUCI
+
+        Task { @MainActor in
+            isEvaluating = true
+
+            // Get post-move eval from Stockfish
+            let eval = await appServices.stockfish.evaluate(fen: fen, depth: AppConfig.engine.evalDepth)
+            let scoreAfter = eval?.score ?? 0
+
+            // Compute soundness
+            let cpLoss = SoundnessCalculator.centipawnLoss(
+                scoreBefore: scoreBefore,
+                scoreAfter: scoreAfter,
+                playerIsWhite: playerIsWhite
+            )
+            let soundness = SoundnessCalculator.ceiling(centipawnLoss: cpLoss, userELO: settings.userELO)
+
+            // Categorize the move
+            let category: MoveCategory
+            if isBookMove || isInBook {
+                category = soundness >= 80 ? .goodMove : .okayMove
+            } else if cpLoss < 30 {
+                category = .goodMove
+            } else if cpLoss < 100 {
+                category = .okayMove
+            } else {
+                category = .mistake
+            }
+
+            let scoreCategory = ScoreCategory.from(score: soundness)
+
+            // Build coaching text
+            let coaching: String
+            switch category {
+            case .goodMove:
+                if isBookMove, let name = openingName {
+                    coaching = "Follows the \(name) plan."
+                } else {
+                    coaching = "Solid move — keeps your position strong."
+                }
+            case .okayMove:
+                if let bm = bookMove {
+                    coaching = "Playable, but \(bm.san) is the book move here."
+                } else {
+                    coaching = "Decent, but there might be a stronger option."
+                }
+            case .mistake:
+                if let bm = bookMove {
+                    coaching = "The plan calls for \(bm.san) here."
+                } else if let bestUCI = eval?.bestMove {
+                    let san = GameState.sanForUCI(bestUCI, inFEN: fen)
+                    coaching = "Better was \(san ?? bestUCI). Lost \(cpLoss) centipawns."
+                } else {
+                    coaching = "This loses material or position. Consider alternatives."
+                }
+            default:
+                coaching = "Your move."
+            }
+
+            let entry = TrainerCoachingEntry(
+                ply: ply,
+                moveNumber: moveNumber,
+                moveSAN: moveUCI, // Using UCI — SAN not available post-move
+                isPlayerMove: true,
+                coaching: coaching,
+                category: category,
+                soundness: soundness,
+                scoreCategory: scoreCategory,
+                openingName: openingName,
+                isInBook: isInBook
+            )
+
+            withAnimation(.easeInOut(duration: 0.2)) {
+                coachingFeed.append(entry)
+                isEvaluating = false
+            }
+
+            // Store eval for next move's cpLoss calculation
+            lastEvalScore = scoreAfter
+        }
+    }
+
+    /// Add a brief coaching entry for the bot's move (non-blocking, no eval needed).
+    private func addBotMoveEntry(gameState: GameState, moveUCI: String) {
+        let ply = gameState.plyCount
+        let moveNumber = (ply + 1) / 2
+        let detection = currentOpening
+        let isInBook = detection.best?.nextBookMoves.isEmpty == false
+        let openingName = detection.best?.opening.name
+        let isDeviation = detection.best != nil && !isInBook
+
+        let coaching: String
+        if isDeviation, let name = openingName {
+            coaching = "Opponent went off the \(name) plan."
+        } else if isInBook, let name = openingName {
+            coaching = "Standard \(name) response."
+        } else {
+            coaching = "Opponent's move."
+        }
+
+        let entry = TrainerCoachingEntry(
+            ply: ply,
+            moveNumber: moveNumber,
+            moveSAN: moveUCI,
+            isPlayerMove: false,
+            coaching: coaching,
+            category: isDeviation ? .deviation : .opponentMove,
+            soundness: nil,
+            scoreCategory: nil,
+            openingName: openingName,
+            isInBook: isInBook
+        )
+
+        withAnimation(.easeInOut(duration: 0.2)) {
+            coachingFeed.append(entry)
+        }
     }
 
     private func isGameOver(_ gameState: GameState) -> Bool {
