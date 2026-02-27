@@ -98,6 +98,7 @@ struct FeedbackFormView: View {
 }
 
 /// Reusable feedback button that opens the in-app feedback form.
+/// Always visible (used in Settings). For other screens, use FeedbackToolbarButton.
 struct FeedbackButton: View {
     var screen: String = ""
     @State private var showForm = false
@@ -118,22 +119,25 @@ struct FeedbackButton: View {
 }
 
 /// Toolbar-friendly icon-only version for NavigationStack screens.
+/// Only visible during beta (AppConfig.isBeta). In release, feedback is Settings-only.
 struct FeedbackToolbarButton: View {
     var screen: String = ""
     @State private var showForm = false
 
     var body: some View {
-        Button {
-            showForm = true
-        } label: {
-            Image(systemName: "ladybug.fill")
-                .font(.body)
-                .frame(width: 44, height: 44)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .sheet(isPresented: $showForm) {
-            FeedbackFormView(screen: screen)
+        if AppConfig.isBeta {
+            Button {
+                showForm = true
+            } label: {
+                Image(systemName: "ladybug.fill")
+                    .font(.body)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .sheet(isPresented: $showForm) {
+                FeedbackFormView(screen: screen)
+            }
         }
     }
 }
