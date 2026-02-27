@@ -89,6 +89,9 @@ public class ChessboardModel {
     public var shouldFlipBoard: Bool { perspective == .black }
     
     public var movingPiece: (piece: Piece, from: BoardSquare, to: BoardSquare)?
+
+    /// Square where a capture just occurred — triggers a brief visual effect.
+    public var captureSquare: BoardSquare?
     
     public init(fen: String = EMPTY_FEN,
                 perspective: PieceColor = .white,
@@ -111,7 +114,17 @@ public class ChessboardModel {
         prevMove = currentMove
         currentMove = lan == nil ? nil : Move(string: lan!)
 
-        // Update FEN FIRST so the board reflects the new position,
+        // Detect captures BEFORE updating position
+        captureSquare = nil
+        if let currentMove {
+            let destIndex = currentMove.to.rank + currentMove.to.file * 8
+            if game.position.board[destIndex] != nil {
+                // Piece on destination = capture
+                captureSquare = BoardSquare(row: currentMove.to.rank, column: currentMove.to.file)
+            }
+        }
+
+        // Update FEN so the board reflects the new position,
         // then extract the moved piece from the NEW state for animation.
         self.fen = fen
 
@@ -373,11 +386,45 @@ private struct MovingPieceView: View {
     }
 }
 
+/// Burst ring effect shown on the square where a capture occurred.
+private struct CaptureEffectView: View {
+    @Environment(ChessboardModel.self) var chessboardModel
+
+    @State private var scale: CGFloat = 0.3
+    @State private var opacity: Double = 0.8
+
+    var body: some View {
+        Group {
+            if let square = chessboardModel.captureSquare {
+                let squareSize = chessboardModel.size / 8
+                let x = squareSize / 2 + squareSize * CGFloat(chessboardModel.shouldFlipBoard ? 7 - square.column : square.column)
+                let y = squareSize / 2 + squareSize * CGFloat(chessboardModel.shouldFlipBoard ? square.row : 7 - square.row)
+
+                Circle()
+                    .stroke(Color.orange.opacity(opacity), lineWidth: 3)
+                    .frame(width: squareSize * scale, height: squareSize * scale)
+                    .position(x: x, y: y)
+                    .onAppear {
+                        scale = 0.3
+                        opacity = 0.8
+                        withAnimation(.easeOut(duration: 0.35)) {
+                            scale = 1.4
+                            opacity = 0.0
+                        } completion: {
+                            chessboardModel.captureSquare = nil
+                        }
+                    }
+            }
+        }
+        .allowsHitTesting(false)
+    }
+}
+
 public struct Chessboard: View {
     public var chessboardModel: ChessboardModel
-    
+
     @Namespace private var animation
-    
+
     public init(chessboardModel: ChessboardModel) {
         self.chessboardModel = chessboardModel
     }
@@ -393,7 +440,8 @@ public struct Chessboard: View {
                 legalMoveHighlightsView
                 
                 MovingPieceView(animation: animation)
-                
+                CaptureEffectView()
+
                 if chessboardModel.showPromotionPicker {
                     promotionPickerView
                         .frame(width: geometry.size.width, height: geometry.size.height)
