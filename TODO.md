@@ -45,7 +45,7 @@
   - Feed tiles use a background color that complements both black and white text
 - [x] Themes: user-selectable board color themes (8 options with visual swatch picker in Settings). Piece style enum prepared for future expansion (only Classic/USCF currently bundled).
 - [x] HomeView modes: Puzzle and Trainer cards as prominent entries (stub views with "Coming soon")
-  - [ ] Puzzle mode implementation: puzzle database, solving UI, difficulty scaling, daily puzzle
+  - [x] Puzzle mode implementation: puzzle database, solving UI, difficulty scaling, daily puzzle
   - [ ] Trainer mode implementation: bot game loop, varying skill levels, win/loss tracking
 
 ## First-Time User Experience (FTU) Rework
