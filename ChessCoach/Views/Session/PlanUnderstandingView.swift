@@ -68,7 +68,7 @@ struct PlanUnderstandingView: View {
             result.append(.board(LessonStep(
                 title: target.piece.capitalized,
                 description: "\(target.reasoning). Aim for: \(target.idealSquares.joined(separator: " or "))",
-                fen: finalMainLineFen,
+                fen: target.fen ?? finalMainLineFen,
                 highlights: target.idealSquares,
                 arrows: [],
                 style: .neutral
@@ -305,10 +305,12 @@ struct PlanUnderstandingView: View {
         return state.fen
     }
 
-    /// Pick a relevant FEN for a strategic goal based on its priority.
+    /// Pick a relevant FEN for a strategic goal.
+    /// Uses the goal's explicit FEN if available, otherwise falls back to heuristic.
     private func fenForGoal(_ goal: StrategicGoal) -> String {
+        if let fen = goal.fen { return fen }
         let moves = opening.mainLine
-        // Map goal priority to an approximate ply in the main line
+        // Fallback: map goal priority to an approximate ply in the main line
         let ply = min(goal.priority * 2, moves.count)
         return fenAtPly(ply)
     }

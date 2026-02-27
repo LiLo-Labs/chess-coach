@@ -24,12 +24,14 @@ struct StrategicGoal: Codable, Sendable {
     let priority: Int                     // 1 = most important
     let measurable: Bool?                 // can we check this positionally?
     let checkCondition: String?           // e.g., "bishop_on_diagonal_a2g8"
+    let fen: String?                      // optional: exact board position for this goal
 
-    init(description: String, priority: Int, measurable: Bool? = nil, checkCondition: String? = nil) {
+    init(description: String, priority: Int, measurable: Bool? = nil, checkCondition: String? = nil, fen: String? = nil) {
         self.description = description
         self.priority = priority
         self.measurable = measurable
         self.checkCondition = checkCondition
+        self.fen = fen
     }
 }
 
@@ -38,4 +40,5 @@ struct PieceTarget: Codable, Sendable {
     let piece: String                     // "light-squared bishop"
     let idealSquares: [String]            // ["c4", "b5"]
     let reasoning: String                 // "Aims at f7, Black's weakest point"
+    let fen: String?                      // optional: exact board position showing this target
 }
