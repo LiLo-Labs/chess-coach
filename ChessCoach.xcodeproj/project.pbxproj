@@ -79,6 +79,7 @@
 		769D5BF52DD2376B9A0785B4 /* Opening.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3394090AB7EA057C3B70C3 /* Opening.swift */; };
 		78CDB4486285C61CD99D6951 /* ChessboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9FA5F592C8FD6F4A9575D198 /* ChessboardKit */; };
 		7B8841F8B5BDB95A5855672B /* scandinavian.json in Resources */ = {isa = PBXBuildFile; fileRef = 184077236F0E4D788752A1F7 /* scandinavian.json */; };
+		803818021654390D75E31F42 /* FreeOpeningPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A1EF8E1BADDEBEBF771C2E /* FreeOpeningPickerView.swift */; };
 		809B7F5D98B4B4E1E06CF918 /* BoardLessonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF5DE9169AE97318198EF9AB /* BoardLessonCard.swift */; };
 		883650AE7EAE693E5087F6D2 /* llama.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D28EFD69B9A9AC6E2DCD75B /* llama.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8CE08A1FABED074CF7F2E648 /* CoachingValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B1A08A7983B4F1184C6DE /* CoachingValidator.swift */; };
@@ -174,6 +175,7 @@
 
 /* Begin PBXFileReference section */
 		019B60D3A402F6B4859D9613 /* caro-kann.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "caro-kann.json"; sourceTree = "<group>"; };
+		05A1EF8E1BADDEBEBF771C2E /* FreeOpeningPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeOpeningPickerView.swift; sourceTree = "<group>"; };
 		072A187FE3EB5E259BAD36A4 /* VariedOpponentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariedOpponentService.swift; sourceTree = "<group>"; };
 		0B10CEA9853D8869F12161BF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0BE47C283306010AD3714926 /* ChessCoachTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ChessCoachTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -609,6 +611,7 @@
 		A6705548B6E51134F67589F8 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				05A1EF8E1BADDEBEBF771C2E /* FreeOpeningPickerView.swift */,
 				E94CD447C46D32769CF3084C /* OnboardingView.swift */,
 			);
 			path = Onboarding;
@@ -936,6 +939,7 @@
 				625396A3990F56CA03C39E43 /* FeatureAccess.swift in Sources */,
 				700006335073756412F739B8 /* FeedbackButton.swift in Sources */,
 				8E242137DD49CC9A1D211558 /* FeedbackService.swift in Sources */,
+				803818021654390D75E31F42 /* FreeOpeningPickerView.swift in Sources */,
 				3DEEDF8A0704823CDBF74A76 /* GameBoardView.swift in Sources */,
 				FF312B0A04CB97D763D063F6 /* GameState.swift in Sources */,
 				5D8F4CBD52B39CBE13500730 /* HelpButton.swift in Sources */,

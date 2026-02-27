@@ -18,7 +18,7 @@
 - [x] **Debug states**: DebugStateView with presets for each tier, debugTierOverride in AppSettings
 - [ ] **Per-Path Unlock**: Buy individual opening paths à la carte (StoreKit product per path)
 - [ ] **Token/credit system**: Users buy tokens/credits to unlock whatever they want (openings, features, etc.) — flexible alternative to fixed tiers
-- [ ] **Free tier: pick one opening**: On first install, free users get to choose ONE opening line to unlock fully (all layers, all features). Everything else is paywalled or available as a package.
+- [x] **Free tier: pick one opening**: On first install, free users get to choose ONE opening line to unlock fully (all layers, all features). Everything else is paywalled or available as a package.
 - [x] **Free tier opening limits**: Lock icon + paywall on non-free openings in HomeView, accessible openings checked via SubscriptionService
 
 ## Queued
@@ -54,6 +54,11 @@
 - [x] Privacy page: heartfelt notice — no data selling, no tracking, on-device AI, your progress is yours
 - [x] Explains what openings are and why they matter before user starts
 - [ ] Animations: should be more animated and playful (pulse effects added, but could do more with Lottie/custom transitions)
+
+## Content & UX Bugs
+- [ ] Algebraic notation still shown first in "Learn the Plan" and likely other places — should lead with human-friendly names
+- [ ] Reevaluate each learning plan completely: text may not line up with the moves being played
+- [ ] Full-screen overlays (learning plan, etc.) have no exit/close button
 
 ## Assets & Polish
 - [ ] More chess piece styles: pro/premium piece art sets (Staunton, modern, wood, metal, etc.) — gated by tier

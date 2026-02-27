@@ -10,6 +10,7 @@ struct ContentView: View {
     @State private var loadingProgress: Double = 0
     @State private var refreshID = UUID()
     @State private var errorMessage: String?
+    @State private var showOpeningPicker = false
 
     var body: some View {
         ZStack {
@@ -18,9 +19,19 @@ struct ContentView: View {
                     HomeView()
                         .id(refreshID)
                         .transition(.opacity)
-                } else {
-                    OnboardingView()
+                } else if showOpeningPicker {
+                    FreeOpeningPickerView()
                         .transition(.opacity)
+                } else {
+                    OnboardingView(onComplete: {
+                        // Free users go to the opening picker; paid users skip it
+                        if subscriptionService.currentTier == .free && !settings.hasPickedFreeOpening {
+                            withAnimation { showOpeningPicker = true }
+                        } else {
+                            settings.hasSeenOnboarding = true
+                        }
+                    })
+                    .transition(.opacity)
                 }
             } else {
                 launchScreen
@@ -29,6 +40,7 @@ struct ContentView: View {
         }
         .animation(.easeInOut(duration: 0.4), value: isReady)
         .animation(.easeInOut(duration: 0.4), value: settings.hasSeenOnboarding)
+        .animation(.easeInOut(duration: 0.4), value: showOpeningPicker)
         .task {
             await performStartup()
         }
