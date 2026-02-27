@@ -31,12 +31,12 @@
   - How to calculate PES after the opening sequence is complete (middlegame?)
   - PES belongs on front/home screen only, and only for bot/practice games
 - [ ] Introductory screens: what are openings, what is PES, key concepts explained before user encounters them
-- [ ] Help icon (?) accessible in every area where user might be confused — contextual tooltips/popovers
-- [ ] Feedback bug icon: Beta shows everywhere (toolbar on all screens), Release only in Settings
+- [x] Help icon (?) accessible in every area where user might be confused — contextual tooltips/popovers
+  - Added 6 new topics: streak, dailyGoal, evalBar, review, practiceMode, accuracy
+  - Added help buttons to HomeView (streak), QuickReviewView (toolbar), PracticeOpeningView
+- [x] Feedback bug icon: Beta shows everywhere (toolbar + session menu), Release only in Settings + SessionComplete
 - [ ] LLM upsell: when user taps locked sparkle, show animated video demo of AI coaching quality
-- [ ] Side panel chat: sliding panel with LLM chat, has full board context, available anytime during session (big beta feature)
-  - Already have LineChatView — needs to be promoted to always-available side panel
-  - Should have board context, move history, opening info pre-loaded
+- [x] Side panel chat: CoachChatPanel integrated into SessionView with spring animation, full board context, Pro-gated
 - [x] Feed entry titles: human-friendly names ("Knight to f3") instead of raw algebraic notation
   - Algebraic notation still visible as secondary/optional text
   - Black moves have black-tinted header, white moves have white-tinted header
@@ -46,3 +46,14 @@
   - Puzzle mode: tactical puzzles (pin, fork, skewer, mate-in-N), difficulty scaling, daily puzzle
   - Trainer mode: practice openings against bot with real win/loss condition
   - These should be prominent entry points alongside the learning journey
+
+## Assets & Polish
+- [ ] More chess piece styles: pro/premium piece art sets (Staunton, modern, wood, metal, etc.) — gated by tier
+- [ ] Pro board styles: premium board textures (wood grain, marble, tournament green) beyond the flat color schemes
+- [ ] Piece animations: smooth move animations, capture effects
+
+## Infrastructure
+- [ ] LLM model as background download asset: don't bundle the 3.2GB GGUF in the app binary. When user unlocks on-device AI tier, trigger a background download. Support model updates and potentially additional/alternative models in the future.
+
+## Performance
+- [ ] Coach chat response is very slow — investigate CoachChatPanel latency (LLM init on first message, provider detection, inference speed). Tackle at end.

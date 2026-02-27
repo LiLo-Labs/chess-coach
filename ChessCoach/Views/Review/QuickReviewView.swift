@@ -55,6 +55,11 @@ struct QuickReviewView: View {
         .preferredColorScheme(.dark)
         .navigationTitle("Review")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                HelpButton(topic: .review)
+            }
+        }
         .onAppear {
             loadItems()
         }

@@ -623,8 +623,10 @@ struct SessionView: View {
                     Label("Restart", systemImage: "arrow.counterclockwise")
                 }
 
-                Button { showFeedbackForm = true } label: {
-                    Label("Report Bug", systemImage: "ladybug.fill")
+                if AppConfig.isBeta {
+                    Button { showFeedbackForm = true } label: {
+                        Label("Report Bug", systemImage: "ladybug.fill")
+                    }
                 }
             } label: {
                 Image(systemName: "ellipsis.circle")
