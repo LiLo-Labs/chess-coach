@@ -35,6 +35,8 @@ final class AppSettings {
         static let notificationsEnabled = "notifications_enabled"
         static let gestureHintShown = "gesture_hint_shown"
         static let bestReviewStreak = "best_review_streak"
+        static let boardTheme = "board_theme"
+        static let pieceStyle = "piece_style"
     }
 
     @ObservationIgnored private let defaults = UserDefaults.standard
@@ -75,6 +77,14 @@ final class AppSettings {
 
     var showLegalMovesImmediately: Bool {
         didSet { defaults.set(showLegalMovesImmediately, forKey: Key.showLegalMoves) }
+    }
+
+    var boardTheme: BoardTheme {
+        didSet { defaults.set(boardTheme.rawValue, forKey: Key.boardTheme) }
+    }
+
+    var pieceStyle: PieceStyle {
+        didSet { defaults.set(pieceStyle.rawValue, forKey: Key.pieceStyle) }
     }
 
     // MARK: - LLM
@@ -187,6 +197,8 @@ final class AppSettings {
         self.gestureHintShown = d.bool(forKey: Key.gestureHintShown)
         self.openingViewCounts = d.dictionary(forKey: Key.openingViewCounts) as? [String: Int] ?? [:]
         self.bestReviewStreak = d.integer(forKey: Key.bestReviewStreak)
+        self.boardTheme = d.string(forKey: Key.boardTheme).flatMap { BoardTheme(rawValue: $0) } ?? .chessCom
+        self.pieceStyle = d.string(forKey: Key.pieceStyle).flatMap { PieceStyle(rawValue: $0) } ?? .classic
 
         // Daily goal: reset if date changed
         let today = Self.todayString
