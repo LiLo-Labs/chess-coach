@@ -11,6 +11,12 @@ struct OnboardingView: View {
 
     private let totalPages = 6
 
+    // Staggered entry animation states
+    @State private var showIcon = false
+    @State private var showTitle = false
+    @State private var showContent = false
+    @State private var showButton = false
+
     var body: some View {
         ZStack {
             AppColor.background
@@ -51,6 +57,36 @@ struct OnboardingView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .onChange(of: page) { _, _ in
+            triggerEntryAnimations()
+        }
+        .onAppear {
+            triggerEntryAnimations()
+        }
+    }
+
+    // MARK: - Entry Animations
+
+    private func triggerEntryAnimations() {
+        // Reset
+        showIcon = false
+        showTitle = false
+        showContent = false
+        showButton = false
+
+        // Stagger in
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.7).delay(0.1)) {
+            showIcon = true
+        }
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.25)) {
+            showTitle = true
+        }
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.4)) {
+            showContent = true
+        }
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.85).delay(0.55)) {
+            showButton = true
+        }
     }
 
     // MARK: - Page 1: Welcome
@@ -62,26 +98,35 @@ struct OnboardingView: View {
             Image(systemName: "crown.fill")
                 .font(.system(size: 64))
                 .foregroundStyle(AppColor.gold)
-                .symbolEffect(.pulse, options: .repeating.speed(0.5))
+                .symbolEffect(.pulse, options: .repeating.speed(0.4))
+                .scaleEffect(showIcon ? 1.0 : 0.3)
+                .opacity(showIcon ? 1 : 0)
 
             Text("Welcome to ChessCoach")
                 .font(.title.weight(.bold))
                 .foregroundStyle(AppColor.primaryText)
+                .offset(y: showTitle ? 0 : 20)
+                .opacity(showTitle ? 1 : 0)
 
-            Text("Your personal guide to mastering chess openings.")
-                .font(.title3)
-                .foregroundStyle(AppColor.secondaryText)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, AppSpacing.xxxl)
+            VStack(spacing: AppSpacing.sm) {
+                Text("Your personal guide to mastering chess openings.")
+                    .font(.title3)
+                    .foregroundStyle(AppColor.secondaryText)
+                    .multilineTextAlignment(.center)
 
-            Text("No experience needed. We'll start from the beginning.")
-                .font(.subheadline)
-                .foregroundStyle(AppColor.tertiaryText)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, AppSpacing.xxxl)
+                Text("No experience needed. We'll start from the beginning.")
+                    .font(.subheadline)
+                    .foregroundStyle(AppColor.tertiaryText)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.horizontal, AppSpacing.xxxl)
+            .offset(y: showContent ? 0 : 20)
+            .opacity(showContent ? 1 : 0)
 
             Spacer()
             nextButton
+                .opacity(showButton ? 1 : 0)
+                .offset(y: showButton ? 0 : 10)
         }
     }
 
@@ -94,10 +139,15 @@ struct OnboardingView: View {
             Image(systemName: "puzzlepiece.extension.fill")
                 .font(.system(size: 56))
                 .foregroundStyle(.cyan)
+                .symbolEffect(.pulse, options: .repeating.speed(0.5))
+                .scaleEffect(showIcon ? 1.0 : 0.3)
+                .opacity(showIcon ? 1 : 0)
 
             Text("What Are Openings?")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(AppColor.primaryText)
+                .offset(y: showTitle ? 0 : 20)
+                .opacity(showTitle ? 1 : 0)
 
             VStack(alignment: .leading, spacing: AppSpacing.lg) {
                 bulletPoint(
@@ -122,9 +172,13 @@ struct OnboardingView: View {
                 )
             }
             .padding(.horizontal, AppSpacing.xxxl)
+            .offset(y: showContent ? 0 : 20)
+            .opacity(showContent ? 1 : 0)
 
             Spacer()
             nextButton
+                .opacity(showButton ? 1 : 0)
+                .offset(y: showButton ? 0 : 10)
         }
     }
 
@@ -137,10 +191,15 @@ struct OnboardingView: View {
             Image(systemName: "heart.fill")
                 .font(.system(size: 56))
                 .foregroundStyle(.pink)
+                .symbolEffect(.pulse, options: .repeating.speed(0.5))
+                .scaleEffect(showIcon ? 1.0 : 0.3)
+                .opacity(showIcon ? 1 : 0)
 
             Text("Our Belief")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(AppColor.primaryText)
+                .offset(y: showTitle ? 0 : 20)
+                .opacity(showTitle ? 1 : 0)
 
             VStack(spacing: AppSpacing.lg) {
                 Text("We believe you learn best when you understand **why** — not by memorizing moves.")
@@ -159,9 +218,13 @@ struct OnboardingView: View {
                     .multilineTextAlignment(.center)
             }
             .padding(.horizontal, AppSpacing.xxxl)
+            .offset(y: showContent ? 0 : 20)
+            .opacity(showContent ? 1 : 0)
 
             Spacer()
             nextButton
+                .opacity(showButton ? 1 : 0)
+                .offset(y: showButton ? 0 : 10)
         }
     }
 
@@ -174,10 +237,15 @@ struct OnboardingView: View {
             Image(systemName: "lightbulb.fill")
                 .font(.system(size: 56))
                 .foregroundStyle(.yellow)
+                .symbolEffect(.pulse, options: .repeating.speed(0.5))
+                .scaleEffect(showIcon ? 1.0 : 0.3)
+                .opacity(showIcon ? 1 : 0)
 
             Text("How It Works")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(AppColor.primaryText)
+                .offset(y: showTitle ? 0 : 20)
+                .opacity(showTitle ? 1 : 0)
 
             VStack(alignment: .leading, spacing: AppSpacing.lg) {
                 stepRow(number: 1, color: .cyan, text: "Learn the plan behind the moves")
@@ -186,15 +254,20 @@ struct OnboardingView: View {
                 stepRow(number: 4, color: .orange, text: "Face opponents who surprise you")
             }
             .padding(.horizontal, AppSpacing.xxxl)
+            .offset(y: showContent ? 0 : 20)
+            .opacity(showContent ? 1 : 0)
 
             Text("We'll guide you every step of the way.")
                 .font(.caption)
                 .foregroundStyle(AppColor.tertiaryText)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, AppSpacing.xxxl)
+                .opacity(showContent ? 1 : 0)
 
             Spacer()
             nextButton
+                .opacity(showButton ? 1 : 0)
+                .offset(y: showButton ? 0 : 10)
         }
     }
 
@@ -207,10 +280,15 @@ struct OnboardingView: View {
             Image(systemName: "lock.shield.fill")
                 .font(.system(size: 56))
                 .foregroundStyle(.green)
+                .symbolEffect(.pulse, options: .repeating.speed(0.5))
+                .scaleEffect(showIcon ? 1.0 : 0.3)
+                .opacity(showIcon ? 1 : 0)
 
             Text("Your Privacy Matters")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(AppColor.primaryText)
+                .offset(y: showTitle ? 0 : 20)
+                .opacity(showTitle ? 1 : 0)
 
             VStack(spacing: AppSpacing.lg) {
                 Text("We want to be upfront with you:")
@@ -232,9 +310,13 @@ struct OnboardingView: View {
                     .multilineTextAlignment(.center)
             }
             .padding(.horizontal, AppSpacing.xxxl)
+            .offset(y: showContent ? 0 : 20)
+            .opacity(showContent ? 1 : 0)
 
             Spacer()
             nextButton
+                .opacity(showButton ? 1 : 0)
+                .offset(y: showButton ? 0 : 10)
         }
     }
 
@@ -246,18 +328,25 @@ struct OnboardingView: View {
             Image(systemName: "person.fill.questionmark")
                 .font(.system(size: 56))
                 .foregroundStyle(AppColor.layer(.handleVariety))
+                .symbolEffect(.pulse, options: .repeating.speed(0.5))
+                .scaleEffect(showIcon ? 1.0 : 0.3)
+                .opacity(showIcon ? 1 : 0)
+
             HStack(spacing: 6) {
                 Text("What's your level?")
                     .font(.title2.weight(.bold))
                     .foregroundStyle(AppColor.primaryText)
                 HelpButton(topic: .skillLevel)
             }
+            .offset(y: showTitle ? 0 : 20)
+            .opacity(showTitle ? 1 : 0)
 
             Text("This helps us adjust coaching difficulty. You can change it anytime.")
                 .font(.body)
                 .foregroundStyle(AppColor.secondaryText)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, AppSpacing.xxxl)
+                .opacity(showContent ? 1 : 0)
 
             VStack(spacing: AppSpacing.md) {
                 Text("\(settings.userELO)")
@@ -290,6 +379,8 @@ struct OnboardingView: View {
                     .font(.caption)
                     .foregroundStyle(AppColor.secondaryText)
             }
+            .offset(y: showContent ? 0 : 20)
+            .opacity(showContent ? 1 : 0)
 
             Spacer()
 
@@ -307,6 +398,8 @@ struct OnboardingView: View {
             }
             .padding(.horizontal, AppSpacing.xxxl)
             .padding(.bottom, 40)
+            .opacity(showButton ? 1 : 0)
+            .offset(y: showButton ? 0 : 10)
         }
     }
 

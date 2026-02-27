@@ -53,7 +53,7 @@
 - [x] Philosophy page: "We believe you learn best when you understand WHY — not by memorizing moves"
 - [x] Privacy page: heartfelt notice — no data selling, no tracking, on-device AI, your progress is yours
 - [x] Explains what openings are and why they matter before user starts
-- [ ] Animations: should be more animated and playful (pulse effects added, but could do more with Lottie/custom transitions)
+- [x] Animations: staggered entry animations on each page (icon scale+fade, title slide-up, content slide-up, button fade), symbol effects on all icons
 
 ## Content & UX Bugs
 - [x] Algebraic notation still shown first in "Learn the Plan" and likely other places — should lead with human-friendly names
