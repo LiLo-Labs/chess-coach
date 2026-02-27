@@ -2,11 +2,18 @@ import SwiftUI
 import StoreKit
 
 /// Multi-tier paywall showing all subscription options.
+/// Optionally shows a "Just this opening" per-path purchase when an opening is specified.
 struct ProUpgradeView: View {
+    /// Optional: the specific opening the user was trying to access.
+    /// When set, shows a per-path unlock option alongside tier upgrades.
+    var lockedOpeningID: String?
+    var lockedOpeningName: String?
+
     @Environment(SubscriptionService.self) private var subscriptionService
     @Environment(\.dismiss) private var dismiss
     @State private var errorMessage: String?
     @State private var selectedTier: SubscriptionTier = .pro
+    @State private var pathProduct: Product?
 
     var body: some View {
         ScrollView {
@@ -27,6 +34,21 @@ struct ProUpgradeView: View {
                     .foregroundStyle(AppColor.secondaryText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, AppSpacing.xxl)
+
+                // Per-path unlock option (when viewing a specific locked opening)
+                if let openingName = lockedOpeningName, let openingID = lockedOpeningID {
+                    perPathCard(openingName: openingName, openingID: openingID)
+                        .padding(.horizontal, AppSpacing.screenPadding)
+
+                    HStack {
+                        VStack { Divider() }
+                        Text("or upgrade your plan")
+                            .font(.caption)
+                            .foregroundStyle(AppColor.tertiaryText)
+                        VStack { Divider() }
+                    }
+                    .padding(.horizontal, AppSpacing.xxl)
+                }
 
                 // Tier cards
                 VStack(spacing: AppSpacing.md) {
@@ -100,9 +122,19 @@ struct ProUpgradeView: View {
             } catch {
                 errorMessage = error.localizedDescription
             }
+            // Load per-path product if a specific opening was specified
+            if let openingID = lockedOpeningID {
+                pathProduct = await subscriptionService.loadPathProduct(for: openingID)
+            }
         }
         .onChange(of: subscriptionService.currentTier) { _, newTier in
             if newTier != .free { dismiss() }
+        }
+        .onChange(of: subscriptionService.purchaseState) { _, newState in
+            // Dismiss when a per-path purchase completes
+            if newState == .purchased, lockedOpeningID != nil {
+                dismiss()
+            }
         }
         .alert("Error", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
             Button("OK", role: .cancel) { errorMessage = nil }
@@ -233,6 +265,68 @@ struct ProUpgradeView: View {
             ProgressView("Loading prices...")
                 .padding()
         }
+    }
+
+    // MARK: - Per-Path Card
+
+    private func perPathCard(openingName: String, openingID: String) -> some View {
+        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+            HStack {
+                Image(systemName: "book.fill")
+                    .font(.title3)
+                    .foregroundStyle(AppColor.info)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Just this opening")
+                        .font(.headline.weight(.semibold))
+                        .foregroundStyle(AppColor.primaryText)
+                    Text(openingName)
+                        .font(.caption)
+                        .foregroundStyle(AppColor.secondaryText)
+                }
+
+                Spacer()
+
+                if let pathProduct {
+                    Text(pathProduct.displayPrice)
+                        .font(.subheadline.weight(.bold))
+                        .foregroundStyle(AppColor.info)
+                }
+            }
+
+            HStack(spacing: AppSpacing.xs) {
+                Image(systemName: "checkmark")
+                    .font(.caption2.weight(.bold))
+                    .foregroundStyle(AppColor.info.opacity(0.8))
+                Text("Full access to \(openingName) — all lessons and practice modes")
+                    .font(.caption)
+                    .foregroundStyle(AppColor.secondaryText)
+            }
+
+            Button {
+                Task { await subscriptionService.purchasePath(openingID: openingID) }
+            } label: {
+                HStack {
+                    if subscriptionService.purchaseState == .purchasing {
+                        ProgressView().controlSize(.small).tint(.white)
+                    }
+                    Text(pathProduct != nil ? "Unlock — \(pathProduct!.displayPrice)" : "Unlock Opening")
+                        .font(.body.weight(.semibold))
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(AppColor.info, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+            }
+            .buttonStyle(.plain)
+            .disabled(subscriptionService.purchaseState == .purchasing)
+        }
+        .padding(AppSpacing.cardPadding)
+        .background(AppColor.info.opacity(0.06), in: RoundedRectangle(cornerRadius: AppRadius.md))
+        .overlay(
+            RoundedRectangle(cornerRadius: AppRadius.md)
+                .stroke(AppColor.info.opacity(0.3), lineWidth: 1)
+        )
     }
 
     // MARK: - Helpers

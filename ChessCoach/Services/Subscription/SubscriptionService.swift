@@ -87,10 +87,63 @@ final class SubscriptionService {
     }
 
     /// Unlock a specific opening path (à la carte purchase).
+    /// Called after StoreKit transaction succeeds, or directly for debug/restore.
     func unlockPath(_ pathID: String) {
         unlockedPaths.insert(pathID)
-        // In production, this would be backed by a non-consumable IAP per path
         UserDefaults.standard.set(Array(unlockedPaths), forKey: "chess_coach_unlocked_paths")
+    }
+
+    /// Product ID for a per-path unlock. Convention: base prefix + opening ID.
+    static func pathProductID(for openingID: String) -> String {
+        "com.chesscoach.opening.\(openingID)"
+    }
+
+    /// Purchase an individual opening path via StoreKit.
+    func purchasePath(openingID: String) async {
+        let productID = Self.pathProductID(for: openingID)
+
+        // Load the path product if not already cached
+        if products[productID] == nil {
+            if let loaded = try? await Product.products(for: [productID]).first {
+                products[productID] = loaded
+            }
+        }
+
+        guard let product = products[productID] else {
+            purchaseState = .failed("Opening pack not available")
+            return
+        }
+
+        purchaseState = .purchasing
+        do {
+            let result = try await product.purchase()
+            switch result {
+            case let .success(verification):
+                let transaction = try checkVerified(verification)
+                await transaction.finish()
+                unlockPath(openingID)
+                purchaseState = .purchased
+            case .userCancelled:
+                purchaseState = .idle
+            case .pending:
+                purchaseState = .idle
+            @unknown default:
+                purchaseState = .idle
+            }
+        } catch {
+            purchaseState = .failed(error.localizedDescription)
+        }
+    }
+
+    /// Load per-path product info for display (price etc.)
+    func loadPathProduct(for openingID: String) async -> Product? {
+        let productID = Self.pathProductID(for: openingID)
+        if let cached = products[productID] { return cached }
+        if let loaded = try? await Product.products(for: [productID]).first {
+            products[productID] = loaded
+            return loaded
+        }
+        return nil
     }
 
     func restore() async {

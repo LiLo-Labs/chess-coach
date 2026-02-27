@@ -11,7 +11,7 @@ struct HomeView: View {
     @State private var allMastery: [String: OpeningMastery] = [:]
     @State private var searchText = ""
     @State private var selectedColor: Opening.PlayerColor = .white
-    @State private var showLockedOpening = false
+    @State private var lockedOpeningToShow: Opening?
     @Environment(SubscriptionService.self) private var subscriptionService
     @Environment(AppSettings.self) private var settings
     @Environment(AppServices.self) private var appServices
@@ -86,7 +86,7 @@ struct HomeView: View {
                                 .listRowBackground(AppColor.cardBackground)
                             } else {
                                 Button {
-                                    showLockedOpening = true
+                                    lockedOpeningToShow = opening
                                 } label: {
                                     openingRow(opening: opening, locked: true)
                                 }
@@ -126,8 +126,8 @@ struct HomeView: View {
                 SessionView(opening: opening, lineID: resumeLineID, isPro: subscriptionService.isPro, stockfish: appServices.stockfish, llmService: appServices.llmService)
                     .environment(subscriptionService)
             }
-            .sheet(isPresented: $showLockedOpening) {
-                ProUpgradeView()
+            .sheet(item: $lockedOpeningToShow) { opening in
+                ProUpgradeView(lockedOpeningID: opening.id, lockedOpeningName: opening.name)
             }
         }
     }
