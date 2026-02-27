@@ -1,0 +1,32 @@
+{
+  "completed": [
+    "alekhine",
+    "benoni",
+    "bishops-opening",
+    "caro-kann",
+    "catalan",
+    "colle",
+    "dutch",
+    "english",
+    "four-knights",
+    "french",
+    "grunfeld",
+    "kings-gambit",
+    "kings-indian",
+    "kings-indian-attack",
+    "nimzo-indian",
+    "petroff",
+    "philidor",
+    "pirc",
+    "queens-gambit",
+    "queens-indian",
+    "reti",
+    "ruy-lopez",
+    "scandinavian",
+    "scotch",
+    "sicilian",
+    "slav",
+    "trompowsky",
+    "vienna"
+  ]
+}

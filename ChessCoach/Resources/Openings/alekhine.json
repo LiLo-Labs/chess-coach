@@ -1,0 +1,615 @@
+{
+  "id": "alekhine",
+  "name": "Alekhine Defense",
+  "description": "A provocative defense where Black's knight invites White to chase it across the board with pawns, then attacks the overextended center with pieces.",
+  "color": "black",
+  "difficulty": 3,
+  "tree": {
+    "id": "alekhine/root",
+    "children": [
+      {
+        "id": "alekhine/e2e4",
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "White plays e4, the most popular first move. Get ready to be sneaky — your next move will surprise many opponents!"
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "alekhine/e2e4/g8f6",
+            "move": {
+              "uci": "g8f6",
+              "san": "Nf6",
+              "explanation": "The Alekhine Defense! Your knight jumps to f6, attacking White's e4 pawn right away. Most opponents expect ...e5 — this is a surprising choice that puts White under immediate pressure!"
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "alekhine/e2e4/g8f6/e4e5",
+                "move": {
+                  "uci": "e4e5",
+                  "san": "e5",
+                  "explanation": "White chases your knight forward with e5 — exactly what you wanted! White is gaining space, but building a center that can become overextended."
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "alekhine/e2e4/g8f6/e4e5/f6d5",
+                    "move": {
+                      "uci": "f6d5",
+                      "san": "Nd5",
+                      "explanation": "The knight retreats to d5 — a great central square! White will probably chase it again with c4, but each pawn advance creates a potential weakness."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4",
+                        "move": {
+                          "uci": "d2d4",
+                          "san": "d4",
+                          "explanation": "White builds the center with d4 — now White has pawns on e5 and d4, controlling lots of space. White is playing right into the Alekhine's trap!"
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6",
+                            "move": {
+                              "uci": "d7d6",
+                              "san": "d6",
+                              "explanation": "Attack the e5 pawn with ...d6! This is the main Alekhine Defense continuation — you immediately challenge White's advanced pawn that has been chasing your knight."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3",
+                                "move": {
+                                  "uci": "g1f3",
+                                  "san": "Nf3",
+                                  "explanation": "White develops the knight and defends e5. A sensible developing move."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4",
+                                    "move": {
+                                      "uci": "c8g4",
+                                      "san": "Bg4",
+                                      "explanation": "Pin the knight! Your bishop goes to g4, pinning White's f3 knight against the queen. This increases the pressure on the e5 pawn — great coordinated play!"
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/f1e2",
+                                        "move": {
+                                          "uci": "f1e2",
+                                          "san": "Be2",
+                                          "explanation": "White unpins the knight with Be2. A solid, careful response to your pin."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/f1e2/e7e6",
+                                            "move": {
+                                              "uci": "e7e6",
+                                              "san": "e6",
+                                              "explanation": "Solidify the center with e6. Your pawn structure is now solid, your pieces are active, and you're ready to continue pressuring White's center."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/f1e2/e7e6/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "White castles to safety. Your plan is coming together — develop your remaining pieces and castle."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/f1e2/e7e6/e1g1/f8e7",
+                                                    "move": {
+                                                      "uci": "f8e7",
+                                                      "san": "Be7",
+                                                      "explanation": "Develop the bishop and prepare to castle. You're building a solid, harmonious position and will soon castle kingside."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": [
+                                                      {
+                                                        "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/f1e2/e7e6/e1g1/f8e7/c2c4",
+                                                        "move": {
+                                                          "uci": "c2c4",
+                                                          "san": "c4",
+                                                          "explanation": "White plays c4, chasing the knight again! But each pawn advance weakens more squares — this is exactly what Alekhine predicted."
+                                                        },
+                                                        "isMainLine": true,
+                                                        "weight": 60,
+                                                        "children": [
+                                                          {
+                                                            "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/f1e2/e7e6/e1g1/f8e7/c2c4/d5b6",
+                                                            "move": {
+                                                              "uci": "d5b6",
+                                                              "san": "Nb6",
+                                                              "explanation": "The knight steps to b6, safely out of danger. Now White has an impressive but overextended center — your job is to attack it and pick it apart piece by piece."
+                                                            },
+                                                            "isMainLine": true,
+                                                            "weight": 50,
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/g7g6",
+                                    "move": {
+                                      "uci": "g7g6",
+                                      "san": "g6",
+                                      "explanation": "The fianchetto variation! Instead of ...Bg4, you prepare to place your bishop on g7 for a King's Indian-like setup in the Alekhine."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/g7g6/c2c4",
+                                        "move": {
+                                          "uci": "c2c4",
+                                          "san": "c4",
+                                          "explanation": "White pushes c4, chasing the knight and claiming more center space."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/g7g6/c2c4/d5b6",
+                                            "move": {
+                                              "uci": "d5b6",
+                                              "san": "Nb6",
+                                              "explanation": "The knight steps back to b6 as White advances. Now complete your fianchetto with ...Bg7 and castle kingside."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/g7g6/c2c4/d5b6/e5d6",
+                                                "move": {
+                                                  "uci": "e5d6",
+                                                  "san": "exd6",
+                                                  "explanation": "White captures en passant on d6 — the Exchange Variation! The pawn structure opens up, and both sides get active piece play."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/g7g6/c2c4/d5b6/e5d6/c7d6",
+                                                    "move": {
+                                                      "uci": "c7d6",
+                                                      "san": "cxd6",
+                                                      "explanation": "Recapture with the c-pawn. Your pawns are temporarily doubled on d6, but you'll develop actively and your bishop on g7 will compensate."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/g7g6/c2c4/d5b6/e5d6/c7d6/b1c3",
+                                                        "move": {
+                                                          "uci": "b1c3",
+                                                          "san": "Nc3",
+                                                          "explanation": "White develops the knight. Continue with ...Bg7, ...O-O and prepare to fight for the center with ...Be6 and ...Nc6."
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "variationName": "Alekhine: ...g6 Fianchetto"
+                                  },
+                                  {
+                                    "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4",
+                                    "move": {
+                                      "uci": "c8g4",
+                                      "san": "Bg4",
+                                      "explanation": "The bishop pins the f3 knight immediately! This is an aggressive version of ...Bg4, putting pressure on White's center right away."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/c2c4",
+                                        "move": {
+                                          "uci": "c2c4",
+                                          "san": "c4",
+                                          "explanation": "White plays c4, pushing the knight and building more center space despite the pin."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/c2c4/d5b6",
+                                            "move": {
+                                              "uci": "d5b6",
+                                              "san": "Nb6",
+                                              "explanation": "Knight retreats to b6. You maintain the bishop pin on f3 and pressure the e5 pawn from multiple angles."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/c2c4/d5b6/f1e2",
+                                                "move": {
+                                                  "uci": "f1e2",
+                                                  "san": "Be2",
+                                                  "explanation": "White unpins by developing Be2. Now it's time to reconsider — should you exchange on f3 or keep the pin?"
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/c2c4/d5b6/f1e2/d6e5",
+                                                    "move": {
+                                                      "uci": "d6e5",
+                                                      "san": "dxe5",
+                                                      "explanation": "Capture the e5 pawn! This is the thematic idea — attack White's advanced pawn and if it's taken, the position opens favorably for you."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/g1f3/c8g4/c2c4/d5b6/f1e2/d6e5/d4e5",
+                                                        "move": {
+                                                          "uci": "d4e5",
+                                                          "san": "dxe5",
+                                                          "explanation": "White recaptures with the d-pawn. The position has opened up — continue developing with ...Nc6 and ...Be7, then castle to get your king safe."
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "variationName": "Four Pawns Attack"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6",
+                            "move": {
+                              "uci": "d7d6",
+                              "san": "d6",
+                              "explanation": "Attack the e5 pawn immediately with ...d6! If White captures exd6, you recapture and have a free, active position."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/e5d6",
+                                "move": {
+                                  "uci": "e5d6",
+                                  "san": "exd6",
+                                  "explanation": "White captures — the Exchange Variation! White gives up the advanced e5 pawn in exchange for opening the position."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/e5d6/c7d6",
+                                    "move": {
+                                      "uci": "c7d6",
+                                      "san": "cxd6",
+                                      "explanation": "Recapture with the c-pawn. Now you have an isolated d-pawn, but excellent piece activity — your bishops will be very active!"
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/e5d6/c7d6/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "White develops. You have an open position — develop your pieces actively and fight for the center!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/e5d6/c7d6/g1f3/b8c6",
+                                            "move": {
+                                              "uci": "b8c6",
+                                              "san": "Nc6",
+                                              "explanation": "Develop the queen's knight to c6, putting pressure on d4. An active, aggressive square for your knight."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "alekhine/e2e4/g8f6/e4e5/f6d5/d2d4/d7d6/e5d6/c7d6/g1f3/b8c6/f1e2",
+                                                "move": {
+                                                  "uci": "f1e2",
+                                                  "san": "Be2",
+                                                  "explanation": "White develops the bishop. Continue with ...e5 or ...g6 and Bg7 to activate all your pieces."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "variationName": "Exchange Variation"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Lure White's pawns forward with your knight, then attack the overextended center with ...d6 and active piece play. White's pawns look impressive but are actually a target — your job is to undermine them from the sides and prove they are weak, not strong.",
+    "strategicGoals": [
+      { "description": "Provoke White's pawns forward with ...Nf6, inviting e5 and d4 to create an overextended center", "priority": 1 },
+      { "description": "Attack the advanced e5 pawn immediately with ...d6 — the core Alekhine counterattack", "priority": 2 },
+      { "description": "Pin or pressure White's pieces with ...Bg4 to multiply the pressure on the center", "priority": 3 },
+      { "description": "Castle kingside quickly and develop all pieces harmoniously", "priority": 4 },
+      { "description": "Maneuver the knight to b6 safely after White plays c4, then attack the center from the flanks", "priority": 5 }
+    ],
+    "pawnStructureTarget": "White will have an impressive-looking but overextended pawn center (e5/d4/c4). Black undermines it from the sides — the center pawns become targets, not strengths.",
+    "keySquares": ["d5", "e5", "d4", "b6", "g4"],
+    "pieceTargets": [
+      { "piece": "king's knight", "idealSquares": ["d5", "b6"], "reasoning": "The knight provokes White's pawns on the first move, then settles on d5 or retreats safely to b6 — always ready to jump back into the fight" },
+      { "piece": "light-squared bishop", "idealSquares": ["g4", "f5"], "reasoning": "Pinning the f3 knight with Bg4 adds pressure to the e5 pawn that cannot easily be defended — a key part of the Alekhine strategy" },
+      { "piece": "queen", "idealSquares": ["d6", "a5"], "reasoning": "The queen can support the d6 pawn advance and coordinate with the bishop to put maximum pressure on White's center" },
+      { "piece": "dark-squared bishop", "idealSquares": ["e7", "g7"], "reasoning": "The bishop develops quietly to e7 (flexible) or g7 (if you choose the fianchetto variation), always ready to support the counterattack" }
+    ],
+    "typicalPlans": [
+      "Play ...d6 to directly attack the e5 pawn as soon as White plays Nf3",
+      "Pin the f3 knight with ...Bg4 to multiply the pressure on e5",
+      "After ...Nb6, attack the center from the sides with ...c5 or ...f6",
+      "In the Exchange Variation (exd6), develop actively with ...Nc6, ...Bg4, and castle quickly"
+    ],
+    "commonMistakes": [
+      "Moving the knight too many times without gaining anything — make sure each knight move achieves something concrete",
+      "Forgetting to play ...d6 promptly — this is your main counterattack and should not be delayed",
+      "Being passive after White builds the big center — Alekhine's Defense requires active counterplay, not passive waiting",
+      "Castling too late — your king needs to be safe before you launch your counterattacks on the center"
+    ],
+    "historicalNote": "Invented by the brilliant Alexander Alekhine, who used it to win the World Championship in 1927. Alekhine was famous for provocative, unorthodox play — this opening perfectly embodies his style. The idea of deliberately inviting pawns to advance in order to attack them was revolutionary in chess thinking.",
+    "planLessons": [
+      {
+        "title": "The Alekhine Trick: Invite the Pawns!",
+        "description": "After 1.e4 Nf6, your knight immediately attacks White's pawn. White almost always plays e5, chasing the knight — which is exactly what you want! Every pawn advance creates a potential weakness.",
+        "fen": "rnbqkb1r/pppppppp/5n2/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2",
+        "highlights": ["e5", "f6"],
+        "arrows": [{"from": "f6", "to": "d5"}],
+        "style": "good"
+      },
+      {
+        "title": "Attack the Center with ...d6!",
+        "description": "After the knight retreats to d5 and White plays d4, your key move is ...d6! This attacks White's e5 pawn directly. White must defend or capture — either way, you've proven the pawns are targets.",
+        "fen": "rnbqkb1r/ppp1pppp/3p4/3nP3/3P4/5N2/PPP2PPP/RNBQKB1R b KQkq - 1 5",
+        "highlights": ["d6", "e5"],
+        "arrows": [{"from": "d7", "to": "d6"}, {"from": "d6", "to": "e5"}],
+        "style": "good"
+      },
+      {
+        "title": "Pin with ...Bg4 — Double the Pressure",
+        "description": "After ...d6 Nf3, pin the knight with ...Bg4! Now the f3 knight can't easily protect e5, and White must spend a tempo unpinning. Your pieces work together to attack White's overextended center.",
+        "fen": "rn1qkb1r/ppp1pppp/3p4/3nP3/3P2b1/5N2/PPP2PPP/RNBQKB1R w KQkq - 2 6",
+        "highlights": ["g4", "f3", "e5"],
+        "arrows": [{"from": "g4", "to": "f3"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Move the Knight Too Often",
+        "description": "Your knight will move several times (Nf6-d5-b6), but each move should have a clear purpose. If you move it just to run away without gaining something, you're wasting turns that could develop other pieces.",
+        "fen": "rnbqkb1r/ppp1pppp/1n1p4/4P3/2PP4/5N2/PP3PPP/RNBQKB1R b KQkq c3 0 6",
+        "highlights": ["b6", "d5", "f6"],
+        "arrows": [],
+        "style": "neutral"
+      },
+      {
+        "title": "Castle and Then Counterattack",
+        "description": "After ...Bg4, ...e6, and ...Be7, castle kingside! Once your king is safe on g8, you can freely attack White's overextended center without worrying about your king getting caught in the middle.",
+        "fen": "r2qk2r/ppp1bppp/1n1pP3/3n4/3P2b1/5N2/PPP1BPPP/RNBQ1RK1 b kq - 0 8",
+        "highlights": ["g8", "e8"],
+        "arrows": [{"from": "e8", "to": "g8"}],
+        "style": "good"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkb1r/pppppppp/5n2/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2",
+        "prompt": "White just played e5, chasing your knight. What is the correct response?",
+        "choices": [
+          {"text": "...Nd5 — retreat to the center and invite White to build more pawns", "isCorrect": true},
+          {"text": "...Ne4 — boldly stay in the center and attack", "isCorrect": false},
+          {"text": "...Ng8 — retreat all the way back to safety", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "...Nd5 is the Alekhine move! The knight retreats to d5, a great central square. White will likely play d4 and c4, chasing the knight further — but each pawn advance creates a weakness that you'll attack later. This is Alekhine's brilliant idea!",
+        "boardHighlightsOnReveal": ["d5", "e5"],
+        "arrowsOnReveal": [{"from": "f6", "to": "d5"}]
+      },
+      {
+        "fen": "rnbqkb1r/ppp1pppp/3p4/3nP3/3P4/5N2/PPP2PPP/RNBQKB1R b KQkq - 1 5",
+        "prompt": "White has built a big center with pawns on e5 and d4. Your knight is on d5. After ...d6, what is the main idea?",
+        "choices": [
+          {"text": "To directly attack White's e5 pawn and prove it is overextended", "isCorrect": true},
+          {"text": "To create a pawn chain that blocks all of White's pieces", "isCorrect": false},
+          {"text": "To prepare queenside castling for your king", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "...d6 attacks the e5 pawn directly! This is the heart of the Alekhine Defense — White's big pawn center looks scary, but it's actually overextended and vulnerable to attack. Each of your moves should put pressure on those center pawns.",
+        "boardHighlightsOnReveal": ["d6", "e5", "d4"],
+        "arrowsOnReveal": [{"from": "d7", "to": "d6"}]
+      },
+      {
+        "fen": "rn1qkb1r/ppp1pppp/3p4/3nP3/3P2b1/5N2/PPP2PPP/RNBQKB1R w KQkq - 2 6",
+        "prompt": "You've pinned White's knight with ...Bg4. Why is this move so powerful in the Alekhine Defense?",
+        "choices": [
+          {"text": "Because the pinned knight can't easily protect e5, so White's center is under double attack", "isCorrect": true},
+          {"text": "Because the bishop on g4 can immediately capture a pawn on d1", "isCorrect": false},
+          {"text": "Because it prevents White from castling immediately", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "...Bg4 is brilliant because it pins White's f3 knight — and that knight is one of the main defenders of the e5 pawn! Now e5 is under pressure from both your d6 pawn and your knight on d5, while the f3 knight can't easily help. White must unpin first, giving you time to develop.",
+        "boardHighlightsOnReveal": ["g4", "f3", "e5", "d5"],
+        "arrowsOnReveal": [{"from": "g4", "to": "f3"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Main Line: ...d6 with ...Bg4 (B04)",
+        "description": "After 1.e4 Nf6 2.e5 Nd5 3.d4 d6 4.Nf3 Bg4, Black pins the knight and pressures e5. This is the main Alekhine Defense line. After Be2 e6 O-O Be7 c4 Nb6, White has an impressive center but Black has solid piece activity.",
+        "fen": "rn1qkb1r/ppp1pppp/3p4/3nP3/3P2b1/5N2/PPP2PPP/RNBQKB1R w KQkq - 2 6",
+        "highlights": ["g4", "d5", "e5", "d4"],
+        "arrows": [{"from": "g4", "to": "f3"}, {"from": "d5", "to": "e3"}],
+        "style": "theory"
+      },
+      {
+        "title": "Exchange Variation (B03)",
+        "description": "If White plays exd6 (the Exchange Variation), you recapture with cxd6. This gives you an isolated d-pawn but excellent piece activity. The open position favors your bishops and active pieces. Develop quickly with ...Nc6, ...g6, and ...Bg7.",
+        "fen": "rnbqkb1r/pp2pppp/3p4/3n4/3P4/5N2/PPP2PPP/RNBQKB1R b KQkq - 0 6",
+        "highlights": ["d6", "d4"],
+        "arrows": [{"from": "b8", "to": "c6"}, {"from": "g7", "to": "g6"}],
+        "style": "theory"
+      },
+      {
+        "title": "Fianchetto Variation: ...g6 (B04)",
+        "description": "Instead of ...Bg4, you can play ...g6 and fianchetto your bishop to g7 — a King's Indian-like setup in the Alekhine. This is solid and leads to good attacking chances on the kingside after castling.",
+        "fen": "rnbqkb1r/ppp1pp1p/3p2p1/3nP3/3P4/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 6",
+        "highlights": ["g6", "d5"],
+        "arrows": [{"from": "f8", "to": "g7"}],
+        "style": "theory"
+      },
+      {
+        "title": "Four Pawns Attack (B03)",
+        "description": "The Four Pawns Attack (c4, d4, e5, f4) is White's most ambitious try. White builds a massive four-pawn center. Black must react immediately with ...d6 to undermine it before it becomes unstoppable. Sharp, dangerous positions arise!",
+        "fen": "rnbqkb1r/ppp1pppp/3p4/3nP3/2PP1P2/8/PP4PP/RNBQKBNR b KQkq f3 0 5",
+        "highlights": ["c4", "d4", "e5", "f4"],
+        "arrows": [{"from": "d7", "to": "d6"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkb1r/pppppppp/5n2/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2",
+        "prompt": "After 1.e4 Nf6 2.e5, what is this opening called?",
+        "choices": [
+          {"text": "Alekhine Defense", "isCorrect": true},
+          {"text": "Nimzowitsch Defense", "isCorrect": false},
+          {"text": "Petrov Defense", "isCorrect": false},
+          {"text": "Scandinavian Defense", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Alekhine Defense! After 1.e4 Nf6, Black attacks White's pawn immediately. It's named after World Champion Alexander Alekhine, who pioneered this provocative approach of inviting White's pawns to advance and then attacking them.",
+        "boardHighlightsOnReveal": ["e5", "f6"],
+        "arrowsOnReveal": [{"from": "f6", "to": "d5"}]
+      },
+      {
+        "fen": "rnbqkb1r/ppp1pppp/3p4/3nP3/3P4/5N2/PPP2PPP/RNBQKB1R b KQkq - 1 5",
+        "prompt": "After 1.e4 Nf6 2.e5 Nd5 3.d4 d6 4.Nf3, what is Black's main continuation?",
+        "choices": [
+          {"text": "...Bg4 — pin the knight and pressure e5", "isCorrect": true},
+          {"text": "...Nc6 — develop and pressure d4 directly", "isCorrect": false},
+          {"text": "...c6 — support the d5 knight with a pawn", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "...Bg4 is the main line! This pin on the f3 knight is a key Alekhine Defense idea. The pinned knight can't easily protect e5, so now Black's knight on d5 and pawn on d6 both attack e5 simultaneously. White must spend a tempo to unpin before defending.",
+        "boardHighlightsOnReveal": ["g4", "f3", "e5", "d5"],
+        "arrowsOnReveal": [{"from": "c8", "to": "g4"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["e2e4", "g8f6", "e4e5", "f6d5"],
+    "responses": [
+      {
+        "id": "alekhine-d4",
+        "move": { "uci": "d2d4", "san": "d4", "explanation": "White builds a strong center with d4 — the most popular and strongest response, entering the main Alekhine Defense." },
+        "name": "Main Line with d4",
+        "eco": "B04",
+        "frequency": 0.60,
+        "description": "White builds the full e5/d4 center. This is the main Alekhine Defense. Black responds with ...d6 to immediately attack the e5 pawn.",
+        "planAdjustment": "Play ...d6 right away to attack e5. After Nf3, pin with ...Bg4. After Be2, play ...e6, ...Be7, castle, and let the knight retreat to b6 when White plays c4. Your pieces are solid and the center is overextended."
+      },
+      {
+        "id": "alekhine-c4",
+        "move": { "uci": "c2c4", "san": "c4", "explanation": "White plays c4 immediately, chasing the knight even further without supporting with d4 first." },
+        "name": "Chase Variation",
+        "eco": "B02",
+        "frequency": 0.20,
+        "description": "White chases the knight to b6 with c4. Without d4 support, White's center may be less stable. Black can play ...d6 or even ...Nb4 in some lines.",
+        "planAdjustment": "Play ...Nb6, then ...d5 to directly challenge White's center while it's underdeveloped. Your knight is safe on b6 and you can counterattack with ...d5 or ...c5 to undermine the c4 pawn."
+      },
+      {
+        "id": "alekhine-four-pawns",
+        "move": { "uci": "f2f4", "san": "f4", "explanation": "The Four Pawns Attack! White plays f4, building toward a massive c4/d4/e5/f4 pawn center." },
+        "name": "Four Pawns Attack",
+        "eco": "B03",
+        "frequency": 0.10,
+        "description": "White aims to build an overwhelming four-pawn center. Sharp and dangerous, but double-edged — the center can collapse.",
+        "planAdjustment": "Play ...d6 right away to attack e5 before White can consolidate. Don't be intimidated by the four pawns! Attack them with ...dxe5, ...c5, and active piece play. The four pawns are also vulnerable to counterattack."
+      },
+      {
+        "id": "alekhine-exchange",
+        "move": { "uci": "e5d6", "san": "exd6", "explanation": "White plays the Exchange Variation, capturing en passant to dissolve the advanced pawn." },
+        "name": "Exchange Variation",
+        "eco": "B03",
+        "frequency": 0.10,
+        "description": "White gives up the e5 pawn to open the position. Black recaptures with cxd6 and gets active piece play in exchange for a slightly isolated pawn.",
+        "planAdjustment": "Recapture with ...cxd6 and develop actively with ...Nc6, ...g6, ...Bg7 and castle quickly. In the open position, your active pieces compensate for the isolated d-pawn. Aim for piece activity over pawn structure."
+      }
+    ]
+  }
+}

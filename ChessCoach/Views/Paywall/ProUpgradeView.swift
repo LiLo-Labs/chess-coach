@@ -5,6 +5,7 @@ import StoreKit
 struct ProUpgradeView: View {
     @Environment(SubscriptionService.self) private var subscriptionService
     @Environment(\.dismiss) private var dismiss
+    @State private var errorMessage: String?
 
     var body: some View {
         ScrollView {
@@ -22,8 +23,8 @@ struct ProUpgradeView: View {
                     .foregroundStyle(AppColor.primaryText)
                     .multilineTextAlignment(.center)
 
-                // Social proof
-                Text("Join 1,000+ chess learners already improving with Pro")
+                // Subtitle
+                Text("Master openings faster with AI-powered coaching")
                     .font(.subheadline)
                     .foregroundStyle(AppColor.secondaryText)
                     .multilineTextAlignment(.center)
@@ -84,16 +85,33 @@ struct ProUpgradeView: View {
                         .foregroundStyle(AppColor.error)
                 }
 
+                // Legal disclosures
+                VStack(spacing: AppSpacing.xxs) {
+                    Text("One-time purchase. No subscription.")
+                        .font(.caption2)
+                        .foregroundStyle(AppColor.tertiaryText)
+                }
+                .padding(.horizontal, AppSpacing.xxl)
+
                 Spacer(minLength: AppSpacing.lg)
             }
         }
         .background(AppColor.background)
         .preferredColorScheme(.dark)
         .task {
-            await subscriptionService.loadProduct()
+            do {
+                try await subscriptionService.loadProduct()
+            } catch {
+                errorMessage = error.localizedDescription
+            }
         }
         .onChange(of: subscriptionService.isPro) { _, newValue in
             if newValue { dismiss() }
+        }
+        .alert("Error", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
+            Button("OK", role: .cancel) { errorMessage = nil }
+        } message: {
+            Text(errorMessage ?? "An unknown error occurred.")
         }
     }
 
@@ -143,9 +161,13 @@ struct ProUpgradeView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             checkmark(enabled: free)
                 .frame(width: 44, alignment: .center)
+                .accessibilityLabel(free ? "Included in Free" : "Not included in Free")
             checkmark(enabled: pro, highlightColor: AppColor.gold)
                 .frame(width: 44, alignment: .center)
+                .accessibilityLabel(pro ? "Included in Pro" : "Not included in Pro")
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(free ? "included" : "not included") in Free, \(pro ? "included" : "not included") in Pro")
         .padding(.horizontal, AppSpacing.md)
         .padding(.vertical, AppSpacing.xxs)
     }
@@ -172,10 +194,12 @@ struct ProUpgradeView: View {
                 .font(.body)
                 .foregroundStyle(AppColor.gold)
                 .frame(width: 24)
+                .accessibilityHidden(true)
             Text(text)
                 .font(.subheadline)
                 .foregroundStyle(AppColor.primaryText)
         }
+        .accessibilityElement(children: .combine)
     }
 }
 

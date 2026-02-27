@@ -63,6 +63,9 @@ struct GameBoardView: View {
                 // gameState.fen is computed and may not trigger onChange on undo.
                 syncBoard()
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Chess board")
+            .accessibilityHint(allowInteraction ? "Tap a piece then a destination to move" : "Current position")
     }
 
     private func syncBoard() {

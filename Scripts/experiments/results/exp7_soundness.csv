@@ -1,0 +1,193 @@
+experiment_id,trial_id,timestamp,curve_name,curve_description,elo,tolerance,cp_loss,soundness_score,tol_at_min_elo,tol_at_max_elo
+exp7,1,2026-02-25T14:04:23.321396+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),500,122.0,0,100,130.0,50.0
+exp7,2,2026-02-25T14:04:23.321689+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),500,122.0,10,92,130.0,50.0
+exp7,3,2026-02-25T14:04:23.321693+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),500,122.0,30,78,130.0,50.0
+exp7,4,2026-02-25T14:04:23.321695+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),500,122.0,50,66,130.0,50.0
+exp7,5,2026-02-25T14:04:23.321697+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),500,122.0,80,51,130.0,50.0
+exp7,6,2026-02-25T14:04:23.321699+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),500,122.0,120,37,130.0,50.0
+exp7,7,2026-02-25T14:04:23.321700+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),500,122.0,200,19,130.0,50.0
+exp7,8,2026-02-25T14:04:23.321702+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),500,122.0,300,8,130.0,50.0
+exp7,9,2026-02-25T14:04:23.321709+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),800,98.0,0,100,130.0,50.0
+exp7,10,2026-02-25T14:04:23.321711+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),800,98.0,10,90,130.0,50.0
+exp7,11,2026-02-25T14:04:23.321713+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),800,98.0,30,73,130.0,50.0
+exp7,12,2026-02-25T14:04:23.321714+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),800,98.0,50,60,130.0,50.0
+exp7,13,2026-02-25T14:04:23.321716+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),800,98.0,80,44,130.0,50.0
+exp7,14,2026-02-25T14:04:23.321717+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),800,98.0,120,29,130.0,50.0
+exp7,15,2026-02-25T14:04:23.321718+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),800,98.0,200,12,130.0,50.0
+exp7,16,2026-02-25T14:04:23.321720+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),800,98.0,300,4,130.0,50.0
+exp7,17,2026-02-25T14:04:23.321722+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1000,82.0,0,100,130.0,50.0
+exp7,18,2026-02-25T14:04:23.321724+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1000,82.0,10,88,130.0,50.0
+exp7,19,2026-02-25T14:04:23.321725+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1000,82.0,30,69,130.0,50.0
+exp7,20,2026-02-25T14:04:23.321726+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1000,82.0,50,54,130.0,50.0
+exp7,21,2026-02-25T14:04:23.321727+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1000,82.0,80,37,130.0,50.0
+exp7,22,2026-02-25T14:04:23.321728+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1000,82.0,120,23,130.0,50.0
+exp7,23,2026-02-25T14:04:23.321730+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1000,82.0,200,8,130.0,50.0
+exp7,24,2026-02-25T14:04:23.321731+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1000,82.0,300,2,130.0,50.0
+exp7,25,2026-02-25T14:04:23.321732+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1200,66.0,0,100,130.0,50.0
+exp7,26,2026-02-25T14:04:23.321733+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1200,66.0,10,85,130.0,50.0
+exp7,27,2026-02-25T14:04:23.321735+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1200,66.0,30,63,130.0,50.0
+exp7,28,2026-02-25T14:04:23.321736+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1200,66.0,50,46,130.0,50.0
+exp7,29,2026-02-25T14:04:23.321737+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1200,66.0,80,29,130.0,50.0
+exp7,30,2026-02-25T14:04:23.321738+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1200,66.0,120,16,130.0,50.0
+exp7,31,2026-02-25T14:04:23.321739+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1200,66.0,200,4,130.0,50.0
+exp7,32,2026-02-25T14:04:23.321740+00:00,current_linear,Current: linear 130 (ELO 400) to 50 (ELO 1400),1200,66.0,300,1,130.0,50.0
+exp7,33,2026-02-25T14:04:23.321742+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),500,139.0,0,100,150.0,40.0
+exp7,34,2026-02-25T14:04:23.321743+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),500,139.0,10,93,150.0,40.0
+exp7,35,2026-02-25T14:04:23.321745+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),500,139.0,30,80,150.0,40.0
+exp7,36,2026-02-25T14:04:23.321746+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),500,139.0,50,69,150.0,40.0
+exp7,37,2026-02-25T14:04:23.321747+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),500,139.0,80,56,150.0,40.0
+exp7,38,2026-02-25T14:04:23.321748+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),500,139.0,120,42,150.0,40.0
+exp7,39,2026-02-25T14:04:23.321749+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),500,139.0,200,23,150.0,40.0
+exp7,40,2026-02-25T14:04:23.321750+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),500,139.0,300,11,150.0,40.0
+exp7,41,2026-02-25T14:04:23.321751+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),800,106.0,0,100,150.0,40.0
+exp7,42,2026-02-25T14:04:23.321753+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),800,106.0,10,90,150.0,40.0
+exp7,43,2026-02-25T14:04:23.321754+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),800,106.0,30,75,150.0,40.0
+exp7,44,2026-02-25T14:04:23.321755+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),800,106.0,50,62,150.0,40.0
+exp7,45,2026-02-25T14:04:23.321757+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),800,106.0,80,47,150.0,40.0
+exp7,46,2026-02-25T14:04:23.321758+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),800,106.0,120,32,150.0,40.0
+exp7,47,2026-02-25T14:04:23.321759+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),800,106.0,200,15,150.0,40.0
+exp7,48,2026-02-25T14:04:23.321760+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),800,106.0,300,5,150.0,40.0
+exp7,49,2026-02-25T14:04:23.321777+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1000,84.0,0,100,150.0,40.0
+exp7,50,2026-02-25T14:04:23.321780+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1000,84.0,10,88,150.0,40.0
+exp7,51,2026-02-25T14:04:23.321782+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1000,84.0,30,69,150.0,40.0
+exp7,52,2026-02-25T14:04:23.321783+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1000,84.0,50,55,150.0,40.0
+exp7,53,2026-02-25T14:04:23.321784+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1000,84.0,80,38,150.0,40.0
+exp7,54,2026-02-25T14:04:23.321786+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1000,84.0,120,23,150.0,40.0
+exp7,55,2026-02-25T14:04:23.321788+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1000,84.0,200,9,150.0,40.0
+exp7,56,2026-02-25T14:04:23.321790+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1000,84.0,300,2,150.0,40.0
+exp7,57,2026-02-25T14:04:23.321791+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1200,62.0,0,100,150.0,40.0
+exp7,58,2026-02-25T14:04:23.321793+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1200,62.0,10,85,150.0,40.0
+exp7,59,2026-02-25T14:04:23.321794+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1200,62.0,30,61,150.0,40.0
+exp7,60,2026-02-25T14:04:23.321795+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1200,62.0,50,44,150.0,40.0
+exp7,61,2026-02-25T14:04:23.321796+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1200,62.0,80,27,150.0,40.0
+exp7,62,2026-02-25T14:04:23.321798+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1200,62.0,120,14,150.0,40.0
+exp7,63,2026-02-25T14:04:23.321799+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1200,62.0,200,3,150.0,40.0
+exp7,64,2026-02-25T14:04:23.321801+00:00,wider_range,Wider: 150 (ELO 400) to 40 (ELO 1400),1200,62.0,300,0,150.0,40.0
+exp7,65,2026-02-25T14:04:23.321803+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),500,105.0,0,100,110.0,60.0
+exp7,66,2026-02-25T14:04:23.321805+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),500,105.0,10,90,110.0,60.0
+exp7,67,2026-02-25T14:04:23.321806+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),500,105.0,30,75,110.0,60.0
+exp7,68,2026-02-25T14:04:23.321808+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),500,105.0,50,62,110.0,60.0
+exp7,69,2026-02-25T14:04:23.321809+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),500,105.0,80,46,110.0,60.0
+exp7,70,2026-02-25T14:04:23.321810+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),500,105.0,120,31,110.0,60.0
+exp7,71,2026-02-25T14:04:23.321811+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),500,105.0,200,14,110.0,60.0
+exp7,72,2026-02-25T14:04:23.321813+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),500,105.0,300,5,110.0,60.0
+exp7,73,2026-02-25T14:04:23.321814+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),800,90.0,0,100,110.0,60.0
+exp7,74,2026-02-25T14:04:23.321815+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),800,90.0,10,89,110.0,60.0
+exp7,75,2026-02-25T14:04:23.321817+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),800,90.0,30,71,110.0,60.0
+exp7,76,2026-02-25T14:04:23.321818+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),800,90.0,50,57,110.0,60.0
+exp7,77,2026-02-25T14:04:23.321819+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),800,90.0,80,41,110.0,60.0
+exp7,78,2026-02-25T14:04:23.321821+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),800,90.0,120,26,110.0,60.0
+exp7,79,2026-02-25T14:04:23.321822+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),800,90.0,200,10,110.0,60.0
+exp7,80,2026-02-25T14:04:23.321823+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),800,90.0,300,3,110.0,60.0
+exp7,81,2026-02-25T14:04:23.321825+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1000,80.0,0,100,110.0,60.0
+exp7,82,2026-02-25T14:04:23.321826+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1000,80.0,10,88,110.0,60.0
+exp7,83,2026-02-25T14:04:23.321827+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1000,80.0,30,68,110.0,60.0
+exp7,84,2026-02-25T14:04:23.321830+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1000,80.0,50,53,110.0,60.0
+exp7,85,2026-02-25T14:04:23.321831+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1000,80.0,80,36,110.0,60.0
+exp7,86,2026-02-25T14:04:23.321832+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1000,80.0,120,22,110.0,60.0
+exp7,87,2026-02-25T14:04:23.321834+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1000,80.0,200,8,110.0,60.0
+exp7,88,2026-02-25T14:04:23.321835+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1000,80.0,300,2,110.0,60.0
+exp7,89,2026-02-25T14:04:23.321838+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1200,70.0,0,100,110.0,60.0
+exp7,90,2026-02-25T14:04:23.321840+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1200,70.0,10,86,110.0,60.0
+exp7,91,2026-02-25T14:04:23.321841+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1200,70.0,30,65,110.0,60.0
+exp7,92,2026-02-25T14:04:23.321843+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1200,70.0,50,48,110.0,60.0
+exp7,93,2026-02-25T14:04:23.321844+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1200,70.0,80,31,110.0,60.0
+exp7,94,2026-02-25T14:04:23.321846+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1200,70.0,120,18,110.0,60.0
+exp7,95,2026-02-25T14:04:23.321847+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1200,70.0,200,5,110.0,60.0
+exp7,96,2026-02-25T14:04:23.321849+00:00,narrower_range,Narrower: 110 (ELO 400) to 60 (ELO 1400),1200,70.0,300,1,110.0,60.0
+exp7,97,2026-02-25T14:04:23.321850+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),500,167.0,0,100,180.0,50.0
+exp7,98,2026-02-25T14:04:23.321851+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),500,167.0,10,94,180.0,50.0
+exp7,99,2026-02-25T14:04:23.321853+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),500,167.0,30,83,180.0,50.0
+exp7,100,2026-02-25T14:04:23.321854+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),500,167.0,50,74,180.0,50.0
+exp7,101,2026-02-25T14:04:23.321855+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),500,167.0,80,61,180.0,50.0
+exp7,102,2026-02-25T14:04:23.321857+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),500,167.0,120,48,180.0,50.0
+exp7,103,2026-02-25T14:04:23.321858+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),500,167.0,200,30,180.0,50.0
+exp7,104,2026-02-25T14:04:23.321860+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),500,167.0,300,16,180.0,50.0
+exp7,105,2026-02-25T14:04:23.321861+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),800,128.0,0,100,180.0,50.0
+exp7,106,2026-02-25T14:04:23.321863+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),800,128.0,10,92,180.0,50.0
+exp7,107,2026-02-25T14:04:23.321864+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),800,128.0,30,79,180.0,50.0
+exp7,108,2026-02-25T14:04:23.321865+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),800,128.0,50,67,180.0,50.0
+exp7,109,2026-02-25T14:04:23.321867+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),800,128.0,80,53,180.0,50.0
+exp7,110,2026-02-25T14:04:23.321868+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),800,128.0,120,39,180.0,50.0
+exp7,111,2026-02-25T14:04:23.321870+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),800,128.0,200,20,180.0,50.0
+exp7,112,2026-02-25T14:04:23.321871+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),800,128.0,300,9,180.0,50.0
+exp7,113,2026-02-25T14:04:23.321873+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1000,102.0,0,100,180.0,50.0
+exp7,114,2026-02-25T14:04:23.321874+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1000,102.0,10,90,180.0,50.0
+exp7,115,2026-02-25T14:04:23.321876+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1000,102.0,30,74,180.0,50.0
+exp7,116,2026-02-25T14:04:23.321877+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1000,102.0,50,61,180.0,50.0
+exp7,117,2026-02-25T14:04:23.321879+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1000,102.0,80,45,180.0,50.0
+exp7,118,2026-02-25T14:04:23.321880+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1000,102.0,120,30,180.0,50.0
+exp7,119,2026-02-25T14:04:23.321881+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1000,102.0,200,14,180.0,50.0
+exp7,120,2026-02-25T14:04:23.321882+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1000,102.0,300,5,180.0,50.0
+exp7,121,2026-02-25T14:04:23.321884+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1200,76.0,0,100,180.0,50.0
+exp7,122,2026-02-25T14:04:23.321886+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1200,76.0,10,87,180.0,50.0
+exp7,123,2026-02-25T14:04:23.321887+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1200,76.0,30,67,180.0,50.0
+exp7,124,2026-02-25T14:04:23.321889+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1200,76.0,50,51,180.0,50.0
+exp7,125,2026-02-25T14:04:23.321890+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1200,76.0,80,34,180.0,50.0
+exp7,126,2026-02-25T14:04:23.321891+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1200,76.0,120,20,180.0,50.0
+exp7,127,2026-02-25T14:04:23.321893+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1200,76.0,200,7,180.0,50.0
+exp7,128,2026-02-25T14:04:23.321894+00:00,generous_beginner,More generous to beginners: 180 (ELO 400) to 50 (ELO 1400),1200,76.0,300,1,180.0,50.0
+exp7,129,2026-02-25T14:04:23.321897+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),500,93.5,0,100,100.0,35.0
+exp7,130,2026-02-25T14:04:23.321899+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),500,93.5,10,89,100.0,35.0
+exp7,131,2026-02-25T14:04:23.321900+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),500,93.5,30,72,100.0,35.0
+exp7,132,2026-02-25T14:04:23.321902+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),500,93.5,50,58,100.0,35.0
+exp7,133,2026-02-25T14:04:23.321903+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),500,93.5,80,42,100.0,35.0
+exp7,134,2026-02-25T14:04:23.321905+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),500,93.5,120,27,100.0,35.0
+exp7,135,2026-02-25T14:04:23.321906+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),500,93.5,200,11,100.0,35.0
+exp7,136,2026-02-25T14:04:23.321907+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),500,93.5,300,4,100.0,35.0
+exp7,137,2026-02-25T14:04:23.321909+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),800,74.0,0,100,100.0,35.0
+exp7,138,2026-02-25T14:04:23.321910+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),800,74.0,10,87,100.0,35.0
+exp7,139,2026-02-25T14:04:23.321912+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),800,74.0,30,66,100.0,35.0
+exp7,140,2026-02-25T14:04:23.321913+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),800,74.0,50,50,100.0,35.0
+exp7,141,2026-02-25T14:04:23.321915+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),800,74.0,80,33,100.0,35.0
+exp7,142,2026-02-25T14:04:23.321916+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),800,74.0,120,19,100.0,35.0
+exp7,143,2026-02-25T14:04:23.321917+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),800,74.0,200,6,100.0,35.0
+exp7,144,2026-02-25T14:04:23.321919+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),800,74.0,300,1,100.0,35.0
+exp7,145,2026-02-25T14:04:23.321921+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1000,61.0,0,100,100.0,35.0
+exp7,146,2026-02-25T14:04:23.321922+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1000,61.0,10,84,100.0,35.0
+exp7,147,2026-02-25T14:04:23.321924+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1000,61.0,30,61,100.0,35.0
+exp7,148,2026-02-25T14:04:23.321925+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1000,61.0,50,44,100.0,35.0
+exp7,149,2026-02-25T14:04:23.321926+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1000,61.0,80,26,100.0,35.0
+exp7,150,2026-02-25T14:04:23.321928+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1000,61.0,120,13,100.0,35.0
+exp7,151,2026-02-25T14:04:23.321930+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1000,61.0,200,3,100.0,35.0
+exp7,152,2026-02-25T14:04:23.321931+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1000,61.0,300,0,100.0,35.0
+exp7,153,2026-02-25T14:04:23.321933+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1200,48.0,0,100,100.0,35.0
+exp7,154,2026-02-25T14:04:23.321935+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1200,48.0,10,81,100.0,35.0
+exp7,155,2026-02-25T14:04:23.321936+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1200,48.0,30,53,100.0,35.0
+exp7,156,2026-02-25T14:04:23.321938+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1200,48.0,50,35,100.0,35.0
+exp7,157,2026-02-25T14:04:23.321939+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1200,48.0,80,18,100.0,35.0
+exp7,158,2026-02-25T14:04:23.321940+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1200,48.0,120,8,100.0,35.0
+exp7,159,2026-02-25T14:04:23.321942+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1200,48.0,200,1,100.0,35.0
+exp7,160,2026-02-25T14:04:23.321943+00:00,strict_all,Strict across board: 100 (ELO 400) to 35 (ELO 1400),1200,48.0,300,0,100.0,35.0
+exp7,161,2026-02-25T14:04:23.321945+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),500,113.1,0,100,130.0,40.0
+exp7,162,2026-02-25T14:04:23.321947+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),500,113.1,10,91,130.0,40.0
+exp7,163,2026-02-25T14:04:23.321948+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),500,113.1,30,76,130.0,40.0
+exp7,164,2026-02-25T14:04:23.321950+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),500,113.1,50,64,130.0,40.0
+exp7,165,2026-02-25T14:04:23.321951+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),500,113.1,80,49,130.0,40.0
+exp7,166,2026-02-25T14:04:23.321953+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),500,113.1,120,34,130.0,40.0
+exp7,167,2026-02-25T14:04:23.321954+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),500,113.1,200,17,130.0,40.0
+exp7,168,2026-02-25T14:04:23.321956+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),500,113.1,300,7,130.0,40.0
+exp7,169,2026-02-25T14:04:23.321959+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),800,96.2,0,100,130.0,40.0
+exp7,170,2026-02-25T14:04:23.321962+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),800,96.2,10,90,130.0,40.0
+exp7,171,2026-02-25T14:04:23.321963+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),800,96.2,30,73,130.0,40.0
+exp7,172,2026-02-25T14:04:23.321965+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),800,96.2,50,59,130.0,40.0
+exp7,173,2026-02-25T14:04:23.321966+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),800,96.2,80,43,130.0,40.0
+exp7,174,2026-02-25T14:04:23.321968+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),800,96.2,120,28,130.0,40.0
+exp7,175,2026-02-25T14:04:23.321969+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),800,96.2,200,12,130.0,40.0
+exp7,176,2026-02-25T14:04:23.321970+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),800,96.2,300,4,130.0,40.0
+exp7,177,2026-02-25T14:04:23.321972+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1000,85.0,0,100,130.0,40.0
+exp7,178,2026-02-25T14:04:23.321974+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1000,85.0,10,88,130.0,40.0
+exp7,179,2026-02-25T14:04:23.321975+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1000,85.0,30,70,130.0,40.0
+exp7,180,2026-02-25T14:04:23.321977+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1000,85.0,50,55,130.0,40.0
+exp7,181,2026-02-25T14:04:23.321978+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1000,85.0,80,39,130.0,40.0
+exp7,182,2026-02-25T14:04:23.321980+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1000,85.0,120,24,130.0,40.0
+exp7,183,2026-02-25T14:04:23.321981+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1000,85.0,200,9,130.0,40.0
+exp7,184,2026-02-25T14:04:23.321983+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1000,85.0,300,2,130.0,40.0
+exp7,185,2026-02-25T14:04:23.321984+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1200,73.8,0,100,130.0,40.0
+exp7,186,2026-02-25T14:04:23.321986+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1200,73.8,10,87,130.0,40.0
+exp7,187,2026-02-25T14:04:23.321987+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1200,73.8,30,66,130.0,40.0
+exp7,188,2026-02-25T14:04:23.321989+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1200,73.8,50,50,130.0,40.0
+exp7,189,2026-02-25T14:04:23.321990+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1200,73.8,80,33,130.0,40.0
+exp7,190,2026-02-25T14:04:23.321992+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1200,73.8,120,19,130.0,40.0
+exp7,191,2026-02-25T14:04:23.321993+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1200,73.8,200,6,130.0,40.0
+exp7,192,2026-02-25T14:04:23.321995+00:00,extended_elo,Extended ELO range: 130 (ELO 200) to 40 (ELO 1800),1200,73.8,300,1,130.0,40.0

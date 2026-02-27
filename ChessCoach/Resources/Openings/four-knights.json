@@ -1,0 +1,588 @@
+{
+  "id": "four-knights",
+  "name": "Four Knights Game",
+  "description": "A solid, symmetrical opening where both sides develop their knights first. Easy to learn and hard to go wrong.",
+  "color": "white",
+  "difficulty": 1,
+  "tree": {
+    "id": "four-knights/root",
+    "children": [
+      {
+        "id": "four-knights/e2e4",
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "Claim the center with your king's pawn! This is the most popular first move — it controls important central squares and opens lines for your pieces."
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "four-knights/e2e4/e7e5",
+            "move": {
+              "uci": "e7e5",
+              "san": "e5",
+              "explanation": "Black mirrors your move and also fights for the center. Both sides have equal central pawns — a fair fight is beginning!"
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "four-knights/e2e4/e7e5/g1f3",
+                "move": {
+                  "uci": "g1f3",
+                  "san": "Nf3",
+                  "explanation": "Develop your king's knight to f3 — it attacks the e5 pawn, controls central squares, and prepares to castle. A perfect developing move!"
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "four-knights/e2e4/e7e5/g1f3/b8c6",
+                    "move": {
+                      "uci": "b8c6",
+                      "san": "Nc6",
+                      "explanation": "Black develops the queen's knight to defend the e5 pawn while fighting for central control. A very natural and principled response."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3",
+                        "move": {
+                          "uci": "b1c3",
+                          "san": "Nc3",
+                          "explanation": "White develops the queen's knight to c3 — now two knights are developed for each side! This is the starting point of the Four Knights Game."
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6",
+                            "move": {
+                              "uci": "g8f6",
+                              "san": "Nf6",
+                              "explanation": "Black develops the second knight — now all four knights are on the board! This is the Four Knights Game. A very symmetrical and solid position."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5",
+                                "move": {
+                                  "uci": "f1b5",
+                                  "san": "Bb5",
+                                  "explanation": "The Spanish-style bishop move! Just like in the Ruy Lopez, the bishop pins Black's knight on c6. This is the best way to fight for an advantage in the Four Knights."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f8b4",
+                                    "move": {
+                                      "uci": "f8b4",
+                                      "san": "Bb4",
+                                      "explanation": "Black mirrors the move — the bishop pins your knight on c3! This symmetrical response creates a double pin and leads to fascinating tactical play."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f8b4/e1g1",
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle! White breaks the symmetry and gets the king to safety. The rook on f1 will be very useful in the middlegame."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f8b4/e1g1/e8g8",
+                                            "move": {
+                                              "uci": "e8g8",
+                                              "san": "O-O",
+                                              "explanation": "Black castles too. Both kings are safe on the kingside. Now both sides will maneuver for position — this is a rich middlegame!"
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f8b4/e1g1/e8g8/d2d3",
+                                                "move": {
+                                                  "uci": "d2d3",
+                                                  "san": "d3",
+                                                  "explanation": "Support the e4 pawn solidly. This is a key move in the Four Knights — it prepares to develop the bishop and build a stable center."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f8b4/e1g1/e8g8/d2d3/d7d6",
+                                                    "move": {
+                                                      "uci": "d7d6",
+                                                      "san": "d6",
+                                                      "explanation": "Black supports the e5 pawn in kind. The position is solid and balanced — develop your dark-squared bishop with Bg5 or c3 to start maneuvering."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f6d5",
+                                    "move": {
+                                      "uci": "f6d5",
+                                      "san": "Nd5",
+                                      "explanation": "Black jumps the knight to d5 — this is the Rubinstein Variation! The knight attacks your b5 bishop and creates an asymmetrical position."
+                                    },
+                                    "isMainLine": false,
+                                    "variationName": "Rubinstein Variation",
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f6d5/b5c6",
+                                        "move": {
+                                          "uci": "b5c6",
+                                          "san": "Bxc6",
+                                          "explanation": "Take the knight! You give up the bishop for a knight, but you win a pawn next and double Black's pawns. A classic pawn-winning idea!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f6d5/b5c6/d7c6",
+                                            "move": {
+                                              "uci": "d7c6",
+                                              "san": "dxc6",
+                                              "explanation": "Black recaptures toward the center. The c6 pawn is doubled but Black gets the half-open d-file. Now take the knight on d5 and win a pawn!"
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f6d5/b5c6/d7c6/c3d5",
+                                                "move": {
+                                                  "uci": "c3d5",
+                                                  "san": "Nxd5",
+                                                  "explanation": "Win the pawn! Your knight takes on d5, forking the c6 and c7 pawns. Black's queen must recapture."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f6d5/b5c6/d7c6/c3d5/d8d5",
+                                                    "move": {
+                                                      "uci": "d8d5",
+                                                      "san": "Qxd5",
+                                                      "explanation": "Black takes the knight with the queen. You have won material! Now develop calmly with d3 and Bg5 to keep the advantage."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1b5/f6d5/b5c6/d7c6/c3d5/d8d5/d2d3",
+                                                        "move": {
+                                                          "uci": "d2d3",
+                                                          "san": "d3",
+                                                          "explanation": "Solidify your position. You're a pawn up and have doubled Black's pawns. Develop your bishop and castle — your advantage is clear!"
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1c4",
+                                "move": {
+                                  "uci": "f1c4",
+                                  "san": "Bc4",
+                                  "explanation": "The Italian Four Knights! Instead of Bb5, you develop the bishop to c4 targeting f7. This combines Four Knights development with Italian Game attacking ideas."
+                                },
+                                "isMainLine": false,
+                                "variationName": "Italian Four Knights",
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1c4/f8c5",
+                                    "move": {
+                                      "uci": "f8c5",
+                                      "san": "Bc5",
+                                      "explanation": "Black mirrors your bishop development. Now it looks like a Giuoco Piano with an extra pair of knights developed. Both sides have very active pieces!"
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1c4/f8c5/f3e5",
+                                        "move": {
+                                          "uci": "f3e5",
+                                          "san": "Nxe5",
+                                          "explanation": "A tactical shot! The knight grabs the e5 pawn. This works because after Nxe5 Nxe5, you play d4 and win a piece!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1c4/f8c5/f3e5/c6e5",
+                                            "move": {
+                                              "uci": "c6e5",
+                                              "san": "Nxe5",
+                                              "explanation": "Black recaptures with the knight. Now play d4! Your bishop on c4 and pawn on d4 will attack Black's pieces with tempo."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1c4/f8c5/f3e5/c6e5/d2d4",
+                                                "move": {
+                                                  "uci": "d2d4",
+                                                  "san": "d4",
+                                                  "explanation": "The key move! You attack both the bishop on c5 and the knight on e5. Black must give up material. This is a classic fork-style tactic!"
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "four-knights/e2e4/e7e5/g1f3/b8c6/b1c3/g8f6/f1c4/f8c5/f3e5/c6e5/d2d4/c5d6",
+                                                    "move": {
+                                                      "uci": "c5d6",
+                                                      "san": "Bd6",
+                                                      "explanation": "Black saves the bishop by retreating to d6. Now take on e5 and you have won a pawn with an excellent position!"
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "id": "four-knights/e2e4/e7e5/g1f3/b8c6/d2d4",
+                        "move": {
+                          "uci": "d2d4",
+                          "san": "d4",
+                          "explanation": "The Scotch Four Knights! Instead of playing Nc3, White pushes d4 immediately to open the center. This leads to very different positions than the classical Four Knights."
+                        },
+                        "isMainLine": false,
+                        "variationName": "Scotch Four Knights",
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "four-knights/e2e4/e7e5/g1f3/b8c6/d2d4/e5d4",
+                            "move": {
+                              "uci": "e5d4",
+                              "san": "exd4",
+                              "explanation": "Black captures the d4 pawn, opening the position. This leads to Scotch Game-like structures — very energetic and tactical!"
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "four-knights/e2e4/e7e5/g1f3/b8c6/d2d4/e5d4/f3d4",
+                                "move": {
+                                  "uci": "f3d4",
+                                  "san": "Nxd4",
+                                  "explanation": "Recapture with the knight, landing on the powerful d4 square in the center. Now develop your pieces rapidly!"
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "four-knights/e2e4/e7e5/g1f3/b8c6/d2d4/e5d4/f3d4/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Black develops the knight, attacking your e4 pawn. This is the Scotch Four Knights — a sharp position where both sides must play actively."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "four-knights/e2e4/e7e5/g1f3/b8c6/d2d4/e5d4/f3d4/g8f6/d4c6",
+                                        "move": {
+                                          "uci": "d4c6",
+                                          "san": "Nxc6",
+                                          "explanation": "Trade the knight! You win the bishop pair and disrupt Black's pawn structure. After dxc6, Black has a doubled pawn on the c-file."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "four-knights/e2e4/e7e5/g1f3/b8c6/d2d4/e5d4/f3d4/g8f6/d4c6/b7c6",
+                                            "move": {
+                                              "uci": "b7c6",
+                                              "san": "bxc6",
+                                              "explanation": "Black recaptures with the b-pawn, creating a doubled c-pawn. Develop your bishop to d3 or c4 and castle — you have a small but lasting structural advantage."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Develop both knights to their natural squares (Nf3 and Nc3), then play Bb5 to pin Black's knight — the Spanish Four Knights approach. Castle early and support the center with d3. In the middlegame, look for opportunities to exchange the bishop pair or apply pressure on the e5 pawn.",
+    "strategicGoals": [
+      { "description": "Develop both knights to f3 and c3, the ideal central squares", "priority": 1 },
+      { "description": "Play Bb5 to put pressure on Black's c6 knight and the center", "priority": 2 },
+      { "description": "Castle kingside quickly to ensure king safety", "priority": 3 },
+      { "description": "Support the center with d3 and prepare to expand with d4 or Bg5", "priority": 4 }
+    ],
+    "pawnStructureTarget": "Solid e4/d3 center, aiming to push d4 when the position allows",
+    "keySquares": ["e4", "d3", "b5", "c6", "d4"],
+    "pieceTargets": [
+      { "piece": "king's knight", "idealSquares": ["f3"], "reasoning": "Controls e5 and d4, attacks Black's e5 pawn, and is ready to support kingside defense" },
+      { "piece": "queen's knight", "idealSquares": ["c3"], "reasoning": "Supports e4, controls d5, and helps prepare a central break with d4" },
+      { "piece": "light-squared bishop", "idealSquares": ["b5"], "reasoning": "Pins the c6 knight, maintaining central tension and putting long-term pressure on Black" }
+    ],
+    "typicalPlans": [
+      "Play Bb5 and O-O, then d3 and Bg5 to pin Black's knight on f6",
+      "In the Rubinstein Variation, take on c6 and win a pawn with Nxd5",
+      "In the Italian Four Knights, use d4 after Nxe5 Nxe5 to win material"
+    ],
+    "commonMistakes": [
+      "Breaking the symmetry too early with an unplanned pawn push before all pieces are developed",
+      "Forgetting to castle — in the Four Knights, king safety is crucial before attacking",
+      "Playing Bc4 without knowing the d4 trick in the Italian Four Knights variation"
+    ],
+    "historicalNote": "The Four Knights Game was extremely popular in the late 1800s and early 1900s. Emanuel Lasker and Siegbert Tarrasch played it frequently. While it's considered very solid and symmetrical, there are many clever tricks and traps hidden inside, particularly in the Rubinstein and Italian Four Knights variations.",
+    "planLessons": [
+      {
+        "title": "The Four Knights: Perfect Symmetry",
+        "description": "After 1.e4 e5 2.Nf3 Nc6 3.Nc3 Nf6, all four knights are developed! Both sides have two knights protecting their central pawns. This is the Four Knights Game — easy to learn and very solid.",
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/4P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq - 4 4",
+        "highlights": ["f3", "c3", "f6", "c6"],
+        "arrows": [],
+        "style": "good"
+      },
+      {
+        "title": "Bb5: The Spanish Four Knights Idea",
+        "description": "After all four knights develop, White plays Bb5 — just like in the Ruy Lopez! The bishop pins Black's knight on c6, putting pressure on the center. This is White's best way to fight for an advantage.",
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/2N2N2/PPPP1PPP/R1BQK2R b KQkq - 5 4",
+        "highlights": ["b5", "c6", "e5"],
+        "arrows": [{"from": "b5", "to": "c6"}],
+        "style": "good"
+      },
+      {
+        "title": "Castle Early — Don't Delay!",
+        "description": "After Bb5 and Bb4 (symmetrical), both sides should castle as soon as possible. Delaying castling in the Four Knights can lead to tactical problems with all those active pieces on the board.",
+        "fen": "r1bqk2r/pppp1ppp/2n2n2/1B2p3/1b2P3/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 6 5",
+        "highlights": ["e1", "g1", "e8", "g8"],
+        "arrows": [{"from": "e1", "to": "g1"}],
+        "style": "good"
+      },
+      {
+        "title": "The Rubinstein Trap: Win a Pawn!",
+        "description": "After 4.Bb5 Nd5, White plays Bxc6 dxc6 and then Nxd5! The knight takes on d5 attacking both c6 and c7 pawns. Black must recapture with the queen, leaving White a pawn up with a great position.",
+        "fen": "r1bqkb1r/ppp2ppp/2p5/3np3/4P3/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 0 6",
+        "highlights": ["d5", "c6", "c7"],
+        "arrows": [{"from": "c3", "to": "d5"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Play Bc4 Without Knowing the d4 Trick",
+        "description": "If you play Bc4 (Italian Four Knights), Black can mirror with Bc5. Then after Nxe5 Nxe5, White plays d4! This attacks both the bishop on c5 and the knight on e5 at the same time. Black loses material!",
+        "fen": "r1bqk2r/pppp1ppp/2n5/2b1N3/2B1P3/2N5/PPPP1PPP/R1BQK2R w KQkq - 4 6",
+        "highlights": ["d4", "c5", "e5"],
+        "arrows": [{"from": "d2", "to": "d4"}],
+        "style": "good"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/4P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq - 4 4",
+        "prompt": "All four knights are developed. What is White's best move to fight for an advantage?",
+        "choices": [
+          {"text": "Bb5 — pin Black's c6 knight like in the Ruy Lopez", "isCorrect": true},
+          {"text": "d4 — push immediately to open the center", "isCorrect": false},
+          {"text": "Bc4 — develop the bishop toward f7", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Bb5 is the strongest move! It pins Black's c6 knight, putting pressure on the e5 pawn indirectly. This Spanish-style approach gives White long-term pressure without overcommitting. The bishop on b5 is a powerful piece!",
+        "boardHighlightsOnReveal": ["b5", "c6"],
+        "arrowsOnReveal": [{"from": "f1", "to": "b5"}]
+      },
+      {
+        "fen": "r1bqk2r/ppp2ppp/2p2n2/3np3/4P3/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 0 6",
+        "prompt": "After 4.Bb5 Nd5 5.Bxc6 dxc6, how does White win a pawn?",
+        "choices": [
+          {"text": "Nxd5 — the knight forks the c6 and c7 pawns", "isCorrect": true},
+          {"text": "d4 — push the center pawn forward", "isCorrect": false},
+          {"text": "O-O — castle and wait for Black to make a mistake", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Nxd5 wins a pawn! The knight lands on d5 and attacks the c7 pawn while also attacking the doubled c6 pawn. Black has to recapture with the queen (Qxd5), and White has won a pawn with a comfortable position.",
+        "boardHighlightsOnReveal": ["d5", "c6", "c7"],
+        "arrowsOnReveal": [{"from": "c3", "to": "d5"}]
+      },
+      {
+        "fen": "r1bqk2r/pppp1ppp/2n5/2b1N3/2B1P3/2N5/PPPP1PPP/R1BQK2R w KQkq - 4 6",
+        "prompt": "In the Italian Four Knights, Black just played Nxe5. What is White's strongest reply?",
+        "choices": [
+          {"text": "d4 — attack the bishop on c5 and the knight on e5 at the same time", "isCorrect": true},
+          {"text": "Nxe5 — take the pawn back immediately", "isCorrect": false},
+          {"text": "O-O — castle and see what Black does", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "d4 is the brilliant move! It attacks both the bishop on c5 and the knight on e5 simultaneously. Black cannot defend both pieces, so White wins material. This is a key tactical idea in the Italian Four Knights!",
+        "boardHighlightsOnReveal": ["d4", "c5", "e5"],
+        "arrowsOnReveal": [{"from": "d2", "to": "d4"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Four Knights: Spanish System (C48)",
+        "description": "After 4.Bb5, the Spanish Four Knights begins. White plays just like the Ruy Lopez — pinning Black's knight and maintaining pressure on the center. This is the most popular and theoretically important line in the Four Knights Game.",
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/2N2N2/PPPP1PPP/R1BQK2R b KQkq - 5 4",
+        "highlights": ["b5", "c6", "f6", "e5"],
+        "arrows": [{"from": "b5", "to": "c6"}],
+        "style": "theory"
+      },
+      {
+        "title": "Rubinstein Variation (C48)",
+        "description": "After 4.Bb5 Nd5!, the Rubinstein Variation. Named after Akiba Rubinstein, this was considered the refutation of the Spanish Four Knights for many years. Black jumps the knight to d5 to gain counterplay.",
+        "fen": "r1bqkb1r/pppp1ppp/2n5/1B1np3/4P3/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 6 5",
+        "highlights": ["d5", "b5", "c6"],
+        "arrows": [{"from": "f6", "to": "d5"}],
+        "style": "theory"
+      },
+      {
+        "title": "Italian Four Knights (C46)",
+        "description": "With 4.Bc4, White aims for Italian-style pressure on f7. After 4...Bc5, White has the famous tactical trick: 5.Nxe5 Nxe5 6.d4!, attacking both pieces at once and winning material. Know this trick!",
+        "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 6 5",
+        "highlights": ["c4", "c5", "f7"],
+        "arrows": [{"from": "f3", "to": "e5"}, {"from": "d2", "to": "d4"}],
+        "style": "theory"
+      },
+      {
+        "title": "Scotch Four Knights (C47)",
+        "description": "After 3.d4, the Scotch Four Knights arises. White opens the center immediately rather than developing Nc3 first. This leads to open, tactical Scotch Game-like positions with plenty of piece activity for both sides.",
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq d3 0 3",
+        "highlights": ["d4", "e4", "f3"],
+        "arrows": [{"from": "d2", "to": "d4"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/2N2N2/PPPP1PPP/R1BQK2R b KQkq - 5 4",
+        "prompt": "White just played Bb5. What is the name of this Four Knights variation?",
+        "choices": [
+          {"text": "Spanish Four Knights", "isCorrect": true},
+          {"text": "Italian Four Knights", "isCorrect": false},
+          {"text": "Rubinstein Variation", "isCorrect": false},
+          {"text": "Scotch Four Knights", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Spanish Four Knights (C48)! White plays Bb5, just like in the Ruy Lopez — hence the 'Spanish' name. The bishop pins Black's c6 knight and maintains lasting pressure on the center.",
+        "boardHighlightsOnReveal": ["b5", "c6"],
+        "arrowsOnReveal": [{"from": "f1", "to": "b5"}]
+      },
+      {
+        "fen": "r1bqkb1r/pppp1ppp/2n5/1B1np3/4P3/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 6 5",
+        "prompt": "Black played Nd5 instead of the symmetrical Bb4. What is this variation called?",
+        "choices": [
+          {"text": "Rubinstein Variation", "isCorrect": true},
+          {"text": "Scotch Four Knights", "isCorrect": false},
+          {"text": "Italian Four Knights", "isCorrect": false},
+          {"text": "Marshall Variation", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Rubinstein Variation, named after the great Akiba Rubinstein! After 4...Nd5, Black counterattacks and tries to win material. White responds with Bxc6 dxc6 Nxd5, winning a pawn.",
+        "boardHighlightsOnReveal": ["d5", "b5"],
+        "arrowsOnReveal": [{"from": "f6", "to": "d5"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["e2e4", "e7e5", "g1f3", "b8c6", "b1c3", "g8f6"],
+    "responses": [
+      {
+        "id": "four-knights-bb5",
+        "move": { "uci": "f1b5", "san": "Bb5", "explanation": "White develops the bishop to b5, pinning Black's c6 knight — the Spanish Four Knights." },
+        "name": "Spanish Four Knights",
+        "eco": "C48",
+        "frequency": 0.50,
+        "description": "White plays Bb5, the most principled continuation. Just like the Ruy Lopez, White pins the c6 knight and maintains lasting central pressure.",
+        "planAdjustment": "After Bb5, castle early and play d3. If Black plays Nd5 (Rubinstein), take Bxc6 dxc6 and then Nxd5 to win a pawn."
+      },
+      {
+        "id": "four-knights-bc4",
+        "move": { "uci": "f1c4", "san": "Bc4", "explanation": "White develops the bishop to c4, targeting f7 — the Italian Four Knights." },
+        "name": "Italian Four Knights",
+        "eco": "C46",
+        "frequency": 0.30,
+        "description": "White plays Bc4, aiming for Italian-style f7 pressure. If Black plays Bc5, White has the tactical trick Nxe5 Nxe5 d4, winning material.",
+        "planAdjustment": "After Bc4 Bc5, play Nxe5! If Black recaptures Nxe5, immediately play d4 to attack both Black pieces. If Black doesn't take, you have a free pawn."
+      },
+      {
+        "id": "four-knights-scotch",
+        "move": { "uci": "d2d4", "san": "d4", "explanation": "White pushes d4, entering the Scotch Four Knights." },
+        "name": "Scotch Four Knights",
+        "eco": "C47",
+        "frequency": 0.12,
+        "description": "White plays d4 early, transposing to a Scotch Game-like structure. After exd4 Nxd4, the position is open and tactical.",
+        "planAdjustment": "After Nxd4 Nf6, play Nxc6 to trade the knight and create doubled pawns for Black. Then develop your bishop and castle."
+      },
+      {
+        "id": "four-knights-d3",
+        "move": { "uci": "d2d3", "san": "d3", "explanation": "White plays d3, a quiet approach keeping the position solid." },
+        "name": "Quiet System with d3",
+        "eco": "C46",
+        "frequency": 0.08,
+        "description": "A quiet, solid approach. White supports e4 immediately and prepares to develop the bishop. Less ambitious but very reliable.",
+        "planAdjustment": "Continue with Be2 or Bc4 and then castle. The position is quiet — aim for a slow central build-up with c3 and d4 later."
+      }
+    ]
+  }
+}

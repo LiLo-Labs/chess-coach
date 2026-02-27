@@ -1,0 +1,631 @@
+{
+  "id": "sicilian",
+  "name": "Sicilian Defense",
+  "description": "The most popular and aggressive response to 1.e4. Leads to sharp, exciting games.",
+  "color": "black",
+  "difficulty": 3,
+  "tree": {
+    "id": "sicilian/root",
+    "children": [
+      {
+        "id": "sicilian/e2e4",
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "White takes the center with the king's pawn. This is the most popular first move in chess!"
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "sicilian/e2e4/c7c5",
+            "move": {
+              "uci": "c7c5",
+              "san": "c5",
+              "explanation": "Welcome to the Sicilian Defense! Instead of mirroring White with ...e5, you fight for the d4 square with the c-pawn. This creates an unbalanced position where both sides attack on opposite sides of the board."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "sicilian/e2e4/c7c5/g1f3",
+                "move": {
+                  "uci": "g1f3",
+                  "san": "Nf3",
+                  "explanation": "White develops a knight to the center — the starting point of all the main Sicilian lines. White plans to play d4 and open the center."
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "sicilian/e2e4/c7c5/g1f3/d7d6",
+                    "move": {
+                      "uci": "d7d6",
+                      "san": "d6",
+                      "explanation": "A flexible move that prepares ...Nf6 and controls the e5 square. This is the starting point for the Najdorf, Dragon, and many other exciting Sicilian variations!"
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4",
+                        "move": {
+                          "uci": "d2d4",
+                          "san": "d4",
+                          "explanation": "White opens the center — this is what the Sicilian is all about! White gets a space advantage but Black gets the open c-file and exciting counterplay."
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4",
+                            "move": {
+                              "uci": "c5d4",
+                              "san": "cxd4",
+                              "explanation": "Capture the d4 pawn! This is the key Sicilian trade — you give up your c-pawn but get a half-open c-file for your rooks to use later. Perfect!"
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4",
+                                "move": {
+                                  "uci": "f3d4",
+                                  "san": "Nxd4",
+                                  "explanation": "White recaptures with the knight, which now sits powerfully in the center on d4. This is the Open Sicilian — the most exciting and complex chess position in the world!"
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Develop the knight and attack White's e4 pawn! This puts immediate pressure on White and prepares ...a6, starting the famous Najdorf Variation."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g8f6/b1c3",
+                                        "move": {
+                                          "uci": "b1c3",
+                                          "san": "Nc3",
+                                          "explanation": "White develops the second knight, defending e4. This is a very natural and solid developing move. Now you get to play the famous ...a6!"
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g8f6/b1c3/a7a6",
+                                            "move": {
+                                              "uci": "a7a6",
+                                              "san": "a6",
+                                              "explanation": "The Najdorf! This little move is one of the most famous in chess. It prevents Nb5 and prepares ...b5 to expand on the queenside. Bobby Fischer's favorite weapon!"
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g8f6/b1c3/a7a6/f1e2",
+                                                "move": {
+                                                  "uci": "f1e2",
+                                                  "san": "Be2",
+                                                  "explanation": "The English Attack or solid setup — White develops the bishop calmly and prepares to castle. Now you can play the key move ...e5 to kick the knight!"
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g8f6/b1c3/a7a6/f1e2/e7e5",
+                                                    "move": {
+                                                      "uci": "e7e5",
+                                                      "san": "e5",
+                                                      "explanation": "The key Najdorf idea! You kick the knight off d4 and gain space in the center. The knight must retreat and you get a strong position, though d5 becomes a slight weakness."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": [
+                                                      {
+                                                        "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g8f6/b1c3/a7a6/f1e2/e7e5/d4b3",
+                                                        "move": {
+                                                          "uci": "d4b3",
+                                                          "san": "Nb3",
+                                                          "explanation": "The knight retreats to b3 — it's safe here but less active. You have gained center space with ...e5 and can now develop your remaining pieces comfortably."
+                                                        },
+                                                        "isMainLine": true,
+                                                        "weight": 60,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g7g6",
+                                    "move": {
+                                      "uci": "g7g6",
+                                      "san": "g6",
+                                      "explanation": "The Dragon Variation begins! You prepare to fianchetto your king's bishop to g7, where it will become a powerful attacking piece pointing down the long diagonal."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "variationName": "Dragon Variation",
+                                    "children": [
+                                      {
+                                        "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g7g6/b1c3",
+                                        "move": {
+                                          "uci": "b1c3",
+                                          "san": "Nc3",
+                                          "explanation": "White develops the knight. Time to fianchetto the bishop to g7 — this is the heart of the Dragon!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g7g6/b1c3/f8g7",
+                                            "move": {
+                                              "uci": "f8g7",
+                                              "san": "Bg7",
+                                              "explanation": "The Dragon bishop arrives on g7! This powerful piece controls the long diagonal from g7 all the way to a1. It's often called the 'Dragon' bishop because it breathes fire!"
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g7g6/b1c3/f8g7/c1e3",
+                                                "move": {
+                                                  "uci": "c1e3",
+                                                  "san": "Be3",
+                                                  "explanation": "White develops the bishop and prepares for the Yugoslav Attack — one of the sharpest attacking systems in chess. Develop your remaining pieces and castle quickly!"
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g7g6/b1c3/f8g7/c1e3/b8c6",
+                                                    "move": {
+                                                      "uci": "b8c6",
+                                                      "san": "Nc6",
+                                                      "explanation": "Develop the queen's knight and put pressure on d4. Your pieces are coming to life and the Dragon is awakening!"
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/g7g6/b1c3/f8g7/c1e3/b8c6/f1c4",
+                                                        "move": {
+                                                          "uci": "f1c4",
+                                                          "san": "Bc4",
+                                                          "explanation": "White points the bishop at f7 and d5 — beginning the Yugoslav Attack! Castle kingside quickly and prepare your queenside counterattack with ...Qa5 and ...Rb8."
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/b8c6",
+                                    "move": {
+                                      "uci": "b8c6",
+                                      "san": "Nc6",
+                                      "explanation": "The Classical Sicilian! Develop the knight and put pressure on d4. This is a very natural developing move that keeps all options open."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "variationName": "Classical Sicilian",
+                                    "children": [
+                                      {
+                                        "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/b8c6/b1c3",
+                                        "move": {
+                                          "uci": "b1c3",
+                                          "san": "Nc3",
+                                          "explanation": "White develops and defends e4. Both sides are developing smoothly in this Classical variation."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/b8c6/b1c3/g7g6",
+                                            "move": {
+                                              "uci": "g7g6",
+                                              "san": "g6",
+                                              "explanation": "You can also fianchetto the bishop from the Classical move order — this can transpose into Dragon-like positions. Flexible play!"
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/b8c6/b1c3/g7g6/c1e3",
+                                                "move": {
+                                                  "uci": "c1e3",
+                                                  "san": "Be3",
+                                                  "explanation": "White develops the bishop. Continue developing your pieces — ...Bg7 to fianchetto and then castle kingside."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/b8c6/b1c3/g7g6/c1e3/f8g7",
+                                                    "move": {
+                                                      "uci": "f8g7",
+                                                      "san": "Bg7",
+                                                      "explanation": "Fianchetto the bishop to g7! Now your bishop is a powerful piece on the long diagonal. Castle next and prepare queenside counterplay."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "sicilian/e2e4/c7c5/g1f3/d7d6/d2d4/c5d4/f3d4/b8c6/b1c3/g7g6/c1e3/f8g7/f1c4",
+                                                        "move": {
+                                                          "uci": "f1c4",
+                                                          "san": "Bc4",
+                                                          "explanation": "White's bishop points at f7. Time to castle and get your king to safety — then launch your queenside counterattack on the c-file!"
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "sicilian/e2e4/c7c5/g1f3/b8c6",
+                    "move": {
+                      "uci": "b8c6",
+                      "san": "Nc6",
+                      "explanation": "Another great option — develop the queen's knight immediately. This leads to the Sveshnikov, Richter-Rauzer, and other exciting variations."
+                    },
+                    "isMainLine": false,
+                    "weight": 155,
+                    "variationName": "Sveshnikov Variation",
+                    "children": [
+                      {
+                        "id": "sicilian/e2e4/c7c5/g1f3/b8c6/d2d4",
+                        "move": {
+                          "uci": "d2d4",
+                          "san": "d4",
+                          "explanation": "White opens the center. Now capture on d4 and follow up with ...Nf6 — the Sveshnikov is on its way!"
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "sicilian/e2e4/c7c5/g1f3/b8c6/d2d4/c5d4",
+                            "move": {
+                              "uci": "c5d4",
+                              "san": "cxd4",
+                              "explanation": "Capture in the center! After White recaptures with the knight, you'll play ...Nf6 and then ...e5 — the heart of the Sveshnikov Variation."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "sicilian/e2e4/c7c5/g1f3/b8c6/d2d4/c5d4/f3d4",
+                                "move": {
+                                  "uci": "f3d4",
+                                  "san": "Nxd4",
+                                  "explanation": "White recaptures and sits powerfully on d4. Now play ...Nf6 to develop and set up the Sveshnikov's key ...e5 push."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "sicilian/e2e4/c7c5/g1f3/b8c6/d2d4/c5d4/f3d4/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Develop the knight and attack e4! You're heading for the Sveshnikov — after Nc3 you'll play ...e5, gaining space despite the backward d6 pawn and hole on d5."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "sicilian/e2e4/c7c5/g1f3/b8c6/d2d4/c5d4/f3d4/g8f6/b1c3",
+                                        "move": {
+                                          "uci": "b1c3",
+                                          "san": "Nc3",
+                                          "explanation": "White develops and defends e4. Now you play the key move ...e5 — the signature of the Sveshnikov Variation!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "sicilian/e2e4/c7c5/g1f3/b8c6/d2d4/c5d4/f3d4/g8f6/b1c3/e7e5",
+                                            "move": {
+                                              "uci": "e7e5",
+                                              "san": "e5",
+                                              "explanation": "The Sveshnikov! You push ...e5 to kick the knight and gain space, even though it creates a weakness on d5. This is a fighting choice that leads to very sharp, unbalanced battles!"
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Play ...c5 to fight for the d4 square without mirroring White's center. After ...cxd4, you get a half-open c-file for your rooks and exciting counterplay. White attacks on the kingside; you counterattack on the queenside. The Sicilian is the most popular defense in chess for a reason — it's rich, complex, and leads to winning chances for both sides.",
+    "strategicGoals": [
+      { "description": "Control the d4 square with ...c5 and gain the half-open c-file", "priority": 1 },
+      { "description": "Develop pieces quickly and castle to keep the king safe", "priority": 2 },
+      { "description": "Launch queenside counterplay (typically ...a5-a4 or ...b5-b4) while White attacks kingside", "priority": 3 },
+      { "description": "Use the open c-file for rook activity and pressure on White's queenside", "priority": 4 },
+      { "description": "In the Najdorf, play ...e5 to gain center space and restrict White's Nd4", "priority": 5 }
+    ],
+    "pawnStructureTarget": "Half-open c-file after ...cxd4; Black's queenside majority creates long-term winning chances in the endgame",
+    "keySquares": ["d4", "c5", "d6", "e5", "c8"],
+    "pieceTargets": [
+      { "piece": "king's knight", "idealSquares": ["f6"], "reasoning": "Attacks e4 and prevents White from freely occupying the center; also supports ...d5 breaks" },
+      { "piece": "dark-squared bishop", "idealSquares": ["g7", "e7"], "reasoning": "In Dragon lines, g7 is the ideal square where it controls the long diagonal; ...e7 is solid and flexible" },
+      { "piece": "queen's rook", "idealSquares": ["c8", "b8"], "reasoning": "The half-open c-file is Black's main counterplay highway; the rook belongs on c8 as soon as possible" }
+    ],
+    "typicalPlans": [
+      "Attack on the queenside with ...a5-a4 or ...b5-b4 while White attacks on the kingside",
+      "Use the open c-file: double rooks on the c-file and create pressure on c2 or c3",
+      "In the Najdorf, play ...e5 to kick the knight off d4 and gain center space",
+      "In the Dragon, aim the g7 bishop at White's queenside along the long diagonal"
+    ],
+    "commonMistakes": [
+      "Forgetting to use the c-file — after ...cxd4, your rooks need to get to c8",
+      "Castling too late when White is already attacking your king",
+      "Playing too passively — the Sicilian requires active counterplay, not just defense",
+      "Trading the Dragon bishop on g7 — it is your most important attacking piece in Dragon lines"
+    ],
+    "historicalNote": "The Sicilian Defense has been played since the 16th century but became the most popular defense after the 1970s when Bobby Fischer used the Najdorf Variation to dominate world chess. Today it accounts for nearly 25% of all 1.e4 games at the top level.",
+    "planLessons": [
+      {
+        "title": "Why 1...c5? The Sicilian Logic",
+        "description": "Instead of mirroring White with ...e5, you play ...c5! This fights for the d4 square without giving White a symmetric center. After d4 cxd4, White has a pawn on e4 but you have no pawn in the center — and you get a half-open c-file instead!",
+        "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2",
+        "highlights": ["c5", "d4"],
+        "arrows": [{"from": "c5", "to": "d4"}],
+        "style": "good"
+      },
+      {
+        "title": "The Half-Open c-file",
+        "description": "After ...cxd4 and Nxd4, White's d-pawn is gone but your c-file is OPEN! This is your reward: rooks love open files, and the c-file becomes your highway for counterplay throughout the game.",
+        "fen": "rnbqkb1r/pp1ppppp/5n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R b KQkq - 1 5",
+        "highlights": ["c8", "c1"],
+        "arrows": [{"from": "c8", "to": "c1"}],
+        "style": "good"
+      },
+      {
+        "title": "The Najdorf: ...a6 is Brilliant",
+        "description": "After ...Nf6 and Nc3, Black plays the mysterious ...a6! This little pawn move prevents Nb5 and prepares ...b5 queenside expansion. Bobby Fischer called the Najdorf 'best by test.' It creates rich, unbalanced positions!",
+        "fen": "rnbqkb1r/1p1ppppp/p4n2/2p5/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 5",
+        "highlights": ["a6", "b5"],
+        "arrows": [{"from": "a7", "to": "a6"}, {"from": "b7", "to": "b5"}],
+        "style": "good"
+      },
+      {
+        "title": "The Dragon Bishop",
+        "description": "In the Dragon Variation, your bishop on g7 is the most powerful piece on the board! It controls the long h8-a1 diagonal and attacks White's queenside. Never trade this bishop away unless you get something very valuable in return.",
+        "fen": "r1bqk2r/pp1pppbp/2n2np1/8/3NP3/2N1B3/PPP1BPPP/R2QK2R b KQkq - 3 8",
+        "highlights": ["g7", "a1"],
+        "arrows": [{"from": "g7", "to": "a1"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Castle Too Late!",
+        "description": "In the Sicilian, White often attacks your king very aggressively. Castle early! If your king is still in the center when White launches Bg5, f4, g4, it can be very dangerous. King safety first, then counterattack!",
+        "fen": "r1bqk2r/pp2ppbp/2np1np1/8/3NP3/2N1B3/PPP1BPPP/R2QK2R b KQkq - 1 8",
+        "highlights": ["e8"],
+        "arrows": [{"from": "e8", "to": "g8"}],
+        "style": "bad"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+        "prompt": "After 1.e4 c5 2.Nf3, what is Black's key strategic advantage from playing ...c5?",
+        "choices": [
+          {"text": "Black fights for d4 and will get a half-open c-file after ...cxd4", "isCorrect": true},
+          {"text": "Black controls the center better than with ...e5", "isCorrect": false},
+          {"text": "Black's c-pawn prevents White from ever playing d4", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The Sicilian's big idea: ...c5 fights for d4 without giving White a symmetric center. After d4 cxd4 Nxd4, you have a half-open c-file for your rooks — the key source of Black's counterplay throughout the game!",
+        "boardHighlightsOnReveal": ["c5", "d4"],
+        "arrowsOnReveal": [{"from": "c8", "to": "c1"}]
+      },
+      {
+        "fen": "rnbqkb1r/1p1ppppp/p4n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6",
+        "prompt": "Black just played ...a6. What is this famous move and why is it so important?",
+        "choices": [
+          {"text": "The Najdorf — it prevents Nb5 and prepares queenside expansion with ...b5", "isCorrect": true},
+          {"text": "A waste of a tempo — there are better developing moves", "isCorrect": false},
+          {"text": "It prepares ...Ba6 to trade the bishop", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "...a6 is the Najdorf Variation — one of the most analyzed positions in all of chess! It prevents White's Nb5 (which would be annoying) and prepares ...b5 to expand on the queenside. Bobby Fischer's favorite weapon!",
+        "boardHighlightsOnReveal": ["a6", "b5"],
+        "arrowsOnReveal": [{"from": "b7", "to": "b5"}]
+      },
+      {
+        "fen": "r1bq1rk1/pp1pppbp/2n2np1/8/3NP3/2N1B3/PPP1BPPP/R2Q1RK1 b - - 5 9",
+        "prompt": "In the Dragon Variation, what is Black's most important attacking piece?",
+        "choices": [
+          {"text": "The bishop on g7 — it controls the long diagonal toward White's queenside", "isCorrect": true},
+          {"text": "The knight on f6 — it attacks e4", "isCorrect": false},
+          {"text": "The queen — it can move anywhere", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The Dragon bishop on g7 is Black's most powerful piece! It controls the entire long diagonal from h8 to a1, which runs through White's queenside. Never trade this bishop — it's worth fighting to keep it active!",
+        "boardHighlightsOnReveal": ["g7", "a1"],
+        "arrowsOnReveal": [{"from": "g7", "to": "a1"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Najdorf Variation (B90-B99)",
+        "description": "After 5...a6, the Najdorf is the most popular Sicilian line at top-level chess. The ...a6 move prevents Nb5 and prepares queenside expansion. Bobby Fischer used it to dominate all opponents. It is both solid and aggressive!",
+        "fen": "rnbqkb1r/1p1ppppp/p4n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6",
+        "highlights": ["a6"],
+        "arrows": [{"from": "b7", "to": "b5"}],
+        "style": "theory"
+      },
+      {
+        "title": "Dragon Variation (B70-B79)",
+        "description": "After 4...g6, Black fianchettoes the bishop to g7 — the 'Dragon' bishop. White often attacks with f3, Be3, Qd2, O-O-O and a blistering kingside attack, while Black counters on the queenside. Maximum tension!",
+        "fen": "rnbqk2r/pp1pppbp/3p1np1/8/3NP3/2N1B3/PPP1BPPP/R2QK2R b KQkq - 3 7",
+        "highlights": ["g7"],
+        "arrows": [{"from": "g7", "to": "a1"}],
+        "style": "theory"
+      },
+      {
+        "title": "Sveshnikov Variation (B33)",
+        "description": "After 2...Nc6, Black plans ...Nf6 and ...e5! The Sveshnikov (named after Evgeny Sveshnikov) creates a backward pawn on d6 and a hole on d5, but gives Black active play and counterattacking chances.",
+        "fen": "r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6",
+        "highlights": ["e7", "d5"],
+        "arrows": [{"from": "e7", "to": "e5"}],
+        "style": "theory"
+      },
+      {
+        "title": "The Open Sicilian Position (B20-B99)",
+        "description": "After 1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4, both sides have clear plans: White attacks on the kingside, Black counterattacks on the queenside using the open c-file. This dynamic imbalance is why the Sicilian is the most popular defense to 1.e4!",
+        "fen": "rnbqkb1r/pp1ppppp/5n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
+        "highlights": ["e4", "c8", "d4"],
+        "arrows": [{"from": "c8", "to": "c1"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkb1r/1p1ppppp/p4n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6",
+        "prompt": "After 1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 a6, what variation is this?",
+        "choices": [
+          {"text": "Najdorf Variation", "isCorrect": true},
+          {"text": "Dragon Variation", "isCorrect": false},
+          {"text": "Sveshnikov Variation", "isCorrect": false},
+          {"text": "Classical Sicilian", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Najdorf Variation (B90-B99), one of the most analyzed positions in chess history! The ...a6 move on move 5 is the signature of the Najdorf. It was Bobby Fischer's favorite weapon.",
+        "boardHighlightsOnReveal": ["a6"],
+        "arrowsOnReveal": []
+      },
+      {
+        "fen": "rnbqk2r/pp1pppbp/3p1np1/8/3NP3/2N1B3/PPP1BPPP/R2QK2R b KQkq - 3 7",
+        "prompt": "Black has fianchettoed the bishop to g7. What Sicilian variation is this?",
+        "choices": [
+          {"text": "Dragon Variation", "isCorrect": true},
+          {"text": "Najdorf Variation", "isCorrect": false},
+          {"text": "Scheveningen Variation", "isCorrect": false},
+          {"text": "Sveshnikov Variation", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Dragon Variation (B70-B79)! After ...g6 and ...Bg7, Black's bishop fianchettoes to g7 — the famous 'Dragon' bishop. It controls the long diagonal and is Black's most powerful attacking piece.",
+        "boardHighlightsOnReveal": ["g7"],
+        "arrowsOnReveal": [{"from": "g7", "to": "a1"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["e2e4", "c7c5", "g1f3", "d7d6"],
+    "responses": [
+      {
+        "id": "sicilian-open",
+        "move": {
+          "uci": "d2d4",
+          "san": "d4",
+          "explanation": "White opens the center with d4 — the Open Sicilian! Capture with ...cxd4 and enter the rich theoretical battle."
+        },
+        "name": "Open Sicilian",
+        "eco": "B90",
+        "frequency": 0.55,
+        "description": "The most popular and theoretically rich response — White opens the center with d4. After ...cxd4 Nxd4, both sides fight for the initiative.",
+        "planAdjustment": "Capture with ...cxd4, then develop with ...Nf6 and head for your favorite variation — Najdorf with ...a6, Dragon with ...g6, or Classical with ...Nc6."
+      },
+      {
+        "id": "sicilian-closed",
+        "move": {
+          "uci": "b1c3",
+          "san": "Nc3",
+          "explanation": "The Closed Sicilian — White keeps the center closed and attacks on the kingside. A slower but dangerous system."
+        },
+        "name": "Closed Sicilian",
+        "eco": "B25",
+        "frequency": 0.20,
+        "description": "White plays Nc3 without opening the center. White plans f4-f5 kingside attack while Black counterattacks with ...d5.",
+        "planAdjustment": "Play ...g6, ...Bg7, and castle kingside. Then push ...d5 or ...e5 to challenge the center. The Closed Sicilian is less sharp, so develop solidly and play for the ...d5 break."
+      },
+      {
+        "id": "sicilian-alapin",
+        "move": {
+          "uci": "c2c3",
+          "san": "c3",
+          "explanation": "The Alapin Variation — White prepares d4 without allowing ...cxd4 to be recaptured by a knight. A solid, less theoretical approach."
+        },
+        "name": "Alapin Variation",
+        "eco": "B22",
+        "frequency": 0.15,
+        "description": "White prepares d4 with c3. After d4, Black can capture and get a good position without knowing lots of theory.",
+        "planAdjustment": "Play ...d5! Challenge the center immediately. After 2.c3 d5 3.exd5 Qxd5 or 3...Nf6, you get active play and good development. Don't let White establish a free pawn center."
+      },
+      {
+        "id": "sicilian-grand-prix",
+        "move": {
+          "uci": "f2f4",
+          "san": "f4",
+          "explanation": "The Grand Prix Attack — White immediately plans Nf3, Bc4 or Bb5, and a kingside attack. Be ready to develop quickly!"
+        },
+        "name": "Grand Prix Attack",
+        "eco": "B23",
+        "frequency": 0.10,
+        "description": "White launches an immediate kingside attack with f4. This is the Grand Prix Attack — aggressive but manageable with good development.",
+        "planAdjustment": "Play ...Nc6 and ...e6 to prevent e5. Then develop your bishop to e7 or b4 and castle quickly. Don't let White build a strong f4-f5 attack — neutralize it with solid piece play."
+      }
+    ]
+  }
+}

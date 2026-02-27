@@ -51,6 +51,13 @@ struct OpeningNode: Codable, Sendable, Identifiable {
         self.weight = weight
     }
 
+    /// Generate a human-readable line name from the last 2-3 SAN moves (e.g. "d3 Nf6 O-O line").
+    static func generateLineName(moves: [OpeningMove]) -> String {
+        let suffix = moves.suffix(3).map(\.san).joined(separator: " ")
+        guard !suffix.isEmpty else { return "Starting Position" }
+        return "\(suffix) line"
+    }
+
     /// Flatten the tree into lines by walking each path from root to leaf.
     func allLines(prefix: [OpeningMove] = [], branchPly: Int = 0, parentLineID: String? = nil, inheritedName: String? = nil) -> [OpeningLine] {
         var results: [OpeningLine] = []
@@ -63,7 +70,7 @@ struct OpeningNode: Codable, Sendable, Identifiable {
             // Leaf node — this path is a line
             let line = OpeningLine(
                 id: id,
-                name: effectiveName ?? (isMainLine ? "Main Line" : "Variation"),
+                name: effectiveName ?? Self.generateLineName(moves: currentMoves),
                 moves: currentMoves,
                 branchPoint: currentBranch,
                 parentLineID: parentLineID
@@ -108,6 +115,10 @@ struct Opening: Codable, Sendable, Identifiable, Hashable {
     // Tree-based opening data (nil for legacy hardcoded openings)
     var tree: OpeningNode?
     var lines: [OpeningLine]?
+
+    // Plan-first learning data (v2)
+    var plan: OpeningPlan?
+    var opponentResponses: OpponentResponseCatalogue?
 
     enum PlayerColor: String, Codable, Sendable {
         case white
@@ -166,7 +177,7 @@ struct Opening: Codable, Sendable, Identifiable, Hashable {
                     return []
                 }
             }
-            return [OpeningLine(id: "\(id)/main", name: "Main Line", moves: mainLine, branchPoint: 0, parentLineID: nil)]
+            return [OpeningLine(id: "\(id)/main", name: OpeningNode.generateLineName(moves: mainLine), moves: mainLine, branchPoint: 0, parentLineID: nil)]
         }
 
         return lines.filter { line in
@@ -183,5 +194,19 @@ struct Opening: Codable, Sendable, Identifiable, Hashable {
     func isKnownContinuation(atPly ply: Int, move: String, afterMoves: [String]) -> Bool {
         let continuationMoves = continuations(afterMoves: afterMoves)
         return continuationMoves.contains { $0.uci == move }
+    }
+
+    /// Returns the child OpeningNodes at a given position in the tree.
+    /// Used for Polyglot weight lookups.
+    func childNodes(afterMoves moves: [String]) -> [OpeningNode] {
+        guard let tree else { return [] }
+        var node = tree
+        for move in moves {
+            guard let child = node.children.first(where: { $0.move?.uci == move }) else {
+                return []
+            }
+            node = child
+        }
+        return node.children
     }
 }

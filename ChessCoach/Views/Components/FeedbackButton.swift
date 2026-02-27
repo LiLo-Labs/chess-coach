@@ -106,7 +106,7 @@ struct FeedbackButton: View {
         Button {
             showForm = true
         } label: {
-            Label("Send Feedback", systemImage: "questionmark.circle")
+            Label("Report Bug", systemImage: "ladybug.fill")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -126,8 +126,12 @@ struct FeedbackToolbarButton: View {
         Button {
             showForm = true
         } label: {
-            Image(systemName: "questionmark.circle")
+            Image(systemName: "ladybug.fill")
+                .font(.body)
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
         .sheet(isPresented: $showForm) {
             FeedbackFormView(screen: screen)
         }

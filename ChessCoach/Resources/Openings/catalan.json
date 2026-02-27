@@ -1,0 +1,591 @@
+{
+  "id": "catalan",
+  "name": "Catalan Opening",
+  "description": "A sophisticated opening combining Queen's Gambit pawn structure with a fianchettoed bishop. Exerts long-term pressure.",
+  "color": "white",
+  "difficulty": 3,
+  "tree": {
+    "id": "catalan/root",
+    "children": [
+      {
+        "id": "catalan/d2d4",
+        "move": {
+          "uci": "d2d4",
+          "san": "d4",
+          "explanation": "Stake out the center with your queen's pawn. This is one of the most powerful first moves — it controls e5 and c5 and opens the diagonal for your bishop."
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "catalan/d2d4/g8f6",
+            "move": {
+              "uci": "g8f6",
+              "san": "Nf6",
+              "explanation": "Black develops the knight to its best square, controlling d5 and e4 and preparing to castle. This is the most popular and flexible response to d4."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "catalan/d2d4/g8f6/c2c4",
+                "move": {
+                  "uci": "c2c4",
+                  "san": "c4",
+                  "explanation": "Add a second pawn to the center! Now you control both d5 and e4 with pawns. This is the classic Queen's Gambit setup that leads to the Catalan."
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "catalan/d2d4/g8f6/c2c4/e7e6",
+                    "move": {
+                      "uci": "e7e6",
+                      "san": "e6",
+                      "explanation": "Black plays solid chess, supporting a future d5 advance and preparing to develop the dark-squared bishop. This is the backbone of many classical defenses."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3",
+                        "move": {
+                          "uci": "g2g3",
+                          "san": "g3",
+                          "explanation": "This is the Catalan move! Instead of a normal knight development, you prepare to fianchetto the bishop on g2. This creates a very special kind of pressure on Black's queenside."
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5",
+                            "move": {
+                              "uci": "d7d5",
+                              "san": "d5",
+                              "explanation": "Black completes the classic Queen's Gambit structure with pawns on d5 and e6. Now your bishop on g2 will squeeze this position for a long time."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2",
+                                "move": {
+                                  "uci": "f1g2",
+                                  "san": "Bg2",
+                                  "explanation": "The Catalan Bishop arrives on g2! This powerful piece controls the long a8-g2 diagonal and will pressure the d5 pawn and Black's queenside for the entire game."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7",
+                                    "move": {
+                                      "uci": "f8e7",
+                                      "san": "Be7",
+                                      "explanation": "Black develops the bishop quietly to e7, preparing to castle. This solid move is the foundation of the Closed Catalan defense."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "Develop the knight to its ideal square — it controls e5 and d4 and prepares to castle. Everything is coming together in the Catalan setup."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3/e8g8",
+                                            "move": {
+                                              "uci": "e8g8",
+                                              "san": "O-O",
+                                              "explanation": "Black castles to safety. The kingside is secured, but now Black must figure out how to release the pressure from your g2 bishop."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3/e8g8/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "Castle and complete your setup! Now you have the dream Catalan position — bishop on g2, both knights developed, king safe. The middlegame begins."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3/e8g8/e1g1/d5c4",
+                                                    "move": {
+                                                      "uci": "d5c4",
+                                                      "san": "dxc4",
+                                                      "explanation": "Black captures the c4 pawn — the Open Catalan! Now Black has an extra pawn temporarily, but your bishop on g2 gains even more power pointing at b7."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": []
+                                                  },
+                                                  {
+                                                    "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3/e8g8/e1g1/a7a6",
+                                                    "move": {
+                                                      "uci": "a7a6",
+                                                      "san": "a6",
+                                                      "explanation": "Black prepares b5, trying to chase away your bishop's influence. This is a common plan in the Closed Catalan to seek counterplay."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "variationName": "Open Catalan with ...a6",
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3/e8g8/e1g1/a7a6/d1c2",
+                                                        "move": {
+                                                          "uci": "d1c2",
+                                                          "san": "Qc2",
+                                                          "explanation": "Bring the queen to c2, eyeing the c-file and preparing for a central push. This is a key Catalan maneuver to increase queenside activity."
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": [
+                                                          {
+                                                            "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3/e8g8/e1g1/a7a6/d1c2/b8d7",
+                                                            "move": {
+                                                              "uci": "b8d7",
+                                                              "san": "Nbd7",
+                                                              "explanation": "Black develops the queen's knight to d7 — a flexible square from where it can go to b6, f6, or e5."
+                                                            },
+                                                            "isMainLine": false,
+                                                            "weight": 30,
+                                                            "children": [
+                                                              {
+                                                                "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3/e8g8/e1g1/a7a6/d1c2/b8d7/f1e1",
+                                                                "move": {
+                                                                  "uci": "f1e1",
+                                                                  "san": "Re1",
+                                                                  "explanation": "Place the rook on e1 to support a future e4 advance. The rook belongs on open or semi-open files where it has maximum activity."
+                                                                },
+                                                                "isMainLine": false,
+                                                                "weight": 30,
+                                                                "children": [
+                                                                  {
+                                                                    "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3/e8g8/e1g1/a7a6/d1c2/b8d7/f1e1/b7b5",
+                                                                    "move": {
+                                                                      "uci": "b7b5",
+                                                                      "san": "b5",
+                                                                      "explanation": "Black advances b5, trying to challenge your c4 pawn and gain queenside space. Now Nbd2, a4 or e4 are all good responses."
+                                                                    },
+                                                                    "isMainLine": false,
+                                                                    "weight": 30,
+                                                                    "children": []
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5",
+                            "move": {
+                              "uci": "d7d5",
+                              "san": "d5",
+                              "explanation": "Black occupies the center with pawns on d5 and e6 — a very solid classical setup that leads to a typical Catalan position."
+                            },
+                            "isMainLine": false,
+                            "variationName": "Closed Catalan",
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2",
+                                "move": {
+                                  "uci": "f1g2",
+                                  "san": "Bg2",
+                                  "explanation": "Complete the fianchetto — the Catalan bishop is the most important piece in this opening. It will squeeze Black's position for many moves."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7",
+                                    "move": {
+                                      "uci": "f8e7",
+                                      "san": "Be7",
+                                      "explanation": "Black develops the bishop safely to e7, preparing to castle. This is the Closed Catalan — Black keeps the pawn structure solid."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "Develop the king's knight to complete your setup. Now you just need to castle and your entire opening will be complete."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3/e8g8",
+                                            "move": {
+                                              "uci": "e8g8",
+                                              "san": "O-O",
+                                              "explanation": "Black castles to safety. The Closed Catalan is underway — you will steadily build pressure while Black tries to free their position."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/d7d5/f1g2/f8e7/g1f3/e8g8/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "Castle and complete the Closed Catalan setup. Your g2 bishop will pressure the d5 pawn and b7 pawn. Plans include Nbd2, Qc2, and later e4."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/f8b4",
+                            "move": {
+                              "uci": "f8b4",
+                              "san": "Bb4+",
+                              "explanation": "Black gives check with the bishop! This is an aggressive try to disrupt White's setup before the bishop reaches g2."
+                            },
+                            "isMainLine": false,
+                            "variationName": "Catalan: ...Bb4+ line",
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/f8b4/c1d2",
+                                "move": {
+                                  "uci": "c1d2",
+                                  "san": "Bd2",
+                                  "explanation": "Block the check with the bishop! After Black exchanges, you'll recapture and the pair of bishops can be a lasting advantage."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/f8b4/c1d2/b4e7",
+                                    "move": {
+                                      "uci": "b4e7",
+                                      "san": "Be7",
+                                      "explanation": "Black retreats the bishop rather than exchanging. The check achieved nothing — your setup continues uninterrupted."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/f8b4/c1d2/b4e7/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "Continue developing normally. The Bb4+ check turned out to be harmless — your Catalan setup is intact."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/f8b4/c1d2/b4e7/g1f3/d7d5",
+                                            "move": {
+                                              "uci": "d7d5",
+                                              "san": "d5",
+                                              "explanation": "Black finally plays d5, establishing the classic Catalan pawn structure. Now you play Bg2 and continue your plan."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "catalan/d2d4/g8f6/c2c4/e7e6/g2g3/f8b4/c1d2/b4e7/g1f3/d7d5/f1g2",
+                                                "move": {
+                                                  "uci": "f1g2",
+                                                  "san": "Bg2",
+                                                  "explanation": "Complete the fianchetto. Despite the small diversion with ...Bb4+, you have reached your ideal Catalan setup."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Set up pawns on d4 and c4, fianchetto the king's bishop on g2, and castle. The bishop on g2 will pressure Black's d5 pawn and the b7 pawn all game long. Wait for the right moment to push e4 or accept the pawn on c4 and dominate with your bishop.",
+    "strategicGoals": [
+      { "description": "Establish pawns on d4 and c4 for maximum central control", "priority": 1 },
+      { "description": "Fianchetto the bishop on g2 — the heart of the Catalan", "priority": 2 },
+      { "description": "Castle kingside to safety while the bishop goes to work", "priority": 3 },
+      { "description": "Apply long-term pressure on d5 and b7 with the Catalan bishop", "priority": 4 }
+    ],
+    "pawnStructureTarget": "d4/c4 center with a fianchettoed bishop pressing the long diagonal",
+    "keySquares": ["g2", "d5", "c4", "b7"],
+    "pieceTargets": [
+      { "piece": "king's bishop", "idealSquares": ["g2"], "reasoning": "The Catalan bishop is the star of the opening — it pressures d5, b7, and the entire queenside from g2" },
+      { "piece": "king's knight", "idealSquares": ["f3"], "reasoning": "Controls e5 and d4, supports the d4 pawn, and defends the kingside after castling" },
+      { "piece": "queen", "idealSquares": ["c2", "d3"], "reasoning": "On c2, the queen eyes the c-file and cooperates with the bishop; on d3 it can support e4" }
+    ],
+    "typicalPlans": [
+      "In the Open Catalan (after ...dxc4), recover the pawn with Qc2 or Ne5 and enjoy massive bishop activity",
+      "In the Closed Catalan (Black keeps d5), play Nbd2, Qc2, and push e4 to open the position for your bishop",
+      "When Black plays ...b5, respond with a4 to challenge queenside expansion"
+    ],
+    "commonMistakes": [
+      "Moving the bishop to g2 before playing g3 — always g3 first!",
+      "Trying to recover the c4 pawn too quickly in the Open Catalan — be patient, your bishop is worth more than the pawn",
+      "Neglecting the e4 push in the Closed Catalan — this is the key plan to activate your pieces"
+    ],
+    "historicalNote": "The Catalan Opening was invented specifically for the 1929 Barcelona tournament, which was held in Catalonia, Spain — hence the name. It became the weapon of world champions Vladimir Kramnik and Magnus Carlsen, who have used it to win many important games with seemingly quiet but deep positional pressure.",
+    "planLessons": [
+      {
+        "title": "Why g3? The Catalan Idea",
+        "description": "Instead of developing the knight to f3 right away, you play g3 to fianchetto your bishop on g2. This bishop becomes a powerful long-range sniper — much stronger than a knight in this structure!",
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/2PP4/6P1/PP2PP1P/RNBQKBNR b KQkq - 0 4",
+        "highlights": ["g3", "g2"],
+        "arrows": [{"from": "f1", "to": "g2"}, {"from": "g2", "to": "a8"}],
+        "style": "good"
+      },
+      {
+        "title": "The Catalan Bishop on g2",
+        "description": "Once the bishop reaches g2, it controls the long diagonal all the way to a8. This pressures both the d5 pawn and the b7 pawn — Black must always defend against this quiet but deadly threat.",
+        "fen": "rnbqk2r/ppp1bppp/4pn2/3p4/2PP4/6P1/PP2PPBP/RNBQK1NR b KQkq - 2 5",
+        "highlights": ["g2", "d5", "b7"],
+        "arrows": [{"from": "g2", "to": "d5"}, {"from": "g2", "to": "a8"}],
+        "style": "good"
+      },
+      {
+        "title": "Open Catalan: Black Captures dxc4",
+        "description": "When Black captures your c4 pawn with ...dxc4, don't panic! Your bishop on g2 now points at b7 with no d5 pawn in the way. This extra power more than compensates for the pawn.",
+        "fen": "rnbqk2r/ppp1bppp/4pn2/8/2pP4/5NP1/PP2PPBP/RNBQK2R w KQkq - 0 7",
+        "highlights": ["g2", "b7", "c4"],
+        "arrows": [{"from": "g2", "to": "b7"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Rush to Win the Pawn Back",
+        "description": "After ...dxc4, many beginners immediately play Qa4+ or Na3 trying to win the c4 pawn back. But this wastes time! Just develop normally — your bishop pressure will win the pawn back naturally.",
+        "fen": "rnbqk2r/ppp1bppp/4pn2/8/2pP4/5NP1/PP2PPBP/RNBQK2R w KQkq - 0 7",
+        "highlights": ["c4"],
+        "arrows": [{"from": "d1", "to": "a4"}],
+        "style": "bad"
+      },
+      {
+        "title": "The Key Plan: Push e4",
+        "description": "In the Closed Catalan, your main plan is to push e4, opening the position for your g2 bishop. First play Nbd2, then Qc2, and when ready — e4! This opens up the board and your bishop becomes a monster.",
+        "fen": "r1bq1rk1/ppp1bppp/2n1pn2/3p4/2PP4/5NP1/PP1NPPBP/R1BQ1RK1 b - - 4 7",
+        "highlights": ["e2", "e4"],
+        "arrows": [{"from": "e2", "to": "e4"}],
+        "style": "good"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/2PP4/6P1/PP2PP1P/RNBQKBNR b KQkq - 0 4",
+        "prompt": "You've played d4, Nf3, c4, and now g3. What is the point of g3?",
+        "choices": [
+          {"text": "To prepare Bg2 — the Catalan bishop on g2 is the whole strategy", "isCorrect": true},
+          {"text": "To protect the f2 pawn from attack", "isCorrect": false},
+          {"text": "To make room for the king to walk to g2", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "g3 prepares Bg2! The bishop on g2 is the heart of the Catalan — it controls the long diagonal from g2 to a8 and pressures Black's d5 pawn and b7 pawn for the entire game.",
+        "boardHighlightsOnReveal": ["g2", "d5", "b7"],
+        "arrowsOnReveal": [{"from": "g2", "to": "a8"}]
+      },
+      {
+        "fen": "rnbqk2r/ppp1bppp/4pn2/8/2pP4/5NP1/PP2PPBP/RNBQK2R w KQkq - 0 7",
+        "prompt": "Black just played ...dxc4, capturing your c4 pawn. What should White do?",
+        "choices": [
+          {"text": "Continue developing — castle or play Nc3, the bishop pressure is worth more than the pawn", "isCorrect": true},
+          {"text": "Qa4+ immediately to win the pawn back", "isCorrect": false},
+          {"text": "Na3 to go after the c4 pawn right away", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Be patient! After ...dxc4, your bishop on g2 now aims at b7 with no d5 pawn blocking the way. This positional pressure is worth more than the c4 pawn. Just continue developing normally.",
+        "boardHighlightsOnReveal": ["g2", "b7"],
+        "arrowsOnReveal": [{"from": "g2", "to": "b7"}]
+      },
+      {
+        "fen": "r1bq1rk1/ppp1bppp/2n1pn2/3p4/2PP4/5NP1/PP1NPPBP/R1BQ1RK1 b - - 4 7",
+        "prompt": "In the Closed Catalan, Black is holding firm with d5. What is White's main plan?",
+        "choices": [
+          {"text": "Push e4 to open the position for the g2 bishop", "isCorrect": true},
+          {"text": "Attack on the kingside with h4 and g4", "isCorrect": false},
+          {"text": "Bring the queen to a4 for an early attack", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The key plan in the Closed Catalan is to push e4! First complete your setup with Qc2 and Re1, then play e4 to open the center. When the position opens, your bishop on g2 becomes incredibly powerful.",
+        "boardHighlightsOnReveal": ["e2", "e4", "g2"],
+        "arrowsOnReveal": [{"from": "e2", "to": "e4"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Open Catalan (E04)",
+        "description": "After Black captures ...dxc4, the position opens up immediately. Your g2 bishop now has a clear path to b7, and Black must be very careful. This is the sharpest line of the Catalan.",
+        "fen": "rnbqk2r/ppp1bppp/4pn2/8/2pP4/5NP1/PP2PPBP/RNBQK2R w KQkq - 0 7",
+        "highlights": ["g2", "c4", "b7"],
+        "arrows": [{"from": "g2", "to": "b7"}],
+        "style": "theory"
+      },
+      {
+        "title": "Closed Catalan (E06)",
+        "description": "When Black keeps the pawn on d5 instead of capturing, the game stays closed. White's plan is systematic: Nbd2, Qc2, e4. The g2 bishop slowly builds pressure until the center opens.",
+        "fen": "r1bq1rk1/ppp1bppp/2n1pn2/3p4/2PP4/5NP1/PP1NPPBP/R1BQ1RK1 b - - 4 7",
+        "highlights": ["g2", "d5", "e2"],
+        "arrows": [{"from": "e2", "to": "e4"}],
+        "style": "theory"
+      },
+      {
+        "title": "The ...Bb4+ Sideline",
+        "description": "Some players try 5...Bb4+, giving check before White completes the fianchetto. The correct response is Bd2 — block the check, and if Black exchanges bishops, you recapture and continue normally.",
+        "fen": "rnbqk1nr/ppp2ppp/4p3/3p4/1bPP4/6P1/PP2PP1P/RNBQKBNR w KQkq - 1 5",
+        "highlights": ["b4", "d2"],
+        "arrows": [{"from": "c1", "to": "d2"}],
+        "style": "theory"
+      },
+      {
+        "title": "Why the Catalan Works — Long-Term Pressure",
+        "description": "The genius of the Catalan is that the bishop on g2 creates long-term pressure without any immediate tactics. Black always has to worry about this diagonal — it's like having a constant invisible threat that never goes away.",
+        "fen": "r1bq1rk1/pp2bppp/2n1pn2/2pp4/2PP4/5NP1/PP1NPPBP/R1BQR1K1 b - - 2 8",
+        "highlights": ["g2", "d5", "c5"],
+        "arrows": [{"from": "g2", "to": "a8"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqk2r/ppp1bppp/4pn2/8/2pP4/5NP1/PP2PPBP/RNBQK2R w KQkq - 0 7",
+        "prompt": "Black has captured dxc4. This is called the...?",
+        "choices": [
+          {"text": "Open Catalan", "isCorrect": true},
+          {"text": "Closed Catalan", "isCorrect": false},
+          {"text": "Catalan Gambit", "isCorrect": false},
+          {"text": "Symmetrical Catalan", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "When Black captures ...dxc4, it's the Open Catalan (E04). The position opens up, the g2 bishop gains power toward b7, and White has long-term compensation for the pawn.",
+        "boardHighlightsOnReveal": ["g2", "c4", "b7"],
+        "arrowsOnReveal": [{"from": "g2", "to": "b7"}]
+      },
+      {
+        "fen": "r1bq1rk1/ppp1bppp/2n1pn2/3p4/2PP4/5NP1/PP1NPPBP/R1BQ1RK1 b - - 4 7",
+        "prompt": "Both sides have castled in the Closed Catalan. What is White's key strategic plan?",
+        "choices": [
+          {"text": "Nbd2, Qc2, then push e4 to open the center", "isCorrect": true},
+          {"text": "Play h4 and attack on the kingside", "isCorrect": false},
+          {"text": "Trade off the g2 bishop for a knight on f6", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "In the Closed Catalan, White's plan is Nbd2, Qc2, Re1, and then e4! This push opens the center and unleashes the g2 bishop which has been patiently waiting for this moment.",
+        "boardHighlightsOnReveal": ["e2", "e4", "g2"],
+        "arrowsOnReveal": [{"from": "e2", "to": "e4"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["d2d4", "g8f6", "c2c4", "e7e6", "g2g3", "d7d5"],
+    "responses": [
+      {
+        "id": "catalan-closed",
+        "move": {
+          "uci": "f8e7",
+          "san": "Be7",
+          "explanation": "Black develops the bishop solidly to e7, preparing to castle and maintaining the pawn on d5 — the Closed Catalan."
+        },
+        "name": "Closed Catalan",
+        "eco": "E06",
+        "frequency": 0.40,
+        "description": "Black develops quietly with Be7 and O-O, keeping the d5 pawn in place. White must slowly build with Nbd2, Qc2, and eventually e4.",
+        "planAdjustment": "Continue normally with Bg2, Nf3, O-O. Your plan is Nbd2, Qc2, and e4. Be patient — the bishop pressure builds up over time."
+      },
+      {
+        "id": "catalan-open",
+        "move": {
+          "uci": "d5c4",
+          "san": "dxc4",
+          "explanation": "Black grabs the pawn on c4, entering the Open Catalan. This is a sharp choice — Black wins a pawn temporarily."
+        },
+        "name": "Open Catalan",
+        "eco": "E04",
+        "frequency": 0.35,
+        "description": "Black captures on c4, entering the Open Catalan. White gives up the pawn temporarily in exchange for powerful bishop activity.",
+        "planAdjustment": "Don't panic — play Qc2 or Nc3 and let the bishop on g2 do the work. The bishop pressure on b7 more than compensates for the c4 pawn."
+      },
+      {
+        "id": "catalan-bb4",
+        "move": {
+          "uci": "f8b4",
+          "san": "Bb4+",
+          "explanation": "Black gives check with the bishop, trying to disrupt White's setup before the fianchetto is complete."
+        },
+        "name": "Catalan: ...Bb4+ line",
+        "eco": "E00",
+        "frequency": 0.15,
+        "description": "Black plays ...Bb4+, giving check to disrupt the fianchetto plan. White simply blocks with Bd2 and continues.",
+        "planAdjustment": "Play Bd2 to block the check. If Black exchanges, recapture and continue with Bg2, Nf3, O-O as normal. The check caused no real harm."
+      },
+      {
+        "id": "catalan-nc6",
+        "move": {
+          "uci": "b8c6",
+          "san": "Nc6",
+          "explanation": "Black develops the queen's knight, keeping options flexible. This is less common but can lead to interesting positions."
+        },
+        "name": "Catalan: ...Nc6 line",
+        "eco": "E00",
+        "frequency": 0.10,
+        "description": "Black develops Nc6 in an unusual order. White continues the same plan — Bg2, Nf3, O-O, and then apply positional pressure.",
+        "planAdjustment": "Continue your normal setup with Bg2, Nf3, and O-O. Black's Nc6 doesn't change your plan significantly — the g2 bishop pressure remains."
+      }
+    ]
+  }
+}

@@ -9,8 +9,7 @@ packages:
   ChessKitEngine:
     path: LocalPackages/chesskit-engine
   ChessboardKit:
-    url: https://github.com/rohanrhu/ChessboardKit.git
-    branch: main
+    path: LocalPackages/ChessboardKit
   GRDB:
     url: https://github.com/groue/GRDB.swift.git
     from: "7.0.0"
@@ -22,6 +21,8 @@ targets:
       - ChessCoach
     resources:
       - path: ChessCoach/Resources/Openings
+        buildPhase: resources
+      - path: ChessCoach/Resources/Qwen3-4B-Q4_K_M.gguf
         buildPhase: resources
     settings:
       base:
@@ -38,7 +39,9 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.marklifson-chesscoach.app
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
-        STOREKIT_CONFIGURATION: ChessCoach.storekit
+      configs:
+        Debug:
+          STOREKIT_CONFIGURATION: ChessCoach.storekit
     dependencies:
       - package: ChessKitEngine
       - package: ChessboardKit

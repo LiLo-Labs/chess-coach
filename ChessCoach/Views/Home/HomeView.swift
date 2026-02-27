@@ -1,98 +1,93 @@
 import SwiftUI
 
 struct HomeView: View {
-    private let database = OpeningDatabase()
+    private let database = OpeningDatabase.shared
     @State private var selectedOpening: Opening?
     @State private var showResumePrompt = false
     @State private var resumeOpening: Opening?
     @State private var resumeLineID: String?
     @State private var streak = PersistenceService.shared.loadStreak()
     @State private var dueReviewCount = 0
-    @State private var allProgress: [String: OpeningProgress] = [:]
+    @State private var allMastery: [String: OpeningMastery] = [:]
     @State private var searchText = ""
+    @State private var selectedColor: Opening.PlayerColor = .white
     @Environment(SubscriptionService.self) private var subscriptionService
     @Environment(AppSettings.self) private var settings
+    @Environment(AppServices.self) private var appServices
 
-    // MARK: - Computed: Opening Recommender
+    // MARK: - Computed
 
-    // Only surfaces a recommendation after real progress to avoid overwhelming beginners.
-    private var recommendedOpening: Opening? {
-        let progress = allProgress
-        let advancedIDs = progress.filter {
-            $0.value.currentPhase != .learningMainLine && $0.value.gamesPlayed >= 5
-        }
-        guard !advancedIDs.isEmpty else { return nil }
-
+    private var inProgressOpenings: [Opening] {
         let allOpenings = database.openings(forColor: .white) + database.openings(forColor: .black)
-        let notStarted = allOpenings.filter { progress[$0.id] == nil || progress[$0.id]!.gamesPlayed == 0 }
-        guard !notStarted.isEmpty else { return nil }
-
-        let advancedOpenings = allOpenings.filter { advancedIDs[$0.id] != nil }
-        let preferredColor = advancedOpenings.first?.color
-        let preferredDifficulty = advancedOpenings.map(\.difficulty).max() ?? 1
-
-        return notStarted
-            .sorted { abs($0.difficulty - preferredDifficulty) < abs($1.difficulty - preferredDifficulty) }
-            .first { $0.color == preferredColor }
-            ?? notStarted.first
+        return allOpenings
+            .filter { (allMastery[$0.id]?.sessionsPlayed ?? 0) > 0 }
+            .sorted { (allMastery[$0.id]?.lastPlayed ?? .distantPast) > (allMastery[$1.id]?.lastPlayed ?? .distantPast) }
     }
 
-    // MARK: - Computed: Search Filtering
-
-    private func openings(forColor color: Opening.PlayerColor) -> [Opening] {
+    private func filteredOpenings(forColor color: Opening.PlayerColor) -> [Opening] {
         let all = database.openings(forColor: color)
         guard !searchText.isEmpty else { return all }
         return all.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+    }
+
+    private func groupedOpenings(forColor color: Opening.PlayerColor) -> [(title: String, openings: [Opening])] {
+        let openings = filteredOpenings(forColor: color)
+        let groups: [(String, ClosedRange<Int>)] = [
+            ("Beginner", 1...1),
+            ("Intermediate", 2...2),
+            ("Advanced", 3...5)
+        ]
+        return groups.compactMap { title, range in
+            let matching = openings.filter { range.contains($0.difficulty) }
+            return matching.isEmpty ? nil : (title, matching)
+        }
     }
 
     // MARK: - Body
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: AppSpacing.md) {
-                    if showResumePrompt, let opening = resumeOpening {
-                        resumeSessionCard(opening: opening)
-                    }
+            List {
+                // Resume session
+                if showResumePrompt, let opening = resumeOpening {
+                    resumeSection(opening: opening)
+                }
 
-                    streakBar
+                // Stats
+                statsSection
 
-                    if let recommended = recommendedOpening {
-                        recommendedCard(opening: recommended)
-                    }
+                // Continue Learning
+                if !inProgressOpenings.isEmpty {
+                    continueSection
+                }
 
-                    sectionHeader("Play as White")
-                    ForEach(openings(forColor: .white)) { opening in
-                        NavigationLink(value: opening) {
-                            OpeningCard(opening: opening)
-                                .overlay(alignment: .topTrailing) {
-                                    badgeView(for: opening.id)
-                                }
+                // Review
+                if dueReviewCount > 0 {
+                    reviewSection
+                }
+
+                // Color picker
+                pickerSection
+
+                // Openings by difficulty
+                let groups = groupedOpenings(forColor: selectedColor)
+                ForEach(groups, id: \.title) { title, openings in
+                    Section(title) {
+                        ForEach(openings) { opening in
+                            NavigationLink(value: opening) {
+                                openingRow(opening: opening)
+                            }
+                            .listRowBackground(AppColor.cardBackground)
                         }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel("\(opening.name), \(progressText(for: opening.id))")
-                        .onAppear { settings.incrementViewCount(for: opening.id) }
-                    }
-
-                    sectionHeader("Play as Black")
-                    ForEach(openings(forColor: .black)) { opening in
-                        NavigationLink(value: opening) {
-                            OpeningCard(opening: opening)
-                                .overlay(alignment: .topTrailing) {
-                                    badgeView(for: opening.id)
-                                }
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel("\(opening.name), \(progressText(for: opening.id))")
-                        .onAppear { settings.incrementViewCount(for: opening.id) }
                     }
                 }
-                .padding(AppSpacing.screenPadding)
             }
+            .listStyle(.insetGrouped)
             .background(AppColor.background)
+            .scrollContentBackground(.hidden)
             .navigationTitle("ChessCoach")
             .preferredColorScheme(.dark)
-            .searchable(text: $searchText, prompt: "Search openings...")
+            .searchable(text: $searchText, prompt: "Search game plans")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     FeedbackToolbarButton(screen: "Home")
@@ -114,7 +109,7 @@ struct HomeView: View {
                 checkForSavedSession()
             }
             .fullScreenCover(item: $selectedOpening) { opening in
-                SessionView(opening: opening, lineID: resumeLineID, isPro: subscriptionService.isPro)
+                SessionView(opening: opening, lineID: resumeLineID, isPro: subscriptionService.isPro, stockfish: appServices.stockfish, llmService: appServices.llmService)
                     .environment(subscriptionService)
             }
         }
@@ -123,7 +118,7 @@ struct HomeView: View {
     // MARK: - Data
 
     private func refreshData() {
-        allProgress = PersistenceService.shared.loadAllProgress()
+        allMastery = PersistenceService.shared.loadAllMastery()
         dueReviewCount = SpacedRepScheduler().dueItems().count
         var s = PersistenceService.shared.loadStreak()
         s.applyStreakFreezeIfNeeded()
@@ -141,163 +136,172 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - Subviews
+    // MARK: - Resume
 
-    private func resumeSessionCard(opening: Opening) -> some View {
-        HStack(spacing: AppSpacing.md) {
-            Image(systemName: "play.circle.fill")
-                .font(.title2)
-                .foregroundStyle(AppColor.success)
-
-            VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
-                Text("Resume Session?")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(AppColor.primaryText)
-                Text(opening.name)
-                    .font(.caption)
-                    .foregroundStyle(AppColor.secondaryText)
-            }
-
-            Spacer()
-
-            Button("Resume") {
+    private func resumeSection(opening: Opening) -> some View {
+        Section {
+            Button {
                 selectedOpening = opening
                 showResumePrompt = false
-            }
-            .font(.caption.weight(.bold))
-            .foregroundStyle(AppColor.success)
-            .padding(.horizontal, AppSpacing.md)
-            .padding(.vertical, AppSpacing.xs)
-            .background(AppColor.success.opacity(0.12), in: Capsule())
-
-            Button {
-                SessionViewModel.clearSavedSession()
-                showResumePrompt = false
             } label: {
-                Image(systemName: "xmark")
-                    .font(.caption.weight(.bold))
-                    .foregroundStyle(AppColor.secondaryText)
-            }
-            .buttonStyle(.plain)
-        }
-        .padding(AppSpacing.cardPadding)
-        .background(AppColor.success.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.md))
-    }
+                HStack(spacing: AppSpacing.md) {
+                    Image(systemName: "play.circle.fill")
+                        .font(.title2)
+                        .foregroundStyle(AppColor.success)
 
-    private func progressText(for openingID: String) -> String {
-        let gamesPlayed = allProgress[openingID]?.gamesPlayed ?? 0
-        if gamesPlayed == 0 { return "not started" }
-        return "\(gamesPlayed) games played"
-    }
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Resume Session")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(AppColor.primaryText)
+                        Text(opening.name)
+                            .font(.caption)
+                            .foregroundStyle(AppColor.secondaryText)
+                    }
 
-    private var streakBar: some View {
-        HStack(spacing: AppSpacing.sm) {
-            // Streak flame and count
-            Image(systemName: "flame.fill")
-                .foregroundStyle(streak.currentStreak > 0 ? AppColor.unguided : AppColor.tertiaryText)
-
-            Text("\(streak.currentStreak) day streak")
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(AppColor.primaryText)
-
-            // Streak freeze indicator
-            if streak.streakFreezes > 0 {
-                HStack(spacing: AppSpacing.xxxs) {
-                    Image(systemName: "snowflake")
-                        .font(.caption2)
-                        .foregroundStyle(AppColor.info)
-                    Text("\(streak.streakFreezes)")
-                        .font(.caption2.monospacedDigit())
-                        .foregroundStyle(AppColor.info)
+                    Spacer()
                 }
             }
-
-            Spacer()
-
-            // Daily goal progress ring with label
-            let goalTarget = settings.dailyGoalTarget
-            let goalCompleted = settings.dailyGoalCompleted
-            let goalProgress = goalTarget > 0 ? Double(goalCompleted) / Double(goalTarget) : 0
-
-            HStack(spacing: AppSpacing.xs) {
-                ProgressRing(
-                    progress: goalProgress,
-                    color: goalProgress >= 1.0 ? AppColor.success : AppColor.info,
-                    lineWidth: 3,
-                    size: 24
-                )
-
-                Text("\(goalCompleted)/\(goalTarget) today")
-                    .font(.caption2.monospacedDigit())
-                    .foregroundStyle(AppColor.secondaryText)
-            }
-
-            // Due reviews link
-            if dueReviewCount > 0 {
-                NavigationLink {
-                    QuickReviewView()
+            .swipeActions(edge: .trailing) {
+                Button(role: .destructive) {
+                    SessionViewModel.clearSavedSession()
+                    showResumePrompt = false
                 } label: {
-                    Label("\(dueReviewCount) to review", systemImage: "arrow.counterclockwise.circle.fill")
-                        .font(.subheadline)
-                        .foregroundStyle(AppColor.info)
+                    Label("Dismiss", systemImage: "xmark")
                 }
             }
         }
-        .accessibilityLabel("Daily streak: \(streak.currentStreak) days")
+        .listRowBackground(AppColor.cardBackground)
     }
 
-    private func recommendedCard(opening: Opening) -> some View {
-        NavigationLink(value: opening) {
-            HStack(spacing: AppSpacing.md) {
-                Image(systemName: "sparkle")
-                    .font(.title3)
-                    .foregroundStyle(AppColor.warning)
+    // MARK: - Stats
 
-                VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
-                    Text("Recommended Next")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(AppColor.warning)
-                    Text(opening.name)
-                        .font(.subheadline.weight(.medium))
+    private var statsSection: some View {
+        Section {
+            HStack {
+                Label {
+                    Text("\(streak.currentStreak)")
+                        .font(.subheadline.weight(.semibold).monospacedDigit())
                         .foregroundStyle(AppColor.primaryText)
+                    + Text(" day streak")
+                        .font(.subheadline)
+                        .foregroundStyle(AppColor.secondaryText)
+                } icon: {
+                    Image(systemName: "flame.fill")
+                        .foregroundStyle(streak.currentStreak > 0 ? .orange : AppColor.tertiaryText)
                 }
 
                 Spacer()
 
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundStyle(AppColor.tertiaryText)
-            }
-            .padding(AppSpacing.cardPadding)
-            .background(AppColor.warning.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.md))
-        }
-        .buttonStyle(.plain)
-    }
+                let goalTarget = settings.dailyGoalTarget
+                let goalCompleted = settings.dailyGoalCompleted
 
-    // Badge decays from "New" -> "Try this!" as view count grows, disappears once played.
-    @ViewBuilder
-    private func badgeView(for openingID: String) -> some View {
-        let count = settings.openingViewCounts[openingID] ?? 0
-        let hasPlayed = (allProgress[openingID]?.gamesPlayed ?? 0) > 0
+                Text("\(goalCompleted)/\(goalTarget)")
+                    .font(.subheadline.monospacedDigit())
+                    .foregroundStyle(AppColor.secondaryText)
 
-        if !hasPlayed {
-            if count < 3 {
-                PillBadge(text: "New", color: AppColor.success)
-                    .padding(AppSpacing.sm)
-            } else if count < 7 {
-                PillBadge(text: "Try this!", color: AppColor.guided)
-                    .padding(AppSpacing.sm)
+                ProgressRing(
+                    progress: goalTarget > 0 ? Double(goalCompleted) / Double(goalTarget) : 0,
+                    color: goalCompleted >= goalTarget ? AppColor.success : AppColor.info,
+                    lineWidth: 2.5,
+                    size: 22
+                )
             }
         }
+        .listRowBackground(AppColor.cardBackground)
     }
 
-    private func sectionHeader(_ title: String) -> some View {
-        HStack {
-            Text(title)
-                .font(.title3.weight(.semibold))
-                .foregroundStyle(AppColor.primaryText)
-            Spacer()
+    // MARK: - Continue Learning
+
+    private var continueSection: some View {
+        Section("Keep Practicing") {
+            ForEach(inProgressOpenings.prefix(3)) { opening in
+                NavigationLink(value: opening) {
+                    openingRow(opening: opening)
+                }
+            }
         }
-        .padding(.top, AppSpacing.sm)
+        .listRowBackground(AppColor.cardBackground)
+    }
+
+    // MARK: - Review
+
+    private var reviewSection: some View {
+        Section {
+            NavigationLink {
+                QuickReviewView()
+            } label: {
+                Label {
+                    HStack {
+                        Text("Review Due")
+                            .foregroundStyle(AppColor.primaryText)
+                        Spacer()
+                        Text("\(dueReviewCount)")
+                            .foregroundStyle(AppColor.info)
+                            .font(.subheadline.monospacedDigit().weight(.semibold))
+                    }
+                } icon: {
+                    Image(systemName: "arrow.counterclockwise")
+                        .foregroundStyle(AppColor.info)
+                }
+            }
+        }
+        .listRowBackground(AppColor.cardBackground)
+    }
+
+    // MARK: - Picker
+
+    private var pickerSection: some View {
+        Section {
+            Picker("Color", selection: $selectedColor.animation(.easeInOut(duration: 0.15))) {
+                Text("White").tag(Opening.PlayerColor.white)
+                Text("Black").tag(Opening.PlayerColor.black)
+            }
+            .pickerStyle(.segmented)
+        }
+        .listRowBackground(AppColor.cardBackground)
+    }
+
+    // MARK: - Opening Row
+
+    private func openingRow(opening: Opening) -> some View {
+        let mastery = allMastery[opening.id]
+        let sessions = mastery?.sessionsPlayed ?? 0
+
+        return HStack(spacing: AppSpacing.md) {
+            // Color indicator
+            Circle()
+                .fill(opening.color == .white ? Color.white : Color(white: 0.3))
+                .frame(width: 12, height: 12)
+                .overlay {
+                    if opening.color == .white {
+                        Circle().strokeBorder(Color.white.opacity(0.15), lineWidth: 0.5)
+                    }
+                }
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(opening.name)
+                    .font(.body)
+                    .foregroundStyle(AppColor.primaryText)
+
+                if sessions > 0, let mastery {
+                    Text(mastery.currentLayer.displayName)
+                        .font(.caption)
+                        .foregroundStyle(AppColor.layer(mastery.currentLayer))
+                } else {
+                    Text(opening.description)
+                        .font(.caption)
+                        .foregroundStyle(AppColor.tertiaryText)
+                        .lineLimit(1)
+                }
+            }
+        }
+        .accessibilityLabel("\(opening.name), \(progressText(for: opening.id))")
+    }
+
+    private func progressText(for openingID: String) -> String {
+        let mastery = allMastery[openingID]
+        let sessions = mastery?.sessionsPlayed ?? 0
+        if sessions == 0 { return "not started" }
+        return "\(sessions) sessions played"
     }
 }

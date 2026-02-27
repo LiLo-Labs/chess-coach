@@ -1,0 +1,614 @@
+{
+  "id": "benoni",
+  "name": "Modern Benoni",
+  "description": "An ambitious defense where Black creates an asymmetrical pawn structure with a queenside majority and plays for active piece play and dynamic counterattacking chess.",
+  "color": "black",
+  "difficulty": 3,
+  "tree": {
+    "id": "benoni/root",
+    "children": [
+      {
+        "id": "benoni/d2d4",
+        "move": {
+          "uci": "d2d4",
+          "san": "d4",
+          "explanation": "White opens with d4. You're going to respond in an exciting, ambitious way that creates a very unbalanced position — both sides will have their own attacks!"
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "benoni/d2d4/g8f6",
+            "move": {
+              "uci": "g8f6",
+              "san": "Nf6",
+              "explanation": "Develop the knight to f6 — a great central square that attacks e4 and develops a piece at the same time."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "benoni/d2d4/g8f6/c2c4",
+                "move": {
+                  "uci": "c2c4",
+                  "san": "c4",
+                  "explanation": "White expands with c4, claiming even more center space. This is where you make your Benoni move next!"
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "benoni/d2d4/g8f6/c2c4/c7c5",
+                    "move": {
+                      "uci": "c7c5",
+                      "san": "c5",
+                      "explanation": "The Benoni move! You immediately challenge White's center with c5. White will advance with d5, and you'll create an asymmetrical pawn structure that leads to exciting, unbalanced play."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5",
+                        "move": {
+                          "uci": "d4d5",
+                          "san": "d5",
+                          "explanation": "White advances with d5, closing the center and creating the characteristic Benoni pawn structure. Now you have a queenside majority (c5 vs c4) and White has a kingside majority (e4/f4). The battle begins!"
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6",
+                            "move": {
+                              "uci": "e7e6",
+                              "san": "e6",
+                              "explanation": "The Modern Benoni! You play e6 to challenge White's d5 pawn and create active play. After the exchange on d5, you'll have a powerful queenside majority and exciting attacking chances."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3",
+                                "move": {
+                                  "uci": "b1c3",
+                                  "san": "Nc3",
+                                  "explanation": "White develops the knight to c3, supporting the d5 pawn and building a strong center."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5",
+                                    "move": {
+                                      "uci": "e6d5",
+                                      "san": "exd5",
+                                      "explanation": "Capture on d5 to trade the e-pawn for White's d5 pawn. This creates the Benoni pawn structure — your c5 and d6 pawns against White's c4 pawn."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5",
+                                        "move": {
+                                          "uci": "c4d5",
+                                          "san": "cxd5",
+                                          "explanation": "White recaptures with the c-pawn. Now White has a passed pawn on d5 and space advantage, but your pieces will be very active — especially after ...g6 and ...Bg7!"
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6",
+                                            "move": {
+                                              "uci": "d7d6",
+                                              "san": "d6",
+                                              "explanation": "Block the d5 pawn! By placing your pawn on d6, you stop White's d5 pawn from marching forward and create a strong blockade. This is the key move in the Modern Benoni."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/e2e4",
+                                                "move": {
+                                                  "uci": "e2e4",
+                                                  "san": "e4",
+                                                  "explanation": "White plays e4, completing the impressive pawn center on d5 and e4. White has a big space advantage, but your pieces will get very active — fianchetto your bishop to g7 and start counterattacking!"
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/e2e4/g7g6",
+                                                    "move": {
+                                                      "uci": "g7g6",
+                                                      "san": "g6",
+                                                      "explanation": "Prepare the fianchetto! Your bishop is going to g7 where it will be a power piece on the long diagonal, looking straight at White's queenside and supporting your counterplay."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": [
+                                                      {
+                                                        "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/e2e4/g7g6/g1f3",
+                                                        "move": {
+                                                          "uci": "g1f3",
+                                                          "san": "Nf3",
+                                                          "explanation": "White develops the knight. A natural developing move — White prepares to castle and defend the center."
+                                                        },
+                                                        "isMainLine": true,
+                                                        "weight": 60,
+                                                        "children": [
+                                                          {
+                                                            "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/e2e4/g7g6/g1f3/f8g7",
+                                                            "move": {
+                                                              "uci": "f8g7",
+                                                              "san": "Bg7",
+                                                              "explanation": "The Benoni bishop arrives on g7! This bishop is fantastic — it controls the long diagonal, supports your queenside advances, and will help with the ...b5 pawn break later."
+                                                            },
+                                                            "isMainLine": true,
+                                                            "weight": 50,
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/e2e4/f8e7",
+                                                    "move": {
+                                                      "uci": "f8e7",
+                                                      "san": "Be7",
+                                                      "explanation": "An alternative — develop the bishop modestly to e7. This is the Classical Benoni approach, keeping the bishop more flexible before deciding where it belongs."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/e2e4/f8e7/f1e2",
+                                                        "move": {
+                                                          "uci": "f1e2",
+                                                          "san": "Be2",
+                                                          "explanation": "White develops quietly with Be2. A solid, classical approach."
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": [
+                                                          {
+                                                            "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/e2e4/f8e7/f1e2/e8g8",
+                                                            "move": {
+                                                              "uci": "e8g8",
+                                                              "san": "O-O",
+                                                              "explanation": "Castle! Get your king safe before starting your queenside counterplay with ...Re8, ...a6, and ...b5."
+                                                            },
+                                                            "isMainLine": false,
+                                                            "weight": 30,
+                                                            "children": [
+                                                              {
+                                                                "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/e2e4/f8e7/f1e2/e8g8/g1f3",
+                                                                "move": {
+                                                                  "uci": "g1f3",
+                                                                  "san": "Nf3",
+                                                                  "explanation": "White develops the knight. Now is the time to plan your queenside counterplay."
+                                                                },
+                                                                "isMainLine": false,
+                                                                "weight": 30,
+                                                                "children": [
+                                                                  {
+                                                                    "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/e2e4/f8e7/f1e2/e8g8/g1f3/b8d7",
+                                                                    "move": {
+                                                                      "uci": "b8d7",
+                                                                      "san": "Nbd7",
+                                                                      "explanation": "Develop the knight to d7, supporting the knight on f6 and preparing to reroute it to e5 or b6. A classical and flexible developing move."
+                                                                    },
+                                                                    "isMainLine": false,
+                                                                    "weight": 30,
+                                                                    "children": [
+                                                                      {
+                                                                        "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/e2e4/f8e7/f1e2/e8g8/g1f3/b8d7/e1g1",
+                                                                        "move": {
+                                                                          "uci": "e1g1",
+                                                                          "san": "O-O",
+                                                                          "explanation": "White castles. Both kings are safe! Now begin the Benoni strategy — play ...a6, ...b5 to advance your queenside majority and create queenside counterplay."
+                                                                        },
+                                                                        "isMainLine": false,
+                                                                        "weight": 30,
+                                                                        "children": []
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ],
+                                                    "variationName": "Benoni: ...Be7 Classical"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6",
+                                            "move": {
+                                              "uci": "d7d6",
+                                              "san": "d6",
+                                              "explanation": "Place the pawn on d6 to blockade White's d5 pawn. This is the Benoni structure — your job is to advance ...b5 and ...c4 on the queenside!"
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/g1f3",
+                                                "move": {
+                                                  "uci": "g1f3",
+                                                  "san": "Nf3",
+                                                  "explanation": "White develops the knight — a natural move preparing to castle."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/g1f3/g7g6",
+                                                    "move": {
+                                                      "uci": "g7g6",
+                                                      "san": "g6",
+                                                      "explanation": "Prepare the fianchetto! Your bishop will go to g7, targeting White's queenside along the long diagonal."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/g1f3/g7g6/g2g3",
+                                                        "move": {
+                                                          "uci": "g2g3",
+                                                          "san": "g3",
+                                                          "explanation": "White also fianchettos! The Fianchetto System is a solid, strategic way for White to handle the Benoni. Matching fianchettoes create a strategic battle."
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": [
+                                                          {
+                                                            "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/g1f3/g7g6/g2g3/f8g7",
+                                                            "move": {
+                                                              "uci": "f8g7",
+                                                              "san": "Bg7",
+                                                              "explanation": "Your bishop lands on g7, facing off against White's bishop on g2. Two powerful diagonal bishops in opposing directions — the position is fascinating and strategic!"
+                                                            },
+                                                            "isMainLine": false,
+                                                            "weight": 30,
+                                                            "children": [
+                                                              {
+                                                                "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e6/b1c3/e6d5/c4d5/d7d6/g1f3/g7g6/g2g3/f8g7/f1g2",
+                                                                "move": {
+                                                                  "uci": "f1g2",
+                                                                  "san": "Bg2",
+                                                                  "explanation": "White places the bishop on g2. Now castle and start your queenside advance with ...a6 and ...b5. The strategic battle for the queenside begins!"
+                                                                },
+                                                                "isMainLine": false,
+                                                                "weight": 30,
+                                                                "children": []
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ],
+                                            "variationName": "Benoni: Fianchetto System"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e5",
+                            "move": {
+                              "uci": "e7e5",
+                              "san": "e5",
+                              "explanation": "The Czech Benoni! Instead of ...e6, you play ...e5 to lock the center completely. This creates a more closed position where maneuvering and knight play become very important."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e5/e2e4",
+                                "move": {
+                                  "uci": "e2e4",
+                                  "san": "e4",
+                                  "explanation": "White locks the center with e4. Now both sides have a fixed pawn chain — White has d5/e4, Black has d6/e5. It's a closed position where each side maneuvers for the perfect piece placement."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e5/e2e4/f8e7",
+                                    "move": {
+                                      "uci": "f8e7",
+                                      "san": "Be7",
+                                      "explanation": "Develop the bishop to e7 — a solid square in the Czech Benoni. Your plan is to castle and use your knight on f6 to jump to d7-f8-g6 or h5 to attack the kingside."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e5/e2e4/f8e7/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "White develops the knight — a natural developing move in the closed Czech Benoni position."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e5/e2e4/f8e7/g1f3/e8g8",
+                                            "move": {
+                                              "uci": "e8g8",
+                                              "san": "O-O",
+                                              "explanation": "Castle quickly! In the closed Czech Benoni, your plan after castling is to regroup with ...Nfd7, ...a6, and prepare the ...b5 pawn break to advance your queenside pawns."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "benoni/d2d4/g8f6/c2c4/c7c5/d4d5/e7e5/e2e4/f8e7/g1f3/e8g8/f1d3",
+                                                "move": {
+                                                  "uci": "f1d3",
+                                                  "san": "Bd3",
+                                                  "explanation": "White develops the bishop to d3, an active square in this closed position. Continue with ...Nbd7 and ...a6 to prepare your queenside advance."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "variationName": "Czech Benoni"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Create an asymmetrical pawn structure by playing ...c5 against d4, then ...e6xd5 to give White a passed d-pawn in exchange for a queenside pawn majority. Use your pawns on c5/b5 to advance on the queenside, your fianchettoed bishop on g7 to control the long diagonal, and your knight on f6 to blockade d5 and support counterplay. This is a fighting, unbalanced opening where both sides have real winning chances!",
+    "strategicGoals": [
+      { "description": "Blockade White's d5 pawn with ...d6 — the most important structural goal in the Benoni", "priority": 1 },
+      { "description": "Fianchetto the bishop to g7 to control the long diagonal and support queenside counterplay", "priority": 2 },
+      { "description": "Advance the queenside majority with ...a6 and ...b5 — this is your winning plan in the endgame", "priority": 3 },
+      { "description": "Castle kingside quickly and prepare active piece play before White can consolidate", "priority": 4 },
+      { "description": "Use the f6 knight as a blockader on d5 or reroute it via e8/d7 to attack White's center", "priority": 5 }
+    ],
+    "pawnStructureTarget": "Black gets a queenside majority (c5, b5, a5) while White has a passed d5 pawn. Black blockades d5 with pieces and advances queenside pawns. The ...b5-b4 advance is often decisive.",
+    "keySquares": ["d6", "d5", "g7", "b5", "e5"],
+    "pieceTargets": [
+      { "piece": "dark-squared bishop", "idealSquares": ["g7"], "reasoning": "The fianchettoed bishop on g7 controls the long diagonal (h8-a1), supports the queenside advance, and can become a monster piece when the position opens" },
+      { "piece": "king's knight", "idealSquares": ["f6", "e8", "d7", "e5"], "reasoning": "The knight blockades d5, and when rerouted through e8-d7-e5 it becomes a powerful centralized piece that dominates the d5 blockade square" },
+      { "piece": "queen's knight", "idealSquares": ["d7", "b6", "a4"], "reasoning": "The queen's knight supports the queenside advance — from d7 it can go to b6 and then a4 to threaten ...b5 or exchange on c3" },
+      { "piece": "rooks", "idealSquares": ["b8", "a8"], "reasoning": "Rooks belong on the b-file and c-file to support the queenside pawn advance ...b5-b4" }
+    ],
+    "typicalPlans": [
+      "Play ...a6 and ...b5 to advance the queenside majority and create a passed b-pawn",
+      "Reroute the knight from f6 to e8-d7-e5 to create a powerful blockading piece on d5",
+      "Use ...c4 to fix White's c-pawn and create a queenside fortress with ...d5-b5",
+      "In the Czech Benoni, prepare ...f5 (if the center is locked) or ...a6 ...b5 for queenside play"
+    ],
+    "commonMistakes": [
+      "Forgetting to blockade d5 — the passed d-pawn can be dangerous if you don't stop it with ...d6 and pieces on d5",
+      "Advancing queenside pawns before castling — always get your king safe first!",
+      "Trading the g7 bishop too early — it is your most important piece and supports all your counterplay",
+      "Playing passively on the queenside — the Benoni requires active play; ...a6 and ...b5 must come early to be effective"
+    ],
+    "historicalNote": "The word 'Benoni' comes from Hebrew, meaning 'Son of Sorrow' — named from a study by Aaron Reinganum in 1825. The Modern Benoni gained fame when Mikhail Tal used it brilliantly in the 1950s and 1960s, and it became a key weapon for Fischer, Bronstein, and later Kasparov. It's an opening that rewards fighting, uncompromising chess!",
+    "planLessons": [
+      {
+        "title": "The Benoni Pawn Structure",
+        "description": "After 1.d4 Nf6 2.c4 c5 3.d5 e6 4.Nc3 exd5 5.cxd5 d6, we have the Benoni structure. White has a passed pawn on d5 and space; Black has a queenside majority (c5) and active pieces. Both sides have real winning chances!",
+        "fen": "rnbqkb1r/pp3ppp/3p1n2/2pP4/8/2N5/PP2PPPP/R1BQKBNR w KQkq - 0 6",
+        "highlights": ["d5", "d6", "c5"],
+        "arrows": [{"from": "c5", "to": "b5"}, {"from": "b5", "to": "b4"}],
+        "style": "good"
+      },
+      {
+        "title": "Blockade the d5 Pawn!",
+        "description": "White's d5 pawn wants to advance — your most important job is to blockade it with ...d6 and then place a piece (especially the knight) on d5. A knight on d5 in the Benoni is often your best piece!",
+        "fen": "r1bqk2r/pp3pbp/3p1np1/2pP4/4P3/2N2N2/PP2BPPP/R1BQK2R b KQkq - 2 8",
+        "highlights": ["d5", "d6", "f6"],
+        "arrows": [{"from": "f6", "to": "d5"}],
+        "style": "good"
+      },
+      {
+        "title": "The Queenside Advance: ...a6 and ...b5!",
+        "description": "Your winning plan is to advance the queenside majority with ...a6 and ...b5. If White doesn't stop this, ...b5-b4 will give you a powerful passed pawn. Start this advance as early as possible!",
+        "fen": "r1bq1rk1/pp3pbp/3p1np1/2pP4/4P3/2N2N2/PP2BPPP/R1BQ1RK1 b - - 4 9",
+        "highlights": ["a6", "b5", "c5"],
+        "arrows": [{"from": "a7", "to": "a6"}, {"from": "b7", "to": "b5"}],
+        "style": "good"
+      },
+      {
+        "title": "The g7 Bishop: Control the Long Diagonal",
+        "description": "After ...g6 and ...Bg7, your bishop controls the h8-a1 diagonal — a very long, powerful diagonal that supports your queenside play and keeps White's pieces off key squares. Never trade this bishop without a very good reason!",
+        "fen": "r1bqk2r/pp3pbp/3p1np1/2pP4/4P3/2N2N2/PP2BPPP/R1BQK2R b KQkq - 2 8",
+        "highlights": ["g7", "d4", "c3"],
+        "arrows": [{"from": "g7", "to": "a1"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Advance Without Castling!",
+        "description": "It's tempting to start the queenside advance right away, but if your king is still in the center, White can open the position and attack it. Always castle first, then start your queenside counterplay.",
+        "fen": "rnbqk2r/pp3pbp/3p1np1/2pP4/4P3/2N2N2/PP2BPPP/R1BQK2R b KQkq - 2 8",
+        "highlights": ["e8", "b5"],
+        "arrows": [],
+        "style": "bad"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkb1r/pp3ppp/3p1n2/2pP4/4P3/2N5/PP3PPP/R1BQKBNR b KQkq - 0 7",
+        "prompt": "You're in the Modern Benoni. White has pawns on d5 and e4. What is your single most important strategic goal?",
+        "choices": [
+          {"text": "Blockade the d5 pawn with ...d6 and place a piece on d5", "isCorrect": true},
+          {"text": "Attack White's e4 pawn directly with ...f5", "isCorrect": false},
+          {"text": "Exchange all pieces to reach a pawn ending", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Blockading d5 is the most important Benoni goal! White's d5 pawn is passed and dangerous if it advances. Your ...d6 pawn stops it, and a knight on d5 is often the crown of your entire strategy. Control d5 and the rest of your plan falls into place.",
+        "boardHighlightsOnReveal": ["d5", "d6"],
+        "arrowsOnReveal": [{"from": "f6", "to": "d5"}]
+      },
+      {
+        "fen": "r1bq1rk1/pp3pbp/3p1np1/2pP4/4P3/2N2N2/PP2BPPP/R1BQ1RK1 b - - 4 9",
+        "prompt": "Both kings have castled. It's time to start your queenside play. What is the correct plan?",
+        "choices": [
+          {"text": "Play ...a6 and prepare ...b5 to advance your queenside majority", "isCorrect": true},
+          {"text": "Play ...f5 to attack White's center from the kingside", "isCorrect": false},
+          {"text": "Bring the rook to d8 to pressure the d5 pawn directly", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "...a6 followed by ...b5 is the Benoni's main attacking plan! Your queenside majority (c5 + b5 + a5) will create a powerful passed pawn if White doesn't stop it. Start the advance as soon as your king is safe — delay and White will consolidate.",
+        "boardHighlightsOnReveal": ["a6", "b5", "c5"],
+        "arrowsOnReveal": [{"from": "a7", "to": "a6"}, {"from": "b7", "to": "b5"}]
+      },
+      {
+        "fen": "rnbqkb1r/pp1p1ppp/4pn2/2pP4/2P5/8/PP2PPPP/RNBQKBNR w KQkq - 0 4",
+        "prompt": "After 1.d4 Nf6 2.c4 c5 3.d5 e6, White can capture with cxd5 or just ignore it. What should Black do if White plays 4.Nc3?",
+        "choices": [
+          {"text": "Capture with ...exd5 to create the Benoni pawn structure with your queenside majority", "isCorrect": true},
+          {"text": "Keep the tension with ...d6 and avoid exchanges", "isCorrect": false},
+          {"text": "Play ...Nxd5 to immediately grab the pawn", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "...exd5 is the key move! After cxd5 ...d6, you have the Modern Benoni structure. You trade your e-pawn for a queenside majority (c5/b5/a5) while White gets a passed d5 pawn. Your job is to blockade that pawn and advance your queenside majority — a classic Benoni pawn trade!",
+        "boardHighlightsOnReveal": ["e6", "d5", "c5"],
+        "arrowsOnReveal": [{"from": "e6", "to": "d5"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Modern Benoni Main Line (A70-A79)",
+        "description": "After 1.d4 Nf6 2.c4 c5 3.d5 e6 4.Nc3 exd5 5.cxd5 d6 6.e4 g6 7.Nf3 Bg7, we reach the main Modern Benoni position. Black will castle, play ...a6, ...b5, and fight for the queenside. White will develop and push the center or attack the kingside.",
+        "fen": "rnbqk2r/pp3pbp/3p1np1/2pP4/4P3/2N2N2/PP2BPPP/R1BQK2R b KQkq - 2 8",
+        "highlights": ["g7", "d5", "d6", "c5"],
+        "arrows": [{"from": "e8", "to": "g8"}, {"from": "a7", "to": "a6"}],
+        "style": "theory"
+      },
+      {
+        "title": "Classical Benoni: ...Be7 (A72)",
+        "description": "Instead of ...g6 and ...Bg7, Black can develop with ...Be7. This is the Classical Benoni — a solid, less sharp version. Black develops quietly with ...O-O, ...Nbd7, and prepares ...a6 and ...b5. Less sharp but very reliable.",
+        "fen": "r1bq1rk1/pp2bppp/3p1n2/2pP4/4P3/2N2N2/PP2BPPP/R1BQ1RK1 b - - 6 9",
+        "highlights": ["e7", "d6", "c5"],
+        "arrows": [{"from": "b8", "to": "d7"}, {"from": "a7", "to": "a6"}],
+        "style": "theory"
+      },
+      {
+        "title": "Czech Benoni (A56)",
+        "description": "If Black plays ...e5 instead of ...e6 against d5, the Czech Benoni arises. The center is locked! Both sides maneuver slowly. Black's plan includes knight rerouting (Nf6-d7-f8-g6) and the ...f5 break. A slower, more strategic battle.",
+        "fen": "rnbqkb1r/pp3ppp/3p1n2/2pPp3/2P1P3/2N5/PP3PPP/R1BQKBNR b KQkq - 0 6",
+        "highlights": ["e5", "d5", "c5"],
+        "arrows": [{"from": "f6", "to": "d7"}, {"from": "d7", "to": "f8"}],
+        "style": "theory"
+      },
+      {
+        "title": "Fianchetto System (A62)",
+        "description": "When White plays g3 and Bg2 (the Fianchetto System), White aims for a strategic squeeze. Both sides fianchetto their bishops — White on g2, you on g7. The battle of the long diagonals! Your plan is still ...a6 and ...b5, but the pace is slower.",
+        "fen": "r1bq1rk1/pp3pbp/3p1np1/2pP4/8/2N2NP1/PP2PPBP/R1BQ1RK1 b - - 4 9",
+        "highlights": ["g2", "g7", "d5"],
+        "arrows": [{"from": "a7", "to": "a6"}, {"from": "b7", "to": "b5"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkb1r/pp1p1ppp/4pn2/2pP4/2P5/2N5/PP2PPPP/R1BQKBNR b KQkq - 2 5",
+        "prompt": "After 1.d4 Nf6 2.c4 c5 3.d5 e6 4.Nc3, what is this opening called and what is Black's correct move?",
+        "choices": [
+          {"text": "Modern Benoni — play ...exd5 to create the characteristic pawn structure", "isCorrect": true},
+          {"text": "Czech Benoni — play ...e5 to lock the center completely", "isCorrect": false},
+          {"text": "King's Indian — play ...g6 to fianchetto the bishop first", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Modern Benoni starting point! After ...exd5 cxd5 d6, Black gets a queenside majority (c5/b5) while White has a passed d5 pawn. The Czech Benoni arises from ...e5 instead of ...e6. The Modern Benoni is the most dynamic and popular Benoni variation.",
+        "boardHighlightsOnReveal": ["e6", "d5", "c5"],
+        "arrowsOnReveal": [{"from": "e6", "to": "d5"}]
+      },
+      {
+        "fen": "r1bq1rk1/pp3pbp/3p1np1/2pP4/4P3/2N2N2/PP2BPPP/R1BQ1RK1 b - - 4 9",
+        "prompt": "Both sides have castled in the Modern Benoni. What is the name of Black's main plan, and which moves execute it?",
+        "choices": [
+          {"text": "The queenside majority advance — play ...a6 and ...b5 to push the pawns forward", "isCorrect": true},
+          {"text": "The kingside attack — play ...f5 and ...g5 to attack White's king", "isCorrect": false},
+          {"text": "The endgame plan — trade pieces and use the extra space to win", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The queenside majority advance is Black's main plan in the Modern Benoni! After castling, play ...a6 then ...b5 to advance the queenside pawns. If ...b5-b4 goes through, Black can create a powerful passed pawn. This queenside march is what makes the Benoni so dangerous for White!",
+        "boardHighlightsOnReveal": ["a7", "b7", "c5", "b5"],
+        "arrowsOnReveal": [{"from": "a7", "to": "a6"}, {"from": "b7", "to": "b5"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["d2d4", "g8f6", "c2c4", "c7c5", "d4d5", "e7e6"],
+    "responses": [
+      {
+        "id": "benoni-nc3",
+        "move": { "uci": "b1c3", "san": "Nc3", "explanation": "White develops the knight to c3 — the most natural and popular move, leading to the main Modern Benoni lines." },
+        "name": "Main Line with Nc3",
+        "eco": "A70",
+        "frequency": 0.50,
+        "description": "White develops normally with Nc3, entering the main Modern Benoni. After exd5 cxd5 d6 e4, we reach the classic Benoni structure.",
+        "planAdjustment": "Capture exd5, then after cxd5 play ...d6. Continue with ...g6, ...Bg7, castle, and begin your queenside march with ...a6 and ...b5. This is the standard Benoni plan — follow it confidently."
+      },
+      {
+        "id": "benoni-e4",
+        "move": { "uci": "e2e4", "san": "e4", "explanation": "White plays e4 immediately, grabbing even more center space before developing the c1 knight." },
+        "name": "Aggressive e4",
+        "eco": "A56",
+        "frequency": 0.20,
+        "description": "White grabs the center with e4 right away. This can lead to the Four Pawns Attack or similar aggressive systems if followed by f4.",
+        "planAdjustment": "Capture ...exd5, then after cxd5 play ...d6. The game likely transposes to main Benoni lines. If White also plays f4 (Four Pawns), counterattack immediately with ...g6, ...Bg7, and prepare ...b5 quickly."
+      },
+      {
+        "id": "benoni-nf3",
+        "move": { "uci": "g1f3", "san": "Nf3", "explanation": "White develops the king's knight first, often leading to the Fianchetto System with g3." },
+        "name": "Fianchetto System",
+        "eco": "A62",
+        "frequency": 0.20,
+        "description": "White often follows with g3 and Bg2 — the Fianchetto System. A strategic, solid approach that leads to long maneuvering battles.",
+        "planAdjustment": "Continue with ...exd5, ...d6, ...g6, ...Bg7, castle, then ...a6 and ...b5. The fianchetto system is slower but still dangerous. Your queenside advance plan remains the same — just be patient and careful with the bishop battle."
+      },
+      {
+        "id": "benoni-four-pawns",
+        "move": { "uci": "f2f4", "san": "f4", "explanation": "White plays f4 right away — the aggressive Four Pawns Attack against the Benoni, aiming to build c4/d5/e4/f4." },
+        "name": "Four Pawns Attack",
+        "eco": "A68",
+        "frequency": 0.10,
+        "description": "White builds a massive four-pawn center. Very aggressive and sharp — Black must counterattack immediately or get steamrolled.",
+        "planAdjustment": "After ...exd5 cxd5 d6 e4, you face the Four Pawns Attack. Play ...g6 and ...Bg7, castle quickly, then strike with ...b5 as soon as possible! The four pawns look scary but are overextended — your queenside break will undermine the whole center."
+      }
+    ]
+  }
+}

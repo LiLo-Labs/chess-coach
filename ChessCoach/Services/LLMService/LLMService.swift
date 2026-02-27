@@ -1,34 +1,67 @@
 import Foundation
 import ChessKit
 
-actor LLMService {
+actor LLMService: TextGenerating {
     private let config = LLMConfig()
     private var provider: LLMProvider = .claude
     private var onDeviceLLM: OnDeviceLLMService?
+    private var fallbackAllowed: Bool = true
+    /// Whether the on-device model has finished loading and is ready for inference.
+    private(set) var isModelReady: Bool = false
 
     func detectProvider() async {
-        let pref = UserDefaults.standard.string(forKey: "llm_provider_preference") ?? "auto"
+        let pref = UserDefaults.standard.string(forKey: AppSettings.Key.llmProvider) ?? "onDevice"
         switch pref {
         case "onDevice":
             provider = .onDevice
+            fallbackAllowed = false
         case "ollama":
             provider = .ollama
+            fallbackAllowed = false
+            isModelReady = true  // No model to load
         case "claude":
             provider = .claude
+            fallbackAllowed = false
+            isModelReady = true  // No model to load
         default:
-            provider = await config.detectProvider()
+            provider = .onDevice
+            fallbackAllowed = false
         }
 
-        // Don't pre-load on-device model — it's loaded lazily on first callProvider()
-        // to avoid blocking session start with a 2.5GB model load.
+        #if DEBUG
         print("[ChessCoach] LLM provider: \(provider)")
+        #endif
+    }
+
+    /// Start loading the on-device model in the background.
+    /// Call this early so the model is warm by the time the user needs coaching.
+    func warmUp() async {
+        guard provider == .onDevice else {
+            isModelReady = true
+            return
+        }
+        if onDeviceLLM == nil {
+            onDeviceLLM = OnDeviceLLMService()
+        }
+        do {
+            try await onDeviceLLM?.loadModel()
+            isModelReady = true
+            #if DEBUG
+            print("[ChessCoach] On-device model warm-up complete")
+            #endif
+        } catch {
+            #if DEBUG
+            print("[ChessCoach] On-device model warm-up failed: \(error.localizedDescription)")
+            #endif
+        }
     }
 
     static func buildPrompt(for context: CoachingContext) -> String {
+        let boardSummary = boardStateSummary(fen: context.fen)
         if context.isUserMove {
-            return buildUserMovePrompt(for: context)
+            return PromptCatalog.userMovePrompt(for: context, boardSummary: boardSummary)
         } else {
-            return buildOpponentMovePrompt(for: context)
+            return PromptCatalog.opponentMovePrompt(for: context, boardSummary: boardSummary)
         }
     }
 
@@ -52,164 +85,89 @@ actor LLMService {
         let black = pieces.filter { $0.1.color == .black }
             .map { "\(pieceKindName($0.1.kind)) on \($0.0.coordinate)" }
             .joined(separator: ", ")
-        return "White pieces: \(white)\nBlack pieces: \(black)"
-    }
 
-    private static func levelString(elo: Int) -> String {
-        switch elo {
-        case ..<600: return "complete beginner"
-        case ..<800: return "beginner"
-        case ..<1000: return "improving beginner"
-        default: return "intermediate"
-        }
-    }
+        var lines = ["White: \(white)", "Black: \(black)"]
 
-    /// Prompt for when the STUDENT just made a move
-    private static func buildUserMovePrompt(for context: CoachingContext) -> String {
-        let level = levelString(elo: context.userELO)
-        let studentColor = context.studentColor ?? "White"
-
-        let feedback: String
-        switch context.moveCategory {
-        case .goodMove:
-            feedback = "The student played the correct \(context.openingName) move (\(context.lastMove)). Tell them why this move is good in the \(context.openingName) — what plan or idea does it serve?"
-        case .okayMove:
-            let expected = context.expectedMoveSAN ?? "the book move"
-            feedback = "The student played \(context.lastMove), which is playable but not the \(context.openingName) main line. The book move was \(expected). Briefly explain why \(expected) is preferred in this system."
-        case .mistake:
-            let expected = context.expectedMoveSAN ?? "the book move"
-            let explanation = context.expectedMoveExplanation ?? ""
-            feedback = "The student played \(context.lastMove), deviating from the \(context.openingName). The book move was \(expected). \(explanation) Gently explain what they should have played and why."
-        default:
-            feedback = ""
+        // Add castling rights — helps model understand king safety
+        let castlings = position.state.castlings
+        var whiteCastle: [String] = []
+        var blackCastle: [String] = []
+        for c in castlings {
+            if c.color == .white && c.kind == .king { whiteCastle.append("O-O") }
+            if c.color == .white && c.kind == .queen { whiteCastle.append("O-O-O") }
+            if c.color == .black && c.kind == .king { blackCastle.append("O-O") }
+            if c.color == .black && c.kind == .queen { blackCastle.append("O-O-O") }
         }
 
-        return """
-        You are a chess coach. Your student (ELO ~\(context.userELO), \(level)) is learning the \(context.openingName) as \(studentColor).
-        System: \(context.openingName) — \(context.openingDescription)
-        Main line so far: \(context.mainLineSoFar)
-
-        The student just played: \(context.lastMove) (move \(context.plyNumber / 2 + 1))
-
-        Current board position:
-        \(boardStateSummary(fen: context.fen))
-
-        \(feedback)
-
-        Response format (REQUIRED):
-        REFS: <list each piece and square you mention, e.g. "bishop e5, knight c3". Write "none" if you don't reference specific pieces>
-        COACHING: <your coaching text>
-
-        Rules:
-        - ONLY reference pieces that exist on the squares listed above.
-        - REFS must exactly match pieces you mention in COACHING.
-        - Address the student as "you". You are talking TO the student about THEIR move.
-        - ONE or TWO short sentences (max 25 words total).
-        - Relate advice to the \(context.openingName) system.
-        - Use simple language. Spell out piece names, no algebraic notation.
-        """
-    }
-
-    /// Prompt for when the OPPONENT just made a move
-    private static func buildOpponentMovePrompt(for context: CoachingContext) -> String {
-        let level = levelString(elo: context.userELO)
-        let studentColor = context.studentColor ?? "White"
-
-        let guidance: String
-        if context.moveCategory == .deviation {
-            guidance = "The opponent deviated from the expected \(context.openingName) line by playing \(context.lastMove). Explain that the student is now out of book and suggest how to adapt while keeping the \(context.openingName) ideas."
-        } else {
-            let explanation = context.expectedMoveExplanation ?? ""
-            guidance = "The opponent played \(context.lastMove). Explain WHY the opponent wants to make this move — what is the opponent trying to achieve? \(explanation) Help the student understand the opponent's reasoning so they can anticipate it in future games."
+        if let whiteKing = pieces.first(where: { $0.1.color == .white && $0.1.kind == .king }) {
+            let castleStr = whiteCastle.isEmpty ? "" : ", can castle \(whiteCastle.joined(separator: " "))"
+            lines.append("White king on \(whiteKing.0.coordinate)\(castleStr)")
+        }
+        if let blackKing = pieces.first(where: { $0.1.color == .black && $0.1.kind == .king }) {
+            let castleStr = blackCastle.isEmpty ? "" : ", can castle \(blackCastle.joined(separator: " "))"
+            lines.append("Black king on \(blackKing.0.coordinate)\(castleStr)")
         }
 
-        return """
-        You are a chess coach. Your student (ELO ~\(context.userELO), \(level)) is learning the \(context.openingName) as \(studentColor).
-        System: \(context.openingName) — \(context.openingDescription)
-        Main line so far: \(context.mainLineSoFar)
+        return lines.joined(separator: "\n")
+    }
 
-        The OPPONENT just played: \(context.lastMove) (move \(context.plyNumber / 2 + 1))
-
-        Current board position:
-        \(boardStateSummary(fen: context.fen))
-
-        \(guidance)
-
-        Response format (REQUIRED):
-        REFS: <list each piece and square you mention, e.g. "bishop e5, knight c3". Write "none" if you don't reference specific pieces>
-        COACHING: <your coaching text>
-
-        Rules:
-        - ONLY reference pieces that exist on the squares listed above.
-        - REFS must exactly match pieces you mention in COACHING.
-        - Address the student as "you". Say "your opponent" or "they" for the other side.
-        - When naming pieces, always specify the color: "\(studentColor == "White" ? "Black" : "White")'s knight" not just "the knight".
-        - Frame it like: "Your opponent plays ... because they want to ..." or "They're aiming to ..."
-        - ONE or TWO short sentences (max 25 words total).
-        - Relate to the \(context.openingName) system.
-        - Use simple language. Spell out piece names, no algebraic notation.
-        """
+    /// Returns a comma-separated list of squares that have pieces on them.
+    /// Used in prompts to constrain REFS to valid squares only.
+    static func occupiedSquares(fen: String) -> String {
+        let position = FenSerialization.default.deserialize(fen: fen)
+        return position.board.enumeratedPieces()
+            .map { $0.0.coordinate }
+            .sorted()
+            .joined(separator: ", ")
     }
 
     func getCoaching(for context: CoachingContext) async throws -> String {
         let prompt = Self.buildPrompt(for: context)
-        return try await callProvider(prompt: prompt, maxTokens: 200, useThinking: false)
+        return try await callProvider(prompt: prompt, maxTokens: AppConfig.tokens.coaching, useThinking: false)
     }
 
     func getBatchedCoaching(for batched: BatchedCoachingContext) async throws -> BatchedCoachingResult {
         let prompt = Self.buildBatchedPrompt(for: batched)
-        let raw = try await callProvider(prompt: prompt, maxTokens: 400, useThinking: false)
+        let raw = try await callProvider(prompt: prompt, maxTokens: AppConfig.tokens.batchedCoaching, useThinking: false)
         return Self.parseBatchedResponse(raw)
     }
 
     func getExplanation(prompt: String) async throws -> String {
-        return try await callProvider(prompt: prompt, maxTokens: 500, useThinking: true)
+        return try await callProvider(prompt: prompt, maxTokens: AppConfig.tokens.explanation, useThinking: false)
+    }
+
+    // MARK: - TextGenerating conformance
+
+    func generate(prompt: String, maxTokens: Int) async throws -> String {
+        try await callProvider(prompt: prompt, maxTokens: maxTokens, useThinking: false)
+    }
+
+    func generateWithThinking(prompt: String, maxTokens: Int) async throws -> String {
+        try await callProvider(prompt: prompt, maxTokens: maxTokens, useThinking: true)
     }
 
     static func buildBatchedPrompt(for batched: BatchedCoachingContext) -> String {
         let userPrompt = buildPrompt(for: batched.userContext)
         let opponentPrompt = buildPrompt(for: batched.opponentContext)
-
-        return """
-        You will provide coaching for TWO consecutive moves. Respond with BOTH sections.
-
-        === MOVE 1 (Student's move) ===
-        \(userPrompt)
-
-        === MOVE 2 (Opponent's response) ===
-        \(opponentPrompt)
-
-        IMPORTANT: Format your response EXACTLY as:
-        STUDENT:
-        REFS: <piece references or "none">
-        COACHING: <coaching text>
-        OPPONENT:
-        REFS: <piece references or "none">
-        COACHING: <coaching text>
-        """
+        return PromptCatalog.batchedPrompt(userPrompt: userPrompt, opponentPrompt: opponentPrompt)
     }
 
     static func parseBatchedResponse(_ response: String) -> BatchedCoachingResult {
-        let upper = response.uppercased()
-
         // Split on STUDENT: and OPPONENT: markers
         var studentSection = ""
         var opponentSection = ""
 
-        if let studentRange = upper.range(of: "STUDENT:"),
-           let opponentRange = upper.range(of: "OPPONENT:") {
-            let studentStart = response.index(studentRange.upperBound, offsetBy: 0)
-            let opponentStart = response.index(opponentRange.upperBound, offsetBy: 0)
-
+        if let studentRange = response.range(of: "STUDENT:", options: .caseInsensitive),
+           let opponentRange = response.range(of: "OPPONENT:", options: .caseInsensitive) {
             if studentRange.lowerBound < opponentRange.lowerBound {
-                studentSection = String(response[studentStart..<opponentRange.lowerBound])
+                studentSection = String(response[studentRange.upperBound..<opponentRange.lowerBound])
                     .trimmingCharacters(in: .whitespacesAndNewlines)
-                opponentSection = String(response[opponentStart...])
+                opponentSection = String(response[opponentRange.upperBound...])
                     .trimmingCharacters(in: .whitespacesAndNewlines)
             } else {
-                opponentSection = String(response[opponentStart..<studentRange.lowerBound])
+                opponentSection = String(response[opponentRange.upperBound..<studentRange.lowerBound])
                     .trimmingCharacters(in: .whitespacesAndNewlines)
-                studentSection = String(response[studentStart...])
+                studentSection = String(response[studentRange.upperBound...])
                     .trimmingCharacters(in: .whitespacesAndNewlines)
             }
         } else {
@@ -226,17 +184,24 @@ actor LLMService {
 
     // MARK: - Private
 
-    /// Try the current provider, fall back through the chain: onDevice → ollama → claude
+    /// Try the current provider. If `fallbackAllowed` is true (user chose "onDevice" or default),
+    /// fall back through the chain: onDevice → ollama → claude. If the user explicitly chose a
+    /// provider ("ollama" or "claude"), errors are thrown immediately without fallback.
     private func callProvider(prompt: String, maxTokens: Int, useThinking: Bool) async throws -> String {
-        var lastError: Error?
-
         // Try on-device first if selected
         if provider == .onDevice {
             do {
                 return try await callOnDevice(prompt: prompt, maxTokens: maxTokens, useThinking: useThinking)
             } catch {
+                guard fallbackAllowed else {
+                    #if DEBUG
+                    print("[ChessCoach] On-device LLM failed (no fallback): \(error.localizedDescription)")
+                    #endif
+                    throw error
+                }
+                #if DEBUG
                 print("[ChessCoach] On-device LLM failed, trying Ollama: \(error.localizedDescription)")
-                lastError = error
+                #endif
             }
         }
 
@@ -245,8 +210,15 @@ actor LLMService {
             do {
                 return try await callOllama(prompt: prompt, maxTokens: maxTokens)
             } catch {
+                guard fallbackAllowed else {
+                    #if DEBUG
+                    print("[ChessCoach] Ollama failed (no fallback): \(error.localizedDescription)")
+                    #endif
+                    throw error
+                }
+                #if DEBUG
                 print("[ChessCoach] Ollama failed, trying Claude: \(error.localizedDescription)")
-                lastError = error
+                #endif
             }
         }
 
@@ -254,8 +226,10 @@ actor LLMService {
         do {
             return try await callClaude(prompt: prompt, maxTokens: maxTokens)
         } catch {
+            #if DEBUG
             print("[ChessCoach] Claude failed: \(error.localizedDescription)")
-            throw lastError ?? error
+            #endif
+            throw error
         }
     }
 
@@ -266,9 +240,13 @@ actor LLMService {
         do {
             try await onDeviceLLM?.loadModel()
         } catch {
+            #if DEBUG
             print("[ChessCoach] Failed to load on-device model: \(error.localizedDescription)")
+            #endif
             provider = .ollama
+            #if DEBUG
             print("[ChessCoach] Falling back to Ollama")
+            #endif
         }
     }
 
@@ -288,11 +266,14 @@ actor LLMService {
     var currentProvider: LLMProvider { provider }
 
     private func callOllama(prompt: String, maxTokens: Int = 200) async throws -> String {
-        let url = config.ollamaBaseURL.appendingPathComponent("api/chat")
+        guard let baseURL = config.ollamaBaseURL else {
+            throw NSError(domain: "LLMService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Ollama URL"])
+        }
+        let url = baseURL.appendingPathComponent("api/chat")
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.timeoutInterval = 10
+        request.timeoutInterval = AppConfig.llm.ollamaTimeout
 
         let body: [String: Any] = [
             "model": config.ollamaModel,
@@ -313,10 +294,10 @@ actor LLMService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(config.claudeAPIKey, forHTTPHeaderField: "x-api-key")
         request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-        request.timeoutInterval = 30
+        request.timeoutInterval = AppConfig.llm.claudeTimeout
 
         let body: [String: Any] = [
-            "model": "claude-sonnet-4-20250514",
+            "model": AppConfig.llm.claudeModel,
             "max_tokens": maxTokens,
             "messages": [["role": "user", "content": prompt]]
         ]

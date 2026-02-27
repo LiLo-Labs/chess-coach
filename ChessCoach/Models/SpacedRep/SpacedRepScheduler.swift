@@ -7,13 +7,13 @@ final class SpacedRepScheduler: Sendable {
         self.storage = storage
     }
 
-    func addItem(openingID: String, lineID: String? = nil, fen: String, ply: Int, correctMove: String? = nil) {
+    func addItem(openingID: String, lineID: String? = nil, fen: String, ply: Int, correctMove: String? = nil, playerColor: String? = nil) {
         var items = storage.loadReviewItems()
         // Don't duplicate (check openingID + ply + optional lineID)
         guard !items.contains(where: {
             $0.openingID == openingID && $0.ply == ply && $0.lineID == lineID
         }) else { return }
-        let item = ReviewItem(openingID: openingID, fen: fen, ply: ply, lineID: lineID, correctMove: correctMove)
+        let item = ReviewItem(openingID: openingID, fen: fen, ply: ply, lineID: lineID, correctMove: correctMove, playerColor: playerColor)
         items.append(item)
         storage.saveReviewItems(items)
     }

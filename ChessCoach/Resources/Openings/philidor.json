@@ -1,0 +1,591 @@
+{
+  "id": "philidor",
+  "name": "Philidor Defense",
+  "description": "A solid, old-fashioned defense where Black supports e5 with d6. Simple to play with a clear structure.",
+  "color": "black",
+  "difficulty": 1,
+  "tree": {
+    "id": "philidor/root",
+    "children": [
+      {
+        "id": "philidor/e2e4",
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "White opens with the king's pawn — you are going to defend your center piece by piece and wait for the right moment to strike back."
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "philidor/e2e4/e7e5",
+            "move": {
+              "uci": "e7e5",
+              "san": "e5",
+              "explanation": "Claim your share of the center — this is the first step in the Philidor Defense. Now you must make sure this pawn stays safe!"
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "philidor/e2e4/e7e5/g1f3",
+                "move": {
+                  "uci": "g1f3",
+                  "san": "Nf3",
+                  "explanation": "White attacks your e5 pawn — time to defend it! In the Philidor, you defend the pawn with d6 rather than a piece."
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "philidor/e2e4/e7e5/g1f3/d7d6",
+                    "move": {
+                      "uci": "d7d6",
+                      "san": "d6",
+                      "explanation": "The Philidor Defense! You defend e5 with the d-pawn — solid and safe. Now your e5 pawn is protected, and you can develop your pieces behind it."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4",
+                        "move": {
+                          "uci": "d2d4",
+                          "san": "d4",
+                          "explanation": "White strikes in the center — you must decide: defend e5 with Nf6 or trade the pawn with exd4. Most beginners should defend with Nf6!"
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6",
+                            "move": {
+                              "uci": "g8f6",
+                              "san": "Nf6",
+                              "explanation": "Develop the knight and put more pressure on White's center — this is the Hanham Philidor, named after the American master Philidor expert!"
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3",
+                                "move": {
+                                  "uci": "b1c3",
+                                  "san": "Nc3",
+                                  "explanation": "White develops with tempo — now bring out your b8 knight to d7 (not c6!) to keep the Philidor structure."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7",
+                                    "move": {
+                                      "uci": "b8d7",
+                                      "san": "Nbd7",
+                                      "explanation": "The key Philidor move! The knight goes to d7, not c6. On d7 it doesn't block the c8 bishop, stays connected to the pawns, and can jump to f8 or b6 later."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4",
+                                        "move": {
+                                          "uci": "f1c4",
+                                          "san": "Bc4",
+                                          "explanation": "White aims the bishop at f7 — now develop your bishop to e7 to protect f7 and prepare to castle safely."
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4/f8e7",
+                                            "move": {
+                                              "uci": "f8e7",
+                                              "san": "Be7",
+                                              "explanation": "Develop the bishop and defend f7 — now you are ready to castle! Be7 is the solid, reliable choice in the Philidor."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4/f8e7/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "White castles — now you castle too! After O-O you have a solid, safe position and can look for counterplay with ...c6 and ...d5 later."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4/f8e7/e1g1/e8g8",
+                                                    "move": {
+                                                      "uci": "e8g8",
+                                                      "san": "O-O",
+                                                      "explanation": "Castle and your king is safe! You have a solid Philidor position — now look for the right moment to play c6 and d5 to free your game."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7",
+                                    "move": {
+                                      "uci": "b8d7",
+                                      "san": "Nbd7",
+                                      "explanation": "The Hanham Variation — knight to d7 is the signature Philidor move, keeping the bishop on c8 free to develop."
+                                    },
+                                    "isMainLine": false,
+                                    "variationName": "Hanham Variation",
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4",
+                                        "move": {
+                                          "uci": "f1c4",
+                                          "san": "Bc4",
+                                          "explanation": "White develops the bishop aggressively — answer with c6 to support a future d5 push."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4/c7c6",
+                                            "move": {
+                                              "uci": "c7c6",
+                                              "san": "c6",
+                                              "explanation": "Solid and flexible — c6 supports a future d5 push that will free your position and give you central counterplay."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4/c7c6/a2a4",
+                                                "move": {
+                                                  "uci": "a2a4",
+                                                  "san": "a4",
+                                                  "explanation": "White expands on the queenside — don't panic, develop your bishop to e7 and castle first."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4/c7c6/a2a4/f8e7",
+                                                    "move": {
+                                                      "uci": "f8e7",
+                                                      "san": "Be7",
+                                                      "explanation": "Develop and prepare to castle — king safety comes first, even when White is expanding on the queenside."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4/c7c6/a2a4/f8e7/e1g1",
+                                                        "move": {
+                                                          "uci": "e1g1",
+                                                          "san": "O-O",
+                                                          "explanation": "White castles — now you castle too and get ready for ...d5 to free your position!"
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/e5d4",
+                            "move": {
+                              "uci": "e5d4",
+                              "san": "exd4",
+                              "explanation": "The Philidor Exchange — you trade the center pawns. This simplifies the position but gives White a strong center. Not recommended for beginners!"
+                            },
+                            "isMainLine": false,
+                            "variationName": "Philidor Exchange",
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/e5d4/f3d4",
+                                "move": {
+                                  "uci": "f3d4",
+                                  "san": "Nxd4",
+                                  "explanation": "White recaptures with the knight — now develop quickly with Nf6 and Nc6 before White gets too comfortable."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/e5d4/f3d4/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Develop the knight and put pressure on e4 — you need to develop fast to compensate for giving White the center."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/e5d4/f3d4/g8f6/b1c3",
+                                        "move": {
+                                          "uci": "b1c3",
+                                          "san": "Nc3",
+                                          "explanation": "White develops powerfully — now bring out your bishop to stop the center from becoming overwhelming."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/e5d4/f3d4/g8f6/b1c3/f8e7",
+                                            "move": {
+                                              "uci": "f8e7",
+                                              "san": "Be7",
+                                              "explanation": "Develop and prepare to castle — White has a small edge but you have a solid position to defend."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/e5d4/f3d4/g8f6/b1c3/f8e7/f1e2",
+                                                "move": {
+                                                  "uci": "f1e2",
+                                                  "san": "Be2",
+                                                  "explanation": "White develops solidly — castle and you have a playable position, though White has more space."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6",
+                            "move": {
+                              "uci": "g8f6",
+                              "san": "Nf6",
+                              "explanation": "The Nf6-first variation — develop the knight immediately before committing to the full Hanham structure."
+                            },
+                            "isMainLine": false,
+                            "variationName": "Philidor: ...Nf6 first",
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3",
+                                "move": {
+                                  "uci": "b1c3",
+                                  "san": "Nc3",
+                                  "explanation": "White develops — now bring out the b8 knight to d7 for the classic Hanham structure."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7",
+                                    "move": {
+                                      "uci": "b8d7",
+                                      "san": "Nbd7",
+                                      "explanation": "The knight goes to d7 — the Hanham Philidor structure is reached. Now develop Be7 and castle."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4",
+                                        "move": {
+                                          "uci": "f1c4",
+                                          "san": "Bc4",
+                                          "explanation": "White develops aggressively with the bishop — answer with Be7 to defend f7."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4/f8e7",
+                                            "move": {
+                                              "uci": "f8e7",
+                                              "san": "Be7",
+                                              "explanation": "Develop the bishop and get ready to castle — you have reached the same Philidor structure from a slightly different move order."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "philidor/e2e4/e7e5/g1f3/d7d6/d2d4/g8f6/b1c3/b8d7/f1c4/f8e7/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "White castles — castle on your next move and then look for the right moment to push c6-d5 for counterplay!"
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Defend e5 with d6, develop the knight to d7 (not c6!), then develop Be7 and castle. After castling, play c6 and aim for the d5 break — this frees your position and gives you active counterplay. Keep the center solid while preparing the right moment to strike.",
+    "strategicGoals": [
+      { "description": "Defend e5 with d6 — the defining move of the Philidor", "priority": 1 },
+      { "description": "Develop the knight to d7 (NOT c6) to keep the c8 bishop free", "priority": 2 },
+      { "description": "Develop the bishop to e7 to defend f7 and prepare castling", "priority": 3 },
+      { "description": "Castle kingside as quickly as possible", "priority": 4 },
+      { "description": "Play c6 and aim for the d5 pawn break to free your position", "priority": 5 }
+    ],
+    "pawnStructureTarget": "Solid e5/d6 pawn chain, aiming to eventually push d5 for counterplay",
+    "keySquares": ["e5", "d6", "d5", "f7"],
+    "pieceTargets": [
+      { "piece": "queen's knight", "idealSquares": ["d7"], "reasoning": "On d7 the knight keeps the c8 bishop free to develop and supports the e5 and c5 squares" },
+      { "piece": "king's knight", "idealSquares": ["f6"], "reasoning": "Develops actively and puts pressure on White's center" },
+      { "piece": "king's bishop", "idealSquares": ["e7"], "reasoning": "Solid development that defends f7 and prepares fast kingside castling" },
+      { "piece": "queen's pawn", "idealSquares": ["d5"], "reasoning": "The key freeing break — push d5 when ready to liberate your position" }
+    ],
+    "typicalPlans": [
+      "Never put the knight on c6 — it blocks the crucial d5 break",
+      "Use c6 to prepare the d5 pawn break when ready",
+      "After castling, put the rook on e8 to support e5",
+      "Consider ...Nf8-g6 or ...Nf8-e6 to reroute the knight actively"
+    ],
+    "commonMistakes": [
+      "Putting the queen's knight on c6 — this blocks the d5 pawn break and is a common beginner mistake",
+      "Trading e5 for d4 (exd4) early — this gives White a strong center for free",
+      "Forgetting to castle — with the center semi-open, your king needs to be safe",
+      "Moving the d6 pawn too early — it protects e5 and should only advance when the time is right"
+    ],
+    "historicalNote": "Named after Francois-Andre Danican Philidor (1726-1795), who was both the world's best chess player AND a famous opera composer. He wrote 'Chess is a game of pawns' — and the Philidor Defense proves it. Bobby Fischer avoided it because he considered it passive, but it remains a reliable choice at all levels.",
+    "planLessons": [
+      {
+        "title": "The Philidor Idea: Defend With Pawns",
+        "description": "Instead of defending e5 with a knight (like in the Italian or Ruy Lopez), the Philidor uses a pawn: d6. This creates a rock-solid chain of e5/d6 that is very hard to break. Philidor's genius was understanding pawn structures!",
+        "fen": "rnbqkbnr/ppp2ppp/3p4/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3",
+        "highlights": ["e5", "d6"],
+        "arrows": [{"from": "d7", "to": "d6"}],
+        "style": "good"
+      },
+      {
+        "title": "Knight to d7, NOT c6!",
+        "description": "This is the most important Philidor rule! Always play Nbd7, never Nc6. The knight on d7 keeps the c8 bishop free to develop. The knight on c6 would block the d5 pawn break that is your main counterplay plan.",
+        "fen": "rnbqkb1r/pppn1ppp/3p1n2/4p3/3PP3/2N2N2/PPP2PPP/R1BQKB1R w KQkq - 2 5",
+        "highlights": ["d7", "c6"],
+        "arrows": [{"from": "b8", "to": "d7"}],
+        "style": "good"
+      },
+      {
+        "title": "Why Not Nc6? It Blocks Your Plan!",
+        "description": "If you play Nc6, it looks active — but it permanently blocks the d5 pawn break! The d5 advance is your main way to free the position. With a knight on c6, you can never push d5, and your position becomes cramped forever.",
+        "fen": "r1bqkbnr/ppp2ppp/2np4/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+        "highlights": ["c6", "d5"],
+        "arrows": [],
+        "style": "bad"
+      },
+      {
+        "title": "Develop Be7 and Castle Quickly",
+        "description": "After Nbd7 and Nf6, develop the bishop to e7 — it defends f7, keeps the position solid, and gets you ready to castle. King safety is your top priority before you start any attacking ideas.",
+        "fen": "r1bqk2r/pppnbppp/3p1n2/4p3/3PP3/2N2N2/PPP1BPPP/R1BQK02R b KQkq - 2 6",
+        "highlights": ["e7", "g8"],
+        "arrows": [{"from": "e8", "to": "g8"}],
+        "style": "good"
+      },
+      {
+        "title": "Your Secret Weapon: The d5 Break",
+        "description": "After you are castled and solid, look for the right moment to play c6 followed by d5! This frees your position, activates the bishops, and gives you real counterplay. This is your long-term goal in the Philidor.",
+        "fen": "r1bq1rk1/pppnbppp/3p1n2/4p3/3PP3/2N2N2/PPP1BPPP/R1BQ1RK1 b - - 4 7",
+        "highlights": ["c6", "d5"],
+        "arrows": [{"from": "c7", "to": "c6"}, {"from": "d6", "to": "d5"}],
+        "style": "good"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkb1r/ppp2ppp/3p1n2/4p3/3PP3/2N2N2/PPP2PPP/R1BQKB1R b KQkq - 2 5",
+        "prompt": "White played Nc3. Where should Black's queen's knight go?",
+        "choices": [
+          {"text": "Nbd7 — the key Philidor move, keeps d5 break available", "isCorrect": true},
+          {"text": "Nc6 — develops actively toward the center", "isCorrect": false},
+          {"text": "Nbd7 and Nc6 are equally good", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Always Nbd7 in the Philidor! The knight on c6 permanently blocks the d5 pawn break, which is your main counterplay. Nbd7 keeps all your options open and lets the c8 bishop develop freely.",
+        "boardHighlightsOnReveal": ["d7", "c6", "d5"],
+        "arrowsOnReveal": [{"from": "b8", "to": "d7"}]
+      },
+      {
+        "fen": "r1bqkb1r/pppn1ppp/3p1n2/4p3/2BPP3/2N2N2/PPP2PPP/R1BQK02R b KQkq - 3 6",
+        "prompt": "White just played Bc4, eyeing f7. What should Black do?",
+        "choices": [
+          {"text": "Be7 — defend f7 and prepare to castle", "isCorrect": true},
+          {"text": "Nxe4 — take the pawn immediately", "isCorrect": false},
+          {"text": "d5 — push the pawn forward now", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Be7 is correct! It defends f7, develops the bishop, and prepares to castle. You are not ready to push d5 yet — get your king safe first with O-O, then look for counterplay.",
+        "boardHighlightsOnReveal": ["e7", "f7", "c4"],
+        "arrowsOnReveal": [{"from": "f8", "to": "e7"}]
+      },
+      {
+        "fen": "r1bq1rk1/pppnbppp/3p1n2/4p3/2BPP3/2N2N2/PPP2PPP/R1BQ1RK1 b - - 4 8",
+        "prompt": "Both sides have castled. What is Black's long-term plan?",
+        "choices": [
+          {"text": "Play c6 then d5 — the freeing pawn break", "isCorrect": true},
+          {"text": "Attack immediately with g5 and h5", "isCorrect": false},
+          {"text": "Keep all the pawns solid and never advance", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The plan is c6 then d5! First c6 prepares the break, then d5 advances to challenge White's center, activate your bishops, and free your cramped position. This is what the Philidor is all about!",
+        "boardHighlightsOnReveal": ["c6", "d5"],
+        "arrowsOnReveal": [{"from": "c7", "to": "c6"}, {"from": "d6", "to": "d5"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "The Hanham Variation (C41) — The Main Philidor",
+        "description": "The main modern Philidor is the Hanham Variation: after d4, play Nf6 and Nbd7. Named after American master James Moore Hanham who popularized this setup. The knight on d7 is the signature — it keeps d5 available and lets the bishop develop.",
+        "fen": "rnbqkb1r/pppn1ppp/3p1n2/4p3/3PP3/2N2N2/PPP2PPP/R1BQKB1R w KQkq - 2 5",
+        "highlights": ["d7", "f6", "d6"],
+        "arrows": [{"from": "b8", "to": "d7"}],
+        "style": "theory"
+      },
+      {
+        "title": "Philidor Exchange (C41) — Avoid This!",
+        "description": "If Black plays exd4 (exchanging the e5 pawn for d4), White gets a strong central pawn on e4 with no counterpart. This is called the Philidor Exchange — it gives White a comfortable game and is not recommended. Keep e5 alive!",
+        "fen": "rnbqkbnr/ppp2ppp/3p4/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+        "highlights": ["d4", "e4"],
+        "arrows": [{"from": "e5", "to": "d4"}],
+        "style": "bad"
+      },
+      {
+        "title": "The d5 Pawn Break — Your Key Weapon",
+        "description": "Once you are castled and solid, the d5 break is your main counterplay. First play c6 to support d5, then push d5 to challenge White's center. This activates your bishops and creates real counterchances — the reward for patient Philidor play!",
+        "fen": "r1bq1rk1/pppnbppp/3p1n2/4p3/3PP3/2N2N2/PPP1BPPP/R1BQ1RK1 b - - 2 7",
+        "highlights": ["d5", "c6", "e5"],
+        "arrows": [{"from": "c7", "to": "c6"}, {"from": "d6", "to": "d5"}],
+        "style": "theory"
+      },
+      {
+        "title": "Philidor vs Italian — What's the Difference?",
+        "description": "In the Italian, Black plays Nc6 and Bc5 — active but less solid. In the Philidor, Black plays d6 and Nbd7 — solid but slightly passive. The Philidor gives up activity for safety; the reward comes when you push d5 and activate your pieces later.",
+        "fen": "rnbqkb1r/pppn1ppp/3p1n2/4p3/3PP3/2N2N2/PPP2PPP/R1BQKB1R w KQkq - 2 5",
+        "highlights": ["d7", "d6", "f6"],
+        "arrows": [],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkb1r/pppn1ppp/3p1n2/4p3/3PP3/2N2N2/PPP2PPP/R1BQKB1R w KQkq - 2 5",
+        "prompt": "This is the Hanham Variation. What makes Nbd7 special compared to Nc6?",
+        "choices": [
+          {"text": "Nbd7 keeps the d5 pawn break available and lets the bishop develop", "isCorrect": true},
+          {"text": "Nbd7 attacks e5 more directly than Nc6", "isCorrect": false},
+          {"text": "Nc6 and Nbd7 are equally good in this position", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Nbd7 is the Hanham key move! It does not block the c-pawn, so d5 is still possible. On c6, the knight blocks the d5 break permanently. Additionally, Nbd7 keeps the c8 bishop free to develop to e6 or g4.",
+        "boardHighlightsOnReveal": ["d7", "d5", "c8"],
+        "arrowsOnReveal": []
+      },
+      {
+        "fen": "rnbqkbnr/ppp2ppp/3p4/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3",
+        "prompt": "This is the starting position of the Philidor Defense. Who is it named after?",
+        "choices": [
+          {"text": "Francois-Andre Philidor — an 18th century French chess genius and composer", "isCorrect": true},
+          {"text": "Paul Philidor — a German master from the 1900s", "isCorrect": false},
+          {"text": "Ruy Lopez — who invented many 1.e4 openings", "isCorrect": false},
+          {"text": "Alexander Petroff — who analyzed it around 1825", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The Philidor Defense is named after Francois-Andre Danican Philidor (1726-1795), who was both the world's greatest chess player of his era AND a renowned opera composer! He said 'Chess is a game of pawns' — and this opening proves it.",
+        "boardHighlightsOnReveal": ["d6", "e5"],
+        "arrowsOnReveal": []
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["e2e4", "e7e5", "g1f3", "d7d6"],
+    "responses": [
+      {
+        "id": "philidor-d4",
+        "move": { "uci": "d2d4", "san": "d4", "explanation": "White builds a strong center — the most aggressive and most common response to the Philidor." },
+        "name": "Main Line: d4",
+        "eco": "C41",
+        "frequency": 0.50,
+        "description": "White challenges the center with d4 — the main and most principled response. Develop with Nf6, Nbd7, Be7, and castle.",
+        "planAdjustment": "Play Nf6, then Nbd7 (not Nc6!), Be7, O-O. After castling, look for the c6-d5 break to free your position."
+      },
+      {
+        "id": "philidor-nc3",
+        "move": { "uci": "b1c3", "san": "Nc3", "explanation": "White develops the knight without committing the d-pawn yet — a solid, flexible choice." },
+        "name": "Nc3 System",
+        "eco": "C41",
+        "frequency": 0.20,
+        "description": "White plays Nc3 before d4 — keeping options flexible. Your plan is the same: Nf6, Nbd7, Be7, and castle.",
+        "planAdjustment": "Same Hanham setup: Nf6, Nbd7, Be7, O-O. White will likely play d4 next — you are well prepared for it."
+      },
+      {
+        "id": "philidor-bc4",
+        "move": { "uci": "f1c4", "san": "Bc4", "explanation": "White develops the bishop aggressively to c4, aiming at f7. Develop quickly and castle to neutralize this." },
+        "name": "Bishop to c4",
+        "eco": "C41",
+        "frequency": 0.20,
+        "description": "White plays Bc4 — eyeing f7. Answer with Nf6 and Be7, defending f7 and preparing to castle quickly.",
+        "planAdjustment": "Play Nf6, then Be7 to defend f7, then castle. After O-O, White's Bc4 is actually not very dangerous against your solid setup."
+      },
+      {
+        "id": "philidor-d4-early",
+        "move": { "uci": "d2d4", "san": "d4", "explanation": "White plays d4 immediately on move 2 — the Center Game approach against the Philidor." },
+        "name": "Early d4 push",
+        "eco": "C41",
+        "frequency": 0.10,
+        "description": "White tries d4 before Nf3 — defend with Nf6 and you reach normal Philidor positions. White's early d4 is not dangerous.",
+        "planAdjustment": "Respond with Nf6 and continue with the normal Hanham plan: Nbd7, Be7, O-O. White's early d4 changes nothing about your fundamental approach."
+      }
+    ]
+  }
+}

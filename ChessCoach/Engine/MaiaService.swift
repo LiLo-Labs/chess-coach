@@ -9,7 +9,7 @@ import Foundation
 /// - Strange opening moves in some positions (Issue #5)
 /// - Masked softmax bug in original code (PR #9) — mitigated here by
 ///   filtering to legal moves before applying softmax (see `predictMove`).
-actor MaiaService {
+actor MaiaService: MovePredicting {
     private let model: MLModel
     private let moveList: [String] // 1880 UCI moves
     private let moveIndex: [String: Int] // UCI -> index
@@ -18,12 +18,12 @@ actor MaiaService {
         let config = MLModelConfiguration()
         config.computeUnits = .cpuAndNeuralEngine
         // Xcode compiles .mlpackage → .mlmodelc at build time
-        guard let url = Bundle.main.url(forResource: "Maia2Blitz", withExtension: "mlmodelc") else {
+        guard let url = Bundle.main.url(forResource: AppConfig.maia.modelResourceName, withExtension: "mlmodelc") else {
             throw MaiaError.modelNotFound
         }
         self.model = try MLModel(contentsOf: url, configuration: config)
         let moves = Self.loadMoveList()
-        assert(moves.count == 1880, "maia2_moves.txt corrupted: expected 1880 moves, got \(moves.count)")
+        assert(moves.count == AppConfig.maia.expectedMoveCount, "maia2_moves.txt corrupted: expected \(AppConfig.maia.expectedMoveCount) moves, got \(moves.count)")
         self.moveList = moves
         var idx: [String: Int] = [:]
         for (i, m) in moves.enumerated() { idx[m] = i }
@@ -40,7 +40,8 @@ actor MaiaService {
         eloSelf: Int = 1500,
         eloOppo: Int = 1500
     ) throws -> [(move: String, probability: Float)] {
-        let isBlack = fen.split(separator: " ")[1] == "b"
+        let fenParts = fen.split(separator: " ")
+        let isBlack = fenParts.count > 1 && fenParts[1] == "b"
 
         // Encode board (mirror if black)
         let boardTensor = encodeBoardFromFEN(fen, mirror: isBlack)
@@ -97,7 +98,9 @@ actor MaiaService {
         }
 
         // Softmax over legal moves only
-        let maxLogit = legalLogits.map(\.logit).max()!
+        guard let maxLogit = legalLogits.map(\.logit).max() else {
+            throw MaiaError.noLegalMoves
+        }
         let exps = legalLogits.map { exp($0.logit - maxLogit) }
         let sumExps = exps.reduce(0, +)
         let probs = exps.map { $0 / sumExps }
@@ -128,7 +131,7 @@ actor MaiaService {
         if temperature != 1.0 {
             // Apply temperature scaling
             let logProbs = predictions.map { log($0.probability) / temperature }
-            let maxLP = logProbs.max()!
+            guard let maxLP = logProbs.max() else { return predictions[0].move }
             let exps = logProbs.map { exp($0 - maxLP) }
             let sum = exps.reduce(0, +)
             predictions = zip(predictions, exps).map { ($0.0.move, $0.1 / sum) }
@@ -142,7 +145,7 @@ actor MaiaService {
                 return pred.move
             }
         }
-        return predictions.last!.move
+        return predictions.last?.move ?? predictions[0].move
     }
 
     // MARK: - Board Encoding
@@ -219,12 +222,13 @@ actor MaiaService {
 
         // En passant (channel 17) - single square
         if enPassant != "-" {
-            let file = Int(enPassant.unicodeScalars.first!.value) - Int(UnicodeScalar("a").value)
-            var rank = Int(String(enPassant.last!))! - 1
-            if mirror {
-                rank = 7 - rank
+            if let firstScalar = enPassant.unicodeScalars.first,
+               let lastChar = enPassant.last,
+               let rank = Int(String(lastChar)) {
+                let file = Int(firstScalar.value) - Int(UnicodeScalar("a").value)
+                let adjustedRank = mirror ? 7 - (rank - 1) : rank - 1
+                tensor[17 * 64 + adjustedRank * 8 + file] = 1.0
             }
-            tensor[17 * 64 + rank * 8 + file] = 1.0
         }
 
         return tensor
@@ -256,10 +260,15 @@ actor MaiaService {
     /// Mirror a UCI move by flipping ranks (e.g., e2e4 -> e7e5).
     private func mirrorMove(_ uci: String) -> String {
         let chars = Array(uci)
+        guard chars.count >= 4,
+              let fromRankInt = Int(String(chars[1])),
+              let toRankInt = Int(String(chars[3])) else {
+            return uci // malformed UCI move: return as-is
+        }
         let fromFile = chars[0]
-        let fromRank = Character(String(9 - Int(String(chars[1]))!))
+        let fromRank = Character(String(9 - fromRankInt))
         let toFile = chars[2]
-        let toRank = Character(String(9 - Int(String(chars[3]))!))
+        let toRank = Character(String(9 - toRankInt))
         let promo = chars.count > 4 ? String(chars[4...]) : ""
         return "\(fromFile)\(fromRank)\(toFile)\(toRank)\(promo)"
     }
@@ -267,10 +276,7 @@ actor MaiaService {
     // MARK: - ELO Mapping
 
     private func eloToBucket(_ elo: Int) -> Int32 {
-        // <1100: 0, 1100-1199: 1, ..., >=2000: 10
-        if elo < 1100 { return 0 }
-        if elo >= 2000 { return 10 }
-        return Int32((elo - 1100) / 100 + 1)
+        AppConfig.maia.eloToBucket(elo)
     }
 
     // MARK: - Move List
@@ -278,7 +284,7 @@ actor MaiaService {
     /// Load the 1880 UCI moves from the bundled resource file.
     /// Order must match maia2's get_all_possible_moves() exactly.
     private static func loadMoveList() -> [String] {
-        guard let url = Bundle.main.url(forResource: "maia2_moves", withExtension: "txt"),
+        guard let url = Bundle.main.url(forResource: AppConfig.maia.movesResourceName, withExtension: "txt"),
               let content = try? String(contentsOf: url, encoding: .utf8) else {
             fatalError("maia2_moves.txt not found in bundle")
         }

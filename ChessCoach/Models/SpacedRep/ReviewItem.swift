@@ -9,6 +9,7 @@ struct ReviewItem: Codable, Identifiable, Sendable {
     // Per-line tracking (v2)
     var lineID: String?
     var correctMove: String?
+    var playerColor: String?  // "white" or "black"
 
     // SM-2 fields
     var interval: Int        // days until next review
@@ -16,13 +17,14 @@ struct ReviewItem: Codable, Identifiable, Sendable {
     var repetitions: Int     // consecutive correct responses
     var nextReviewDate: Date
 
-    init(openingID: String, fen: String, ply: Int, lineID: String? = nil, correctMove: String? = nil) {
+    init(openingID: String, fen: String, ply: Int, lineID: String? = nil, correctMove: String? = nil, playerColor: String? = nil) {
         self.id = UUID()
         self.openingID = openingID
         self.fen = fen
         self.ply = ply
         self.lineID = lineID
         self.correctMove = correctMove
+        self.playerColor = playerColor
         self.interval = 1
         self.easeFactor = 2.5
         self.repetitions = 0

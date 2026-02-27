@@ -3,7 +3,7 @@ import ChessKitEngine
 
 /// Wraps ChessKitEngine's Stockfish with a single persistent stream consumer
 /// and continuation-based response collection.
-actor StockfishService {
+actor StockfishService: PositionEvaluating {
     private var engine: Engine?
     private var isStarted = false
     private var streamTask: Task<Void, Never>?
@@ -13,6 +13,13 @@ actor StockfishService {
     private var collectedResponses: [EngineResponse] = []
     private var waitingForBestMove = false
     private var waitingForReady = false
+
+    // Serialization: waiters queue up here while a search is in progress
+    private var searchInProgress = false
+    private var searchQueue: [CheckedContinuation<Void, Never>] = []
+
+    /// Default timeout for search operations (seconds)
+    private let searchTimeout: TimeInterval = AppConfig.engine.searchTimeout
 
     func start() async {
         guard !isStarted else { return }
@@ -27,7 +34,9 @@ actor StockfishService {
 
         guard let stream = await eng.responseStream else {
             debugLog("No response stream")
+            #if DEBUG
             print("[ChessCoach] Stockfish: no response stream")
+            #endif
             return
         }
 
@@ -45,7 +54,7 @@ actor StockfishService {
 
         // Timeout safety
         let timeoutTask = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(10))
+            try? await Task.sleep(for: .seconds(AppConfig.engine.readyTimeout))
             await self?.handleReadyTimeout()
         }
 
@@ -56,8 +65,28 @@ actor StockfishService {
 
         timeoutTask.cancel()
         isStarted = true
-        debugLog("Stockfish started successfully")
+        debugLog("Stockfish started, confirming setup complete...")
+
+        // Send a second isready to confirm all setoption commands
+        // (especially NNUE weight loading) have been fully processed
+        // before we allow any searches.
+        waitingForReady = true
+        let confirmTimeout = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(AppConfig.engine.readyTimeout))
+            await self?.handleReadyTimeout()
+        }
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            pendingContinuation = cont
+            Task { [engine = self.engine!] in
+                await engine.send(command: .isready)
+            }
+        }
+        confirmTimeout.cancel()
+
+        debugLog("Stockfish fully ready")
+        #if DEBUG
         print("[ChessCoach] Stockfish started")
+        #endif
     }
 
     func stop() async {
@@ -83,7 +112,12 @@ actor StockfishService {
     }
 
     func evaluate(fen: String, depth: Int = 15) async -> (bestMove: String, score: Int)? {
-        guard isStarted else { print("[ChessCoach] evaluate: engine not started"); return nil }
+        guard isStarted else {
+            #if DEBUG
+            print("[ChessCoach] evaluate: engine not started")
+            #endif
+            return nil
+        }
 
         let responses = await runSearch(commands: [
             .position(.fen(fen)),
@@ -147,7 +181,9 @@ actor StockfishService {
         let cont = pendingContinuation
         pendingContinuation = nil
         cont?.resume()
+        #if DEBUG
         print("[ChessCoach] Stockfish: readyok timeout, proceeding anyway")
+        #endif
     }
 
     private func handleResponse(_ response: EngineResponse) {
@@ -180,29 +216,58 @@ actor StockfishService {
             debugLog("runSearch: engine not ready")
             return []
         }
+
+        // C-1: Serialize concurrent searches — wait until no search is in progress
+        if searchInProgress {
+            debugLog("runSearch: another search in progress, queuing")
+            await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+                searchQueue.append(cont)
+            }
+        }
+        searchInProgress = true
+
+        // C-2: If a stale continuation exists (should not happen with serialization,
+        // but defend against it), resume it before proceeding so it is never leaked.
+        if let staleCont = pendingContinuation {
+            debugLog("runSearch: resuming stale pending continuation")
+            pendingContinuation = nil
+            waitingForBestMove = false
+            staleCont.resume()
+        }
+
         debugLog("runSearch starting with \(commands.count) commands")
         collectedResponses = []
         waitingForBestMove = true
 
-        for (i, cmd) in commands.enumerated() {
-            debugLog("runSearch: sending cmd[\(i)]: \(cmd)")
-            await engine.send(command: cmd)
-            debugLog("runSearch: sent cmd[\(i)] done")
-        }
-
-        // Timeout so searches don't hang forever
+        // C-3: Set continuation BEFORE sending commands. This closes the race
+        // where bestmove arrives between engine.send() and withCheckedContinuation.
+        // Commands are sent from a Task that executes after this method suspends.
         let timeoutTask = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(10))
+            try? await Task.sleep(for: .seconds(self?.searchTimeout ?? 5))
             await self?.handleSearchTimeout()
         }
 
         await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
             pendingContinuation = cont
+            Task { [engine] in
+                for cmd in commands {
+                    await engine.send(command: cmd)
+                }
+            }
         }
 
         timeoutTask.cancel()
-        debugLog("runSearch done, \(self.collectedResponses.count) responses")
-        return collectedResponses
+        let results = collectedResponses
+        debugLog("runSearch done, \(results.count) responses")
+
+        // Release the next queued search, if any
+        searchInProgress = false
+        if !searchQueue.isEmpty {
+            let next = searchQueue.removeFirst()
+            next.resume()
+        }
+
+        return results
     }
 
     private func handleSearchTimeout() {
@@ -213,6 +278,8 @@ actor StockfishService {
         pendingContinuation = nil
         cont?.resume()
         debugLog("[SF] handleSearchTimeout: resumed continuation")
-        print("[ChessCoach] Stockfish: search timeout after 10s")
+        #if DEBUG
+        print("[ChessCoach] Stockfish: search timeout after \(Int(searchTimeout))s")
+        #endif
     }
 }

@@ -1,0 +1,614 @@
+{
+  "id": "petroff",
+  "name": "Petroff Defense",
+  "description": "A solid, symmetrical defense where Black mirrors White's play. Known for its drawish tendencies but very reliable.",
+  "color": "black",
+  "difficulty": 2,
+  "tree": {
+    "id": "petroff/root",
+    "children": [
+      {
+        "id": "petroff/e2e4",
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "White opens with the king's pawn — now instead of defending, you are going to attack right back!"
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "petroff/e2e4/e7e5",
+            "move": {
+              "uci": "e7e5",
+              "san": "e5",
+              "explanation": "Stake your claim in the center — this symmetrical pawn structure leads to the open games where the Petroff shines."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "petroff/e2e4/e7e5/g1f3",
+                "move": {
+                  "uci": "g1f3",
+                  "san": "Nf3",
+                  "explanation": "White attacks your e5 pawn with the knight — instead of defending it, you attack back with your own knight!"
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "petroff/e2e4/e7e5/g1f3/g8f6",
+                    "move": {
+                      "uci": "g8f6",
+                      "san": "Nf6",
+                      "explanation": "The Petroff Defense! Instead of defending e5, you counterattack White's e4 pawn. Both sides are now attacking each other's pawns — very exciting!"
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5",
+                        "move": {
+                          "uci": "f3e5",
+                          "san": "Nxe5",
+                          "explanation": "White takes your e5 pawn — don't panic! You have a very important plan to get the pawn back safely."
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d7d6",
+                            "move": {
+                              "uci": "d7d6",
+                              "san": "d6",
+                              "explanation": "Attack the knight and force it to retreat — NEVER take the e4 pawn first! If you play Nxe4 right away, White wins your knight with a great tactic."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d7d6/e5f3",
+                                "move": {
+                                  "uci": "e5f3",
+                                  "san": "Nf3",
+                                  "explanation": "White retreats the knight — now you can safely take the e4 pawn since the pin trick no longer works."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d7d6/e5f3/f6e4",
+                                    "move": {
+                                      "uci": "f6e4",
+                                      "san": "Nxe4",
+                                      "explanation": "Now it is safe to take the pawn! The d6-d5 plan follows — you recentralize by pushing d5 to build your own strong center."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d7d6/e5f3/f6e4/d2d4",
+                                        "move": {
+                                          "uci": "d2d4",
+                                          "san": "d4",
+                                          "explanation": "White builds a strong center — now is the time for your main plan: push d5 to challenge White's pawns!"
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d7d6/e5f3/f6e4/d2d4/d6d5",
+                                            "move": {
+                                              "uci": "d6d5",
+                                              "san": "d5",
+                                              "explanation": "The key Petroff move! Push d5 and the position becomes fully symmetrical — both sides have equal pawn centers and good piece activity."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d7d6/e5f3/f6e4/d2d4/d6d5/f1d3",
+                                                "move": {
+                                                  "uci": "f1d3",
+                                                  "san": "Bd3",
+                                                  "explanation": "White challenges your knight — you develop the bishop to e7 and prepare to castle."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d7d6/e5f3/f6e4/d2d4/d6d5/f1d3/f8e7",
+                                                    "move": {
+                                                      "uci": "f8e7",
+                                                      "san": "Be7",
+                                                      "explanation": "Develop the bishop and prepare to castle — a safe, solid move that keeps your position stable and sound."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": [
+                                                      {
+                                                        "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d7d6/e5f3/f6e4/d2d4/d6d5/f1d3/f8e7/e1g1",
+                                                        "move": {
+                                                          "uci": "e1g1",
+                                                          "san": "O-O",
+                                                          "explanation": "White castles — now you castle too and the game enters a balanced middlegame where both sides have equal chances."
+                                                        },
+                                                        "isMainLine": true,
+                                                        "weight": 60,
+                                                        "children": [
+                                                          {
+                                                            "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d7d6/e5f3/f6e4/d2d4/d6d5/f1d3/f8e7/e1g1/e8g8",
+                                                            "move": {
+                                                              "uci": "e8g8",
+                                                              "san": "O-O",
+                                                              "explanation": "Castle and you have achieved a perfectly equal, solid position — the Petroff Defense has done its job! Now it is a real game with equal chances."
+                                                            },
+                                                            "isMainLine": true,
+                                                            "weight": 50,
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/b8c6",
+                            "move": {
+                              "uci": "b8c6",
+                              "san": "Nc6",
+                              "explanation": "The Three Knights variation — instead of d6, Black develops the knight. This is a more ambitious but riskier choice."
+                            },
+                            "isMainLine": false,
+                            "variationName": "Petroff: Three Knights",
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/b8c6/e5c6",
+                                "move": {
+                                  "uci": "e5c6",
+                                  "san": "Nxc6",
+                                  "explanation": "White takes the knight — you recapture and open the d-file."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/b8c6/e5c6/d7c6",
+                                    "move": {
+                                      "uci": "d7c6",
+                                      "san": "dxc6",
+                                      "explanation": "Recapture toward the center and open the d-file — your bishops will become very active with the open position."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/b8c6/e5c6/d7c6/d2d3",
+                                        "move": {
+                                          "uci": "d2d3",
+                                          "san": "d3",
+                                          "explanation": "White plays d3 to develop normally — now activate your bishop to c5, a powerful square."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/b8c6/e5c6/d7c6/d2d3/f8c5",
+                                            "move": {
+                                              "uci": "f8c5",
+                                              "san": "Bc5",
+                                              "explanation": "The bishop comes out aggressively — it aims at f2 and you have very active piece play as compensation for the pawn."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/b8c6/e5c6/d7c6/d2d3/f8c5/f1e2",
+                                                "move": {
+                                                  "uci": "f1e2",
+                                                  "san": "Be2",
+                                                  "explanation": "White develops calmly — you castle and your position is very active with the open files and powerful bishop."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d8e7",
+                            "move": {
+                              "uci": "d8e7",
+                              "san": "Qe7",
+                              "explanation": "The Qe7 line — Black pins the knight to the king and asks it to move. This is tricky but not totally sound — White can respond well."
+                            },
+                            "isMainLine": false,
+                            "variationName": "Petroff: ...Qe7 line",
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d8e7/d2d4",
+                                "move": {
+                                  "uci": "d2d4",
+                                  "san": "d4",
+                                  "explanation": "White builds the center — the e5 knight is defended, so your Qe7 pin is not effective yet."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d8e7/d2d4/d7d6",
+                                    "move": {
+                                      "uci": "d7d6",
+                                      "san": "d6",
+                                      "explanation": "Attack the knight and force it to move — now the Qe7 pin will kick in."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d8e7/d2d4/d7d6/e5f3",
+                                        "move": {
+                                          "uci": "e5f3",
+                                          "san": "Nf3",
+                                          "explanation": "White retreats — now your queen takes e4 with check, winning material!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d8e7/d2d4/d7d6/e5f3/e7e4",
+                                            "move": {
+                                              "uci": "e7e4",
+                                              "san": "Qxe4+",
+                                              "explanation": "Take the e4 pawn with check! This is why you played Qe7 — to win a pawn by force. Now White must deal with the check."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "petroff/e2e4/e7e5/g1f3/g8f6/f3e5/d8e7/d2d4/d7d6/e5f3/e7e4/f1e2",
+                                                "move": {
+                                                  "uci": "f1e2",
+                                                  "san": "Be2",
+                                                  "explanation": "White blocks with the bishop — you have won a pawn but your queen is exposed. Continue with Nf6 to develop and keep the extra material."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "id": "petroff/e2e4/e7e5/g1f3/g8f6/d2d4",
+                        "move": {
+                          "uci": "d2d4",
+                          "san": "d4",
+                          "explanation": "The Steinitz Attack — White pushes d4 instead of taking e5. This is a different approach where White builds the center before developing."
+                        },
+                        "isMainLine": false,
+                        "variationName": "Petroff: Steinitz Attack",
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "petroff/e2e4/e7e5/g1f3/g8f6/d2d4/d7d6",
+                            "move": {
+                              "uci": "d7d6",
+                              "san": "d6",
+                              "explanation": "Defend e5 with the pawn — now you have a solid pawn structure and can prepare to take the e4 pawn with Nxe4."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "petroff/e2e4/e7e5/g1f3/g8f6/d2d4/d7d6/b1c3",
+                                "move": {
+                                  "uci": "b1c3",
+                                  "san": "Nc3",
+                                  "explanation": "White develops — now take the e4 pawn with the knight!"
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "petroff/e2e4/e7e5/g1f3/g8f6/d2d4/d7d6/b1c3/f6e4",
+                                    "move": {
+                                      "uci": "f6e4",
+                                      "san": "Nxe4",
+                                      "explanation": "Win the e4 pawn! After dxe5 and d5, you get a great position — equal pawns and active pieces."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "petroff/e2e4/e7e5/g1f3/g8f6/d2d4/d7d6/b1c3/f6e4/c3e4",
+                                        "move": {
+                                          "uci": "c3e4",
+                                          "san": "Nxe4",
+                                          "explanation": "White captures back — now your d-pawn recaptures the central space you need."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "petroff/e2e4/e7e5/g1f3/g8f6/d2d4/d7d6/b1c3/f6e4/c3e4/d6d5",
+                                            "move": {
+                                              "uci": "d6d5",
+                                              "san": "d5",
+                                              "explanation": "Push d5 and attack the knight — you regain central equality and your pieces become very active. Great position!"
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Mirror White's knight development with Nf6, then after Nxe5 play d6 to force the retreat, and only THEN take on e4. Push d5 to equalize the center. The Petroff gives you a rock-solid position where White struggles to find an advantage.",
+    "strategicGoals": [
+      { "description": "Play Nf6 to counter-attack e4 instead of defending e5", "priority": 1 },
+      { "description": "After Nxe5, play d6 FIRST to force the knight back before taking e4", "priority": 2 },
+      { "description": "Take the e4 pawn with Nxe4 only after the knight has retreated to f3", "priority": 3 },
+      { "description": "Push d5 to create a fully equal pawn center", "priority": 4 },
+      { "description": "Develop bishop to e7 and castle to reach a solid, equal position", "priority": 5 }
+    ],
+    "pawnStructureTarget": "Symmetrical e5/d5 vs e4/d4 pawn structure after the sequence, leading to a balanced game",
+    "keySquares": ["e4", "e5", "d5", "f3"],
+    "pieceTargets": [
+      { "piece": "king's knight", "idealSquares": ["f6", "e4"], "reasoning": "Counter-attacks e4, then occupies e4 as a strong outpost after the Nxe4 sequence" },
+      { "piece": "king's bishop", "idealSquares": ["e7"], "reasoning": "Solid development that prepares quick kingside castling" },
+      { "piece": "queen's pawn", "idealSquares": ["d5"], "reasoning": "The key pawn push that establishes central equality after the knight sequence" }
+    ],
+    "typicalPlans": [
+      "Always play d6 before Nxe4 — the order matters critically!",
+      "Push d5 after Nxe4 to equalize the center",
+      "Develop Be7 and castle quickly for a solid, safe position",
+      "In the endgame, use your solid pawn structure to neutralize White's play"
+    ],
+    "commonMistakes": [
+      "CRITICAL: Never play Nxe4 immediately after Nxe5 — White wins your knight with Qe2!",
+      "Always play d6 FIRST to force the knight back before taking on e4",
+      "Don't try to hold onto the e4 pawn forever — exchange it for d5 and equality",
+      "Don't play Qe7 unless you know the specific theory — it can backfire"
+    ],
+    "historicalNote": "Named after Alexander Petroff, a Russian master who analyzed it in 1825. It has been a favorite of players who want to draw with Black — Vladimir Kramnik used it in world championship play. It is sometimes called the 'Russian Defense' and is famous for its rock-solid reliability.",
+    "planLessons": [
+      {
+        "title": "Counter-Attack Instead of Defending",
+        "description": "Instead of defending e5, you attack e4 right back! This is the spirit of the Petroff — White attacks your pawn, you attack theirs. Both sides have equal problems to solve.",
+        "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+        "highlights": ["f6", "e4"],
+        "arrows": [{"from": "g8", "to": "f6"}, {"from": "f6", "to": "e4"}],
+        "style": "good"
+      },
+      {
+        "title": "THE CRITICAL RULE: d6 Before Nxe4!",
+        "description": "After White plays Nxe5, you MUST play d6 first to chase the knight away. NEVER play Nxe4 immediately — White plays Qe2 and wins your knight! d6 forces the knight back to f3, and only then is it safe to take on e4.",
+        "fen": "rnbqkb1r/pppp1ppp/3p1n2/4N3/4P3/8/PPPP1PPP/RNBQKB1R w KQkq - 0 4",
+        "highlights": ["d6", "e5", "e4"],
+        "arrows": [{"from": "d7", "to": "d6"}],
+        "style": "good"
+      },
+      {
+        "title": "The Trap: Don't Take e4 Yet!",
+        "description": "If you play Nxe4 immediately (before d6), White plays Qe2! The queen pins the knight to your king — if the knight moves, White takes on e5. If you block with d5, White takes and you lose material. d6 first prevents all of this!",
+        "fen": "rnbqkb1r/pppp1ppp/5n2/4N3/4n3/8/PPPP1PPP/RNBQKB1R w KQkq - 0 4",
+        "highlights": ["e4", "e2", "e5"],
+        "arrows": [{"from": "d1", "to": "e2"}],
+        "style": "bad"
+      },
+      {
+        "title": "Push d5 for Full Equality",
+        "description": "After the sequence d6, Nf3, Nxe4, d4 — now push d5! This creates a fully symmetrical pawn structure with e5/d5 matching White's e4/d4. You have achieved complete equality — the Petroff has done its job!",
+        "fen": "rnbqkb1r/ppp2ppp/8/3pp3/3Pn3/5N2/PPP2PPP/RNBQKB1R w KQkq d6 0 6",
+        "highlights": ["d5", "e5", "d4", "e4"],
+        "arrows": [{"from": "d6", "to": "d5"}],
+        "style": "good"
+      },
+      {
+        "title": "Develop Be7 and Castle for Safety",
+        "description": "After establishing the d5 pawn, develop Be7 and castle kingside. This gives you a king-safe, solid position where White will struggle to make progress. The Petroff is famous for being one of the safest openings for Black!",
+        "fen": "rnbqk2r/ppp1bppp/8/3pp3/3Pn3/3B1N2/PPP2PPP/RNBQK2R b KQkq - 2 7",
+        "highlights": ["e7", "g8"],
+        "arrows": [{"from": "e8", "to": "g8"}],
+        "style": "good"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkb1r/pppp1ppp/5n2/4N3/4P3/8/PPPP1PPP/RNBQKB1R b KQkq - 1 3",
+        "prompt": "White just played Nxe5. What is Black's MOST IMPORTANT move?",
+        "choices": [
+          {"text": "d6 — chase the knight before taking on e4", "isCorrect": true},
+          {"text": "Nxe4 — take the pawn immediately", "isCorrect": false},
+          {"text": "Nc6 — develop another piece", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Always d6 first! If you play Nxe4 immediately, White plays Qe2 and wins your knight. d6 forces the knight to retreat to f3 first, making Nxe4 safe on the next move.",
+        "boardHighlightsOnReveal": ["d6", "e5"],
+        "arrowsOnReveal": [{"from": "d7", "to": "d6"}]
+      },
+      {
+        "fen": "rnbqkb1r/pppp1ppp/3p1n2/8/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 4",
+        "prompt": "White retreated the knight to f3. What should Black play now?",
+        "choices": [
+          {"text": "Nxe4 — now it's safe to take the pawn!", "isCorrect": true},
+          {"text": "Be7 — develop the bishop first", "isCorrect": false},
+          {"text": "d5 — push the pawn forward", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "NOW Nxe4 is safe! The knight is no longer on e5, so White cannot play Qe2 to win it. Take the pawn and then push d5 on the next move to equalize completely.",
+        "boardHighlightsOnReveal": ["e4", "f3"],
+        "arrowsOnReveal": [{"from": "f6", "to": "e4"}]
+      },
+      {
+        "fen": "rnbqkb1r/ppp2ppp/8/3p4/3Pn3/3B1N2/PPP2PPP/RNBQK2R b KQkq - 1 6",
+        "prompt": "You have achieved the key pawn structure. What should Black do next?",
+        "choices": [
+          {"text": "Be7 — develop and prepare to castle", "isCorrect": true},
+          {"text": "Bg4 — pin the knight", "isCorrect": false},
+          {"text": "f5 — push the kingside pawn", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Be7 is the solid choice! It develops the bishop, prepares to castle kingside, and keeps your position rock solid. After O-O you will have achieved everything the Petroff promises — complete safety and equality.",
+        "boardHighlightsOnReveal": ["e7", "g8"],
+        "arrowsOnReveal": [{"from": "f8", "to": "e7"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "The Petroff Sequence (C42)",
+        "description": "The main Petroff sequence: 1.e4 e5 2.Nf3 Nf6 3.Nxe5 d6 4.Nf3 Nxe4. Remember the order — d6 BEFORE Nxe4. This classical sequence leads to equality and is the foundation of everything in the Petroff.",
+        "fen": "rnbqkb1r/ppp2ppp/3p4/4p3/4n3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 5",
+        "highlights": ["e4", "f3", "d6"],
+        "arrows": [{"from": "f6", "to": "e4"}],
+        "style": "theory"
+      },
+      {
+        "title": "Three Knights Variation",
+        "description": "Instead of d6, Black plays Nc6 after Nxe5. White takes on c6 and Black recaptures with dxc6 — opening the d-file and getting active bishops. More complex than the main line but also interesting!",
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/4N3/4P3/8/PPPP1PPP/RNBQKB1R w KQkq - 2 4",
+        "highlights": ["c6", "e5"],
+        "arrows": [{"from": "b8", "to": "c6"}],
+        "style": "theory"
+      },
+      {
+        "title": "Steinitz Attack (C43) — White tries d4",
+        "description": "White plays d4 before Nxe5 in the Steinitz Attack. You answer with d6 to defend e5, then take on e4 after Nc3. The resulting positions are similar to the main line but with different pawn structures.",
+        "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq d3 0 3",
+        "highlights": ["d4", "e5"],
+        "arrows": [{"from": "d2", "to": "d4"}],
+        "style": "theory"
+      },
+      {
+        "title": "Why the Petroff is Called the 'Russian Defense'",
+        "description": "Alexander Petroff (Petrov in Russian) analyzed this opening around 1825. It is also called the Russian Defense. Top players like Vladimir Kramnik, Fabiano Caruana, and Magnus Carlsen have used it at the highest level — it is a completely sound, trusted opening.",
+        "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+        "highlights": ["f6", "e4"],
+        "arrows": [{"from": "g8", "to": "f6"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkb1r/pppp1ppp/5n2/4N3/4P3/8/PPPP1PPP/RNBQKB1R b KQkq - 1 3",
+        "prompt": "What is the correct move order in the Petroff after 3.Nxe5?",
+        "choices": [
+          {"text": "d6 first, then Nxe4 after the knight retreats", "isCorrect": true},
+          {"text": "Nxe4 immediately — take the free pawn", "isCorrect": false},
+          {"text": "d5 — challenge the center right away", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The golden Petroff rule: always d6 first, then Nxe4! If you take immediately, White plays Qe2 and wins your knight. d6 forces the knight back to f3, and only then is Nxe4 safe.",
+        "boardHighlightsOnReveal": ["d6", "e5", "e4"],
+        "arrowsOnReveal": [{"from": "d7", "to": "d6"}]
+      },
+      {
+        "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+        "prompt": "This defense is named after a Russian master. What is it called?",
+        "choices": [
+          {"text": "Petroff Defense (Russian Defense)", "isCorrect": true},
+          {"text": "Scandinavian Defense", "isCorrect": false},
+          {"text": "Philidor Defense", "isCorrect": false},
+          {"text": "Berlin Defense", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Petroff Defense (C42), also known as the Russian Defense! Named after Alexander Petrov who analyzed it in 1825. It has been used by World Champions and is one of the most reliable defenses to 1.e4.",
+        "boardHighlightsOnReveal": ["f6", "e5"],
+        "arrowsOnReveal": []
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["e2e4", "e7e5", "g1f3", "g8f6"],
+    "responses": [
+      {
+        "id": "petroff-nxe5",
+        "move": { "uci": "f3e5", "san": "Nxe5", "explanation": "White takes your e5 pawn — the main line. Remember: d6 first, then Nxe4!" },
+        "name": "Main Line: Nxe5",
+        "eco": "C42",
+        "frequency": 0.55,
+        "description": "White plays Nxe5 — the main test of the Petroff. Your response is d6 then Nxe4, followed by d5 for full equality.",
+        "planAdjustment": "Play d6 to chase the knight, then Nxe4 after it retreats. Follow up with d5, Be7, O-O for a solid equal game."
+      },
+      {
+        "id": "petroff-d4",
+        "move": { "uci": "d2d4", "san": "d4", "explanation": "The Steinitz Attack — White builds the center before taking on e5." },
+        "name": "Steinitz Attack",
+        "eco": "C43",
+        "frequency": 0.20,
+        "description": "White plays d4 first — the Steinitz Attack. Respond with d6 and prepare to take on e4 after Nc3.",
+        "planAdjustment": "Play d6 to solidify e5, then Nxe4 after Nc3. Follow up with d5 for central equality — similar to the main line but with a slightly different pawn structure."
+      },
+      {
+        "id": "petroff-nc3",
+        "move": { "uci": "b1c3", "san": "Nc3", "explanation": "White develops the knight — the Three Knights approach." },
+        "name": "Three Knights",
+        "eco": "C46",
+        "frequency": 0.15,
+        "description": "White develops with Nc3, keeping options open. You can continue with Nc6 for the Four Knights or Bb4 for the pin.",
+        "planAdjustment": "Play Nc6 for the Four Knights Game, or Bb4 to pin the c3 knight. Both lead to sharp, interesting play with equal chances."
+      },
+      {
+        "id": "petroff-bc4",
+        "move": { "uci": "f1c4", "san": "Bc4", "explanation": "White tries the Italian-style approach against the Petroff." },
+        "name": "Italian vs Petroff",
+        "eco": "C50",
+        "frequency": 0.10,
+        "description": "White plays Bc4 — an unusual choice against the Petroff. You can play Nxe4 immediately here since the Italian bishop doesn't threaten anything specific.",
+        "planAdjustment": "You can play Nxe4 directly — the Bc4 doesn't threaten anything that changes the Petroff rules. Continue with d5, and develop normally. White's bishop on c4 is slightly misplaced in this structure."
+      }
+    ]
+  }
+}

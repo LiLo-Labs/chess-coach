@@ -33,6 +33,38 @@ enum AppColor {
         }
     }
 
+    // MARK: Layer Colors (5-layer plan-first flow)
+    static func layer(_ layer: LearningLayer) -> Color {
+        switch layer {
+        case .understandPlan: return .cyan
+        case .executePlan: return .blue
+        case .discoverTheory: return .indigo
+        case .handleVariety: return .orange
+        case .realConditions: return .purple
+        }
+    }
+
+    static func layerIcon(_ layer: LearningLayer) -> String {
+        switch layer {
+        case .understandPlan: return "lightbulb.fill"
+        case .executePlan: return "target"
+        case .discoverTheory: return "book.closed.fill"
+        case .handleVariety: return "person.2.fill"
+        case .realConditions: return "bolt.fill"
+        }
+    }
+
+    // MARK: PES Score Colors
+    static func pesColor(_ category: ScoreCategory) -> Color {
+        switch category {
+        case .masterful: return .yellow
+        case .strong: return .green
+        case .solid: return .blue
+        case .developing: return .orange
+        case .needsWork: return .red
+        }
+    }
+
     // MARK: Arrow Colors
     static let arrowSuggestion = Color.green.opacity(0.55)
     static let arrowMistake = Color.red.opacity(0.55)
@@ -78,25 +110,6 @@ enum AppRadius {
     static let md: CGFloat = 12
     static let lg: CGFloat = 14
     static let xl: CGFloat = 20
-}
-
-// MARK: - Reusable Card Style
-
-struct AppCardModifier: ViewModifier {
-    var padding: CGFloat = AppSpacing.cardPadding
-    var radius: CGFloat = AppRadius.md
-
-    func body(content: Content) -> some View {
-        content
-            .padding(padding)
-            .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: radius))
-    }
-}
-
-extension View {
-    func appCard(padding: CGFloat = AppSpacing.cardPadding, radius: CGFloat = AppRadius.md) -> some View {
-        modifier(AppCardModifier(padding: padding, radius: radius))
-    }
 }
 
 // MARK: - Badge / Pill Style
@@ -257,62 +270,6 @@ struct AchievementBadge: View {
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
         .background(tier.color.opacity(0.12), in: Capsule())
-    }
-}
-
-// MARK: - Animated Counter
-
-struct AnimatedCounter: View {
-    let value: Int
-    var font: Font = .system(size: 48, weight: .bold, design: .rounded)
-    var color: Color = .white
-
-    @State private var displayValue: Int = 0
-
-    var body: some View {
-        Text("\(displayValue)")
-            .font(font)
-            .foregroundStyle(color)
-            .contentTransition(.numericText(value: Double(displayValue)))
-            .onAppear {
-                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                    displayValue = value
-                }
-            }
-            .onChange(of: value) { _, newValue in
-                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                    displayValue = newValue
-                }
-            }
-    }
-}
-
-// MARK: - Gesture Hint Overlay
-
-struct GestureHintView: View {
-    let icon: String
-    let text: String
-    @Binding var isVisible: Bool
-
-    var body: some View {
-        if isVisible {
-            HStack(spacing: 8) {
-                Image(systemName: icon)
-                    .font(.caption)
-                Text(text)
-                    .font(.caption.weight(.medium))
-            }
-            .foregroundStyle(.white)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(.ultraThinMaterial, in: Capsule())
-            .transition(.opacity.combined(with: .move(edge: .bottom)))
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                    withAnimation { isVisible = false }
-                }
-            }
-        }
     }
 }
 

@@ -1,0 +1,615 @@
+{
+  "id": "ruy-lopez",
+  "name": "Ruy Lopez",
+  "description": "One of the oldest and most respected openings. White puts lasting pressure on Black's center by attacking the knight that defends e5.",
+  "color": "white",
+  "difficulty": 3,
+  "tree": {
+    "id": "ruy-lopez/root",
+    "children": [
+      {
+        "id": "ruy-lopez/e2e4",
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "Claim the center with your king's pawn! This opens lines for your bishop and queen and stakes out important central territory."
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "ruy-lopez/e2e4/e7e5",
+            "move": {
+              "uci": "e7e5",
+              "san": "e5",
+              "explanation": "Black fights back for the center — this is the classic open game where both sides want to control the middle."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "ruy-lopez/e2e4/e7e5/g1f3",
+                "move": {
+                  "uci": "g1f3",
+                  "san": "Nf3",
+                  "explanation": "Bring out the knight and attack Black's e5 pawn right away. The knight is perfectly placed here — active and central."
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6",
+                    "move": {
+                      "uci": "b8c6",
+                      "san": "Nc6",
+                      "explanation": "Black defends e5 with the knight — a natural developing move that also controls important central squares."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5",
+                        "move": {
+                          "uci": "f1b5",
+                          "san": "Bb5",
+                          "explanation": "The Ruy Lopez! The bishop pins the knight to the king — if the knight moves, the e5 pawn falls. This subtle pressure is what makes the Ruy Lopez so powerful."
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6",
+                            "move": {
+                              "uci": "a7a6",
+                              "san": "a6",
+                              "explanation": "Black challenges the bishop immediately — 'Are you going to take on c6 or retreat?' This is the most popular Ruy Lopez move, called the Morphy Defense."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5a4",
+                                "move": {
+                                  "uci": "b5a4",
+                                  "san": "Ba4",
+                                  "explanation": "Keep the pressure going by retreating to a4 — the bishop still eyes the c6 knight and you don't give Black the bishop pair for free."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5a4/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Black develops and attacks your e4 pawn — a strong counter-blow that is the main continuation."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5a4/g8f6/e1g1",
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle to safety first — your king is tucked away on g1 and the rook joins the attack. Safety before action!"
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5a4/g8f6/e1g1/f8e7",
+                                            "move": {
+                                              "uci": "f8e7",
+                                              "san": "Be7",
+                                              "explanation": "Black develops the bishop and prepares to castle — sensible and solid, getting the king to safety."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5a4/g8f6/e1g1/f8e7/f1e1",
+                                                "move": {
+                                                  "uci": "f1e1",
+                                                  "san": "Re1",
+                                                  "explanation": "Supercharge the rook! It supports e4 and prepares to swing to e3 or e5. This is a key move in the main line Ruy Lopez."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5a4/g8f6/e1g1/f8e7/f1e1/b7b5",
+                                                    "move": {
+                                                      "uci": "b7b5",
+                                                      "san": "b5",
+                                                      "explanation": "Black chases the bishop — now it must move or be captured. Black gains space on the queenside."
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": [
+                                                      {
+                                                        "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5a4/g8f6/e1g1/f8e7/f1e1/b7b5/a4b3",
+                                                        "move": {
+                                                          "uci": "a4b3",
+                                                          "san": "Bb3",
+                                                          "explanation": "The bishop retreats to b3, staying active on the a2-g8 diagonal — still eyeing f7 and keeping pressure on Black's position."
+                                                        },
+                                                        "isMainLine": true,
+                                                        "weight": 60,
+                                                        "children": [
+                                                          {
+                                                            "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5a4/g8f6/e1g1/f8e7/f1e1/b7b5/a4b3/d7d6",
+                                                            "move": {
+                                                              "uci": "d7d6",
+                                                              "san": "d6",
+                                                              "explanation": "Black solidifies the center. Now c3 and d4 are your goals — the famous Ruy Lopez closed position where White builds slowly for a lasting advantage."
+                                                            },
+                                                            "isMainLine": true,
+                                                            "weight": 50,
+                                                            "children": []
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/g8f6",
+                            "move": {
+                              "uci": "g8f6",
+                              "san": "Nf6",
+                              "explanation": "The Berlin Defense — Black ignores the pin and just develops! A very solid choice that has become a drawing weapon at grandmaster level."
+                            },
+                            "isMainLine": false,
+                            "variationName": "Berlin Defense",
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/g8f6/e1g1",
+                                "move": {
+                                  "uci": "e1g1",
+                                  "san": "O-O",
+                                  "explanation": "Castle quickly — with the center about to open up, king safety is the top priority."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/g8f6/e1g1/f6e4",
+                                    "move": {
+                                      "uci": "f6e4",
+                                      "san": "Nxe4",
+                                      "explanation": "Black grabs the e4 pawn! The Berlin endgame is coming — a famous drawing line that top players use all the time."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/g8f6/e1g1/f6e4/d2d4",
+                                        "move": {
+                                          "uci": "d2d4",
+                                          "san": "d4",
+                                          "explanation": "Open the center! After d4, the position opens and White gets good compensation for the pawn with active pieces."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/g8f6/e1g1/f6e4/d2d4/f8e7",
+                                            "move": {
+                                              "uci": "f8e7",
+                                              "san": "Be7",
+                                              "explanation": "Black develops the bishop and defends the knight — heading toward a solid endgame."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/g8f6/e1g1/f6e4/d2d4/f8e7/d1e2",
+                                                "move": {
+                                                  "uci": "d1e2",
+                                                  "san": "Qe2",
+                                                  "explanation": "Attack the knight and pin it to the king — forcing Black to retreat and giving you a comfortable game."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/f8c5",
+                            "move": {
+                              "uci": "f8c5",
+                              "san": "Bc5",
+                              "explanation": "The Classical Defense — Black develops the bishop to its most active square, ignoring the pin and counter-pressuring White's position."
+                            },
+                            "isMainLine": false,
+                            "variationName": "Classical Defense",
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/f8c5/c2c3",
+                                "move": {
+                                  "uci": "c2c3",
+                                  "san": "c3",
+                                  "explanation": "Prepare the d4 push — you want to build a strong pawn center and challenge Black's bishop."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/f8c5/c2c3/g8f6",
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Black develops and attacks e4 — creating counterplay before White can build the center."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/f8c5/c2c3/g8f6/d2d4",
+                                        "move": {
+                                          "uci": "d2d4",
+                                          "san": "d4",
+                                          "explanation": "Strike in the center! After d4, White gets a strong central presence and active piece play."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/f8c5/c2c3/g8f6/d2d4/c5b6",
+                                            "move": {
+                                              "uci": "c5b6",
+                                              "san": "Bb6",
+                                              "explanation": "The bishop retreats to safety — keeping an eye on the f2 square and staying on the a7-g1 diagonal."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/f8c5/c2c3/g8f6/d2d4/c5b6/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "Castle and you have a harmonious position — your pawns control the center and your pieces are ready to join the attack."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6",
+                            "move": {
+                              "uci": "a7a6",
+                              "san": "a6",
+                              "explanation": "Black challenges the bishop — 'move or take?' This is actually the start of the Exchange Variation branch when White trades immediately."
+                            },
+                            "isMainLine": false,
+                            "variationName": "Exchange Variation",
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5c6",
+                                "move": {
+                                  "uci": "b5c6",
+                                  "san": "Bxc6",
+                                  "explanation": "The Exchange Variation — White trades the bishop for the knight immediately, giving Black doubled c-pawns but the bishop pair."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5c6/d7c6",
+                                    "move": {
+                                      "uci": "d7c6",
+                                      "san": "dxc6",
+                                      "explanation": "Black recaptures toward the center — opening the d-file and activating the bishop. Black has doubled c-pawns but good piece activity."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5c6/d7c6/e1g1",
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle and get ready to attack! White's plan is to advance pawns and attack the doubled c-pawns — a long-term structural advantage."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5c6/d7c6/e1g1/f7f6",
+                                            "move": {
+                                              "uci": "f7f6",
+                                              "san": "f6",
+                                              "explanation": "Black bolsters e5 and prepares to develop — a solid if slightly passive way to handle the doubled pawns."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "ruy-lopez/e2e4/e7e5/g1f3/b8c6/f1b5/a7a6/b5c6/d7c6/e1g1/f7f6/d2d4",
+                                                "move": {
+                                                  "uci": "d2d4",
+                                                  "san": "d4",
+                                                  "explanation": "Strike in the center! Open the position to use your better-coordinated pieces — your long-term advantage is real."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Pin Black's c6 knight with the bishop on b5, build a strong pawn center with c3 and d4, castle kingside, then convert your long-term pressure into a lasting positional advantage.",
+    "strategicGoals": [
+      { "description": "Pin Black's c6 knight with Bb5, creating indirect pressure on e5", "priority": 1 },
+      { "description": "Build a pawn center with c3 followed by d4", "priority": 2 },
+      { "description": "Castle kingside quickly to connect the rooks", "priority": 3 },
+      { "description": "Place the rook on e1 to support the e4-e5 advance", "priority": 4 },
+      { "description": "Exploit any weakness in Black's queenside pawn structure", "priority": 5 }
+    ],
+    "pawnStructureTarget": "Strong e4/d4 center after c3-d4, aiming to push e5 to cramp Black",
+    "keySquares": ["b5", "e4", "d4", "e5", "c6"],
+    "pieceTargets": [
+      { "piece": "light-squared bishop", "idealSquares": ["b5", "a4", "b3"], "reasoning": "Pins the knight and pressures Black's center indirectly — the heart of the Ruy Lopez strategy" },
+      { "piece": "king's knight", "idealSquares": ["f3"], "reasoning": "Controls d4, attacks e5, and supports the d4 pawn push" },
+      { "piece": "queen's rook", "idealSquares": ["e1"], "reasoning": "Supports e4 and aims at the e-file for future central or kingside play" },
+      { "piece": "queen's knight", "idealSquares": ["c3", "d2"], "reasoning": "Supports d4 and prepares a kingside attack with Nf1-g3 maneuver" }
+    ],
+    "typicalPlans": [
+      "Play c3-d4 to build a strong pawn center",
+      "Maneuver the knight via d2-f1-g3 to attack the kingside",
+      "Use Re1 and then Bg5 to increase pressure on Black's position",
+      "Advance the a-pawn to a4 to challenge Black's queenside pawns"
+    ],
+    "commonMistakes": [
+      "Trading the bishop too early with Bxc6 without good reason",
+      "Playing d4 before c3 — the pawn on d4 needs the c3 support",
+      "Forgetting to castle — the Ruy Lopez needs long-term buildup, not fast attacks",
+      "Retreating the bishop to c2 — b3 keeps it active and maintains diagonal pressure"
+    ],
+    "historicalNote": "Named after the Spanish priest Ruy Lopez de Segura who wrote about it in 1561. It has been called the 'Spanish Torture' because of the slow, grinding pressure White applies. World Champions from Morphy to Kasparov have made it their weapon of choice.",
+    "planLessons": [
+      {
+        "title": "The Pin — Ruy Lopez's Secret Weapon",
+        "description": "After 3.Bb5, your bishop doesn't attack anything directly — but it pins the knight that defends e5! If the knight moves, you can win the e5 pawn. This invisible pressure is what makes the Ruy Lopez so dangerous.",
+        "fen": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+        "highlights": ["b5", "c6", "e5"],
+        "arrows": [{"from": "b5", "to": "c6"}, {"from": "c6", "to": "e5"}],
+        "style": "good"
+      },
+      {
+        "title": "Retreat to Keep the Pressure",
+        "description": "After 3...a6, retreat to a4 instead of trading. The bishop on a4 still eyes c6 and you haven't given Black the bishop pair for free. Keep the pressure on!",
+        "fen": "r1bqkbnr/1ppp1ppp/p1n5/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 1 4",
+        "highlights": ["a4", "c6"],
+        "arrows": [{"from": "a4", "to": "c6"}],
+        "style": "good"
+      },
+      {
+        "title": "The Big Plan: c3-d4",
+        "description": "Your secret weapon is c3 then d4! First c3 supports the future d4 pawn, then d4 smashes open the center. With your better-developed pieces, an open center is great for you.",
+        "fen": "r1bq1rk1/1pp1bppp/p1np1n2/4p3/B3P3/2PP1N2/PP3PPP/RNBQR1K1 b - - 0 8",
+        "highlights": ["c3", "d4"],
+        "arrows": [{"from": "d2", "to": "d4"}],
+        "style": "good"
+      },
+      {
+        "title": "Castle Before Attacking",
+        "description": "Always castle before launching your attack! The rook on e1 after castling supports e4 and is ready to swing anywhere. A king stuck in the center is very dangerous.",
+        "fen": "r1bqk2r/1pp1bppp/p1np1n2/4p3/B3P3/2P2N2/PP1P1PPP/RNBQR1K1 b kq - 0 7",
+        "highlights": ["g1", "e1"],
+        "arrows": [],
+        "style": "good"
+      },
+      {
+        "title": "Don't Swap the Bishop Too Early",
+        "description": "If you play Bxc6 right away (without good reason), Black gets the bishop pair AND a half-open d-file. Keep the bishop until the time is right — or trade on a4 retreat only after Black pushes b5.",
+        "fen": "r1bqkbnr/1ppp1ppp/p1B5/4p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 4",
+        "highlights": ["c6", "d7"],
+        "arrows": [{"from": "d7", "to": "c6"}],
+        "style": "bad"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK02R b KQkq - 3 3",
+        "prompt": "What is the key idea behind placing the bishop on b5?",
+        "choices": [
+          {"text": "It pins the knight that defends e5, creating lasting pressure", "isCorrect": true},
+          {"text": "It attacks the a6 pawn immediately", "isCorrect": false},
+          {"text": "It controls the d3 square for a future pawn push", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The bishop on b5 pins the c6 knight — if the knight moves, White can take the e5 pawn. This indirect pressure is the entire point of the Ruy Lopez.",
+        "boardHighlightsOnReveal": ["b5", "c6", "e5"],
+        "arrowsOnReveal": [{"from": "b5", "to": "c6"}]
+      },
+      {
+        "fen": "r1bq1rk1/1pp1bppp/p1np1n2/4p3/B3P3/2PP1N2/PP3PPP/RNBQR1K1 b - - 0 8",
+        "prompt": "What is White's big central plan in the Ruy Lopez?",
+        "choices": [
+          {"text": "c3 followed by d4, to smash open the center", "isCorrect": true},
+          {"text": "f4-f5, a quick kingside pawn storm", "isCorrect": false},
+          {"text": "a4, attacking Black's queenside immediately", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The classic Ruy Lopez plan is c3 to support d4, then d4 to open the center. With better-developed pieces, opening the game favors White.",
+        "boardHighlightsOnReveal": ["c3", "d4"],
+        "arrowsOnReveal": [{"from": "d2", "to": "d4"}]
+      },
+      {
+        "fen": "r1bqkbnr/1ppp1ppp/p1n5/4p3/B3P3/5N2/PPPP1PPP/RNBQK02R b KQkq - 1 4",
+        "prompt": "Black just played a6. Where should the bishop retreat?",
+        "choices": [
+          {"text": "Ba4 — keep the pressure on the c6 knight", "isCorrect": true},
+          {"text": "Bc4 — aim at f7 instead", "isCorrect": false},
+          {"text": "Bxc6 — take the knight right away", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Ba4 is best! The bishop stays active on the long diagonal, still pinning the knight. Trading on c6 gives Black the bishop pair and a good structure for free.",
+        "boardHighlightsOnReveal": ["a4", "c6"],
+        "arrowsOnReveal": [{"from": "b5", "to": "a4"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Morphy Defense (C78) — The Main Line",
+        "description": "After 3...a6, Black asks 'will you trade or retreat?' This is called the Morphy Defense after the genius Paul Morphy. It's Black's most popular choice at all levels because it immediately tests your plan.",
+        "fen": "r1bqkbnr/1ppp1ppp/p1n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK02R w KQkq - 0 4",
+        "highlights": ["a6", "b5"],
+        "arrows": [{"from": "a7", "to": "a6"}],
+        "style": "theory"
+      },
+      {
+        "title": "Berlin Defense (C65) — The Drawing Weapon",
+        "description": "After 3...Nf6 Black ignores the pin and just develops! In the 2000 World Championship, Kramnik used the Berlin to draw every game against Kasparov. It leads to an endgame where Black has doubled e-pawns but a solid structure.",
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/5N2/PPPP1PPP/RNBQK02R w KQkq - 4 4",
+        "highlights": ["f6", "b5", "c6"],
+        "arrows": [{"from": "g8", "to": "f6"}],
+        "style": "theory"
+      },
+      {
+        "title": "Exchange Variation (C68) — Give Black Doubled Pawns",
+        "description": "After 3...a6, White can immediately play 4.Bxc6 — swapping bishop for knight and giving Black doubled c-pawns. Black gets the bishop pair, but the c-pawns are weak. White attacks the doubled pawns for the rest of the game.",
+        "fen": "r1bqkbnr/1ppp1ppp/p1B5/4p3/4P3/5N2/PPPP1PPP/RNBQK02R b KQkq - 0 4",
+        "highlights": ["c6", "c7"],
+        "arrows": [{"from": "b5", "to": "c6"}],
+        "style": "theory"
+      },
+      {
+        "title": "Classical Defense (C64) — Black Fights Back",
+        "description": "After 3...Bc5, Black develops the bishop actively, ignoring the pin completely. This is the Classical Defense — Black plans ...Nf6 and ...d6, creating a mirror of the Italian structure but with the bishop in a stronger position.",
+        "fen": "r1bqk1nr/pppp1ppp/2n5/1Bb1p3/4P3/5N2/PPPP1PPP/RNBQK02R w KQkq - 4 4",
+        "highlights": ["c5", "b5"],
+        "arrows": [{"from": "f8", "to": "c5"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "r1bqkb1r/pppp1ppp/2n2n2/1B2p3/4P3/5N2/PPPP1PPP/RNBQK02R w KQkq - 4 4",
+        "prompt": "Black just played Nf6, ignoring the pin. What defense is this called?",
+        "choices": [
+          {"text": "Berlin Defense", "isCorrect": true},
+          {"text": "Morphy Defense", "isCorrect": false},
+          {"text": "Classical Defense", "isCorrect": false},
+          {"text": "Exchange Variation", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Berlin Defense (C65) — Black develops naturally with Nf6, ignoring the pin. It became famous when Kramnik used it to draw every game against Kasparov in the 2000 World Championship match.",
+        "boardHighlightsOnReveal": ["f6", "b5"],
+        "arrowsOnReveal": []
+      },
+      {
+        "fen": "r1bqkbnr/1ppp1ppp/p1B5/4p3/4P3/5N2/PPPP1PPP/RNBQK02R b KQkq - 0 4",
+        "prompt": "White just played Bxc6. What is this variation called, and what is Black's best recapture?",
+        "choices": [
+          {"text": "Exchange Variation — dxc6 recaptures toward the center", "isCorrect": true},
+          {"text": "Exchange Variation — bxc6 keeps the pawn chain intact", "isCorrect": false},
+          {"text": "Morphy Defense — Nxc6 wins the bishop", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Exchange Variation. Black should recapture with dxc6 — opening the d-file and keeping central pawns. While the c-pawns are doubled, Black gets the bishop pair and half-open d-file as compensation.",
+        "boardHighlightsOnReveal": ["c6", "d7"],
+        "arrowsOnReveal": [{"from": "d7", "to": "c6"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["e2e4", "e7e5", "g1f3", "b8c6", "f1b5", "a7a6", "b5a4"],
+    "responses": [
+      {
+        "id": "morphy-main",
+        "move": { "uci": "g8f6", "san": "Nf6", "explanation": "The most popular response — Black develops the knight and attacks your e4 pawn." },
+        "name": "Morphy Defense Main Line",
+        "eco": "C78",
+        "frequency": 0.50,
+        "description": "Black develops with Nf6, attacking e4 and preparing to castle. This leads to the rich main-line Ruy Lopez positions.",
+        "planAdjustment": "Castle immediately with O-O, then play Re1 and build up slowly with c3-d4. Don't rush — the Ruy Lopez rewards patient play."
+      },
+      {
+        "id": "morphy-d6",
+        "move": { "uci": "d7d6", "san": "d6", "explanation": "Black solidifies e5 with the pawn — solid but a bit passive." },
+        "name": "Steinitz Defense",
+        "eco": "C77",
+        "frequency": 0.15,
+        "description": "Black plays d6 to solidly defend e5. This blocks the dark-squared bishop but is very solid.",
+        "planAdjustment": "You have a free hand — play c3, O-O, and then d4 when ready. Black's passive setup gives you a comfortable space advantage."
+      },
+      {
+        "id": "morphy-Bc5",
+        "move": { "uci": "f8c5", "san": "Bc5", "explanation": "Black develops the bishop actively, counter-attacking on the diagonal." },
+        "name": "Classical Variation",
+        "eco": "C64",
+        "frequency": 0.20,
+        "description": "Black's active bishop fights for the center and aims at f2. More combative than 3...a6.",
+        "planAdjustment": "Play c3 to prepare d4 and challenge the bishop. After d4, the center opens and your more active pieces will shine."
+      },
+      {
+        "id": "morphy-b5",
+        "move": { "uci": "b7b5", "san": "b5", "explanation": "Black chases the bishop immediately — a more aggressive way to handle the position after a6." },
+        "name": "Closed Ruy Lopez (after Re1)",
+        "eco": "C84",
+        "frequency": 0.15,
+        "description": "After b5, the bishop retreats to b3, and a complex strategic battle unfolds on both sides of the board.",
+        "planAdjustment": "Retreat to Bb3 — the bishop is still very active there. Now play c3, d4, and maneuver the knight to g3 for kingside pressure."
+      }
+    ]
+  }
+}

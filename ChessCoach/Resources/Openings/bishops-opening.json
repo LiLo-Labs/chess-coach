@@ -1,0 +1,587 @@
+{
+  "id": "bishops-opening",
+  "name": "Bishop's Opening",
+  "description": "A simple but effective opening. White develops the bishop early aiming at f7, keeping the game flexible.",
+  "color": "white",
+  "difficulty": 1,
+  "tree": {
+    "id": "bishops-opening/root",
+    "children": [
+      {
+        "id": "bishops-opening/e2e4",
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "Claim the center! Moving the king's pawn two squares is the most popular first move, controlling d5 and f5 and opening lines for your pieces."
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "bishops-opening/e2e4/e7e5",
+            "move": {
+              "uci": "e7e5",
+              "san": "e5",
+              "explanation": "Black meets you in the center, creating a symmetrical pawn structure and equal central control."
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "bishops-opening/e2e4/e7e5/f1c4",
+                "move": {
+                  "uci": "f1c4",
+                  "san": "Bc4",
+                  "explanation": "The Bishop's Opening! The bishop goes to c4 right away, targeting the f7 square — the weakest point near Black's king. This is a great beginner move that immediately creates a threat."
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "bishops-opening/e2e4/e7e5/f1c4/g8f6",
+                    "move": {
+                      "uci": "g8f6",
+                      "san": "Nf6",
+                      "explanation": "Black's best response — the knight develops to f6, attacking your e4 pawn and fighting for central control."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "bishops-opening/e2e4/e7e5/f1c4/g8f6/d2d3",
+                        "move": {
+                          "uci": "d2d3",
+                          "san": "d3",
+                          "explanation": "Support your e4 pawn solidly with d3. This is the safe and reliable approach — you're playing for a lasting positional advantage rather than quick tricks."
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "bishops-opening/e2e4/e7e5/f1c4/g8f6/d2d3/f8c5",
+                            "move": {
+                              "uci": "f8c5",
+                              "san": "Bc5",
+                              "explanation": "Black mirrors your bishop development to c5. Now both bishops face each other — the game has an Italian flavor!"
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "bishops-opening/e2e4/e7e5/f1c4/g8f6/d2d3/f8c5/g1f3",
+                                "move": {
+                                  "uci": "g1f3",
+                                  "san": "Nf3",
+                                  "explanation": "Develop your king's knight! Nf3 pressures the e5 pawn, controls the center, and prepares you to castle. A fantastic developing move."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "bishops-opening/e2e4/e7e5/f1c4/g8f6/d2d3/f8c5/g1f3/d7d6",
+                                    "move": {
+                                      "uci": "d7d6",
+                                      "san": "d6",
+                                      "explanation": "Black solidifies with d6, reinforcing the e5 pawn. Both sides have a stable setup — now castle and look for your attacking plan!"
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "bishops-opening/e2e4/e7e5/f1c4/g8f6/d2d3/f8c5/g1f3/d7d6/e1g1",
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle! Your king is now safe on g1 and your rook on f1 is ready to help in the middlegame. This is great — all your important pieces are developed!"
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "bishops-opening/e2e4/e7e5/f1c4/g8f6/d2d3/f8c5/g1f3/d7d6/e1g1/e8g8",
+                                            "move": {
+                                              "uci": "e8g8",
+                                              "san": "O-O",
+                                              "explanation": "Black castles too. Both kings are safe — now the real battle begins! Look for c3 and d4 to open the center."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "bishops-opening/e2e4/e7e5/f1c4/g8f6/d2d3/f8c5/g1f3/d7d6/e1g1/e8g8/c2c3",
+                                                "move": {
+                                                  "uci": "c2c3",
+                                                  "san": "c3",
+                                                  "explanation": "Prepare the d4 advance! Playing c3 first makes the d4 push much stronger because you can recapture with the pawn and maintain a great center."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "bishops-opening/e2e4/e7e5/f1c4/g8f6/d2d3/f8c5/g1f3/d7d6/e1g1/e8g8/c2c3/a7a6",
+                                                    "move": {
+                                                      "uci": "a7a6",
+                                                      "san": "a6",
+                                                      "explanation": "Black prepares queenside expansion or stops Bb5. Now play d4 and open the center — your position is excellent!"
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bishops-opening/e2e4/e7e5/f1c4/b8c6",
+                    "move": {
+                      "uci": "b8c6",
+                      "san": "Nc6",
+                      "explanation": "Black develops the queen's knight, defending e5 and preparing to develop more pieces. A solid and popular choice."
+                    },
+                    "isMainLine": false,
+                    "variationName": "Bishop's Opening: ...Nc6 transposition",
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "bishops-opening/e2e4/e7e5/f1c4/b8c6/g1f3",
+                        "move": {
+                          "uci": "g1f3",
+                          "san": "Nf3",
+                          "explanation": "Develop your knight! This transposes to Italian Game territory — now you have the Italian bishop and knight both developed."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "bishops-opening/e2e4/e7e5/f1c4/b8c6/g1f3/f8c5",
+                            "move": {
+                              "uci": "f8c5",
+                              "san": "Bc5",
+                              "explanation": "Black develops the bishop to c5 — now we're fully in the Giuoco Piano! Both bishops are on active diagonals facing each other."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "bishops-opening/e2e4/e7e5/f1c4/b8c6/g1f3/f8c5/d2d3",
+                                "move": {
+                                  "uci": "d2d3",
+                                  "san": "d3",
+                                  "explanation": "Support the e4 pawn and prepare to castle. This is the Giuoco Pianissimo — quiet but very solid. Castle next!"
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "bishops-opening/e2e4/e7e5/f1c4/b8c6/g1f3/f8c5/d2d3/d7d6",
+                                    "move": {
+                                      "uci": "d7d6",
+                                      "san": "d6",
+                                      "explanation": "Black reinforces the center. Both sides have solid, equal positions — the game will be decided by careful maneuvering."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "bishops-opening/e2e4/e7e5/f1c4/b8c6/g1f3/f8c5/d2d3/d7d6/e1g1",
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle and get your king to safety. From here, plan c3 and d4 to open the center at the right moment."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bishops-opening/e2e4/e7e5/f1c4/d7d5",
+                    "move": {
+                      "uci": "d7d5",
+                      "san": "d5",
+                      "explanation": "Black plays the aggressive counter 2...d5! This attacks your bishop on c4 and challenges the center immediately. The best response is to take on d5."
+                    },
+                    "isMainLine": false,
+                    "variationName": "Bishop's Opening: ...d5 counter",
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "bishops-opening/e2e4/e7e5/f1c4/d7d5/e4d5",
+                        "move": {
+                          "uci": "e4d5",
+                          "san": "exd5",
+                          "explanation": "Capture the d5 pawn! You win a central pawn and now Black will develop the knight to f6 to regain it. Play actively!"
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "bishops-opening/e2e4/e7e5/f1c4/d7d5/e4d5/g8f6",
+                            "move": {
+                              "uci": "g8f6",
+                              "san": "Nf6",
+                              "explanation": "Black develops the knight and attacks your d5 pawn. Now push d4 to hold your central pawn and develop actively."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "bishops-opening/e2e4/e7e5/f1c4/d7d5/e4d5/g8f6/d2d4",
+                                "move": {
+                                  "uci": "d2d4",
+                                  "san": "d4",
+                                  "explanation": "Hold the center with d4! Now you have a strong pawn duo on d4 and d5. Develop your pieces and your position is excellent."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "bishops-opening/e2e4/e7e5/f1c4/d7d5/e4d5/g8f6/d2d4/f6d5",
+                                    "move": {
+                                      "uci": "f6d5",
+                                      "san": "Nxd5",
+                                      "explanation": "Black recaptures with the knight, landing on a strong central square. Develop your queen's knight with Nc3 to attack it."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "bishops-opening/e2e4/e7e5/f1c4/d7d5/e4d5/g8f6/d2d4/f6d5/b1c3",
+                                        "move": {
+                                          "uci": "b1c3",
+                                          "san": "Nc3",
+                                          "explanation": "Attack the knight on d5 with the queen's knight! You're developing with tempo. After the knight moves, castle and you'll have a comfortable position with a lead in development."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bishops-opening/e2e4/e7e5/f1c4/c7c6",
+                    "move": {
+                      "uci": "c7c6",
+                      "san": "c6",
+                      "explanation": "Black plays c6, a solid move that prepares d5 next turn to attack your bishop and challenge the center."
+                    },
+                    "isMainLine": false,
+                    "variationName": "Bishop's Opening: ...c6 setup",
+                    "weight": 155,
+                    "children": [
+                      {
+                        "id": "bishops-opening/e2e4/e7e5/f1c4/c7c6/d2d4",
+                        "move": {
+                          "uci": "d2d4",
+                          "san": "d4",
+                          "explanation": "Strike in the center before Black plays d5! This seizes space and opens up the position for your bishop on c4."
+                        },
+                        "isMainLine": false,
+                        "weight": 140,
+                        "children": [
+                          {
+                            "id": "bishops-opening/e2e4/e7e5/f1c4/c7c6/d2d4/d7d5",
+                            "move": {
+                              "uci": "d7d5",
+                              "san": "d5",
+                              "explanation": "Black plays d5 anyway, attacking both your bishop and d4 pawn. Capture on d5 and the game opens up!"
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "children": [
+                              {
+                                "id": "bishops-opening/e2e4/e7e5/f1c4/c7c6/d2d4/d7d5/e4d5",
+                                "move": {
+                                  "uci": "e4d5",
+                                  "san": "exd5",
+                                  "explanation": "Capture with the e-pawn! The position opens up and your bishop on c4 becomes very active pointing at the long diagonal."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "bishops-opening/e2e4/e7e5/f1c4/c7c6/d2d4/d7d5/e4d5/c6d5",
+                                    "move": {
+                                      "uci": "c6d5",
+                                      "san": "cxd5",
+                                      "explanation": "Black recaptures with the c-pawn. Now your bishop is under attack — retreat to b3 to stay on the powerful diagonal!"
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "bishops-opening/e2e4/e7e5/f1c4/c7c6/d2d4/d7d5/e4d5/c6d5/c4b3",
+                                        "move": {
+                                          "uci": "c4b3",
+                                          "san": "Bb3",
+                                          "explanation": "The bishop retreats to b3, staying on the a2-g8 diagonal and keeping pressure on Black's position. Develop your knights next and you have a good position!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Develop the light-squared bishop to c4 right away, targeting f7 — Black's weakest point near the king. Then play d3 to support the center, develop the knight to f3, and castle quickly. After castling, prepare d4 with c3 to open the center and activate all your pieces.",
+    "strategicGoals": [
+      { "description": "Place the bishop on c4, targeting f7 from move two", "priority": 1 },
+      { "description": "Support the e4 pawn with d3 to keep a solid center", "priority": 2 },
+      { "description": "Develop the knight to f3 and castle as quickly as possible", "priority": 3 },
+      { "description": "Break open the center with c3 and d4 once fully developed", "priority": 4 }
+    ],
+    "pawnStructureTarget": "e4/d3 center initially, then e4/d4 after the central break",
+    "keySquares": ["c4", "f7", "e4", "d3", "f3"],
+    "pieceTargets": [
+      { "piece": "light-squared bishop", "idealSquares": ["c4", "b3"], "reasoning": "c4 aims directly at f7; b3 is a safe retreat that keeps the a2-g8 diagonal active" },
+      { "piece": "king's knight", "idealSquares": ["f3"], "reasoning": "Nf3 controls the center, pressures e5, and supports the castled king" },
+      { "piece": "queen's knight", "idealSquares": ["c3", "d2"], "reasoning": "Supports e4 and helps prepare the d4 pawn break" }
+    ],
+    "typicalPlans": [
+      "Play d3, Nf3, and O-O for a solid Italian-like setup",
+      "Advance c3 and then d4 to open the center when pieces are developed",
+      "Keep the bishop on c4 to maintain long-term pressure on f7"
+    ],
+    "commonMistakes": [
+      "Playing 2.Bc4 and then moving the bishop again — each bishop move wastes a turn you need for development",
+      "Forgetting that after 2...d5, Black attacks the bishop — plan ahead for the bishop's retreat",
+      "Delaying castling to chase Black's pieces — get the king safe first!"
+    ],
+    "historicalNote": "The Bishop's Opening is one of the oldest chess openings, analyzed by Greco in the 1600s. Paul Morphy and Wilhelm Steinitz both played it. It often transposes to the Italian Game — a classic, reliable choice for beginners and experts alike.",
+    "planLessons": [
+      {
+        "title": "The Bishop Goes to c4 — Targeting f7!",
+        "description": "After 1.e4 e5 2.Bc4, the bishop immediately targets f7 — the square only protected by Black's king. This is the key idea of the Bishop's Opening: create pressure on the weakest point near Black's king from move two!",
+        "fen": "rnbqkbnr/pppp1ppp/8/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 2",
+        "highlights": ["c4", "f7"],
+        "arrows": [{"from": "c4", "to": "f7"}],
+        "style": "good"
+      },
+      {
+        "title": "Beware of 2...d5! — The Counterattack",
+        "description": "If Black plays 2...d5, they attack your bishop AND your e4 pawn at the same time. You should capture on d5 with exd5. Don't move the bishop first — recapture and maintain the initiative!",
+        "fen": "rnbqkbnr/ppp2ppp/8/3pp3/2B1P3/8/PPPP1PPP/RNBQK1NR w KQkq d6 0 3",
+        "highlights": ["d5", "c4", "e4"],
+        "arrows": [{"from": "d7", "to": "d5"}, {"from": "e4", "to": "d5"}],
+        "style": "neutral"
+      },
+      {
+        "title": "The Right Sequence: d3, Nf3, Castle",
+        "description": "After 2.Bc4 Nf6, the ideal plan is 3.d3 (support e4), then Nf3 (develop), then O-O (castle). This three-step plan gives you a solid, fully developed position with your king safe.",
+        "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/2B1P3/3P4/PPP2PPP/RNBQK1NR w KQkq - 1 3",
+        "highlights": ["d3", "f3", "g1"],
+        "arrows": [{"from": "g1", "to": "f3"}, {"from": "e1", "to": "g1"}],
+        "style": "good"
+      },
+      {
+        "title": "Don't Move the Bishop Twice in the Opening!",
+        "description": "After placing the bishop on c4, don't immediately move it again to b3 or d3. Every wasted move lets Black catch up in development. Place the bishop well once and leave it there!",
+        "fen": "rnbqkbnr/pppp1ppp/8/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 2",
+        "highlights": ["c4", "b3", "d3"],
+        "arrows": [{"from": "c4", "to": "b3"}],
+        "style": "bad"
+      },
+      {
+        "title": "Open the Center with c3 and d4",
+        "description": "Once you've castled, the plan is c3 followed by d4. This opens the center and your bishop on c4 becomes extremely powerful. The pawn push d4 is the key idea in the whole Bishop's Opening!",
+        "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 4 5",
+        "highlights": ["c3", "d4", "c4"],
+        "arrows": [{"from": "c2", "to": "c3"}, {"from": "d3", "to": "d4"}],
+        "style": "good"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqkbnr/pppp1ppp/8/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 2",
+        "prompt": "White just played Bc4. What square is the bishop targeting?",
+        "choices": [
+          {"text": "f7 — Black's weakest square near the king", "isCorrect": true},
+          {"text": "d5 — the center of the board", "isCorrect": false},
+          {"text": "b7 — the queenside", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Bc4 targets f7 — the square only defended by Black's king! This is the heart of the Bishop's Opening. The bishop on c4 creates long-term pressure on Black's weakest point.",
+        "boardHighlightsOnReveal": ["c4", "f7"],
+        "arrowsOnReveal": [{"from": "c4", "to": "f7"}]
+      },
+      {
+        "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/2B1P3/3P4/PPP2PPP/RNBQK1NR w KQkq - 1 3",
+        "prompt": "After 2.Bc4 Nf6 3.d3, what should White develop next?",
+        "choices": [
+          {"text": "Nf3 — the king's knight toward the center", "isCorrect": true},
+          {"text": "Qe2 — the queen comes out early", "isCorrect": false},
+          {"text": "Bd2 — the dark-squared bishop", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Nf3 is next! The knight goes to f3 where it controls the center, pressures e5, and prepares to castle. After Nf3 and O-O, you'll have a fully developed, safe position.",
+        "boardHighlightsOnReveal": ["f3"],
+        "arrowsOnReveal": [{"from": "g1", "to": "f3"}]
+      },
+      {
+        "fen": "r1bq1rk1/pppp1ppp/2n2n2/2b1p3/2B1P3/2PP1N2/PP3PPP/RNBQ1RK1 b kq - 1 6",
+        "prompt": "Both sides have castled. What is White's best plan now?",
+        "choices": [
+          {"text": "Play d4 to open the center — the bishop on c4 will become very powerful", "isCorrect": true},
+          {"text": "Push f4 to attack immediately without preparation", "isCorrect": false},
+          {"text": "Move the bishop away from c4 to give the queen room", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "d4 is the plan! With c3 already played, pushing d4 opens the center and the bishop on c4 becomes a monster — it will point at Black's king. This is the key idea in the Bishop's Opening.",
+        "boardHighlightsOnReveal": ["d4", "c4"],
+        "arrowsOnReveal": [{"from": "c3", "to": "d4"}, {"from": "c4", "to": "g8"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Bishop's Opening vs Nf6: The Main Line (C24)",
+        "description": "After 2.Bc4 Nf6, Black's best response, the main line continues 3.d3 Bc5 4.Nf3 O-O 5.O-O. This is a solid Italian-style position where White has a harmonious setup and targets the center with c3-d4.",
+        "fen": "r1bqk2r/pppp1ppp/5n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 4 5",
+        "highlights": ["c4", "f6", "c5", "f3"],
+        "arrows": [{"from": "e1", "to": "g1"}],
+        "style": "theory"
+      },
+      {
+        "title": "The ...d5 Counter (C24)",
+        "description": "After 2.Bc4, if Black plays 2...d5, they counterattack in the center. White's best is exd5 followed by d4 and Nf3, holding the extra pawn and developing actively. This leads to sharp, open positions.",
+        "fen": "rnbqkb1r/ppp2ppp/5n2/3pp3/2BPP3/8/PPP2PPP/RNBQK1NR w KQkq e6 0 4",
+        "highlights": ["d5", "c4", "d4"],
+        "arrows": [{"from": "d7", "to": "d5"}],
+        "style": "theory"
+      },
+      {
+        "title": "Bishop's Opening vs Nc6 (C23)",
+        "description": "After 2...Nc6 3.Nf3, the game transposes to the Italian Game. The Bishop's Opening is a wonderful way to reach Italian-style positions — by playing Bc4 on move two instead of three, you catch some opponents off guard!",
+        "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+        "highlights": ["c4", "c6", "f3"],
+        "arrows": [{"from": "c4", "to": "f7"}],
+        "style": "theory"
+      },
+      {
+        "title": "Why Bc4 Before Nf3? The Move Order Trick",
+        "description": "Playing Bc4 on move two (before Nf3) is a subtle trick! After 2.Bc4 d5, White plays exd5 and keeps the pawn. If White had played 2.Nf3 first, 2...d5 would be met by exd5 Nxd5 with a normal game. The Bishop's Opening order can surprise unprepared opponents!",
+        "fen": "rnbqkbnr/pppp1ppp/8/3Pp3/2B5/8/PPPP1PPP/RNBQK1NR b KQkq - 0 3",
+        "highlights": ["d5", "c4"],
+        "arrows": [{"from": "e4", "to": "d5"}],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqkbnr/pppp1ppp/8/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 2",
+        "prompt": "What is the name of the opening after 1.e4 e5 2.Bc4?",
+        "choices": [
+          {"text": "Bishop's Opening", "isCorrect": true},
+          {"text": "Italian Game", "isCorrect": false},
+          {"text": "Ruy Lopez", "isCorrect": false},
+          {"text": "Giuoco Piano", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Bishop's Opening (C23/C24)! White plays the bishop to c4 on move two, before developing the knight. It often transposes to the Italian Game, but the move order is different.",
+        "boardHighlightsOnReveal": ["c4"],
+        "arrowsOnReveal": [{"from": "f1", "to": "c4"}]
+      },
+      {
+        "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/2B1P3/3P4/PPP2PPP/RNBQK1NR w KQkq - 1 3",
+        "prompt": "Black played Nf6, attacking e4. Which move correctly continues the Bishop's Opening plan?",
+        "choices": [
+          {"text": "Nf3 — develop and prepare to castle", "isCorrect": false},
+          {"text": "d3 already played, so Nf3 is next — but right now we are on move 3", "isCorrect": false},
+          {"text": "Nf3 — controls center, pressures e5, prepares castling", "isCorrect": true}
+        ],
+        "correctIndex": 2,
+        "explanation": "After d3, the correct plan is Nf3 to develop the king's knight. This controls the center, adds pressure to e5, and prepares you to castle quickly. Then after O-O, the position is excellent!",
+        "boardHighlightsOnReveal": ["f3", "e4"],
+        "arrowsOnReveal": [{"from": "g1", "to": "f3"}]
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["e2e4", "e7e5", "f1c4", "g8f6"],
+    "responses": [
+      {
+        "id": "bishops-nf6-main",
+        "move": { "uci": "d2d3", "san": "d3", "explanation": "White plays d3, supporting e4 and setting up the solid Bishop's Opening main line." },
+        "name": "Solid d3 System",
+        "eco": "C24",
+        "frequency": 0.50,
+        "description": "After 2...Nf6, White plays 3.d3 to support e4 solidly. This leads to a quiet, Italian-like position where White develops harmoniously with Nf3 and O-O.",
+        "planAdjustment": "Continue with Nf3 and then O-O. After castling, prepare c3 and d4 to open the center when ready."
+      },
+      {
+        "id": "bishops-nc6-transposition",
+        "move": { "uci": "b8c6", "san": "Nc6", "explanation": "Black develops the queen's knight instead, leading to Italian Game territory." },
+        "name": "Italian Transposition via Nc6",
+        "eco": "C23",
+        "frequency": 0.25,
+        "description": "Black plays Nc6, and after White develops Nf3, the position transposes to the Italian Game (Giuoco Piano). A very natural and standard response.",
+        "planAdjustment": "Play Nf3 and d3 — this transposes into the Italian Game. The bishop on c4 and the f7 pressure remain the main theme."
+      },
+      {
+        "id": "bishops-d5-counter",
+        "move": { "uci": "d7d5", "san": "d5", "explanation": "Black challenges the center with d5, attacking the bishop and the e4 pawn." },
+        "name": "Center Counter: ...d5",
+        "eco": "C24",
+        "frequency": 0.15,
+        "description": "Black plays the aggressive d5, attacking the bishop on c4 and the e4 pawn. White should capture on d5 and maintain the pawn with d4.",
+        "planAdjustment": "Take on d5 with exd5, then play d4 after Nf6. Develop Nf3 and Nc3, keeping your extra pawn and space advantage."
+      },
+      {
+        "id": "bishops-bc5",
+        "move": { "uci": "f8c5", "san": "Bc5", "explanation": "Black develops the bishop to c5, creating a symmetrical bishop setup." },
+        "name": "Classical Bishop Development",
+        "eco": "C23",
+        "frequency": 0.10,
+        "description": "Black mirrors White's bishop development with Bc5. This leads to a symmetrical, balanced position.",
+        "planAdjustment": "Play d3, then Nf3, and castle. The game will be decided by careful maneuvering — aim for c3 and d4 to break in the center."
+      }
+    ]
+  }
+}

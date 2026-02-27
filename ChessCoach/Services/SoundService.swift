@@ -18,11 +18,11 @@ final class SoundService {
     private var players: [Sound: AVAudioPlayer] = [:]
 
     private var soundEnabled: Bool {
-        UserDefaults.standard.object(forKey: "sound_enabled") as? Bool ?? true
+        UserDefaults.standard.object(forKey: AppSettings.Key.soundEnabled) as? Bool ?? true
     }
 
     private var hapticsEnabled: Bool {
-        UserDefaults.standard.object(forKey: "haptics_enabled") as? Bool ?? true
+        UserDefaults.standard.object(forKey: AppSettings.Key.hapticsEnabled) as? Bool ?? true
     }
 
     private init() {

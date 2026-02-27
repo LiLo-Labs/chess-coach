@@ -1,0 +1,606 @@
+{
+  "id": "pirc",
+  "name": "Pirc Defense",
+  "description": "A hypermodern defense where Black invites White to build a center, planning to undermine it later.",
+  "color": "black",
+  "difficulty": 3,
+  "tree": {
+    "id": "pirc/root",
+    "children": [
+      {
+        "id": "pirc/e2e4",
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "White takes the center with the king's pawn — the most popular first move in chess!"
+        },
+        "isMainLine": true,
+        "weight": 300,
+        "children": [
+          {
+            "id": "pirc/e2e4/d7d6",
+            "move": {
+              "uci": "d7d6",
+              "san": "d6",
+              "explanation": "Welcome to the Pirc Defense! Instead of immediately fighting for the center, you make a modest move that prepares ...Nf6. The big idea: let White build a center, then attack it later with pieces!"
+            },
+            "isMainLine": true,
+            "weight": 280,
+            "children": [
+              {
+                "id": "pirc/e2e4/d7d6/d2d4",
+                "move": {
+                  "uci": "d2d4",
+                  "san": "d4",
+                  "explanation": "White grabs even more center space — exactly what you want! White's big center will become a target for your pieces later. This is the 'hypermodern' strategy."
+                },
+                "isMainLine": true,
+                "weight": 260,
+                "children": [
+                  {
+                    "id": "pirc/e2e4/d7d6/d2d4/g8f6",
+                    "move": {
+                      "uci": "g8f6",
+                      "san": "Nf6",
+                      "explanation": "Develop the knight and attack White's e4 pawn! This puts immediate pressure on the center. Now White must decide how to defend — and you'll be ready to attack whatever they play."
+                    },
+                    "isMainLine": true,
+                    "weight": 240,
+                    "children": [
+                      {
+                        "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3",
+                        "move": {
+                          "uci": "b1c3",
+                          "san": "Nc3",
+                          "explanation": "White defends e4 with the knight and builds a strong center. Now play ...g6 to fianchetto your bishop to g7 — the heart of the Pirc Defense!"
+                        },
+                        "isMainLine": true,
+                        "weight": 220,
+                        "children": [
+                          {
+                            "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6",
+                            "move": {
+                              "uci": "g7g6",
+                              "san": "g6",
+                              "explanation": "Prepare the fianchetto! After ...Bg7, your bishop will aim at White's entire center from g7. This is the hypermodern idea — control the center with pieces from a distance, not just pawns."
+                            },
+                            "isMainLine": true,
+                            "weight": 200,
+                            "children": [
+                              {
+                                "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4",
+                                "move": {
+                                  "uci": "f2f4",
+                                  "san": "f4",
+                                  "explanation": "White plays the Austrian Attack — the most aggressive system! White builds a massive pawn center with e4-d4-f4. This looks scary, but your fianchettoed bishop will pressure all those pawns from g7."
+                                },
+                                "isMainLine": true,
+                                "weight": 180,
+                                "children": [
+                                  {
+                                    "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/f8g7",
+                                    "move": {
+                                      "uci": "f8g7",
+                                      "san": "Bg7",
+                                      "explanation": "Fianchetto the bishop! Your bishop on g7 is now pointing at White's entire center — d4, e5, and beyond. This powerful bishop is the engine of the Pirc Defense."
+                                    },
+                                    "isMainLine": true,
+                                    "weight": 160,
+                                    "children": [
+                                      {
+                                        "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/f8g7/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "White develops a knight. Now castle quickly to get your king safe before White launches the kingside attack with f5!"
+                                        },
+                                        "isMainLine": true,
+                                        "weight": 140,
+                                        "children": [
+                                          {
+                                            "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/f8g7/g1f3/e8g8",
+                                            "move": {
+                                              "uci": "e8g8",
+                                              "san": "O-O",
+                                              "explanation": "Castle! Your king tucks safely behind the fianchettoed bishop. Now the real battle begins — you'll counterattack with ...c5 or ...e5 while White tries to push f5 on the kingside."
+                                            },
+                                            "isMainLine": true,
+                                            "weight": 120,
+                                            "children": [
+                                              {
+                                                "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/f8g7/g1f3/e8g8/f1d3",
+                                                "move": {
+                                                  "uci": "f1d3",
+                                                  "san": "Bd3",
+                                                  "explanation": "White develops the bishop to d3, preparing to push e5 or f5. Your counterplay begins now — play ...Nc6 to pressure d4 and prepare ...e5 or ...c5."
+                                                },
+                                                "isMainLine": true,
+                                                "weight": 100,
+                                                "children": [
+                                                  {
+                                                    "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/f8g7/g1f3/e8g8/f1d3/b8c6",
+                                                    "move": {
+                                                      "uci": "b8c6",
+                                                      "san": "Nc6",
+                                                      "explanation": "Develop the queen's knight and pressure d4! Both knights now attack the center. From here you can play ...e5 to challenge White's big pawn center. The fight is on!"
+                                                    },
+                                                    "isMainLine": true,
+                                                    "weight": 80,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/c7c6",
+                                    "move": {
+                                      "uci": "c7c6",
+                                      "san": "c6",
+                                      "explanation": "A flexible system — instead of immediately fianchettoing the bishop, you prepare ...Qa5 or ...d5 to challenge White's center. A solid and practical approach!"
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "variationName": "Pirc: ...c6 system",
+                                    "children": [
+                                      {
+                                        "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/c7c6/g1f3",
+                                        "move": {
+                                          "uci": "g1f3",
+                                          "san": "Nf3",
+                                          "explanation": "White develops the knight. Now fianchetto the bishop to g7 and prepare to castle — your ...c6 pawn gives extra flexibility for future pawn breaks."
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/c7c6/g1f3/f8g7",
+                                            "move": {
+                                              "uci": "f8g7",
+                                              "san": "Bg7",
+                                              "explanation": "Fianchetto! Your bishop comes to g7, adding pressure to White's center. The ...c6 pawn also supports a future ...d5 break to challenge White directly."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/c7c6/g1f3/f8g7/f1d3",
+                                                "move": {
+                                                  "uci": "f1d3",
+                                                  "san": "Bd3",
+                                                  "explanation": "White develops the bishop. Castle now to get your king safe, then prepare ...d5 to break up White's center."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/c7c6/g1f3/f8g7/f1d3/e8g8",
+                                                    "move": {
+                                                      "uci": "e8g8",
+                                                      "san": "O-O",
+                                                      "explanation": "Castle to safety! Your king is now protected behind the solid fianchettoed bishop. The stage is set for the battle of plans — White pushes f5, you play ...d5 or ...e5 to strike back."
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": [
+                                                      {
+                                                        "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/f2f4/c7c6/g1f3/f8g7/f1d3/e8g8/e1g1",
+                                                        "move": {
+                                                          "uci": "e1g1",
+                                                          "san": "O-O",
+                                                          "explanation": "White also castles. Both kings are safe — now the real strategic battle begins! Look for ...d5 or ...e5 to strike at White's big pawn center."
+                                                        },
+                                                        "isMainLine": false,
+                                                        "weight": 30,
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/g1f3",
+                                "move": {
+                                  "uci": "g1f3",
+                                  "san": "Nf3",
+                                  "explanation": "The Classical Pirc — White develops the knight without pushing f4. A more restrained approach that leads to solid positional play."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "variationName": "Classical Pirc",
+                                "children": [
+                                  {
+                                    "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/g1f3/f8g7",
+                                    "move": {
+                                      "uci": "f8g7",
+                                      "san": "Bg7",
+                                      "explanation": "Fianchetto the bishop! In the Classical Pirc, the game is less sharp but still very interesting. Your g7 bishop will be a strong piece throughout the game."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/g1f3/f8g7/f1e2",
+                                        "move": {
+                                          "uci": "f1e2",
+                                          "san": "Be2",
+                                          "explanation": "White develops solidly. Castle now and then look for ...c5 or ...e5 breaks to challenge White's center. The Classical Pirc is a comfortable system!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/g1f3/f8g7/f1e2/e8g8",
+                                            "move": {
+                                              "uci": "e8g8",
+                                              "san": "O-O",
+                                              "explanation": "Castle! Your king is safe behind the g7 bishop. Both sides now maneuver for position — look for ...c5 or ...e5 as your main counterplay ideas."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/g1f3/f8g7/f1e2/e8g8/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "White castles too. Both kings are safe — now the positional battle begins! The Classical Pirc is a rich, strategic game where understanding the plans matters more than memorizing moves."
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": [
+                                                  {
+                                                    "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/g7g6/g1f3/f8g7/f1e2/e8g8/e1g1/c7c6",
+                                                    "move": {
+                                                      "uci": "c7c6",
+                                                      "san": "c6",
+                                                      "explanation": "A flexible move that prepares ...d5 or ...Qa5 — challenging White's center. Your position is solid and you have many plans to choose from!"
+                                                    },
+                                                    "isMainLine": false,
+                                                    "weight": 35,
+                                                    "children": []
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/c8g4",
+                            "move": {
+                              "uci": "c8g4",
+                              "san": "Bg4",
+                              "explanation": "An alternative developing idea — develop the bishop and pin White's Nf3 (if it's already there). This keeps options open and avoids the Austrian Attack."
+                            },
+                            "isMainLine": false,
+                            "weight": 125,
+                            "variationName": "Pirc: ...Bg4 line",
+                            "children": [
+                              {
+                                "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/c8g4/g1f3",
+                                "move": {
+                                  "uci": "g1f3",
+                                  "san": "Nf3",
+                                  "explanation": "White develops the knight — now it's pinned by your bishop! If White plays h3, you can capture or retreat. The pin gives you a small positional advantage."
+                                },
+                                "isMainLine": false,
+                                "weight": 110,
+                                "children": [
+                                  {
+                                    "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/c8g4/g1f3/b8d7",
+                                    "move": {
+                                      "uci": "b8d7",
+                                      "san": "Nbd7",
+                                      "explanation": "Develop the queen's knight to d7 — a solid square that keeps the queen protected and prepares ...e5 or ...c5. The position is flexible and solid."
+                                    },
+                                    "isMainLine": false,
+                                    "weight": 95,
+                                    "children": [
+                                      {
+                                        "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/c8g4/g1f3/b8d7/f1e2",
+                                        "move": {
+                                          "uci": "f1e2",
+                                          "san": "Be2",
+                                          "explanation": "White develops and relieves the pin with h3 later. Continue developing with ...e5 or ...e6 and prepare to castle. Solid positional play!"
+                                        },
+                                        "isMainLine": false,
+                                        "weight": 80,
+                                        "children": [
+                                          {
+                                            "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/c8g4/g1f3/b8d7/f1e2/e7e6",
+                                            "move": {
+                                              "uci": "e7e6",
+                                              "san": "e6",
+                                              "explanation": "Solidify the center and prepare to castle. The ...Bg4 system gives you a solid, flexible setup where you can play ...Be7 and castle to safety."
+                                            },
+                                            "isMainLine": false,
+                                            "weight": 65,
+                                            "children": [
+                                              {
+                                                "id": "pirc/e2e4/d7d6/d2d4/g8f6/b1c3/c8g4/g1f3/b8d7/f1e2/e7e6/e1g1",
+                                                "move": {
+                                                  "uci": "e1g1",
+                                                  "san": "O-O",
+                                                  "explanation": "White castles. Castle kingside too and complete your development. The ...Bg4 system leads to a solid, comfortable position — now look for ...c5 breaks to challenge the center!"
+                                                },
+                                                "isMainLine": false,
+                                                "weight": 50,
+                                                "children": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "isMainLine": true,
+    "weight": 0
+  },
+  "plan": {
+    "summary": "Let White build a big center with e4-d4, then attack it! Play ...d6, ...Nf6, ...g6, and ...Bg7 to fianchetto the bishop. This powerful bishop on g7 will pressure White's entire center from a distance. Castle kingside, then counterattack with ...c5 or ...e5 to undermine White's pawns. This is the hypermodern strategy — inviting the center to overextend, then attacking its base!",
+    "strategicGoals": [
+      { "description": "Let White build a big center, then pressure it with the fianchettoed bishop on g7", "priority": 1 },
+      { "description": "Develop quickly: ...d6, ...Nf6, ...g6, ...Bg7, and castle", "priority": 2 },
+      { "description": "Castle kingside to tuck the king safely behind the g7 bishop", "priority": 3 },
+      { "description": "Launch ...c5 or ...e5 to counterattack and undermine White's center", "priority": 4 },
+      { "description": "Use piece activity — knight outposts and rook pressure — to fight White's space advantage", "priority": 5 }
+    ],
+    "pawnStructureTarget": "Solid structure with pawns on d6 and e7 (or e6), with the fianchetto on g6-g7; aim for ...c5 or ...e5 breaks to challenge White's center",
+    "keySquares": ["g7", "d4", "e4", "e5", "c5"],
+    "pieceTargets": [
+      { "piece": "king's bishop", "idealSquares": ["g7"], "reasoning": "The Pirc's signature piece — on g7 it controls the long diagonal and pressures White's entire center from a safe distance" },
+      { "piece": "king's knight", "idealSquares": ["f6"], "reasoning": "Attacks e4 immediately and keeps White's center under constant pressure" },
+      { "piece": "queen's knight", "idealSquares": ["c6", "d7"], "reasoning": "Supports ...e5 and ...c5 counterattack plans; d7 is solid and flexible" }
+    ],
+    "typicalPlans": [
+      "After castling, play ...c5 to challenge White's d4 pawn and open the c-file",
+      "Play ...e5 to gain center space and challenge the e4-d4 pawn duo directly",
+      "Use the g7 bishop to pressure White's queenside along the long diagonal",
+      "Find good outpost squares for your knights — e5 or c4 are ideal if White allows it"
+    ],
+    "commonMistakes": [
+      "Trading the g7 bishop without compensation — it is your most important piece, keep it!",
+      "Playing too passively and letting White build an unstoppable attack with f5-e5",
+      "Delaying castling — White can build a dangerous attack very quickly in the Austrian Attack",
+      "Forgetting the ...c5 or ...e5 breaks — without counterplay, White's center becomes overwhelming"
+    ],
+    "historicalNote": "The Pirc Defense is named after Slovenian grandmaster Vasja Pirc, who popularized it in the 1940s. It is a hypermodern defense — a school of chess from the 1920s that believed controlling the center with pieces was just as good as occupying it with pawns.",
+    "planLessons": [
+      {
+        "title": "The Hypermodern Idea",
+        "description": "In the Pirc, you INVITE White to build a big center! Instead of fighting for center squares with pawns, you plan to attack the center later with pieces. The g7 bishop will pressure d4 and e5 from a safe distance. This 'hypermodern' strategy is clever and surprising!",
+        "fen": "rnbqkbnr/ppp1pppp/3p4/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2",
+        "highlights": ["d4", "e4", "g7"],
+        "arrows": [{"from": "g7", "to": "d4"}],
+        "style": "good"
+      },
+      {
+        "title": "The Fianchetto: Bg7 is the Key",
+        "description": "The Pirc bishop on g7 is the most important piece in the opening! After ...g6 and ...Bg7, this bishop controls the long a1-h8 diagonal and pressures White's entire center. Always protect it and keep it active!",
+        "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PP3/2N2N2/PPP2PPP/R1BQKB1R b KQkq - 3 5",
+        "highlights": ["g7"],
+        "arrows": [{"from": "g7", "to": "d4"}, {"from": "g7", "to": "e5"}],
+        "style": "good"
+      },
+      {
+        "title": "The Austrian Attack: Don't Panic!",
+        "description": "When White plays f4 (the Austrian Attack), it looks very scary — three pawns on e4, d4, f4! But don't worry. After you castle, your g7 bishop pressures this whole pawn mass. Play ...c5 or ...e5 to counterattack and the center becomes vulnerable.",
+        "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PPP2/2N5/PPP3PP/R1BQKBNR b KQkq f3 0 5",
+        "highlights": ["e4", "d4", "f4", "g7"],
+        "arrows": [{"from": "c7", "to": "c5"}],
+        "style": "neutral"
+      },
+      {
+        "title": "Castle Before You Counterattack",
+        "description": "In the Pirc, your king needs to castle before you start pushing ...c5 or ...e5. If you counterattack too early without castling, White can hit you with f5 and your king could be in danger in the center!",
+        "fen": "rnbq1rk1/ppp1ppbp/3p1np1/8/3PPP2/2N2N2/PPP1B1PP/R1BQ1RK1 b - - 3 7",
+        "highlights": ["g8", "g1"],
+        "arrows": [],
+        "style": "good"
+      },
+      {
+        "title": "Don't Trade the g7 Bishop!",
+        "description": "Your bishop on g7 is too valuable to trade away for nothing! If you let White capture it with a bishop on h6, you lose your best attacking piece and your king becomes less safe. Keep the dragon bishop alive!",
+        "fen": "r1bq1rk1/ppp1ppb1/3p1npp/8/3PPP2/2N2NB1/PPP3PP/R2QKB1R b KQ - 1 8",
+        "highlights": ["g7", "g3"],
+        "arrows": [{"from": "g3", "to": "g7"}],
+        "style": "bad"
+      }
+    ],
+    "planQuizzes": [
+      {
+        "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PPP2/2N2N2/PPP3PP/R1BQKB1R b KQkq - 1 6",
+        "prompt": "White has played e4, d4, and f4 — the Austrian Attack. What is Black's best plan?",
+        "choices": [
+          {"text": "Castle kingside first, then play ...c5 or ...e5 to counterattack", "isCorrect": true},
+          {"text": "Play ...dxe4 immediately to destroy the center", "isCorrect": false},
+          {"text": "Play ...Bg4 to pin the Nf3", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "Castle first! Get your king safe behind the g7 bishop. Then play ...c5 or ...e5 to counterattack White's big pawn center. The Pirc strategy is: let White build the center, then attack it when you're ready!",
+        "boardHighlightsOnReveal": ["g8", "c7"],
+        "arrowsOnReveal": [{"from": "e8", "to": "g8"}, {"from": "c7", "to": "c5"}]
+      },
+      {
+        "fen": "r1bq1rk1/ppp1ppbp/3p1np1/8/3PPP2/2N2N2/PPP1B1PP/R1BQ1RK1 b - - 3 7",
+        "prompt": "Both sides have castled in the Pirc. What is Black's most important piece for the upcoming battle?",
+        "choices": [
+          {"text": "The bishop on g7 — it pressures White's center from a distance", "isCorrect": true},
+          {"text": "The knight on f6 — it attacks e4", "isCorrect": false},
+          {"text": "The queen — it can come to b6 or a5", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The g7 bishop is Black's most important piece in the Pirc! It controls the long diagonal and pressures White's entire center. Never trade it away without excellent compensation. Keep it active and it will reward you!",
+        "boardHighlightsOnReveal": ["g7", "d4", "e5"],
+        "arrowsOnReveal": [{"from": "g7", "to": "d4"}]
+      },
+      {
+        "fen": "rnbqkbnr/ppp1pppp/3p4/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+        "prompt": "After 1.e4 d6, what is the main idea of the Pirc Defense?",
+        "choices": [
+          {"text": "Let White build a center, then attack it with the fianchettoed Bg7 and pawn breaks", "isCorrect": true},
+          {"text": "Fight for the center immediately with ...d5", "isCorrect": false},
+          {"text": "Develop all pieces to their best squares and castle", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "The Pirc is a hypermodern defense! You INVITE White to build a big center with e4 and d4, then attack it with pieces — especially the fianchettoed bishop on g7. When the center overextends, you strike with ...c5 or ...e5!",
+        "boardHighlightsOnReveal": ["d4", "e4", "g7"],
+        "arrowsOnReveal": [{"from": "g7", "to": "d4"}]
+      }
+    ],
+    "theoryLessons": [
+      {
+        "title": "Austrian Attack (B09)",
+        "description": "After 4.f4, White builds a massive pawn center with e4-d4-f4 — the Austrian Attack. This is the most aggressive system against the Pirc. Black must castle quickly and then counterattack with ...c5 or ...e5 before White pushes f5!",
+        "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PPP2/2N5/PPP3PP/R1BQKBNR b KQkq f3 0 5",
+        "highlights": ["e4", "d4", "f4"],
+        "arrows": [{"from": "f4", "to": "f5"}],
+        "style": "theory"
+      },
+      {
+        "title": "Classical System (B07)",
+        "description": "After 4.Nf3 g6 5.Be2, White develops calmly without f4. The game is less sharp but still rich. Black's plan is the same: fianchetto Bg7, castle, and counterattack with ...c5 or ...e5. More strategic than the Austrian Attack.",
+        "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PP3/2N2N2/PPP1BPPP/R1BQK2R b KQkq - 3 6",
+        "highlights": ["e2", "g7"],
+        "arrows": [],
+        "style": "theory"
+      },
+      {
+        "title": "The ...Bg4 System",
+        "description": "Instead of immediately going for ...g6 and ...Bg7, Black can play ...Bg4 to pin White's knight. This is a solid alternative that avoids the Austrian Attack entirely and leads to flexible, positional play.",
+        "fen": "rn1qkbnr/ppp1pppp/3p4/8/3PP1b1/2N2N2/PPP2PPP/R1BQKB1R b KQkq - 3 4",
+        "highlights": ["g4", "f3"],
+        "arrows": [{"from": "g4", "to": "f3"}],
+        "style": "theory"
+      },
+      {
+        "title": "The Pirc vs. Modern: What's the Difference?",
+        "description": "The Pirc starts 1...d6 2...Nf6 3...g6. The Modern Defense starts 1...g6 immediately without ...Nf6 right away. Both use the fianchetto strategy but the move order matters: in the Pirc, ...Nf6 attacks e4 early; in the Modern, Black is more flexible about where to place the knight.",
+        "fen": "rnbqkbnr/pppppp1p/6p1/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+        "highlights": ["g6"],
+        "arrows": [],
+        "style": "theory"
+      }
+    ],
+    "theoryQuizzes": [
+      {
+        "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PPP2/2N5/PPP3PP/R1BQKBNR b KQkq f3 0 5",
+        "prompt": "White played f4 — the Austrian Attack. What is this system called and what is Black's key response plan?",
+        "choices": [
+          {"text": "Austrian Attack — Black should castle and then counterattack with ...c5 or ...e5", "isCorrect": true},
+          {"text": "Classical System — Black should play ...Bg4 to pin Nf3", "isCorrect": false},
+          {"text": "Exchange Variation — Black should play ...dxe4 to relieve tension", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Austrian Attack (B09)! White's three-pawn center looks scary, but after Black castles and plays ...c5 or ...e5, the center becomes vulnerable to attack. The Pirc strategy: let White overextend, then strike!",
+        "boardHighlightsOnReveal": ["e4", "d4", "f4", "g8"],
+        "arrowsOnReveal": [{"from": "e8", "to": "g8"}, {"from": "c7", "to": "c5"}]
+      },
+      {
+        "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PP3/2N2N2/PPP1BPPP/R1BQK2R b KQkq - 3 6",
+        "prompt": "White has played Nf3 and Be2 without f4. What variation of the Pirc is this?",
+        "choices": [
+          {"text": "Classical System", "isCorrect": true},
+          {"text": "Austrian Attack", "isCorrect": false},
+          {"text": "Pirc: ...Bg4 line", "isCorrect": false},
+          {"text": "Pirc: ...c6 system", "isCorrect": false}
+        ],
+        "correctIndex": 0,
+        "explanation": "This is the Classical System (B07)! White develops calmly with Nf3 and Be2 without the aggressive f4. The game is more positional. Black's plan is the same: castle behind Bg7 and counterattack with ...c5 or ...e5.",
+        "boardHighlightsOnReveal": ["e2", "f3"],
+        "arrowsOnReveal": []
+      }
+    ]
+  },
+  "opponentResponses": {
+    "afterMoves": ["e2e4", "d7d6", "d2d4", "g8f6"],
+    "responses": [
+      {
+        "id": "pirc-austrian",
+        "move": {
+          "uci": "b1c3",
+          "san": "Nc3",
+          "explanation": "White develops and prepares the Austrian Attack with f4. Get ready for a sharp battle — castle quickly after ...g6 ...Bg7!"
+        },
+        "name": "Austrian Attack setup",
+        "eco": "B09",
+        "frequency": 0.40,
+        "description": "White's most aggressive response — Nc3 followed by f4 builds a massive pawn center. Black must castle quickly and counterattack.",
+        "planAdjustment": "Play ...g6, ...Bg7 and castle immediately. Don't delay! After castling, counterattack with ...c5 or ...e5. The Austrian Attack is sharp, but your fianchettoed bishop will pressure White's whole center."
+      },
+      {
+        "id": "pirc-classical",
+        "move": {
+          "uci": "g1f3",
+          "san": "Nf3",
+          "explanation": "The Classical System — White develops calmly without f4. A more positional battle awaits. Fianchetto and castle normally."
+        },
+        "name": "Classical System",
+        "eco": "B07",
+        "frequency": 0.30,
+        "description": "White plays Nf3 and Be2, avoiding the Austrian Attack. The game is less sharp and more positional.",
+        "planAdjustment": "Develop normally: ...g6, ...Bg7, castle. Then play ...c6 followed by ...d5 or ...e5 to challenge the center. The Classical is a slower battle — patience and good piece placement will reward you."
+      },
+      {
+        "id": "pirc-150-attack",
+        "move": {
+          "uci": "b1c3",
+          "san": "Nc3",
+          "explanation": "White can also set up the 150 Attack (Nc3, Be3, Qd2, O-O-O). Watch out — White is planning to attack your king with h4-h5!"
+        },
+        "name": "150 Attack",
+        "eco": "B07",
+        "frequency": 0.20,
+        "description": "White plays Nc3, Be3, Qd2 and O-O-O — the '150 Attack'. White plans h4-h5 to attack the kingside. Black should counterattack with ...c5.",
+        "planAdjustment": "When White sets up Be3 and Qd2 planning O-O-O, react with ...c5 immediately! Attack White's queenside before White's h4-h5 attack gains momentum. Speed matters — counterattack right away."
+      },
+      {
+        "id": "pirc-four-pawns",
+        "move": {
+          "uci": "f2f4",
+          "san": "f4",
+          "explanation": "The Four Pawns Attack — White pushes f4 even before Nc3! An even more aggressive approach. Castle quickly and counterattack!"
+        },
+        "name": "Four Pawns Attack",
+        "eco": "B09",
+        "frequency": 0.10,
+        "description": "An extremely aggressive approach — White builds a massive four-pawn center. Black must react quickly to undermine it.",
+        "planAdjustment": "Develop quickly with ...g6, ...Bg7, and castle as fast as possible. Then hit back with ...c5 or ...e5 immediately — White's big pawn center is overextended and can crumble if you strike at the right moment!"
+      }
+    ]
+  }
+}
