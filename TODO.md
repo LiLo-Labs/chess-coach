@@ -17,7 +17,7 @@
 - [x] **ProUpgradeView**: Multi-tier paywall with tier cards, per-tier pricing, feature lists
 - [x] **Debug states**: DebugStateView with presets for each tier, debugTierOverride in AppSettings
 - [x] **Per-Path Unlock**: Buy individual opening paths à la carte (StoreKit product per path)
-- [ ] **Token/credit system**: Users buy tokens/credits to unlock whatever they want (openings, features, etc.) — flexible alternative to fixed tiers
+- [x] **Token/credit system**: Users buy tokens/credits to unlock whatever they want (openings, features, etc.) — flexible alternative to fixed tiers
 - [x] **Free tier: pick one opening**: On first install, free users get to choose ONE opening line to unlock fully (all layers, all features). Everything else is paywalled or available as a package.
 - [x] **Free tier opening limits**: Lock icon + paywall on non-free openings in HomeView, accessible openings checked via SubscriptionService
 

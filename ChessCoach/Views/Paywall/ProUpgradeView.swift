@@ -10,10 +10,12 @@ struct ProUpgradeView: View {
     var lockedOpeningName: String?
 
     @Environment(SubscriptionService.self) private var subscriptionService
+    @Environment(TokenService.self) private var tokenService
     @Environment(\.dismiss) private var dismiss
     @State private var errorMessage: String?
     @State private var selectedTier: SubscriptionTier = .pro
     @State private var pathProduct: Product?
+    @State private var showTokenStore = false
 
     var body: some View {
         ScrollView {
@@ -303,6 +305,37 @@ struct ProUpgradeView: View {
                     .foregroundStyle(AppColor.secondaryText)
             }
 
+            // Token unlock option
+            let tokenCost = AppConfig.tokenEconomy.openingUnlockCost
+            let canAfford = tokenService.canAfford(tokenCost)
+
+            Button {
+                if tokenService.unlockOpening(openingID, subscriptionService: subscriptionService) {
+                    dismiss()
+                }
+            } label: {
+                HStack {
+                    Image(systemName: "star.circle.fill")
+                        .font(.caption)
+                    Text("Use \(tokenCost) Tokens")
+                        .font(.body.weight(.semibold))
+                    if !canAfford {
+                        Text("(\(tokenService.balance.balance) available)")
+                            .font(.caption)
+                    }
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(
+                    canAfford ? AppColor.gold : AppColor.gold.opacity(0.4),
+                    in: RoundedRectangle(cornerRadius: AppRadius.lg)
+                )
+            }
+            .buttonStyle(.plain)
+            .disabled(!canAfford)
+
+            // IAP fallback
             Button {
                 Task { await subscriptionService.purchasePath(openingID: openingID) }
             } label: {
@@ -310,7 +343,7 @@ struct ProUpgradeView: View {
                     if subscriptionService.purchaseState == .purchasing {
                         ProgressView().controlSize(.small).tint(.white)
                     }
-                    Text(pathProduct != nil ? "Unlock — \(pathProduct!.displayPrice)" : "Unlock Opening")
+                    Text(pathProduct != nil ? "Buy — \(pathProduct!.displayPrice)" : "Buy Opening")
                         .font(.body.weight(.semibold))
                 }
                 .foregroundStyle(.white)
@@ -320,6 +353,17 @@ struct ProUpgradeView: View {
             }
             .buttonStyle(.plain)
             .disabled(subscriptionService.purchaseState == .purchasing)
+
+            if !canAfford {
+                Button {
+                    showTokenStore = true
+                } label: {
+                    Text("Get more tokens")
+                        .font(.caption)
+                        .foregroundStyle(AppColor.gold)
+                }
+                .buttonStyle(.plain)
+            }
         }
         .padding(AppSpacing.cardPadding)
         .background(AppColor.info.opacity(0.06), in: RoundedRectangle(cornerRadius: AppRadius.md))
@@ -327,6 +371,9 @@ struct ProUpgradeView: View {
             RoundedRectangle(cornerRadius: AppRadius.md)
                 .stroke(AppColor.info.opacity(0.3), lineWidth: 1)
         )
+        .sheet(isPresented: $showTokenStore) {
+            TokenStoreView()
+        }
     }
 
     // MARK: - Helpers

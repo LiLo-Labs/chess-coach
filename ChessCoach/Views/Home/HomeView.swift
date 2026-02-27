@@ -12,7 +12,9 @@ struct HomeView: View {
     @State private var searchText = ""
     @State private var selectedColor: Opening.PlayerColor = .white
     @State private var lockedOpeningToShow: Opening?
+    @State private var showTokenStore = false
     @Environment(SubscriptionService.self) private var subscriptionService
+    @Environment(TokenService.self) private var tokenService
     @Environment(AppSettings.self) private var settings
     @Environment(AppServices.self) private var appServices
 
@@ -121,6 +123,7 @@ struct HomeView: View {
             .onAppear {
                 refreshData()
                 checkForSavedSession()
+                let _ = tokenService.claimDailyBonus()
             }
             .fullScreenCover(item: $selectedOpening) { opening in
                 SessionView(opening: opening, lineID: resumeLineID, isPro: subscriptionService.isPro, stockfish: appServices.stockfish, llmService: appServices.llmService)
@@ -211,6 +214,19 @@ struct HomeView: View {
 
                 Spacer()
 
+                // Token balance
+                Button { showTokenStore = true } label: {
+                    HStack(spacing: 3) {
+                        Image(systemName: "star.circle.fill")
+                            .font(.caption)
+                            .foregroundStyle(AppColor.gold)
+                        Text("\(tokenService.balance.balance)")
+                            .font(.subheadline.weight(.semibold).monospacedDigit())
+                            .foregroundStyle(AppColor.gold)
+                    }
+                }
+                .buttonStyle(.plain)
+
                 let goalTarget = settings.dailyGoalTarget
                 let goalCompleted = settings.dailyGoalCompleted
 
@@ -227,6 +243,9 @@ struct HomeView: View {
             }
         }
         .listRowBackground(AppColor.cardBackground)
+        .sheet(isPresented: $showTokenStore) {
+            TokenStoreView()
+        }
     }
 
     // MARK: - Continue Learning
