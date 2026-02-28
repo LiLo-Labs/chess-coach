@@ -1288,6 +1288,9 @@ final class SessionViewModel {
         } else if let maia = maiaService {
             do {
                 let legalUCI = gameState.legalMoves.map(\.description)
+                let history = gameState.moveHistory.map {
+                    "\($0.from)\($0.to)\($0.promotion?.rawValue ?? "")"
+                }
                 let predictions = try await maia.predictMove(
                     fen: gameState.fen,
                     legalMoves: legalUCI,
@@ -1302,7 +1305,8 @@ final class SessionViewModel {
                     fen: gameState.fen,
                     legalMoves: legalUCI,
                     eloSelf: opponentELO,
-                    eloOppo: userELO
+                    eloOppo: userELO,
+                    recentMoves: history
                 )
                 #if DEBUG
                 print("[ChessCoach] Maia selected: \(computedMove ?? "nil")")
@@ -1424,6 +1428,9 @@ final class SessionViewModel {
         } else if let maia = maiaService {
             do {
                 let legalUCI = gameState.legalMoves.map(\.description)
+                let history = gameState.moveHistory.map {
+                    "\($0.from)\($0.to)\($0.promotion?.rawValue ?? "")"
+                }
                 let predictions = try await maia.predictMove(
                     fen: gameState.fen,
                     legalMoves: legalUCI,
@@ -1438,7 +1445,8 @@ final class SessionViewModel {
                     fen: gameState.fen,
                     legalMoves: legalUCI,
                     eloSelf: opponentELO,
-                    eloOppo: userELO
+                    eloOppo: userELO,
+                    recentMoves: history
                 )
                 #if DEBUG
                 print("[ChessCoach] Maia selected: \(computedMove ?? "nil")")
@@ -1499,32 +1507,34 @@ final class SessionViewModel {
             return nil
         }()
 
-        // 3. Only call LLM if we don't have a book explanation for the opponent move
-        //    Use post-move FEN so the LLM sees the board after the opponent played,
-        //    and the validator checks piece positions correctly.
-        var opponentCoachingFromLLM: String?
+        // 3. Fire LLM coaching concurrently — don't block opponent move on it.
+        //    Use post-move FEN so the LLM sees the board after the opponent played.
+        var coachingTask: Task<String?, Never>?
         if opponentBookExplanation == nil {
             isCoachingLoading = true
             let moveHistoryStr = buildMoveHistoryString()
             let studentColor = opening.color == .white ? "White" : "Black"
-            // Compute post-move FEN for accurate board state in the prompt
             let postMoveFen: String = {
                 let tempState = GameState(fen: userFen)
                 _ = tempState.makeMoveUCI(opponentMove)
                 return tempState.fen
             }()
-            opponentCoachingFromLLM = await coachingService.getCoaching(
-                fen: postMoveFen,
-                lastMove: opponentMove,
-                scoreBefore: 0,
-                scoreAfter: 0,
-                ply: opponentPly,
-                userELO: userELO,
-                moveHistory: moveHistoryStr,
-                isUserMove: false,
-                studentColor: studentColor
-            )
-            isCoachingLoading = false
+            let capturedGen = gen
+            let coaching = coachingService
+            coachingTask = Task {
+                guard capturedGen == self.sessionGeneration else { return nil }
+                return await coaching.getCoaching(
+                    fen: postMoveFen,
+                    lastMove: opponentMove,
+                    scoreBefore: 0,
+                    scoreAfter: 0,
+                    ply: opponentPly,
+                    userELO: self.userELO,
+                    moveHistory: moveHistoryStr,
+                    isUserMove: false,
+                    studentColor: studentColor
+                )
+            }
         }
 
         guard gen == sessionGeneration else { return }
@@ -1571,12 +1581,28 @@ final class SessionViewModel {
             }
         }()
 
-        // Show opponent coaching (book explanation or LLM result) immediately
-        // — don't wait for Stockfish hint/eval to finish before showing coaching
-        let opponentCoaching = opponentBookExplanation ?? opponentCoachingFromLLM
-        if let opponentCoaching {
-            opponentCoachingText = opponentCoaching
+        // Show opponent coaching — book explanation is instant, LLM arrives async
+        if let opponentBookExplanation {
+            opponentCoachingText = opponentBookExplanation
             lastCoachingWasUser = false
+        } else if let coachingTask {
+            // Don't block — coaching text appears when LLM finishes.
+            // Guard with both session generation and ply count so a stale
+            // result doesn't overwrite coaching from a later move.
+            let plyAtRequest = gameState.plyCount
+            Task { [gen] in
+                let llmCoaching = await coachingTask.value
+                guard gen == self.sessionGeneration,
+                      self.gameState.plyCount == plyAtRequest else {
+                    self.isCoachingLoading = false
+                    return
+                }
+                self.isCoachingLoading = false
+                if let llmCoaching {
+                    self.opponentCoachingText = llmCoaching
+                    self.lastCoachingWasUser = false
+                }
+            }
         }
 
         let batchedOpponentSan: String? = {

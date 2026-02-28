@@ -26,6 +26,7 @@ struct PuzzleModeView: View {
         case solving
         case feedback
         case complete
+        case noPuzzles
     }
 
     private var currentPuzzle: Puzzle? {
@@ -55,6 +56,8 @@ struct PuzzleModeView: View {
                 }
             case .complete:
                 completeView
+            case .noPuzzles:
+                noPuzzlesView
             }
         }
         .preferredColorScheme(.dark)
@@ -270,6 +273,58 @@ struct PuzzleModeView: View {
         }
     }
 
+    // MARK: - No Puzzles
+
+    @Environment(\.dismiss) private var puzzleDismiss
+
+    private var noPuzzlesView: some View {
+        VStack(spacing: AppSpacing.lg) {
+            Spacer()
+
+            Image(systemName: "puzzlepiece.extension")
+                .font(.system(size: 48))
+                .foregroundStyle(AppColor.secondaryText)
+
+            Text("No Puzzles Yet")
+                .font(.title3.weight(.bold))
+                .foregroundStyle(AppColor.primaryText)
+
+            VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                Text("Puzzles are built from your repertoire. To get started:")
+                    .font(.subheadline)
+                    .foregroundStyle(AppColor.secondaryText)
+
+                Label("Pick an opening and play through Layer 1", systemImage: "1.circle.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(AppColor.primaryText)
+                Label("Practice a few sessions to build your history", systemImage: "2.circle.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(AppColor.primaryText)
+                Label("Come back here for targeted puzzles", systemImage: "3.circle.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(AppColor.primaryText)
+            }
+            .padding(AppSpacing.cardPadding)
+            .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+            .padding(.horizontal, AppSpacing.xxl)
+
+            HStack(spacing: AppSpacing.md) {
+                Button("Try Again") {
+                    phase = .loading
+                    Task { await loadPuzzles() }
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button("Go Back") {
+                    puzzleDismiss()
+                }
+                .buttonStyle(.bordered)
+            }
+
+            Spacer()
+        }
+    }
+
     // MARK: - Logic
 
     private func loadPuzzles() async {
@@ -277,17 +332,30 @@ struct PuzzleModeView: View {
 
         let service = PuzzleService(stockfish: appServices.stockfish)
         puzzleService = service
-        puzzles = await service.generatePuzzles(count: 10, userELO: settings.userELO)
 
+        // Fast path: instant, no engine — we know immediately if there's content
+        let fastPuzzles = service.generateFastPuzzles(count: 10, userELO: settings.userELO)
+
+        if fastPuzzles.isEmpty {
+            // Nothing to work with — show guidance immediately, no spinning
+            phase = .noPuzzles
+            return
+        }
+
+        // Start solving right away with fast puzzles
+        puzzles = fastPuzzles
+        gameState = GameState(fen: fastPuzzles[0].fen)
+        phase = .solving
+        showHint = false
+
+        // Top up with engine puzzles in the background (appended for later in the session)
         guard !Task.isCancelled else { return }
-
-        if let first = puzzles.first {
-            gameState = GameState(fen: first.fen)
-            phase = .solving
-            showHint = false
-        } else {
-            // No puzzles generated — show complete rather than spin forever
-            phase = .complete
+        let remaining = 10 - fastPuzzles.count
+        if remaining > 0 {
+            let enginePuzzles = await service.generateEnginePuzzles(count: remaining, userELO: settings.userELO)
+            if !enginePuzzles.isEmpty && !Task.isCancelled {
+                puzzles.append(contentsOf: enginePuzzles)
+            }
         }
     }
 

@@ -226,7 +226,13 @@ struct CoachChatPanel: View {
                 )
                 await MainActor.run { coachingService = newService }
             }
-            guard let coachingService else { return }
+            guard let coachingService else {
+                await MainActor.run {
+                    messages.append((role: "coach", text: "Coach is unavailable right now. Try again later."))
+                    isLoading = false
+                }
+                return
+            }
             let response = await coachingService.getChatResponse(question: question, context: context)
             await MainActor.run {
                 messages.append((role: "coach", text: response))

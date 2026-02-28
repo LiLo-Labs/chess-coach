@@ -178,4 +178,13 @@ final class TokenService {
         fmt.timeZone = .current
         return fmt.string(from: Date())
     }
+
+    #if DEBUG
+    /// Set an exact token balance for debug testing.
+    func setDebugBalance(_ amount: Int) {
+        balance = TokenBalance()
+        balance.balance = amount
+        save()
+    }
+    #endif
 }

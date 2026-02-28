@@ -5,138 +5,26 @@ import SwiftUI
 /// Only available in DEBUG builds.
 struct DebugStateView: View {
     @Environment(AppSettings.self) private var settings
+    @Environment(TokenService.self) private var tokenService
     @State private var showExportSheet = false
     @State private var showImportSheet = false
     @State private var statusMessage: String?
     @State private var exportedURL: URL?
+    @State private var unlockedPaths: Set<String> = []
 
     @Environment(\.dismiss) private var dismiss
 
+    private let freeIDs = AppConfig.pro.freeOpeningIDs
+    private let allOpenings = OpeningDatabase.shared.openings
+
     var body: some View {
         List {
-            Section {
-                Text("Load a preset and the app resets to Home with that state applied.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Section("Free Tier Presets") {
-                Button("Fresh Install (FTU)", systemImage: "sparkles") {
-                    loadFreshInstall()
-                }
-
-                Button("Italian Layer 1 — Learn the Plan", systemImage: "lightbulb") {
-                    loadItalianLayer1()
-                }
-
-                Button("Italian Layer 2 — Practice the Plan", systemImage: "target") {
-                    loadItalianLayer2()
-                }
-
-                Button("Italian Layer 3 — The Story", systemImage: "book.closed") {
-                    loadItalianLayer3()
-                }
-
-                Button("London Layer 1 — Learn the Plan", systemImage: "lightbulb") {
-                    loadLondonLayer1()
-                }
-
-                Button("Multiple Openings — Mixed Progress", systemImage: "square.grid.2x2") {
-                    loadMixedProgress()
-                }
-
-                Button("Everything Complete (free)", systemImage: "checkmark.seal.fill") {
-                    loadFullyComplete()
-                }
-            }
-
-            Section("On-Device AI Tier") {
-                Button("On-Device AI — Fresh", systemImage: "cpu") {
-                    loadTierFresh(.onDeviceAI)
-                }
-
-                Button("On-Device AI — Italian Layer 2", systemImage: "cpu.fill") {
-                    loadOnDeviceAIMidway()
-                }
-            }
-
-            Section("Cloud AI Tier") {
-                Button("Cloud AI — Fresh", systemImage: "cloud") {
-                    loadTierFresh(.cloudAI)
-                }
-
-                Button("Cloud AI — Mixed Progress", systemImage: "cloud.fill") {
-                    loadCloudAIMidway()
-                }
-            }
-
-            Section("Pro Tier") {
-                Button("Pro — Fresh (no progress)", systemImage: "crown") {
-                    loadTierFresh(.pro)
-                }
-
-                Button("Pro — Italian Layer 4 + All Openings", systemImage: "crown.fill") {
-                    loadProMidway()
-                }
-
-                Button("Pro — Fully Loaded (all layers, puzzles)", systemImage: "star.fill") {
-                    loadProComplete()
-                }
-
-                Button("Pro — With Trainer Progress", systemImage: "figure.fencing") {
-                    loadProWithTrainerProgress()
-                }
-            }
-
-            Section("Per-Path Unlock") {
-                Button("Free + Italian Unlocked", systemImage: "lock.open") {
-                    loadPerPathUnlock(["italian"])
-                }
-
-                Button("Free + Italian & London Unlocked", systemImage: "lock.open.fill") {
-                    loadPerPathUnlock(["italian", "london"])
-                }
-            }
-
-            Section("Snapshots") {
-                Button("Export Current State", systemImage: "square.and.arrow.up") {
-                    exportState()
-                }
-
-                Button("Import State from File", systemImage: "square.and.arrow.down") {
-                    showImportSheet = true
-                }
-            }
-
-            Section("Quick Toggles") {
-                // Tier picker
-                let currentTier = currentDebugTier()
-                Picker("Active Tier", selection: Binding(
-                    get: { currentTier },
-                    set: { setDebugTier($0) }
-                )) {
-                    ForEach(SubscriptionTier.allCases, id: \.rawValue) { tier in
-                        Text(tier.displayName).tag(tier)
-                    }
-                }
-
-                Button("Reset Onboarding (show FTU on next launch)", systemImage: "arrow.counterclockwise") {
-                    settings.hasSeenOnboarding = false
-                    statusMessage = "Onboarding reset — go back to see it"
-                }
-
-                Button("Clear All Mastery Data", systemImage: "trash") {
-                    UserDefaults.standard.removeObject(forKey: "chess_coach_mastery")
-                    statusMessage = "Mastery data cleared"
-                }
-                .foregroundStyle(.red)
-
-                Button("Nuclear Reset (everything)", systemImage: "exclamationmark.triangle") {
-                    nuclearReset()
-                    statusMessage = "All data cleared"
-                }
-                .foregroundStyle(.red)
-            }
+            tokenSection
+            freeSection
+            onDeviceAISection
+            cloudAISection
+            proSection
+            toolsSection
 
             if let msg = statusMessage {
                 Section {
@@ -147,6 +35,10 @@ struct DebugStateView: View {
             }
         }
         .navigationTitle("Debug States")
+        .onAppear {
+            let paths = UserDefaults.standard.stringArray(forKey: "chess_coach_unlocked_paths") ?? []
+            unlockedPaths = Set(paths)
+        }
         .sheet(isPresented: $showExportSheet) {
             if let url = exportedURL {
                 ShareLink(item: url)
@@ -162,6 +54,169 @@ struct DebugStateView: View {
         }
     }
 
+    // MARK: - Sections
+
+    private var tokenSection: some View {
+        Section {
+            HStack(spacing: 12) {
+                ForEach([0, 50, 200, 500], id: \.self) { amount in
+                    Button {
+                        tokenService.setDebugBalance(amount)
+                        statusMessage = "Token balance set to \(amount)"
+                    } label: {
+                        Text("\(amount)")
+                            .font(.subheadline.weight(.medium))
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                }
+            }
+            .padding(.vertical, 4)
+
+            Text("Current balance: \(tokenService.balance.balance) tokens")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        } header: {
+            Text("Token Balance")
+        }
+    }
+
+    private var freeSection: some View {
+        Section {
+            Button("Fresh Install (FTU)", systemImage: "sparkles") {
+                loadFreshInstall()
+            }
+
+            Button("Italian Layer 1 — Learn the Plan", systemImage: "lightbulb") {
+                loadItalianLayer1()
+            }
+
+            Button("Italian Layer 2 — Practice the Plan", systemImage: "target") {
+                loadItalianLayer2()
+            }
+
+            Button("Italian Layer 3 — The Story", systemImage: "book.closed") {
+                loadItalianLayer3()
+            }
+
+            Button("London Layer 1 — Learn the Plan", systemImage: "lightbulb") {
+                loadLondonLayer1()
+            }
+
+            Button("Multiple Openings — Mixed Progress", systemImage: "square.grid.2x2") {
+                loadMixedProgress()
+            }
+
+            Button("Everything Complete (free)", systemImage: "checkmark.seal.fill") {
+                loadFullyComplete()
+            }
+
+            // Path unlock toggles
+            DisclosureGroup("Path Unlocks") {
+                ForEach(allOpenings, id: \.id) { opening in
+                    let isFree = freeIDs.contains(opening.id)
+                    Toggle(isOn: Binding(
+                        get: { isFree || unlockedPaths.contains(opening.id) },
+                        set: { newValue in
+                            togglePathUnlock(opening.id, enabled: newValue)
+                        }
+                    )) {
+                        Text(opening.name)
+                            .foregroundStyle(isFree ? .secondary : .primary)
+                    }
+                    .disabled(isFree)
+                }
+            }
+        } header: {
+            Text("Free")
+        }
+    }
+
+    private var onDeviceAISection: some View {
+        Section("On-Device AI") {
+            Button("Fresh", systemImage: "cpu") {
+                loadTierFresh(.onDeviceAI)
+            }
+
+            Button("Italian Layer 2", systemImage: "cpu.fill") {
+                loadOnDeviceAIMidway()
+            }
+        }
+    }
+
+    private var cloudAISection: some View {
+        Section("Cloud AI") {
+            Button("Fresh", systemImage: "cloud") {
+                loadTierFresh(.cloudAI)
+            }
+
+            Button("Mixed Progress", systemImage: "cloud.fill") {
+                loadCloudAIMidway()
+            }
+        }
+    }
+
+    private var proSection: some View {
+        Section("Pro (Full Unlock)") {
+            Button("Fresh", systemImage: "crown") {
+                loadTierFresh(.pro)
+            }
+
+            Button("Italian Layer 4 + All Openings", systemImage: "crown.fill") {
+                loadProMidway()
+            }
+
+            Button("Fully Loaded", systemImage: "star.fill") {
+                loadProComplete()
+            }
+
+            Button("Trainer Progress", systemImage: "figure.fencing") {
+                loadProWithTrainerProgress()
+            }
+        }
+    }
+
+    private var toolsSection: some View {
+        Section("Tools") {
+            Button("Export Current State", systemImage: "square.and.arrow.up") {
+                exportState()
+            }
+
+            Button("Import State from File", systemImage: "square.and.arrow.down") {
+                showImportSheet = true
+            }
+
+            Button("Reset Onboarding (show FTU on next launch)", systemImage: "arrow.counterclockwise") {
+                settings.hasSeenOnboarding = false
+                statusMessage = "Onboarding reset — go back to see it"
+            }
+
+            Button("Clear All Mastery Data", systemImage: "trash") {
+                UserDefaults.standard.removeObject(forKey: "chess_coach_mastery")
+                statusMessage = "Mastery data cleared"
+            }
+            .foregroundStyle(.red)
+
+            Button("Nuclear Reset (everything)", systemImage: "exclamationmark.triangle") {
+                nuclearReset()
+                statusMessage = "All data cleared"
+            }
+            .foregroundStyle(.red)
+        }
+    }
+
+    // MARK: - Path Unlock Toggle
+
+    private func togglePathUnlock(_ openingID: String, enabled: Bool) {
+        if enabled {
+            unlockedPaths.insert(openingID)
+        } else {
+            unlockedPaths.remove(openingID)
+        }
+        UserDefaults.standard.set(Array(unlockedPaths), forKey: "chess_coach_unlocked_paths")
+        NotificationCenter.default.post(name: .debugStateDidChange, object: nil)
+    }
+
     // MARK: - Apply & Dismiss
 
     private func applyAndDismiss(_ message: String) {
@@ -171,25 +226,6 @@ struct DebugStateView: View {
     }
 
     // MARK: - Tier Helpers
-
-    private func currentDebugTier() -> SubscriptionTier {
-        if let raw = UserDefaults.standard.string(forKey: AppSettings.Key.debugTierOverride),
-           let tier = SubscriptionTier(rawValue: raw) {
-            return tier
-        }
-        if UserDefaults.standard.bool(forKey: AppSettings.Key.debugProOverride) {
-            return .pro
-        }
-        return .free
-    }
-
-    private func setDebugTier(_ tier: SubscriptionTier) {
-        UserDefaults.standard.set(tier.rawValue, forKey: AppSettings.Key.debugTierOverride)
-        // Clear legacy bool
-        UserDefaults.standard.removeObject(forKey: AppSettings.Key.debugProOverride)
-        statusMessage = "Tier set to \(tier.displayName) — restart app"
-        NotificationCenter.default.post(name: .debugStateDidChange, object: nil)
-    }
 
     private func enableTier(_ tier: SubscriptionTier) {
         UserDefaults.standard.set(tier.rawValue, forKey: AppSettings.Key.debugTierOverride)
@@ -601,25 +637,6 @@ struct DebugStateView: View {
         applyAndDismiss("Loaded: Pro user with trainer progress + ELO history")
     }
 
-    // MARK: - Per-Path Unlock Presets
-
-    private func loadPerPathUnlock(_ paths: [String]) {
-        nuclearReset()
-        // Stay on free tier but unlock specific paths
-        settings.hasSeenOnboarding = true
-        settings.userELO = 800
-        UserDefaults.standard.set(paths, forKey: "chess_coach_unlocked_paths")
-
-        for pathID in paths {
-            var mastery = OpeningMastery(openingID: pathID)
-            mastery.currentLayer = .understandPlan
-            mastery.sessionsPlayed = 0
-            PersistenceService.shared.saveMastery(mastery)
-        }
-
-        applyAndDismiss("Loaded: Free + \(paths.joined(separator: ", ")) unlocked")
-    }
-
     // MARK: - Export / Import
 
     private func exportState() {
@@ -754,6 +771,7 @@ struct DebugStateView: View {
         for key in allKeys {
             defaults.removeObject(forKey: key)
         }
+        unlockedPaths = []
         statusMessage = nil
     }
 

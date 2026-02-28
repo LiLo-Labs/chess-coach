@@ -9,6 +9,7 @@ struct TheoryDiscoveryView: View {
 
     @State private var currentSection = 0
     @State private var quizResults: [Int: Bool] = [:]  // item index → correct/wrong
+    @Environment(\.dismiss) private var dismiss
 
     private var plan: OpeningPlan? { opening.plan }
     private var responses: [OpponentResponse] { opening.opponentResponses?.responses ?? [] }
@@ -120,6 +121,7 @@ struct TheoryDiscoveryView: View {
     }
 
     private var isBlockedByQuiz: Bool {
+        guard currentSection < items.count else { return false }
         let item = items[currentSection]
         if case .quiz = item {
             return quizResults[currentSection] == nil
@@ -131,14 +133,32 @@ struct TheoryDiscoveryView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Progress dots
-            HStack(spacing: 8) {
-                ForEach(0..<items.count, id: \.self) { i in
-                    Circle()
-                        .fill(i <= currentSection ? Color.accentColor : Color.secondary.opacity(0.3))
-                        .frame(width: 6, height: 6)
+            // Close button + progress dots
+            HStack {
+                Button { dismiss() } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(.secondary)
+                        .frame(width: 30, height: 30)
+                        .background(.ultraThinMaterial, in: Circle())
                 }
+
+                Spacer()
+
+                HStack(spacing: 8) {
+                    ForEach(0..<items.count, id: \.self) { i in
+                        Circle()
+                            .fill(i <= currentSection ? Color.accentColor : Color.secondary.opacity(0.3))
+                            .frame(width: 6, height: 6)
+                    }
+                }
+
+                Spacer()
+
+                // Balance the close button
+                Color.clear.frame(width: 30, height: 30)
             }
+            .padding(.horizontal)
             .padding(.top)
 
             // Content
@@ -172,7 +192,7 @@ struct TheoryDiscoveryView: View {
 
                 Spacer()
 
-                if case .summary = items[currentSection] {
+                if currentSection < items.count, case .summary = items[currentSection] {
                     // Summary slide: buttons handled inside summaryView
                 } else if currentSection < items.count - 1 {
                     Button("Next") {

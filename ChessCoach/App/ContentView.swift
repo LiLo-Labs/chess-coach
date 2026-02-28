@@ -56,6 +56,7 @@ struct ContentView: View {
         }
         #if DEBUG
         .onReceive(NotificationCenter.default.publisher(for: .debugStateDidChange)) { _ in
+            Task { await subscriptionService.reloadEntitlement() }
             withAnimation {
                 refreshID = UUID()
             }

@@ -13,6 +13,7 @@ struct HomeView: View {
     @State private var selectedColor: Opening.PlayerColor = .white
     @State private var lockedOpeningToShow: Opening?
     @State private var showTokenStore = false
+    @State private var selectedMode: HomeMode?
     private let progressService = PlayerProgressService.shared
     @Environment(SubscriptionService.self) private var subscriptionService
     @Environment(TokenService.self) private var tokenService
@@ -126,15 +127,21 @@ struct HomeView: View {
             .navigationDestination(for: Opening.self) { opening in
                 OpeningDetailView(opening: opening)
             }
-            // Modes use direct destination NavigationLinks (not value-based)
-            // to avoid SwiftUI routing bugs with private enum Hashable conformance.
+            .navigationDestination(item: $selectedMode) { mode in
+                switch mode {
+                case .puzzles:
+                    PuzzleModeView()
+                case .trainer:
+                    TrainerModeView()
+                }
+            }
             .onAppear {
                 refreshData()
                 checkForSavedSession()
                 let _ = tokenService.claimDailyBonus()
             }
             .fullScreenCover(item: $selectedOpening) { opening in
-                SessionView(opening: opening, lineID: resumeLineID, isPro: subscriptionService.isPro, stockfish: appServices.stockfish, llmService: appServices.llmService)
+                SessionView(opening: opening, lineID: resumeLineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
                     .environment(subscriptionService)
             }
             .sheet(item: $lockedOpeningToShow) { opening in
@@ -430,8 +437,8 @@ struct HomeView: View {
     private var modesSection: some View {
         Section {
             HStack(spacing: AppSpacing.md) {
-                NavigationLink {
-                    PuzzleModeView()
+                Button {
+                    selectedMode = .puzzles
                 } label: {
                     modeCardLabel(
                         icon: "puzzlepiece.fill",
@@ -442,8 +449,8 @@ struct HomeView: View {
                 }
                 .buttonStyle(.plain)
 
-                NavigationLink {
-                    TrainerModeView()
+                Button {
+                    selectedMode = .trainer
                 } label: {
                     modeCardLabel(
                         icon: "figure.fencing",
@@ -550,4 +557,11 @@ struct HomeView: View {
         if sessions == 0 { return "not started" }
         return "\(sessions) sessions played"
     }
+}
+
+// MARK: - Mode Navigation
+
+private enum HomeMode: Hashable {
+    case puzzles
+    case trainer
 }

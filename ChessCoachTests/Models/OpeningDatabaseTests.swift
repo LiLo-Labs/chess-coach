@@ -77,4 +77,57 @@ struct OpeningDatabaseTests {
                     "White opening \(opening.name) first move \(firstMove) doesn't start from white's side")
         }
     }
+
+    @Test func mainLineMovesReplayCorrectly() {
+        let db = OpeningDatabase()
+        for opening in db.openings {
+            let gs = GameState()
+            for (i, move) in opening.mainLine.enumerated() {
+                let result = gs.makeMoveUCI(move.uci)
+                #expect(result, "MainLine replay failed: \(opening.id) move \(i) '\(move.uci)' at FEN: \(gs.fen)")
+                if !result { break }
+            }
+        }
+    }
+
+    @Test func lineMovesReplayCorrectly() {
+        let db = OpeningDatabase()
+        for opening in db.openings {
+            guard let lines = opening.lines else { continue }
+            for line in lines {
+                let gs = GameState()
+                for (i, move) in line.moves.enumerated() {
+                    let result = gs.makeMoveUCI(move.uci)
+                    #expect(result, "Line replay failed: \(opening.id)/\(line.id) move \(i) '\(move.uci)' at FEN: \(gs.fen)")
+                    if !result { break }
+                }
+            }
+        }
+    }
+
+    @Test func puzzleGenerationFromOpeningsWorks() {
+        let db = OpeningDatabase()
+        var puzzleCount = 0
+        for opening in db.openings {
+            let moves = opening.mainLine
+            guard moves.count >= 4 else { continue }
+
+            let gs = GameState()
+            var ok = true
+            for i in 0..<2 {
+                if !gs.makeMoveUCI(moves[i].uci) {
+                    ok = false
+                    break
+                }
+            }
+            guard ok else { continue }
+
+            let solution = moves[2]
+            if gs.makeMoveUCI(solution.uci) {
+                puzzleCount += 1
+            }
+        }
+        #expect(puzzleCount > 0, "Should generate at least some puzzles from opening data")
+        print("[PuzzleTest] Generated \(puzzleCount) puzzles from \(db.openings.count) openings")
+    }
 }
