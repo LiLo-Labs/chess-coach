@@ -77,7 +77,11 @@ actor StockfishService: PositionEvaluating {
         }
         await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
             pendingContinuation = cont
-            Task { [engine = self.engine!] in
+            guard let engine = self.engine else {
+                cont.resume()
+                return
+            }
+            Task { [engine] in
                 await engine.send(command: .isready)
             }
         }

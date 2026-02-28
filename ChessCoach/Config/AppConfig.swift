@@ -38,7 +38,7 @@ enum AppConfig {
     static let llm = LLM(
         claudeModel: "claude-sonnet-4-20250514",
         claudeBaseURL: URL(string: "https://api.anthropic.com")!,
-        defaultOllamaHost: "192.168.4.62:11434",
+        defaultOllamaHost: "localhost:11434",
         defaultOllamaModel: "qwen2.5:7b",
         onDeviceModelFilename: "Qwen3-4B-Q4_K_M",
         contextSize: 4096,

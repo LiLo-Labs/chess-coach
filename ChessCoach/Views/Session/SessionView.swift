@@ -33,7 +33,7 @@ struct SessionView: View {
         GeometryReader { geo in
             let evalWidth: CGFloat = 12
             let evalGap: CGFloat = 4
-            let boardSize = max(1, geo.size.width - evalWidth - evalGap)
+            let boardSize = min(max(1, geo.size.width - evalWidth - evalGap), geo.size.height * 0.55)
 
             VStack(spacing: 0) {
                 topBar
@@ -493,6 +493,19 @@ struct SessionView: View {
         let fraction = viewModel.evalFraction
         let whiteRatio = CGFloat((1.0 + fraction) / 2.0)
 
+        let evalAccessibilityLabel: String = {
+            let score = viewModel.evalScore
+            if abs(score) >= 10000 {
+                return score > 0 ? "Position evaluation: White is winning by checkmate" : "Position evaluation: Black is winning by checkmate"
+            } else if score > 50 {
+                return "Position evaluation: White advantage"
+            } else if score < -50 {
+                return "Position evaluation: Black advantage"
+            } else {
+                return "Position evaluation: Equal"
+            }
+        }()
+
         return GeometryReader { _ in
             VStack(spacing: 0) {
                 Color(white: 0.2)
@@ -511,6 +524,8 @@ struct SessionView: View {
         }
         .frame(height: height)
         .animation(.spring(response: 0.5, dampingFraction: 0.8), value: viewModel.evalScore)
+        .accessibilityLabel(evalAccessibilityLabel)
+        .accessibilityValue(viewModel.evalText)
     }
 
     // MARK: - Top Bar

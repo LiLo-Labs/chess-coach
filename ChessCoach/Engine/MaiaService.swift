@@ -22,8 +22,10 @@ actor MaiaService: MovePredicting {
             throw MaiaError.modelNotFound
         }
         self.model = try MLModel(contentsOf: url, configuration: config)
-        let moves = Self.loadMoveList()
-        assert(moves.count == AppConfig.maia.expectedMoveCount, "maia2_moves.txt corrupted: expected \(AppConfig.maia.expectedMoveCount) moves, got \(moves.count)")
+        let moves = try Self.loadMoveList()
+        guard moves.count == AppConfig.maia.expectedMoveCount else {
+            throw MaiaError.modelNotFound
+        }
         self.moveList = moves
         var idx: [String: Int] = [:]
         for (i, m) in moves.enumerated() { idx[m] = i }
@@ -340,10 +342,10 @@ actor MaiaService: MovePredicting {
 
     /// Load the 1880 UCI moves from the bundled resource file.
     /// Order must match maia2's get_all_possible_moves() exactly.
-    private static func loadMoveList() -> [String] {
+    private static func loadMoveList() throws -> [String] {
         guard let url = Bundle.main.url(forResource: AppConfig.maia.movesResourceName, withExtension: "txt"),
               let content = try? String(contentsOf: url, encoding: .utf8) else {
-            fatalError("maia2_moves.txt not found in bundle")
+            throw MaiaError.modelNotFound
         }
         return content.split(separator: "\n").map(String.init)
     }

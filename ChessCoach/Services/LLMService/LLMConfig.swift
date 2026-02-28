@@ -15,7 +15,7 @@ struct LLMConfig: Sendable {
     var claudeBaseURL: URL { AppConfig.llm.claudeBaseURL }
 
     var claudeAPIKey: String {
-        UserDefaults.standard.string(forKey: AppSettings.Key.claudeAPIKey) ?? ""
+        KeychainService.load(key: "claude_api_key") ?? ""
     }
 
     /// Detect the best available provider, in priority order:

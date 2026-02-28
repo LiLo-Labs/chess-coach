@@ -167,6 +167,14 @@ struct SettingsView: View {
                     Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
                         .foregroundStyle(.secondary)
                 }
+
+                NavigationLink {
+                    AcknowledgmentsView()
+                } label: {
+                    Label("Acknowledgments", systemImage: "hands.clap")
+                }
+                Link("Privacy Policy", destination: URL(string: "https://chesscoach.app/privacy")!)
+                Link("Support", destination: URL(string: "mailto:chesscoach@marklifson.com")!)
             }
 
             #if DEBUG

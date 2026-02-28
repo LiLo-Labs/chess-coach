@@ -130,7 +130,8 @@ actor OnDeviceLLMService {
             batch.token[i] = tokens[i]
             batch.pos[i] = Int32(i)
             batch.n_seq_id[i] = 1
-            batch.seq_id[i]![0] = 0
+            guard let seqId = batch.seq_id[i] else { throw OnDeviceLLMError.decodeFailed }
+            seqId[0] = 0
             batch.logits[i] = 0
         }
         batch.n_tokens = Int32(nTokens)
@@ -193,7 +194,8 @@ actor OnDeviceLLMService {
             batch.token[0] = newTokenId
             batch.pos[0] = nCur
             batch.n_seq_id[0] = 1
-            batch.seq_id[0]![0] = 0
+            guard let seqId = batch.seq_id[0] else { throw OnDeviceLLMError.decodeFailed }
+            seqId[0] = 0
             batch.logits[0] = 1
             batch.n_tokens = 1
 
