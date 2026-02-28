@@ -29,6 +29,12 @@ struct TrainerModeView: View {
     @State private var lastEvalScore: Int = 0  // Stockfish eval before player's move
     private let openingDetector = OpeningDetector()
 
+    // Replay state
+    @State private var replayPly: Int?
+    @State private var replayGameState: GameState?
+    private var isReplaying: Bool { replayPly != nil }
+    private var displayGameState: GameState? { replayGameState ?? gameState }
+
     // Separate stats per engine mode
     @State private var humanStats = Self.loadStats(mode: .humanLike)
     @State private var engineStats = Self.loadStats(mode: .engine)
@@ -356,17 +362,26 @@ struct TrainerModeView: View {
                                (playerColor == .black && !gameState.isWhiteTurn)
 
             GameBoardView(
-                gameState: gameState,
+                gameState: displayGameState ?? gameState,
                 perspective: playerColor,
-                allowInteraction: isPlayerTurn && !botThinking,
+                allowInteraction: isPlayerTurn && !botThinking && !isReplaying,
                 onMove: { from, to in
                     // Play sound
                     SoundService.shared.play(.move)
                     SoundService.shared.hapticPiecePlaced()
 
                     let moveUCI = "\(from)\(to)"
+                    // Capture pre-move state (move already applied by GameBoardView)
+                    let preMoveDetection = currentOpening
+                    // Reconstruct pre-move FEN for SAN computation
+                    let preMoveFen: String = {
+                        let temp = GameState()
+                        let history = gameState.moveHistory.dropLast()
+                        for m in history { temp.makeMoveUCI("\(m.from)\(m.to)") }
+                        return temp.fen
+                    }()
                     updateOpeningDetection(gameState: gameState)
-                    evaluatePlayerMove(gameState: gameState, moveUCI: moveUCI)
+                    evaluatePlayerMove(gameState: gameState, moveUCI: moveUCI, preMoveFen: preMoveFen, preMoveDetection: preMoveDetection)
                     checkGameEnd(gameState: gameState)
                     if !isGameOver(gameState) {
                         makeBotMove(gameState: gameState)
@@ -376,10 +391,19 @@ struct TrainerModeView: View {
             .aspectRatio(1, contentMode: .fit)
             .padding(.horizontal, AppSpacing.sm)
 
-            // Coaching feed
+            // Replay bar
+            if gameState.plyCount > 0 {
+                trainerReplayBar(gameState: gameState)
+            }
+
+            // Coaching feed (vertical, tappable)
             if !coachingFeed.isEmpty || isEvaluating {
-                TrainerCoachingFeedView(entries: coachingFeed, isLoading: isEvaluating)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                TrainerCoachingFeedView(
+                    entries: coachingFeed,
+                    isLoading: isEvaluating,
+                    onTapEntry: { ply in enterReplay(ply: ply, gameState: gameState) }
+                )
+                .transition(.move(edge: .bottom).combined(with: .opacity))
             }
 
             Spacer(minLength: 0)
@@ -664,6 +688,8 @@ struct TrainerModeView: View {
         lastEvalScore = 0
         moveFlashSquare = nil
         botThinking = false
+        replayPly = nil
+        replayGameState = nil
 
         // Init Maia for human-like bot play
         if maiaService == nil && engineMode == .humanLike {
@@ -698,12 +724,16 @@ struct TrainerModeView: View {
                 // Maia for human-like play — use sampleMove for probabilistic
                 // selection so the bot doesn't play deterministically
                 if let maia = maiaService {
+                    let history = gameState.moveHistory.map {
+                        "\($0.from)\($0.to)\($0.promotion?.rawValue ?? "")"
+                    }
                     selectedMove = try? await maia.sampleMove(
                         fen: fen,
                         legalMoves: legalMoves,
                         eloSelf: selectedBotELO,
                         eloOppo: settings.userELO,
-                        temperature: 1.0
+                        temperature: 1.0,
+                        recentMoves: history
                     )
                 }
                 // Fallback to Stockfish if Maia unavailable
@@ -722,6 +752,9 @@ struct TrainerModeView: View {
             if selectedMove == nil {
                 selectedMove = legalMoves.randomElement()
             }
+
+            // Compute SAN before applying the move
+            let botMoveSAN = selectedMove.flatMap { gameState.sanForUCI($0) } ?? selectedMove ?? "?"
 
             if let move = selectedMove {
                 // Check if it's a capture before making the move
@@ -754,7 +787,7 @@ struct TrainerModeView: View {
 
             botThinking = false
             if let move = selectedMove {
-                addBotMoveEntry(gameState: gameState, moveUCI: move)
+                addBotMoveEntry(gameState: gameState, moveUCI: move, moveSAN: botMoveSAN)
                 // Quick eval to set baseline for next player move's cpLoss
                 if let eval = await appServices.stockfish.evaluate(fen: gameState.fen, depth: 8) {
                     lastEvalScore = eval.score
@@ -774,19 +807,28 @@ struct TrainerModeView: View {
 
     /// Evaluate the player's move asynchronously and add a coaching entry.
     /// Runs Stockfish eval in the background — doesn't block the game.
-    private func evaluatePlayerMove(gameState: GameState, moveUCI: String) {
+    private func evaluatePlayerMove(gameState: GameState, moveUCI: String, preMoveFen: String? = nil, preMoveDetection: OpeningDetection? = nil) {
         let ply = gameState.plyCount
         let fen = gameState.fen
+        // Compute SAN from pre-move position if available
+        let moveSAN: String
+        if let pmFen = preMoveFen {
+            moveSAN = GameState.sanForUCI(moveUCI, inFEN: pmFen)
+        } else {
+            moveSAN = moveUCI
+        }
         let moveNumber = (ply + 1) / 2
-        let detection = currentOpening
-        let isInBook = detection.best?.nextBookMoves.isEmpty == false
-        let openingName = detection.best?.opening.name
+        // Use pre-move detection for book move checking (nextBookMoves are continuations
+        // from the position BEFORE the move, so they contain the move just played).
+        let preDetection = preMoveDetection ?? currentOpening
+        let postDetection = currentOpening
+        let bookMove = preDetection.best?.nextBookMoves.first(where: { $0.uci == moveUCI })
+            ?? preDetection.best?.nextBookMoves.first
+        let isBookMove = preDetection.best?.nextBookMoves.contains(where: { $0.uci == moveUCI }) ?? false
+        let isInBook = isBookMove || (postDetection.best?.nextBookMoves.isEmpty == false)
+        let openingName = (postDetection.best ?? preDetection.best)?.opening.name
         let scoreBefore = lastEvalScore
         let playerIsWhite = playerColor == .white
-
-        // Quick fallback entry while eval runs
-        let bookMove = detection.best?.nextBookMoves.first
-        let isBookMove = bookMove?.uci == moveUCI
 
         Task { @MainActor in
             isEvaluating = true
@@ -827,13 +869,13 @@ struct TrainerModeView: View {
                     coaching = "Solid move — keeps your position strong."
                 }
             case .okayMove:
-                if let bm = bookMove {
+                if !isBookMove, let bm = preDetection.best?.nextBookMoves.first {
                     coaching = "Playable, but \(bm.san) is the book move here."
                 } else {
                     coaching = "Decent, but there might be a stronger option."
                 }
             case .mistake:
-                if let bm = bookMove {
+                if !isBookMove, let bm = preDetection.best?.nextBookMoves.first {
                     coaching = "The plan calls for \(bm.san) here."
                 } else if let bestUCI = eval?.bestMove {
                     let san = GameState.sanForUCI(bestUCI, inFEN: fen)
@@ -848,14 +890,15 @@ struct TrainerModeView: View {
             let entry = TrainerCoachingEntry(
                 ply: ply,
                 moveNumber: moveNumber,
-                moveSAN: moveUCI, // Using UCI — SAN not available post-move
+                moveSAN: moveSAN,
                 isPlayerMove: true,
                 coaching: coaching,
                 category: category,
                 soundness: soundness,
                 scoreCategory: scoreCategory,
                 openingName: openingName,
-                isInBook: isInBook
+                isInBook: isInBook,
+                fen: fen
             )
 
             withAnimation(.easeInOut(duration: 0.2)) {
@@ -869,7 +912,7 @@ struct TrainerModeView: View {
     }
 
     /// Add a brief coaching entry for the bot's move (non-blocking, no eval needed).
-    private func addBotMoveEntry(gameState: GameState, moveUCI: String) {
+    private func addBotMoveEntry(gameState: GameState, moveUCI: String, moveSAN: String? = nil) {
         let ply = gameState.plyCount
         let moveNumber = (ply + 1) / 2
         let detection = currentOpening
@@ -889,14 +932,15 @@ struct TrainerModeView: View {
         let entry = TrainerCoachingEntry(
             ply: ply,
             moveNumber: moveNumber,
-            moveSAN: moveUCI,
+            moveSAN: moveSAN ?? moveUCI,
             isPlayerMove: false,
             coaching: coaching,
             category: isDeviation ? .deviation : .opponentMove,
             soundness: nil,
             scoreCategory: nil,
             openingName: openingName,
-            isInBook: isInBook
+            isInBook: isInBook,
+            fen: gameState.fen
         )
 
         withAnimation(.easeInOut(duration: 0.2)) {
@@ -983,6 +1027,103 @@ struct TrainerModeView: View {
         )
 
         withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) { phase = .gameOver }
+    }
+
+    // MARK: - Replay
+
+    private func enterReplay(ply: Int, gameState: GameState) {
+        let maxPly = gameState.plyCount
+        let clampedPly = max(0, min(ply, maxPly))
+        if clampedPly == maxPly {
+            exitReplay()
+            return
+        }
+        replayPly = clampedPly
+        let tempState = GameState()
+        let history = gameState.moveHistory
+        for i in 0..<clampedPly {
+            guard i < history.count else { break }
+            tempState.makeMove(from: history[i].from, to: history[i].to, promotion: history[i].promotion)
+        }
+        replayGameState = tempState
+    }
+
+    private func exitReplay() {
+        replayPly = nil
+        replayGameState = nil
+    }
+
+    // MARK: - Replay Bar
+
+    private func trainerReplayBar(gameState: GameState) -> some View {
+        HStack(spacing: 4) {
+            Button { enterReplay(ply: 0, gameState: gameState) } label: {
+                Image(systemName: "backward.end.fill")
+                    .font(.body)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .disabled(isReplaying && replayPly == 0)
+
+            Button {
+                let current = replayPly ?? gameState.plyCount
+                enterReplay(ply: current - 1, gameState: gameState)
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.body.weight(.semibold))
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .disabled(isReplaying && replayPly == 0)
+
+            Spacer()
+
+            if isReplaying {
+                Text("Move \(replayPly ?? 0) of \(gameState.plyCount)")
+                    .font(.caption.monospacedDigit().weight(.medium))
+                    .foregroundStyle(.secondary)
+            } else {
+                Text("Ply \(gameState.plyCount)")
+                    .font(.caption.monospacedDigit().weight(.medium))
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Button {
+                let current = replayPly ?? gameState.plyCount
+                enterReplay(ply: current + 1, gameState: gameState)
+            } label: {
+                Image(systemName: "chevron.right")
+                    .font(.body.weight(.semibold))
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .disabled(!isReplaying)
+
+            Button { exitReplay() } label: {
+                Image(systemName: "forward.end.fill")
+                    .font(.body)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .disabled(!isReplaying)
+
+            if isReplaying {
+                Button { exitReplay() } label: {
+                    Text("Resume")
+                        .font(.subheadline.weight(.bold))
+                        .foregroundStyle(.green)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(.green.opacity(0.12), in: Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .foregroundStyle(.white.opacity(0.6))
+        .buttonStyle(.plain)
+        .padding(.horizontal, AppSpacing.screenPadding)
     }
 
     // MARK: - Persistence (separate keys per engine mode)

@@ -27,6 +27,7 @@ protocol MovePredicting: Sendable {
         legalMoves: [String],
         eloSelf: Int,
         eloOppo: Int,
-        temperature: Float
+        temperature: Float,
+        recentMoves: [String]
     ) async throws -> String
 }

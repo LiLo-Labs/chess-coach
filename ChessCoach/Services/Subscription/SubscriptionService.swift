@@ -35,6 +35,19 @@ final class SubscriptionService {
         let listener = listenForTransactions()
         transactionListener = listener
         Task { await checkEntitlement() }
+
+        #if DEBUG
+        NotificationCenter.default.addObserver(
+            forName: .debugStateDidChange,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self else { return }
+            Task { @MainActor in
+                await self.checkEntitlement()
+            }
+        }
+        #endif
     }
 
     func tearDown() {
@@ -42,6 +55,11 @@ final class SubscriptionService {
     }
 
     // MARK: - Public API
+
+    /// Re-check entitlement (e.g. after debug tier change).
+    func reloadEntitlement() async {
+        await checkEntitlement()
+    }
 
     func loadProducts() async throws {
         let ids = [Self.onDeviceProductID, Self.cloudProductID, Self.proProductID]

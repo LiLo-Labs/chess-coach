@@ -9,6 +9,7 @@ struct PlanUnderstandingView: View {
 
     @State private var currentCard = 0
     @State private var quizResults: [Int: Bool] = [:]  // item index → correct/wrong
+    @Environment(\.dismiss) private var dismiss
 
     private var plan: OpeningPlan? { opening.plan }
     private var isWhiteOpening: Bool { opening.color == .white }
@@ -134,6 +135,7 @@ struct PlanUnderstandingView: View {
 
     /// Whether the current slide is a quiz that hasn't been answered yet.
     private var isBlockedByQuiz: Bool {
+        guard currentCard < items.count else { return false }
         let item = items[currentCard]
         if case .quiz = item {
             return quizResults[currentCard] == nil
@@ -145,8 +147,16 @@ struct PlanUnderstandingView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Header
+            // Header with close button
             HStack {
+                Button { dismiss() } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(.secondary)
+                        .frame(width: 30, height: 30)
+                        .background(.ultraThinMaterial, in: Circle())
+                }
+
                 Text("Learn the Plan")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.secondary)
@@ -221,7 +231,7 @@ struct PlanUnderstandingView: View {
 
                 Spacer()
 
-                if case .summary = items[currentCard] {
+                if currentCard < items.count, case .summary = items[currentCard] {
                     // Summary slide: buttons handled inside summaryView
                 } else if currentCard < items.count - 1 {
                     Button("Next") {

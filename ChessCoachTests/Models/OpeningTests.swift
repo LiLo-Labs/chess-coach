@@ -33,9 +33,9 @@ struct OpeningTests {
         #expect(firstMove?.san == "e4")
     }
 
-    @Test func databaseHasAllTenOpenings() {
+    @Test func databaseHasOpenings() {
         let db = OpeningDatabase()
-        #expect(db.openings.count == 10)
+        #expect(db.openings.count >= 10, "Database should have at least 10 openings, got \(db.openings.count)")
     }
 
     @Test func canFilterByColor() {

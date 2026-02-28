@@ -114,12 +114,15 @@ actor MaiaService: MovePredicting {
     }
 
     /// Sample a move from the probability distribution (more human-like than argmax).
+    /// `recentMoves` is the game's UCI move history (both sides), used to avoid
+    /// repetitive back-and-forth sequences (e.g. Ng1-f3, Nf3-g1, Ng1-f3…).
     func sampleMove(
         fen: String,
         legalMoves: [String],
         eloSelf: Int = 1500,
         eloOppo: Int = 1500,
-        temperature: Float = 1.0
+        temperature: Float = 1.0,
+        recentMoves: [String] = []
     ) throws -> String {
         var predictions = try predictMove(
             fen: fen,
@@ -137,15 +140,69 @@ actor MaiaService: MovePredicting {
             predictions = zip(predictions, exps).map { ($0.0.move, $0.1 / sum) }
         }
 
+        // Anti-repetition: detect and penalize moves that would continue a
+        // back-and-forth pattern. Look at the last few bot moves (every other
+        // ply) and suppress any move whose reverse was recently played.
+        let penalized = applyRepetitionPenalty(predictions: predictions, recentMoves: recentMoves)
+
         let r = Float.random(in: 0..<1)
         var cumulative: Float = 0
-        for pred in predictions {
+        for pred in penalized {
             cumulative += pred.probability
             if r < cumulative {
                 return pred.move
             }
         }
-        return predictions.last?.move ?? predictions[0].move
+        return penalized.last?.move ?? predictions[0].move
+    }
+
+    // MARK: - Anti-Repetition
+
+    /// Penalize moves that would create a back-and-forth pattern.
+    /// Detects when a candidate move is the reverse of a recent bot move
+    /// (e.g. bot played g1f3 two plies ago, now wants to play f3g1).
+    private func applyRepetitionPenalty(
+        predictions: [(move: String, probability: Float)],
+        recentMoves: [String]
+    ) -> [(move: String, probability: Float)] {
+        guard recentMoves.count >= 2 else { return predictions }
+
+        // Collect reverse moves the bot has played recently (last 6 bot moves = 12 plies).
+        // Bot moves are at even or odd indices depending on color; we check all recent
+        // moves and build a set of "reverse" UCI strings to penalize.
+        let windowSize = min(recentMoves.count, 12)
+        let window = recentMoves.suffix(windowSize)
+        var reversesToPenalize: Set<String> = []
+        for move in window {
+            // Reverse of "e2e4" is "e4e2" (swap from/to squares)
+            if move.count >= 4 {
+                let from = String(move.prefix(2))
+                let to = String(move.dropFirst(2).prefix(2))
+                reversesToPenalize.insert("\(to)\(from)")
+            }
+        }
+
+        // Check if any top predictions would be penalized
+        let hasPenalizedMoves = predictions.contains { reversesToPenalize.contains(String($0.move.prefix(4))) }
+        guard hasPenalizedMoves else { return predictions }
+
+        // Penalize by reducing probability to near-zero (but not zero, in case all
+        // moves are penalized). Redistribute weight to non-penalized moves.
+        let penaltyFactor: Float = 0.01
+        var adjusted = predictions.map { pred -> (move: String, probability: Float) in
+            if reversesToPenalize.contains(String(pred.move.prefix(4))) {
+                return (pred.move, pred.probability * penaltyFactor)
+            }
+            return pred
+        }
+
+        // Re-normalize
+        let total = adjusted.map(\.probability).reduce(0, +)
+        if total > 0 {
+            adjusted = adjusted.map { ($0.move, $0.probability / total) }
+        }
+
+        return adjusted
     }
 
     // MARK: - Board Encoding
