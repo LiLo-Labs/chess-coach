@@ -146,11 +146,15 @@ final class PracticeSessionViewModel {
         if let maia = maiaService {
             do {
                 let legalUCI = gameState.legalMoves.map(\.description)
+                let history = gameState.moveHistory.map {
+                    "\($0.from)\($0.to)\($0.promotion?.rawValue ?? "")"
+                }
                 computedMove = try await maia.sampleMove(
                     fen: gameState.fen,
                     legalMoves: legalUCI,
                     eloSelf: opponentELO,
-                    eloOppo: userELO
+                    eloOppo: userELO,
+                    recentMoves: history
                 )
             } catch {
                 #if DEBUG

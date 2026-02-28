@@ -20,7 +20,20 @@ struct ProUpgradeView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: AppSpacing.xxl) {
-                Spacer(minLength: AppSpacing.lg)
+                // Close button
+                HStack {
+                    Spacer()
+                    Button { dismiss() } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title3)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(AppColor.secondaryText)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Close")
+                }
+                .padding(.horizontal, AppSpacing.screenPadding)
+                .padding(.top, AppSpacing.sm)
 
                 // Header
                 Image(systemName: "crown.fill")
