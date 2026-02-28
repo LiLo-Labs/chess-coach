@@ -100,9 +100,9 @@ final class OpeningDetector: Sendable {
         if matches.isEmpty {
             // Find where we diverged by checking shorter prefixes
             leftBookAtPly = findDivergencePly(moves: moves, allOpenings: allOpenings)
-        } else if matches.first!.matchDepth < moves.count {
+        } else if let first = matches.first, first.matchDepth < moves.count {
             // Partial match — we're off-book after the match depth
-            leftBookAtPly = matches.first!.matchDepth
+            leftBookAtPly = first.matchDepth
         } else {
             leftBookAtPly = nil
         }

@@ -209,34 +209,41 @@ struct CoachChatPanel: View {
         )
 
         Task {
-            if coachingService == nil {
-                // Reuse the shared LLM service (already warmed up at app start)
-                let llmService = appServices.llmService
-                let line = opening.lines?.first ?? OpeningLine(
-                    id: "\(opening.id)/main",
-                    name: opening.name,
-                    moves: opening.mainLine,
-                    branchPoint: 0,
-                    parentLineID: nil
-                )
-                let newService = CoachingService(
-                    llmService: llmService,
-                    curriculumService: CurriculumService(opening: opening, activeLine: line, phase: .learningMainLine),
-                    featureAccess: UnlockedAccess()
-                )
-                await MainActor.run { coachingService = newService }
-            }
-            guard let coachingService else {
+            do {
+                if coachingService == nil {
+                    // Reuse the shared LLM service (already warmed up at app start)
+                    let llmService = appServices.llmService
+                    let line = opening.lines?.first ?? OpeningLine(
+                        id: "\(opening.id)/main",
+                        name: opening.name,
+                        moves: opening.mainLine,
+                        branchPoint: 0,
+                        parentLineID: nil
+                    )
+                    let newService = CoachingService(
+                        llmService: llmService,
+                        curriculumService: CurriculumService(opening: opening, activeLine: line, phase: .learningMainLine),
+                        featureAccess: UnlockedAccess()
+                    )
+                    await MainActor.run { coachingService = newService }
+                }
+                guard let coachingService else {
+                    await MainActor.run {
+                        messages.append((role: "coach", text: "Coach is unavailable right now. Try again later."))
+                        isLoading = false
+                    }
+                    return
+                }
+                let response = await coachingService.getChatResponse(question: question, context: context)
                 await MainActor.run {
-                    messages.append((role: "coach", text: "Coach is unavailable right now. Try again later."))
+                    messages.append((role: "coach", text: response))
                     isLoading = false
                 }
-                return
-            }
-            let response = await coachingService.getChatResponse(question: question, context: context)
-            await MainActor.run {
-                messages.append((role: "coach", text: response))
-                isLoading = false
+            } catch {
+                await MainActor.run {
+                    messages.append((role: "coach", text: "Sorry, I couldn't reach the coach right now. Please try again."))
+                    isLoading = false
+                }
             }
         }
     }

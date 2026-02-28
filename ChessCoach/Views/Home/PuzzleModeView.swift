@@ -4,6 +4,7 @@ import ChessKit
 /// Puzzle solving mode — users find the best move in positions drawn from
 /// opening book data, personal mistakes, and engine-evaluated positions.
 struct PuzzleModeView: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(AppSettings.self) private var settings
     @Environment(AppServices.self) private var appServices
     @Environment(SubscriptionService.self) private var subscriptionService
@@ -26,7 +27,7 @@ struct PuzzleModeView: View {
         case solving
         case feedback
         case complete
-        case noPuzzles
+        case error
     }
 
     private var currentPuzzle: Puzzle? {
@@ -56,8 +57,8 @@ struct PuzzleModeView: View {
                 }
             case .complete:
                 completeView
-            case .noPuzzles:
-                noPuzzlesView
+            case .error:
+                errorView
             }
         }
         .preferredColorScheme(.dark)
@@ -257,6 +258,33 @@ struct PuzzleModeView: View {
             .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
             .padding(.horizontal, AppSpacing.xxl)
 
+            VStack(spacing: AppSpacing.sm) {
+                Button {
+                    restartSession()
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.counterclockwise")
+                        Text("Play Again")
+                            .font(.body.weight(.semibold))
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(AppColor.info, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+                }
+                .buttonStyle(.plain)
+
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Done")
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(AppColor.secondaryText)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.horizontal, AppSpacing.xxl)
+
             Spacer()
         }
     }
@@ -277,7 +305,7 @@ struct PuzzleModeView: View {
 
     @Environment(\.dismiss) private var puzzleDismiss
 
-    private var noPuzzlesView: some View {
+    private var errorView: some View {
         VStack(spacing: AppSpacing.lg) {
             Spacer()
 
@@ -338,7 +366,7 @@ struct PuzzleModeView: View {
 
         if fastPuzzles.isEmpty {
             // Nothing to work with — show guidance immediately, no spinning
-            phase = .noPuzzles
+            phase = .error
             return
         }
 
@@ -366,10 +394,14 @@ struct PuzzleModeView: View {
                          moveUCI == String(puzzle.solutionUCI.prefix(4)) // Handle promotion
 
         if isCorrect {
+            SoundService.shared.play(.correct)
+            SoundService.shared.hapticCorrectMove()
             sessionResult.recordSolve()
             feedbackIsCorrect = true
             feedbackMessage = puzzle.explanation ?? "Great job finding the best move!"
         } else {
+            SoundService.shared.play(.wrong)
+            SoundService.shared.hapticDeviation()
             sessionResult.recordFail()
             feedbackIsCorrect = false
             feedbackMessage = puzzle.explanation
@@ -380,6 +412,14 @@ struct PuzzleModeView: View {
         withAnimation {
             phase = .feedback
         }
+    }
+
+    private func restartSession() {
+        currentIndex = 0
+        sessionResult = PuzzleSessionResult()
+        showHint = false
+        phase = .loading
+        Task { await loadPuzzles() }
     }
 
     private func advanceToNext() {

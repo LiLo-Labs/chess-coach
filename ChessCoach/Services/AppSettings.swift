@@ -19,7 +19,6 @@ final class AppSettings {
         static let notationStyle = "notation_style"
         static let colorblindMode = "colorblind_mode"
         static let llmProvider = "llm_provider_preference"
-        static let claudeAPIKey = "claude_api_key"
         static let ollamaHost = "ollama_host"
         static let ollamaModel = "ollama_model"
         static let openingViewCounts = "opening_view_counts"
@@ -106,7 +105,7 @@ final class AppSettings {
     }
 
     var claudeAPIKey: String {
-        didSet { defaults.set(claudeAPIKey, forKey: Key.claudeAPIKey) }
+        didSet { KeychainService.save(key: "claude_api_key", value: claudeAPIKey) }
     }
 
     var ollamaHost: String {
@@ -199,7 +198,15 @@ final class AppSettings {
         self.confettiEnabled = d.object(forKey: Key.confettiEnabled) as? Bool ?? true
         self.showLegalMovesImmediately = d.object(forKey: Key.showLegalMoves) as? Bool ?? true
         self.llmProvider = d.string(forKey: Key.llmProvider) ?? "onDevice"
-        self.claudeAPIKey = d.string(forKey: Key.claudeAPIKey) ?? ""
+
+        // Migrate Claude API key from UserDefaults to Keychain (one-time upgrade path).
+        let keychainKey = "claude_api_key"
+        if let legacy = d.string(forKey: "claude_api_key"), !legacy.isEmpty {
+            KeychainService.save(key: keychainKey, value: legacy)
+            d.removeObject(forKey: "claude_api_key")
+        }
+        self.claudeAPIKey = KeychainService.load(key: keychainKey) ?? ""
+
         self.ollamaHost = d.string(forKey: Key.ollamaHost) ?? AppConfig.llm.defaultOllamaHost
         self.ollamaModel = d.string(forKey: Key.ollamaModel) ?? AppConfig.llm.defaultOllamaModel
         self.hasSeenOnboarding = d.bool(forKey: Key.hasSeenOnboarding)

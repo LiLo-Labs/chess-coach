@@ -448,6 +448,7 @@ struct HomeView: View {
                     )
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Puzzles, Tactics training")
 
                 Button {
                     selectedMode = .trainer
@@ -460,6 +461,7 @@ struct HomeView: View {
                     )
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Trainer, Play a full game")
             }
             .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
         }

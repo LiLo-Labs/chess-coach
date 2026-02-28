@@ -10,9 +10,6 @@ packages:
     path: LocalPackages/chesskit-engine
   ChessboardKit:
     path: LocalPackages/ChessboardKit
-  GRDB:
-    url: https://github.com/groue/GRDB.swift.git
-    from: "7.0.0"
 targets:
   ChessCoach:
     type: application
@@ -21,8 +18,6 @@ targets:
       - ChessCoach
     resources:
       - path: ChessCoach/Resources/Openings
-        buildPhase: resources
-      - path: ChessCoach/Resources/Qwen3-4B-Q4_K_M.gguf
         buildPhase: resources
     settings:
       base:
@@ -45,7 +40,6 @@ targets:
     dependencies:
       - package: ChessKitEngine
       - package: ChessboardKit
-      - package: GRDB
       - framework: Frameworks/llama.xcframework
         embed: true
   ChessCoachTests:

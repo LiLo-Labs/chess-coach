@@ -18,7 +18,7 @@ struct PracticeOpeningView: View {
         GeometryReader { geo in
             let evalWidth: CGFloat = 12
             let evalGap: CGFloat = AppSpacing.xxs
-            let boardSize = max(1, geo.size.width - evalWidth - evalGap)
+            let boardSize = min(max(1, geo.size.width - evalWidth - evalGap), geo.size.height * 0.55)
 
             VStack(spacing: 0) {
                 topBar

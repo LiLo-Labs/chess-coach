@@ -356,7 +356,7 @@ struct ProUpgradeView: View {
                     if subscriptionService.purchaseState == .purchasing {
                         ProgressView().controlSize(.small).tint(.white)
                     }
-                    Text(pathProduct != nil ? "Buy — \(pathProduct!.displayPrice)" : "Buy Opening")
+                    Text(pathProduct.map { "Buy — \($0.displayPrice)" } ?? "Buy Opening")
                         .font(.body.weight(.semibold))
                 }
                 .foregroundStyle(.white)

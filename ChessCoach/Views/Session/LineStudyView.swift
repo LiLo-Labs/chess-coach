@@ -40,7 +40,7 @@ struct LineStudyView: View {
     var body: some View {
         GeometryReader { geo in
             let evalWidth: CGFloat = 0
-            let boardSize = max(1, geo.size.width - evalWidth)
+            let boardSize = min(max(1, geo.size.width - evalWidth), geo.size.height * 0.55)
 
             VStack(spacing: 0) {
                 topBar

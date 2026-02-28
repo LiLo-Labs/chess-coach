@@ -27,6 +27,7 @@ struct TrainerModeView: View {
     @State private var coachingFeed: [TrainerCoachingEntry] = []
     @State private var isEvaluating = false
     @State private var lastEvalScore: Int = 0  // Stockfish eval before player's move
+    @State private var showLeaveConfirmation = false
     private let openingDetector = OpeningDetector()
 
     // Replay state
@@ -228,6 +229,7 @@ struct TrainerModeView: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(personality.name), \(elo) rating\(isSelected ? ", selected" : "")")
     }
 
     private func colorButton(_ color: PieceColor, label: String, icon: String) -> some View {
@@ -255,202 +257,204 @@ struct TrainerModeView: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Play as \(label)\(playerColor == color ? ", selected" : "")")
     }
 
     // MARK: - Playing
 
     private func playingView(gameState: GameState) -> some View {
-        VStack(spacing: 0) {
-            // Bot info bar with personality
-            HStack(spacing: AppSpacing.sm) {
-                Image(systemName: botPersonality.icon)
-                    .font(.title3)
-                    .foregroundStyle(accentColor)
+        GeometryReader { geo in
+            let boardSize = min(max(1, geo.size.width - (AppSpacing.sm * 2)), geo.size.height * 0.55)
 
-                VStack(alignment: .leading, spacing: 1) {
-                    HStack(spacing: 4) {
-                        Text(botPersonality.name)
-                            .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(AppColor.primaryText)
-                        Text("(\(selectedBotELO))")
-                            .font(.caption2)
-                            .foregroundStyle(AppColor.tertiaryText)
-                    }
-
-                    HStack(spacing: 4) {
-                        Image(systemName: engineMode.icon)
-                            .font(.system(size: 9))
-                        Text(engineMode.displayName)
-                            .font(.caption2)
-                    }
-                    .foregroundStyle(AppColor.tertiaryText)
-                }
-
-                Spacer()
-
-                // Move counter
-                Text("Move \(gameState.plyCount / 2 + 1)")
-                    .font(.caption.monospacedDigit())
-                    .foregroundStyle(AppColor.secondaryText)
-            }
-            .padding(.horizontal, AppSpacing.screenPadding)
-            .padding(.vertical, AppSpacing.sm)
-
-            // Opening detection bar
-            if let match = currentOpening.best {
-                HStack(spacing: AppSpacing.xs) {
-                    Image(systemName: "book.fill")
-                        .font(.caption2)
-                        .foregroundStyle(.cyan)
-                    Text(match.variationName ?? match.opening.name)
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(AppColor.primaryText)
-                        .lineLimit(1)
-                    if !match.nextBookMoves.isEmpty {
-                        Text("In book")
-                            .font(.caption2)
-                            .foregroundStyle(AppColor.success)
-                    } else {
-                        Text("Out of book")
-                            .font(.caption2)
-                            .foregroundStyle(AppColor.warning)
-                    }
-                    Spacer()
-                }
-                .padding(.horizontal, AppSpacing.screenPadding)
-                .padding(.vertical, 4)
-                .background(Color.cyan.opacity(0.05))
-                .transition(.opacity)
-            }
-
-            // Bot chat bubble
-            if showBotMessage, let message = botMessage {
-                HStack {
+            VStack(spacing: 0) {
+                // Bot info bar with personality
+                HStack(spacing: AppSpacing.sm) {
                     Image(systemName: botPersonality.icon)
-                        .font(.caption)
+                        .font(.title3)
                         .foregroundStyle(accentColor)
-                    Text(message)
-                        .font(.caption)
-                        .foregroundStyle(AppColor.primaryText)
-                        .lineLimit(2)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(accentColor.opacity(0.1), in: RoundedRectangle(cornerRadius: 12))
-                .padding(.horizontal, AppSpacing.screenPadding)
-                .padding(.bottom, AppSpacing.xs)
-                .transition(.asymmetric(
-                    insertion: .move(edge: .top).combined(with: .opacity),
-                    removal: .opacity
-                ))
-            }
 
-            // Thinking indicator
-            if botThinking {
-                HStack(spacing: 6) {
-                    ThinkingDotsView()
-                    Text(botPersonality.randomReaction(from: botPersonality.thinkingPhrases))
-                        .font(.caption)
+                    VStack(alignment: .leading, spacing: 1) {
+                        HStack(spacing: 4) {
+                            Text(botPersonality.name)
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(AppColor.primaryText)
+                            Text("(\(selectedBotELO))")
+                                .font(.caption2)
+                                .foregroundStyle(AppColor.tertiaryText)
+                        }
+
+                        HStack(spacing: 4) {
+                            Image(systemName: engineMode.icon)
+                                .font(.system(size: 9))
+                            Text(engineMode.displayName)
+                                .font(.caption2)
+                        }
+                        .foregroundStyle(AppColor.tertiaryText)
+                    }
+
+                    Spacer()
+
+                    // Move counter
+                    Text("Move \(gameState.plyCount / 2 + 1)")
+                        .font(.caption.monospacedDigit())
                         .foregroundStyle(AppColor.secondaryText)
                 }
-                .padding(.vertical, 4)
-                .transition(.opacity)
-            }
+                .padding(.horizontal, AppSpacing.screenPadding)
+                .padding(.vertical, AppSpacing.sm)
 
-            // Board
-            let isPlayerTurn = (playerColor == .white && gameState.isWhiteTurn) ||
-                               (playerColor == .black && !gameState.isWhiteTurn)
+                // Opening bar / chat bubble / thinking — overlaid in fixed-height slot
+                ZStack(alignment: .bottom) {
+                    Color.clear.frame(height: 44)
 
-            GameBoardView(
-                gameState: displayGameState ?? gameState,
-                perspective: playerColor,
-                allowInteraction: isPlayerTurn && !botThinking && !isReplaying,
-                onMove: { from, to in
-                    // Play sound
-                    SoundService.shared.play(.move)
-                    SoundService.shared.hapticPiecePlaced()
-
-                    let moveUCI = "\(from)\(to)"
-                    // Capture pre-move state (move already applied by GameBoardView)
-                    let preMoveDetection = currentOpening
-                    // Reconstruct pre-move FEN for SAN computation
-                    let preMoveFen: String = {
-                        let temp = GameState()
-                        let history = gameState.moveHistory.dropLast()
-                        for m in history { temp.makeMoveUCI("\(m.from)\(m.to)") }
-                        return temp.fen
-                    }()
-                    updateOpeningDetection(gameState: gameState)
-                    evaluatePlayerMove(gameState: gameState, moveUCI: moveUCI, preMoveFen: preMoveFen, preMoveDetection: preMoveDetection)
-                    checkGameEnd(gameState: gameState)
-                    if !isGameOver(gameState) {
-                        makeBotMove(gameState: gameState)
-                    }
-                }
-            )
-            .aspectRatio(1, contentMode: .fit)
-            .padding(.horizontal, AppSpacing.sm)
-
-            // Replay bar
-            if gameState.plyCount > 0 {
-                trainerReplayBar(gameState: gameState)
-            }
-
-            // Coaching feed (vertical, tappable)
-            if !coachingFeed.isEmpty || isEvaluating {
-                TrainerCoachingFeedView(
-                    entries: coachingFeed,
-                    isLoading: isEvaluating,
-                    onTapEntry: { ply in enterReplay(ply: ply, gameState: gameState) }
-                )
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-            }
-
-            Spacer(minLength: 0)
-
-            // Bottom bar
-            HStack {
-                // Coach chat toggle (if LLM available)
-                if appServices.llmService != nil, currentOpening.best != nil {
-                    Button {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
-                            showCoachChat.toggle()
-                        }
-                    } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "brain.head.profile")
+                    if let match = currentOpening.best {
+                        HStack(spacing: AppSpacing.xs) {
+                            Image(systemName: "book.fill")
                                 .font(.caption2)
-                            Text("Ask Coach")
+                                .foregroundStyle(.cyan)
+                            Text(match.variationName ?? match.opening.name)
                                 .font(.caption.weight(.medium))
+                                .foregroundStyle(AppColor.primaryText)
+                                .lineLimit(1)
+                            if !match.nextBookMoves.isEmpty {
+                                Text("In book")
+                                    .font(.caption2)
+                                    .foregroundStyle(AppColor.success)
+                            } else {
+                                Text("Out of book")
+                                    .font(.caption2)
+                                    .foregroundStyle(AppColor.warning)
+                            }
+                            Spacer()
                         }
-                        .foregroundStyle(AppColor.practice)
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 8)
-                        .background(AppColor.practice.opacity(0.1), in: Capsule())
+                        .padding(.horizontal, AppSpacing.screenPadding)
+                        .padding(.vertical, 4)
+                        .background(Color.cyan.opacity(0.05))
+                        .transition(.opacity)
                     }
-                    .buttonStyle(.plain)
-                }
 
-                Spacer()
-
-                Button {
-                    resign(gameState: gameState)
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "flag.fill")
-                            .font(.caption2)
-                        Text("Resign")
-                            .font(.caption.weight(.medium))
+                    if showBotMessage, let message = botMessage {
+                        HStack {
+                            Image(systemName: botPersonality.icon)
+                                .font(.caption)
+                                .foregroundStyle(accentColor)
+                            Text(message)
+                                .font(.caption)
+                                .foregroundStyle(AppColor.primaryText)
+                                .lineLimit(2)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(accentColor.opacity(0.1), in: RoundedRectangle(cornerRadius: 12))
+                        .padding(.horizontal, AppSpacing.screenPadding)
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .top).combined(with: .opacity),
+                            removal: .opacity
+                        ))
                     }
-                    .foregroundStyle(AppColor.error)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(AppColor.error.opacity(0.1), in: Capsule())
+
+                    if botThinking {
+                        HStack(spacing: 6) {
+                            ThinkingDotsView()
+                            Text(botPersonality.randomReaction(from: botPersonality.thinkingPhrases))
+                                .font(.caption)
+                                .foregroundStyle(AppColor.secondaryText)
+                        }
+                        .padding(.vertical, 4)
+                        .transition(.opacity)
+                    }
                 }
-                .buttonStyle(.plain)
+                .clipped()
+                .accessibilityElement(children: .contain)
+
+                // Board
+                let isPlayerTurn = (playerColor == .white && gameState.isWhiteTurn) ||
+                                   (playerColor == .black && !gameState.isWhiteTurn)
+
+                GameBoardView(
+                    gameState: gameState,
+                    perspective: playerColor,
+                    allowInteraction: isPlayerTurn && !botThinking,
+                    onMove: { from, to in
+                        // Play sound
+                        SoundService.shared.play(.move)
+                        SoundService.shared.hapticPiecePlaced()
+
+                        let moveUCI = "\(from)\(to)"
+                        updateOpeningDetection(gameState: gameState)
+                        evaluatePlayerMove(gameState: gameState, moveUCI: moveUCI)
+                        checkGameEnd(gameState: gameState)
+                        if !isGameOver(gameState) {
+                            makeBotMove(gameState: gameState)
+                        }
+                    }
+                )
+                .frame(width: boardSize, height: boardSize)
+                .padding(.horizontal, AppSpacing.sm)
+
+                // Coaching feed in remaining space
+                VStack(spacing: 0) {
+                    if !coachingFeed.isEmpty || isEvaluating {
+                        TrainerCoachingFeedView(entries: coachingFeed, isLoading: isEvaluating)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    } else {
+                        Spacer(minLength: 0)
+                    }
+
+                    // Bottom bar
+                    HStack {
+                        // Leave — subtle, no stats recorded
+                        Button {
+                            showLeaveConfirmation = true
+                        } label: {
+                            Text("Leave")
+                                .font(.caption.weight(.medium))
+                                .foregroundStyle(AppColor.secondaryText)
+                        }
+                        .buttonStyle(.plain)
+
+                        // Coach chat toggle (if LLM available)
+                        if appServices.llmService != nil, currentOpening.best != nil {
+                            Button {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
+                                    showCoachChat.toggle()
+                                }
+                            } label: {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "brain.head.profile")
+                                        .font(.caption2)
+                                    Text("Ask Coach")
+                                        .font(.caption.weight(.medium))
+                                }
+                                .foregroundStyle(AppColor.practice)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 8)
+                                .background(AppColor.practice.opacity(0.1), in: Capsule())
+                            }
+                            .buttonStyle(.plain)
+                        }
+
+                        Spacer()
+
+                        Button {
+                            resign(gameState: gameState)
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: "flag.fill")
+                                    .font(.caption2)
+                                Text("Resign")
+                                    .font(.caption.weight(.medium))
+                            }
+                            .foregroundStyle(AppColor.error)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .background(AppColor.error.opacity(0.1), in: Capsule())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .padding(.horizontal, AppSpacing.screenPadding)
+                    .padding(.bottom, AppSpacing.lg)
+                }
             }
-            .padding(.horizontal, AppSpacing.screenPadding)
-            .padding(.bottom, AppSpacing.lg)
         }
         .onAppear {
             // Greeting
@@ -472,6 +476,14 @@ struct TrainerModeView: View {
                 )
                 .transition(.move(edge: .trailing).combined(with: .opacity))
             }
+        }
+        .alert("Leave Game?", isPresented: $showLeaveConfirmation) {
+            Button("Leave", role: .destructive) {
+                withAnimation(.spring(response: 0.3)) { phase = .setup }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("The game will not count as a loss.")
         }
     }
 
@@ -700,14 +712,14 @@ struct TrainerModeView: View {
     }
 
     private func makeBotMove(gameState: GameState) {
-        botThinking = true
+        withAnimation(.easeInOut(duration: 0.2)) { botThinking = true }
 
         Task { @MainActor in
             let fen = gameState.fen
             let legalMoves = gameState.legalMoves.map { $0.description }
 
             guard !legalMoves.isEmpty else {
-                botThinking = false
+                withAnimation(.easeOut(duration: 0.2)) { botThinking = false }
                 checkGameEnd(gameState: gameState)
                 return
             }
@@ -759,12 +771,13 @@ struct TrainerModeView: View {
             if let move = selectedMove {
                 // Check if it's a capture before making the move
                 let isCapture = gameState.isCapture(move)
-                let isCheck = false // We'll detect after
 
                 let _ = gameState.makeMoveUCI(move)
 
+                let isCheck = gameState.isCheck
+
                 // Play appropriate sound
-                if gameState.isMate || gameState.isCheck {
+                if gameState.isMate || isCheck {
                     SoundService.shared.play(.check)
                 } else if isCapture {
                     SoundService.shared.play(.capture)
@@ -785,7 +798,7 @@ struct TrainerModeView: View {
                 }
             }
 
-            botThinking = false
+            withAnimation(.easeOut(duration: 0.2)) { botThinking = false }
             if let move = selectedMove {
                 addBotMoveEntry(gameState: gameState, moveUCI: move, moveSAN: botMoveSAN)
                 // Quick eval to set baseline for next player move's cpLoss
