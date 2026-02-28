@@ -22,7 +22,7 @@ import Testing
     )
     let prompt = LLMService.buildPrompt(for: context)
     #expect(prompt.contains("e2e4"))
-    #expect(prompt.contains("beginner"))
+    #expect(prompt.contains("Side to move"))
 }
 
 @Test func llmServiceGoodMoveReturnsDirectly() {
@@ -68,5 +68,6 @@ import Testing
         mainLineSoFar: "1. e4"
     )
     let prompt = LLMService.buildPrompt(for: context)
-    #expect(prompt.contains("complete beginner"))
+    #expect(prompt.contains("e2e4"))
+    #expect(prompt.contains("book move"))
 }

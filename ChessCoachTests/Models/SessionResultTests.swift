@@ -14,7 +14,13 @@ struct SessionResultTests {
             dueReviewCount: 3,
             compositeScore: 62.5,
             nextPhaseThreshold: 70,
-            gamesUntilMinimum: 2
+            gamesUntilMinimum: 2,
+            timeSpent: nil,
+            movesPerMinute: nil,
+            averagePES: nil,
+            pesCategory: nil,
+            moveScores: nil,
+            layerPromotion: nil
         )
         #expect(result.accuracy == 0.85)
         #expect(result.isPersonalBest == true)
@@ -38,7 +44,13 @@ struct SessionResultTests {
             dueReviewCount: 0,
             compositeScore: 45.0,
             nextPhaseThreshold: 60,
-            gamesUntilMinimum: 1
+            gamesUntilMinimum: 1,
+            timeSpent: nil,
+            movesPerMinute: nil,
+            averagePES: nil,
+            pesCategory: nil,
+            moveScores: nil,
+            layerPromotion: nil
         )
         #expect(result.phasePromotion == nil)
         #expect(!result.isPersonalBest)
@@ -55,7 +67,13 @@ struct SessionResultTests {
             dueReviewCount: 0,
             compositeScore: 80.0,
             nextPhaseThreshold: nil,
-            gamesUntilMinimum: nil
+            gamesUntilMinimum: nil,
+            timeSpent: nil,
+            movesPerMinute: nil,
+            averagePES: nil,
+            pesCategory: nil,
+            moveScores: nil,
+            layerPromotion: nil
         )
         #expect(result.nextPhaseThreshold == nil)
         #expect(result.gamesUntilMinimum == nil)

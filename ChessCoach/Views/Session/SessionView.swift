@@ -11,8 +11,8 @@ struct SessionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SubscriptionService.self) private var subscriptionService
 
-    init(opening: Opening, lineID: String? = nil, isPro: Bool = true, sessionMode: SessionMode = .guided, stockfish: StockfishService? = nil, llmService: LLMService? = nil) {
-        let access = StaticFeatureAccess(isPro: isPro)
+    init(opening: Opening, lineID: String? = nil, isPro: Bool = true, tier: SubscriptionTier? = nil, sessionMode: SessionMode = .guided, stockfish: StockfishService? = nil, llmService: LLMService? = nil) {
+        let access = StaticFeatureAccess(tier: tier ?? (isPro ? .pro : .free))
         self._viewModel = State(initialValue: SessionViewModel(opening: opening, lineID: lineID, isPro: isPro, sessionMode: sessionMode, featureAccess: access, stockfish: stockfish, llmService: llmService))
     }
 
@@ -131,6 +131,7 @@ struct SessionView: View {
                 opening: viewModel.opening,
                 lineID: viewModel.activeLine?.id,
                 isPro: viewModel.isPro,
+                tier: subscriptionService.currentTier,
                 sessionMode: .unguided,
                 stockfish: viewModel.stockfish,
                 llmService: viewModel.llmService

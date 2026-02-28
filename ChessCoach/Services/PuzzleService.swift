@@ -13,35 +13,60 @@ final class PuzzleService {
 
     // MARK: - Puzzle Generation
 
-    /// Generate a batch of puzzles from various sources.
-    func generatePuzzles(count: Int = 10, userELO: Int = 600) async -> [Puzzle] {
+    /// Fast, synchronous puzzle generation from opening data and mistakes.
+    /// Returns immediately — no engine calls. Use this to know instantly
+    /// whether there's enough data to show puzzles.
+    func generateFastPuzzles(count: Int = 10, userELO: Int = 600) -> [Puzzle] {
+        print("[PuzzleService] Fast puzzle generation: count=\(count), openings=\(database.openings.count)")
         var puzzles: [Puzzle] = []
 
-        // Mix sources: opening knowledge + mistakes + engine puzzles
-        let openingPuzzles = generateOpeningPuzzles(count: max(count / 2, 3), userELO: userELO)
+        let openingPuzzles = generateOpeningPuzzles(count: max(count, 5), userELO: userELO)
         puzzles.append(contentsOf: openingPuzzles)
-
-        guard !Task.isCancelled else { return puzzles.shuffled() }
 
         let mistakePuzzles = generateMistakePuzzles(count: max(count / 3, 2))
         puzzles.append(contentsOf: mistakePuzzles)
 
-        guard !Task.isCancelled else { return puzzles.shuffled() }
-
-        // Fill remaining with best-move puzzles from opening positions.
-        // These require Stockfish so only attempt if we genuinely need more.
-        let remaining = count - puzzles.count
-        if remaining > 0 {
-            let bestMovePuzzles = await generateBestMovePuzzles(count: remaining, userELO: userELO)
-            puzzles.append(contentsOf: bestMovePuzzles)
+        // Fallback: simple mainLine puzzles
+        if puzzles.isEmpty {
+            print("[PuzzleService] FALLBACK: creating simple puzzles from mainLine data")
+            puzzles = generateSimpleFallbackPuzzles(count: count)
         }
 
-        // If we still have too few, pad with more opening puzzles (no engine needed)
-        if puzzles.count < 3 {
-            let extra = generateOpeningPuzzles(count: count, userELO: userELO)
+        print("[PuzzleService] Fast path produced \(puzzles.count) puzzles")
+        return puzzles.shuffled()
+    }
+
+    /// Top up an existing puzzle set with engine-evaluated puzzles (slow, async).
+    func generateEnginePuzzles(count: Int, userELO: Int) async -> [Puzzle] {
+        let enginePuzzles: [Puzzle] = await withTaskGroup(of: [Puzzle]?.self) { group in
+            group.addTask {
+                await self.generateBestMovePuzzles(count: count, userELO: userELO)
+            }
+            group.addTask {
+                try? await Task.sleep(for: .seconds(8))
+                return nil
+            }
+            let first = await group.next() ?? nil
+            group.cancelAll()
+            return first ?? []
+        }
+        print("[PuzzleService] Engine path produced \(enginePuzzles.count) puzzles")
+        return enginePuzzles
+    }
+
+    /// Generate a batch of puzzles from various sources.
+    func generatePuzzles(count: Int = 10, userELO: Int = 600) async -> [Puzzle] {
+        var puzzles = generateFastPuzzles(count: count, userELO: userELO)
+
+        guard !Task.isCancelled else { return puzzles }
+
+        let remaining = count - puzzles.count
+        if remaining > 0 {
+            let extra = await generateEnginePuzzles(count: remaining, userELO: userELO)
             puzzles.append(contentsOf: extra)
         }
 
+        print("[PuzzleService] Final puzzle count: \(puzzles.count)")
         return puzzles.shuffled()
     }
 
@@ -62,12 +87,16 @@ final class PuzzleService {
     // MARK: - Opening Knowledge Puzzles
 
     /// Creates puzzles from opening book moves — "What's the best move here?"
-    /// Requires positions at least 4 plies deep to avoid trivial early-move puzzles.
     private func generateOpeningPuzzles(count: Int, userELO: Int) -> [Puzzle] {
         let allOpenings = database.openings
+        guard !allOpenings.isEmpty else {
+            print("[PuzzleService] No openings in database")
+            return []
+        }
         var puzzles: [Puzzle] = []
+        var debugStats = (tooShort: 0, replayFail: 0, solutionFail: 0, success: 0)
 
-        for _ in 0..<(count * 5) {
+        for _ in 0..<(count * 8) {
             guard puzzles.count < count else { break }
             guard let opening = allOpenings.randomElement() else { continue }
 
@@ -78,13 +107,19 @@ final class PuzzleService {
             } else {
                 moves = opening.mainLine
             }
-            // Require at least 6 half-moves (3 full moves) so we get meaningful positions
-            guard moves.count >= 6 else { continue }
+            // Require at least 4 half-moves (2 full moves)
+            guard moves.count >= 4 else {
+                debugStats.tooShort += 1
+                continue
+            }
 
-            // Pick a position at least 4 plies deep (after 2 full moves by each side)
-            let minPly = 4
+            // Pick a position at least 2 plies deep
+            let minPly = 2
             let maxPly = moves.count - 1
-            guard minPly < maxPly else { continue }
+            guard minPly < maxPly else {
+                debugStats.tooShort += 1
+                continue
+            }
             let plyIndex = Int.random(in: minPly...maxPly)
 
             // Build FEN by replaying moves up to this point
@@ -92,17 +127,25 @@ final class PuzzleService {
             var valid = true
             for i in 0..<plyIndex {
                 if !gameState.makeMoveUCI(moves[i].uci) {
+                    print("[PuzzleService] Move replay failed: \(moves[i].uci) at ply \(i) in \(opening.id)")
                     valid = false
                     break
                 }
             }
-            guard valid else { continue }
+            guard valid else {
+                debugStats.replayFail += 1
+                continue
+            }
 
             let solutionMove = moves[plyIndex]
             let fen = gameState.fen
 
             // Verify the solution move is legal in this position
-            guard gameState.makeMoveUCI(solutionMove.uci) else { continue }
+            guard gameState.makeMoveUCI(solutionMove.uci) else {
+                print("[PuzzleService] Solution move illegal: \(solutionMove.uci) at ply \(plyIndex) in \(opening.id)")
+                debugStats.solutionFail += 1
+                continue
+            }
             // Compute SAN from actual board position (not from opening data which may differ)
             let san = GameState.sanForUCI(solutionMove.uci, inFEN: fen)
 
@@ -119,8 +162,10 @@ final class PuzzleService {
                 explanation: solutionMove.explanation
             )
             puzzles.append(puzzle)
+            debugStats.success += 1
         }
 
+        print("[PuzzleService] Opening puzzles: \(puzzles.count) generated from \(allOpenings.count) openings (tooShort=\(debugStats.tooShort), replayFail=\(debugStats.replayFail), solutionFail=\(debugStats.solutionFail), success=\(debugStats.success))")
         return puzzles
     }
 
@@ -199,7 +244,20 @@ final class PuzzleService {
 
             let fen = gameState.fen
 
-            guard let topMoves = await nonEmpty(stockfish.topMoves(fen: fen, count: 3, depth: AppConfig.engine.evalDepth)) else {
+            // Timeout individual Stockfish calls to prevent hanging
+            let topMovesResult: [(move: String, score: Int)]? = await withTaskGroup(of: [(move: String, score: Int)]?.self) { group in
+                group.addTask { [stockfish] in
+                    await self.nonEmpty(stockfish.topMoves(fen: fen, count: 3, depth: AppConfig.engine.evalDepth))
+                }
+                group.addTask {
+                    try? await Task.sleep(for: .seconds(5))
+                    return nil
+                }
+                let first = await group.next() ?? nil
+                group.cancelAll()
+                return first
+            }
+            guard let topMoves = topMovesResult else {
                 continue
             }
 
@@ -237,5 +295,51 @@ final class PuzzleService {
 
     private func nonEmpty(_ moves: [(move: String, score: Int)]) -> [(move: String, score: Int)]? {
         moves.isEmpty ? nil : moves
+    }
+
+    // MARK: - Simple Fallback Puzzles
+
+    /// Last resort: create puzzles from mainLine by replaying just the first few moves.
+    /// This bypasses all the random selection and just systematically walks openings.
+    private func generateSimpleFallbackPuzzles(count: Int) -> [Puzzle] {
+        var puzzles: [Puzzle] = []
+        let allOpenings = database.openings
+
+        for opening in allOpenings {
+            guard puzzles.count < count else { break }
+            let moves = opening.mainLine
+            guard moves.count >= 3 else { continue }
+
+            // Create a puzzle at ply 2 (after 1 move by each side, find move 3)
+            let gameState = GameState()
+            var ok = true
+            for i in 0..<2 {
+                if !gameState.makeMoveUCI(moves[i].uci) {
+                    ok = false
+                    break
+                }
+            }
+            guard ok else { continue }
+
+            let solution = moves[2]
+            let fen = gameState.fen
+            guard gameState.makeMoveUCI(solution.uci) else { continue }
+
+            let san = GameState.sanForUCI(solution.uci, inFEN: fen)
+            let puzzle = Puzzle(
+                id: "fallback_\(opening.id)_2",
+                fen: fen,
+                solutionUCI: solution.uci,
+                solutionSAN: san,
+                theme: .openingKnowledge,
+                difficulty: max(1, opening.difficulty - 1),
+                openingID: opening.id,
+                explanation: solution.explanation ?? "This is the standard continuation in the \(opening.name)."
+            )
+            puzzles.append(puzzle)
+        }
+
+        print("[PuzzleService] Fallback generated \(puzzles.count) simple puzzles")
+        return puzzles
     }
 }

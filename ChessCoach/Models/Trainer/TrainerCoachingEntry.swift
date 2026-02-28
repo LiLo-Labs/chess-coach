@@ -13,9 +13,13 @@ struct TrainerCoachingEntry: Identifiable {
     let scoreCategory: ScoreCategory?
     let openingName: String?
     let isInBook: Bool
+    let fen: String?          // Position FEN after this move (for replay)
+
+    /// Whether this move was made by White (ply is odd: 1, 3, 5...)
+    var isWhiteMove: Bool { ply % 2 == 1 }
 
     var moveLabel: String {
-        if isPlayerMove {
+        if isWhiteMove {
             return "\(moveNumber). \(moveSAN)"
         } else {
             return "\(moveNumber)... \(moveSAN)"

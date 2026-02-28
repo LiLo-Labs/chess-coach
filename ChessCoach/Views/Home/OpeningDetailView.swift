@@ -140,7 +140,7 @@ struct OpeningDetailView: View {
                 activeNavigation = nil
             }
         case .executePlan(let lineID):
-            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .guided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, sessionMode: .guided, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .discoverTheory:
             TheoryDiscoveryView(opening: opening) { quizScore in
@@ -151,10 +151,10 @@ struct OpeningDetailView: View {
                 activeNavigation = nil
             }
         case .handleVariety(let lineID):
-            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .unguided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, sessionMode: .unguided, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .realConditions(let lineID):
-            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .practice, stockfish: appServices.stockfish, llmService: appServices.llmService)
+            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, sessionMode: .practice, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .study(let lineID):
             if let line = allLines.first(where: { $0.id == lineID }) {
@@ -175,10 +175,10 @@ struct OpeningDetailView: View {
                 .environment(subscriptionService)
             }
         case .guided(let lineID):
-            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .guided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, sessionMode: .guided, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .unguided(let lineID):
-            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, sessionMode: .unguided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, sessionMode: .unguided, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .practice:
             PracticeOpeningView(opening: opening, stockfish: appServices.stockfish)
