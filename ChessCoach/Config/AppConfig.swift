@@ -1,10 +1,7 @@
 import Foundation
 
-/// Single source of truth for all tuning parameters, thresholds, and magic numbers.
-/// Organised as nested structs under an uninhabited enum so nothing is accidentally instantiated.
+/// Tuning parameters and feature flags.
 enum AppConfig {
-
-    // MARK: - LLM
 
     struct LLM: Sendable {
         let claudeModel: String
@@ -64,7 +61,6 @@ enum AppConfig {
         onDeviceSystemMessage: "You are a chess coach."
     )
 
-    // MARK: - Engine (Stockfish)
 
     struct Engine: Sendable {
         let searchTimeout: TimeInterval
@@ -100,7 +96,6 @@ enum AppConfig {
         pesTopMovesDepth: 12
     )
 
-    // MARK: - Maia
 
     struct Maia: Sendable {
         let modelResourceName: String
@@ -122,7 +117,6 @@ enum AppConfig {
         expectedMoveCount: 1880
     )
 
-    // MARK: - Scoring (Soundness + Popularity)
 
     struct Scoring: Sendable {
         /// Soundness tolerance curve parameters.
@@ -157,7 +151,6 @@ enum AppConfig {
         popularityRareMove: 2
     )
 
-    // MARK: - Learning Phase Thresholds
 
     struct Learning: Sendable {
         struct PhaseThreshold: Sendable {
@@ -187,7 +180,6 @@ enum AppConfig {
         freePlay: .init(promotionThreshold: nil, minimumGames: nil)
     )
 
-    // MARK: - Pro / Subscription
 
     struct Pro: Sendable {
         let productID: String
@@ -203,7 +195,6 @@ enum AppConfig {
     /// Set to false for App Store release builds.
     static let isBeta = true
 
-    // MARK: - Coaching
 
     struct Coaching: Sendable {
         /// Map student ELO to a human-readable level label used in prompts.
@@ -232,7 +223,6 @@ enum AppConfig {
         standardOpponentTemplate: "Your opponent continues with a standard response."
     )
 
-    // MARK: - Token Limits
 
     struct Tokens: Sendable {
         let coaching: Int
@@ -246,7 +236,6 @@ enum AppConfig {
         explanation: 200
     )
 
-    // MARK: - Token Economy
 
     struct TokenEconomy: Sendable {
         /// Cost to unlock one opening with tokens
@@ -273,7 +262,6 @@ enum AppConfig {
         ]
     )
 
-    // MARK: - Model Download
 
     struct ModelDownload: Sendable {
         /// Remote URL for the GGUF model file.
@@ -288,7 +276,6 @@ enum AppConfig {
         expectedSizeBytes: 2_684_354_560 // ~2.5 GB
     )
 
-    // MARK: - Feedback
 
     struct Feedback: Sendable {
         let workerURL: String

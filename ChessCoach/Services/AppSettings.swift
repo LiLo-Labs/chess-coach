@@ -1,14 +1,10 @@
 import SwiftUI
 
-/// Centralized, type-safe settings service replacing scattered UserDefaults access.
-/// Inject into environment via `.environment(appSettings)` on the root view.
-///
-/// All properties are **stored** so the @Observable macro can track mutations.
-/// Each setter syncs the new value to UserDefaults for persistence across launches.
+/// UserDefaults-backed settings store.
 @Observable
 @MainActor
 final class AppSettings {
-    // MARK: - Keys (centralized, no more magic strings)
+    // MARK: - Keys
 
     enum Key {
         static let hasSeenOnboarding = "has_seen_onboarding"
@@ -45,7 +41,6 @@ final class AppSettings {
 
     @ObservationIgnored private let defaults = UserDefaults.standard
 
-    // MARK: - Player
 
     var userELO: Int {
         didSet { defaults.set(userELO, forKey: Key.userELO) }
@@ -55,7 +50,6 @@ final class AppSettings {
         didSet { defaults.set(opponentELO, forKey: Key.opponentELO) }
     }
 
-    // MARK: - Sound & Haptics
 
     var soundEnabled: Bool {
         didSet { defaults.set(soundEnabled, forKey: Key.soundEnabled) }
@@ -65,7 +59,6 @@ final class AppSettings {
         didSet { defaults.set(hapticsEnabled, forKey: Key.hapticsEnabled) }
     }
 
-    // MARK: - Display
 
     var notationStyle: String {
         didSet { defaults.set(notationStyle, forKey: Key.notationStyle) }
@@ -91,7 +84,6 @@ final class AppSettings {
         didSet { defaults.set(pieceStyle.rawValue, forKey: Key.pieceStyle) }
     }
 
-    // MARK: - Free Opening Pick
 
     var hasPickedFreeOpening: Bool {
         didSet { defaults.set(hasPickedFreeOpening, forKey: Key.hasPickedFreeOpening) }
@@ -101,25 +93,21 @@ final class AppSettings {
         didSet { defaults.set(pickedFreeOpeningID, forKey: Key.pickedFreeOpeningID) }
     }
 
-    // MARK: - Opening Hints
 
     var holisticOpeningHints: Bool {
         didSet { defaults.set(holisticOpeningHints, forKey: Key.holisticOpeningHints) }
     }
 
-    // MARK: - Home Tour
 
     var hasSeenHomeTour: Bool {
         didSet { defaults.set(hasSeenHomeTour, forKey: Key.hasSeenHomeTour) }
     }
 
-    // MARK: - Beta
 
     var hasSeenBetaWelcome: Bool {
         didSet { defaults.set(hasSeenBetaWelcome, forKey: Key.hasSeenBetaWelcome) }
     }
 
-    // MARK: - LLM
 
     var llmProvider: String {
         didSet { defaults.set(llmProvider, forKey: Key.llmProvider) }
@@ -137,13 +125,11 @@ final class AppSettings {
         didSet { defaults.set(ollamaModel, forKey: Key.ollamaModel) }
     }
 
-    // MARK: - Onboarding
 
     var hasSeenOnboarding: Bool {
         didSet { defaults.set(hasSeenOnboarding, forKey: Key.hasSeenOnboarding) }
     }
 
-    // MARK: - Daily Goal
 
     var dailyGoalTarget: Int {
         didSet { defaults.set(dailyGoalTarget, forKey: Key.dailyGoalTarget) }
@@ -160,25 +146,21 @@ final class AppSettings {
         dailyGoalCompleted += 1
     }
 
-    // MARK: - Line Study
 
     var autoPlaySpeed: Double {
         didSet { defaults.set(autoPlaySpeed, forKey: Key.autoPlaySpeed) }
     }
 
-    // MARK: - Notifications
 
     var notificationsEnabled: Bool {
         didSet { defaults.set(notificationsEnabled, forKey: Key.notificationsEnabled) }
     }
 
-    // MARK: - UX hints
 
     var gestureHintShown: Bool {
         didSet { defaults.set(gestureHintShown, forKey: Key.gestureHintShown) }
     }
 
-    // MARK: - View counts
 
     var openingViewCounts: [String: Int] {
         didSet { defaults.set(openingViewCounts, forKey: Key.openingViewCounts) }
@@ -190,7 +172,6 @@ final class AppSettings {
         openingViewCounts = counts
     }
 
-    // MARK: - "I Know This" Tracking
 
     var consecutiveCorrectPlays: [String: Int] {
         didSet {
@@ -198,7 +179,6 @@ final class AppSettings {
         }
     }
 
-    // MARK: - Review Streak
 
     var bestReviewStreak: Int {
         didSet { defaults.set(bestReviewStreak, forKey: Key.bestReviewStreak) }
@@ -209,7 +189,6 @@ final class AppSettings {
     init() {
         let d = UserDefaults.standard
 
-        // Load all values from UserDefaults (or use defaults)
         self.userELO = d.object(forKey: Key.userELO) as? Int ?? 600
         self.opponentELO = d.object(forKey: Key.opponentELO) as? Int ?? 1200
         self.soundEnabled = d.object(forKey: Key.soundEnabled) as? Bool ?? true
@@ -259,7 +238,6 @@ final class AppSettings {
         self.consecutiveCorrectPlays = d.dictionary(forKey: Key.consecutiveCorrect) as? [String: Int] ?? [:]
     }
 
-    // MARK: - Helpers
 
     private static var todayString: String {
         let fmt = DateFormatter()

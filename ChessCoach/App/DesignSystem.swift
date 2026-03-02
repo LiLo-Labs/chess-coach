@@ -1,29 +1,22 @@
 import SwiftUI
 
-// MARK: - Semantic Color System
-
-/// Centralized color definitions for the entire app.
-/// Every color in the app should reference this enum to ensure consistency.
+/// App-wide color palette.
 enum AppColor {
-    // MARK: Backgrounds
     static let background = Color(red: 0.11, green: 0.11, blue: 0.12)
     static let cardBackground = Color(white: 0.16)
     static let elevatedBackground = Color(white: 0.14)
     static let inputBackground = Color(white: 0.18)
 
-    // MARK: Training Pipeline (semantic)
     static let study = Color.cyan
     static let guided = Color.blue
     static let unguided = Color.orange
     static let practice = Color.purple
 
-    // MARK: Feedback
     static let success = Color.green
     static let error = Color.red
     static let warning = Color.yellow
     static let info = Color.cyan
 
-    // MARK: Phase Colors
     static func phase(_ phase: LearningPhase) -> Color {
         switch phase {
         case .learningMainLine: return guided
@@ -54,7 +47,6 @@ enum AppColor {
         }
     }
 
-    // MARK: PES Score Colors
     static func pesColor(_ category: ScoreCategory) -> Color {
         switch category {
         case .masterful: return .yellow
@@ -65,24 +57,19 @@ enum AppColor {
         }
     }
 
-    // MARK: Arrow Colors
     static let arrowSuggestion = Color.green.opacity(0.55)
     static let arrowMistake = Color.red.opacity(0.55)
     static let arrowHistory = Color.white.opacity(0.25)
 
-    // MARK: Text
     static let primaryText = Color.white
     static let secondaryText = Color.white.opacity(0.65)
     static let tertiaryText = Color.white.opacity(0.4)
     static let disabledText = Color.white.opacity(0.25)
 
-    // MARK: Achievement Tiers
     static let gold = Color.yellow
     static let silver = Color(white: 0.75)
     static let bronze = Color(red: 0.80, green: 0.50, blue: 0.20)
 }
-
-// MARK: - Spacing System
 
 enum AppSpacing {
     static let xxxs: CGFloat = 2
@@ -95,15 +82,11 @@ enum AppSpacing {
     static let xxl: CGFloat = 24
     static let xxxl: CGFloat = 32
 
-    /// Standard card internal padding
     static let cardPadding: CGFloat = 16
-    /// Standard horizontal padding for screen content
     static let screenPadding: CGFloat = 16
-    /// Top bar safe area padding (for fullScreenCover views)
     static let topBarSafeArea: CGFloat = 54
 }
 
-// MARK: - Corner Radius
 
 enum AppRadius {
     static let sm: CGFloat = 8
@@ -112,7 +95,6 @@ enum AppRadius {
     static let xl: CGFloat = 20
 }
 
-// MARK: - Badge / Pill Style
 
 struct PillBadge: View {
     let text: String
@@ -130,7 +112,6 @@ struct PillBadge: View {
     }
 }
 
-// MARK: - Mode Indicator
 
 struct ModeIndicator: View {
     let mode: String
@@ -142,7 +123,6 @@ struct ModeIndicator: View {
     }
 }
 
-// MARK: - Empty State View
 
 struct EmptyStateView: View {
     let icon: String
@@ -183,7 +163,6 @@ struct EmptyStateView: View {
     }
 }
 
-// MARK: - Progress Ring
 
 struct ProgressRing: View {
     let progress: Double
@@ -207,7 +186,6 @@ struct ProgressRing: View {
     }
 }
 
-// MARK: - Stat Row
 
 struct StatRow: View {
     let icon: String
@@ -232,7 +210,6 @@ struct StatRow: View {
     }
 }
 
-// MARK: - Achievement Badge
 
 enum AchievementTier: String {
     case gold, silver, bronze
@@ -273,7 +250,6 @@ struct AchievementBadge: View {
     }
 }
 
-// MARK: - Timestamp Formatter
 
 enum TimeAgo {
     static func string(from date: Date?) -> String {
@@ -290,9 +266,8 @@ enum TimeAgo {
     }
 }
 
-// MARK: - Button Styles
 
-/// Scales button down slightly on press for tactile feedback.
+/// Press-scale button style.
 struct ScaleButtonStyle: ButtonStyle {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 

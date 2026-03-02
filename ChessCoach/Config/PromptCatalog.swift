@@ -1,12 +1,8 @@
 import Foundation
 
-/// All LLM prompt templates in one place. Each is a static function that takes
-/// typed parameters and returns a String — no business logic, just text assembly.
+/// LLM prompt templates.
 enum PromptCatalog {
 
-    // MARK: - Coaching Prompts
-
-    /// Prompt for when the STUDENT just made a move.
     static func userMovePrompt(for context: CoachingContext, boardSummary: String) -> String {
         let studentColor = context.studentColor ?? "White"
 
@@ -46,7 +42,6 @@ enum PromptCatalog {
         """
     }
 
-    /// Prompt for when the OPPONENT just made a move.
     static func opponentMovePrompt(for context: CoachingContext, boardSummary: String) -> String {
         let studentColor = context.studentColor ?? "White"
         let opponentColor = studentColor == "White" ? "Black" : "White"
@@ -102,8 +97,6 @@ enum PromptCatalog {
         """
     }
 
-    // MARK: - Chat Prompt
-
     /// Line study Q&A prompt (Pro feature).
     static func chatPrompt(
         question: String,
@@ -148,8 +141,6 @@ enum PromptCatalog {
         COACHING: <your explanation>
         """
     }
-
-    // MARK: - Explanation Prompts
 
     /// Groups the parameters for explanation prompts.
     struct ExplanationPromptParams {
@@ -204,7 +195,6 @@ enum PromptCatalog {
         """
     }
 
-    /// Groups the parameters for off-book explanation prompts.
     struct OffBookExplanationPromptParams {
         let openingName: String
         let studentColor: String
@@ -250,8 +240,6 @@ enum PromptCatalog {
         - Use simple language. Spell out piece names, no algebraic notation.
         """
     }
-
-    // MARK: - Alignment Prompt
 
     /// Groups the many parameters for the PES alignment prompt.
     struct AlignmentPromptParams {
@@ -338,8 +326,6 @@ enum PromptCatalog {
         {"alignment": <0-100>, "reasoning": "<2-3 sentence explanation>", "development": <true/false>, "pawnStructure": <true/false>, "strategicGoal": <true/false>, "kingSafety": "<positive/negative/neutral>"}
         """
     }
-
-    // MARK: - Puzzle Prompt
 
     /// Puzzle move selection prompt.
     static func puzzlePrompt(
