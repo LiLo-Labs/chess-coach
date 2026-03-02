@@ -26,6 +26,8 @@ struct ELOAssessmentView: View {
     @State private var puzzlesSolved = 0
     @State private var dotResults: [Bool] = [] // per-puzzle correct/wrong for progress dots
     @State private var gameState = GameState()
+    @State private var feedbackGameState = GameState()
+    @State private var puzzlePerspective: PieceColor = .white
     @State private var showConfetti = false
     @State private var animatedELO = 0
     @State private var assessmentService: AssessmentService?
@@ -147,7 +149,7 @@ struct ELOAssessmentView: View {
 
                 GameBoardView(
                     gameState: gameState,
-                    perspective: gameState.isWhiteTurn ? .white : .black,
+                    perspective: puzzlePerspective,
                     allowInteraction: true
                 ) { from, to in
                     handleMove(from: from, to: to)
@@ -163,12 +165,20 @@ struct ELOAssessmentView: View {
     // MARK: - Feedback
 
     private func feedbackView(isCorrect: Bool) -> some View {
-        VStack(spacing: AppSpacing.xxl) {
+        VStack(spacing: AppSpacing.md) {
             Spacer()
 
             Image(systemName: isCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
-                .font(.system(size: 64))
+                .font(.system(size: 48))
                 .foregroundStyle(isCorrect ? AppColor.success : AppColor.error)
+
+            GameBoardView(
+                gameState: feedbackGameState,
+                perspective: puzzlePerspective,
+                allowInteraction: false
+            ) { _, _ in }
+            .aspectRatio(1, contentMode: .fit)
+            .padding(.horizontal, AppSpacing.lg)
 
             VStack(spacing: AppSpacing.sm) {
                 Text(isCorrect ? "Correct!" : "Not quite")
@@ -287,8 +297,9 @@ struct ELOAssessmentView: View {
     private func loadPuzzle(_ puzzle: AssessmentPuzzle) {
         currentPuzzle = puzzle
         usedIDs.insert(puzzle.id)
-        // FEN already represents the puzzle position (after opponent's setup move)
-        gameState = GameState(fen: puzzle.fen)
+        let gs = GameState(fen: puzzle.fen)
+        gameState = gs
+        puzzlePerspective = gs.isWhiteTurn ? .white : .black
     }
 
     private func handleMove(from: String, to: String) {
@@ -298,6 +309,12 @@ struct ELOAssessmentView: View {
         let moveUCI = "\(from)\(to)"
         let solutionBase = String(puzzle.solutionUCI.prefix(4))
         let isCorrect = moveUCI == solutionBase
+
+        // Always build a fresh GameState showing the correct move for feedback.
+        // GameState is a class, so we can't just copy gameState by reference.
+        let correctState = GameState(fen: puzzle.fen)
+        correctState.makeMoveUCI(puzzle.solutionUCI)
+        feedbackGameState = correctState
 
         if isCorrect {
             correctCount += 1

@@ -15,10 +15,12 @@ struct PuzzleModeView: View {
     @State private var sessionResult = PuzzleSessionResult()
     @State private var phase: PuzzlePhase = .loading
     @State private var gameState: GameState?
+    @State private var feedbackGameState: GameState?
     @State private var feedbackMessage: String?
     @State private var feedbackIsCorrect = false
     @State private var showHint = false
     @State private var puzzlesSolvedToday: Int = 0
+    @State private var puzzlePerspective: PieceColor = .white
 
     private let dailyFreeLimit = 5
 
@@ -35,10 +37,6 @@ struct PuzzleModeView: View {
         return puzzles[currentIndex]
     }
 
-    private var perspective: PieceColor {
-        guard let gs = gameState else { return .white }
-        return gs.isWhiteTurn ? .white : .black
-    }
 
     var body: some View {
         ZStack {
@@ -52,7 +50,7 @@ struct PuzzleModeView: View {
                     solvingView(gameState: gs, puzzle: puzzle)
                 }
             case .feedback:
-                if let gs = gameState, let puzzle = currentPuzzle {
+                if let gs = feedbackGameState, let puzzle = currentPuzzle {
                     feedbackView(gameState: gs, puzzle: puzzle)
                 }
             case .complete:
@@ -138,7 +136,7 @@ struct PuzzleModeView: View {
             // Board
             GameBoardView(
                 gameState: gameState,
-                perspective: perspective,
+                perspective: puzzlePerspective,
                 allowInteraction: true,
                 onMove: { from, to in
                     handleMove(from: from, to: to, puzzle: puzzle)
@@ -185,7 +183,7 @@ struct PuzzleModeView: View {
             // Board (non-interactive)
             GameBoardView(
                 gameState: gameState,
-                perspective: perspective,
+                perspective: puzzlePerspective,
                 allowInteraction: false
             )
             .aspectRatio(1, contentMode: .fit)
@@ -373,7 +371,9 @@ struct PuzzleModeView: View {
 
         // Start solving right away with fast puzzles
         puzzles = fastPuzzles
-        gameState = GameState(fen: fastPuzzles[0].fen)
+        let gs = GameState(fen: fastPuzzles[0].fen)
+        gameState = gs
+        puzzlePerspective = gs.isWhiteTurn ? .white : .black
         phase = .solving
         showHint = false
 
@@ -394,6 +394,11 @@ struct PuzzleModeView: View {
         let isCorrect = moveUCI == puzzle.solutionUCI ||
                          moveUCI == String(puzzle.solutionUCI.prefix(4)) // Handle promotion
 
+        // Build a fresh board showing the correct move for feedback
+        let correctState = GameState(fen: puzzle.fen)
+        correctState.makeMoveUCI(puzzle.solutionUCI)
+        feedbackGameState = correctState
+
         if isCorrect {
             SoundService.shared.play(.correct)
             SoundService.shared.hapticCorrectMove()
@@ -406,8 +411,7 @@ struct PuzzleModeView: View {
             sessionResult.recordFail()
             feedbackIsCorrect = false
             feedbackMessage = puzzle.explanation
-            // Undo the wrong move to show correct position
-            let _ = gameState?.undoLastMove()
+            gameState?.undoLastMove()
         }
 
         withAnimation {
@@ -429,7 +433,9 @@ struct PuzzleModeView: View {
 
         if currentIndex < puzzles.count {
             let puzzle = puzzles[currentIndex]
-            gameState = GameState(fen: puzzle.fen)
+            let gs = GameState(fen: puzzle.fen)
+            gameState = gs
+            puzzlePerspective = gs.isWhiteTurn ? .white : .black
             withAnimation {
                 phase = .solving
             }
