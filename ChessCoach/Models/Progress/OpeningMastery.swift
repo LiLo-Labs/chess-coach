@@ -492,9 +492,9 @@ struct OpeningMastery: Codable, Sendable {
 
         // Layer 4: try new format first, fall back to legacy
         if let results = try? c.decodeIfPresent([ResponseResult].self, forKey: .responseResults) {
-            responseResults = results ?? []
+            responseResults = results
         } else if let handled = try? c.decodeIfPresent(Set<String>.self, forKey: .responsesHandled) {
-            responseResults = (handled ?? []).map {
+            responseResults = handled.map {
                 ResponseResult(responseID: $0, pes: 65, mode: "guided", date: Date())
             }
         } else {
@@ -504,9 +504,9 @@ struct OpeningMastery: Codable, Sendable {
 
         // Layer 5: try new format first, fall back to legacy
         if let sessions = try? c.decodeIfPresent([ExecutionSession].self, forKey: .realConditionSessions) {
-            realConditionSessions = sessions ?? []
+            realConditionSessions = sessions
         } else if let scores = try? c.decodeIfPresent([Double].self, forKey: .realConditionScores) {
-            realConditionSessions = (scores ?? []).map {
+            realConditionSessions = scores.map {
                 ExecutionSession(pes: $0, mode: "unguided", date: Date())
             }
         } else {

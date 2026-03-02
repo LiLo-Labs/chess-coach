@@ -253,7 +253,6 @@ actor CoachingService {
 
     /// Get a chat response for a user's question about the current position (Pro feature).
     func getChatResponse(question: String, context: ChatContext) async -> String {
-        let opening = curriculumService.opening
         let userELO = UserDefaults.standard.object(forKey: AppSettings.Key.userELO) as? Int ?? 600
         let boardState = LLMService.boardStateSummary(fen: context.fen)
         let occupied = LLMService.occupiedSquares(fen: context.fen)
@@ -329,7 +328,6 @@ actor CoachingService {
     }
 
     private func fallbackCoaching(for context: CoachingContext) -> String? {
-        let cfg = AppConfig.coaching
         let personality = CoachPersonality.forOpening(curriculumService.opening)
 
         if context.isUserMove {

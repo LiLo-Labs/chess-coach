@@ -311,40 +311,33 @@ struct CoachChatPanel: View {
         let openingRef = opening
 
         Task {
-            do {
-                if state.coachingService == nil {
-                    let llmService = services.llmService
-                    let line = openingRef.lines?.first ?? OpeningLine(
-                        id: "\(openingRef.id)/main",
-                        name: openingRef.name,
-                        moves: openingRef.mainLine,
-                        branchPoint: 0,
-                        parentLineID: nil
-                    )
-                    let newService = CoachingService(
-                        llmService: llmService,
-                        curriculumService: CurriculumService(opening: openingRef, activeLine: line, phase: .learningMainLine),
-                        featureAccess: UnlockedAccess()
-                    )
-                    await MainActor.run { state.coachingService = newService }
-                }
-                guard let coachingService = await state.coachingService else {
-                    await MainActor.run {
-                        state.appendMessage(role: "coach", text: "Coach is unavailable right now. Try again later.")
-                        state.isLoading = false
-                    }
-                    return
-                }
-                let response = await coachingService.getChatResponse(question: question, context: context)
+            if state.coachingService == nil {
+                let llmService = services.llmService
+                let line = openingRef.lines?.first ?? OpeningLine(
+                    id: "\(openingRef.id)/main",
+                    name: openingRef.name,
+                    moves: openingRef.mainLine,
+                    branchPoint: 0,
+                    parentLineID: nil
+                )
+                let newService = CoachingService(
+                    llmService: llmService,
+                    curriculumService: CurriculumService(opening: openingRef, activeLine: line, phase: .learningMainLine),
+                    featureAccess: UnlockedAccess()
+                )
+                await MainActor.run { state.coachingService = newService }
+            }
+            guard let coachingService = state.coachingService else {
                 await MainActor.run {
-                    state.appendMessage(role: "coach", text: response)
+                    state.appendMessage(role: "coach", text: "Coach is unavailable right now. Try again later.")
                     state.isLoading = false
                 }
-            } catch {
-                await MainActor.run {
-                    state.appendMessage(role: "coach", text: "Sorry, I couldn't reach the coach right now. Please try again.")
-                    state.isLoading = false
-                }
+                return
+            }
+            let response = await coachingService.getChatResponse(question: question, context: context)
+            await MainActor.run {
+                state.appendMessage(role: "coach", text: response)
+                state.isLoading = false
             }
         }
     }

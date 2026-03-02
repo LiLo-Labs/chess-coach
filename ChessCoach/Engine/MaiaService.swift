@@ -9,7 +9,7 @@ import Foundation
 /// - Strange opening moves in some positions (Issue #5)
 /// - Masked softmax bug in original code (PR #9) — mitigated here by
 ///   filtering to legal moves before applying softmax (see `predictMove`).
-actor MaiaService: MovePredicting {
+actor MaiaService {
     private let model: MLModel
     private let moveList: [String] // 1880 UCI moves
     private let moveIndex: [String: Int] // UCI -> index

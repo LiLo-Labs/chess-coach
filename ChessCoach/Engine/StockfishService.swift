@@ -3,7 +3,7 @@ import ChessKitEngine
 
 /// Wraps ChessKitEngine's Stockfish with a single persistent stream consumer
 /// and continuation-based response collection.
-actor StockfishService: PositionEvaluating {
+actor StockfishService {
     private var engine: Engine?
     private var isStarted = false
     private var streamTask: Task<Void, Never>?

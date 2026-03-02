@@ -198,7 +198,7 @@ extension GamePlayViewModel {
                     coaching = "\(personality.witticism(for: .mistake)) The recommended move here is \(bm.san)."
                 } else if let bestUCI = eval?.bestMove {
                     let san = GameState.sanForUCI(bestUCI, inFEN: fen)
-                    coaching = "\(personality.witticism(for: .mistake)) Better was \(san ?? bestUCI)."
+                    coaching = "\(personality.witticism(for: .mistake)) Better was \(san)."
                 } else {
                     coaching = personality.witticism(for: .mistake)
                 }

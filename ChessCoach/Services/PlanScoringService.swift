@@ -4,10 +4,10 @@ import Foundation
 /// a composite Plan Execution Score for each move.
 actor PlanScoringService {
     private let llmService: any TextGenerating
-    private let stockfish: any PositionEvaluating
+    private let stockfish: StockfishService
     private let featureAccess: any FeatureAccessProviding
 
-    init(llmService: any TextGenerating, stockfish: any PositionEvaluating, featureAccess: any FeatureAccessProviding) {
+    init(llmService: any TextGenerating, stockfish: StockfishService, featureAccess: any FeatureAccessProviding) {
         self.llmService = llmService
         self.stockfish = stockfish
         self.featureAccess = featureAccess
