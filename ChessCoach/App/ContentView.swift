@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var refreshID = UUID()
     @State private var errorMessage: String?
     @State private var showOpeningPicker = false
+    @State private var showBetaWelcome = false
 
     var body: some View {
         ZStack {
@@ -19,6 +20,9 @@ struct ContentView: View {
                     HomeView()
                         .id(refreshID)
                         .transition(.opacity)
+                        .sheet(isPresented: $showBetaWelcome) {
+                            BetaWelcomeView()
+                        }
                 } else if showOpeningPicker {
                     FreeOpeningPickerView(onComplete: {
                         withAnimation {
@@ -145,6 +149,12 @@ struct ContentView: View {
 
         withAnimation {
             isReady = true
+        }
+
+        // Show beta welcome once after onboarding
+        if settings.hasSeenOnboarding && !settings.hasSeenBetaWelcome {
+            try? await Task.sleep(for: .milliseconds(600))
+            showBetaWelcome = true
         }
     }
 

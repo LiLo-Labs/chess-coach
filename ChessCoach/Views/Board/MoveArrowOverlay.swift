@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Draws a semi-transparent arrow from one square to another on the chessboard.
-/// Uses Canvas for smooth rendering. Passes through all hit testing.
+/// Uses a SwiftUI Shape with trim animation for a draw-in effect.
 struct MoveArrowOverlay: View {
     let arrowFrom: String?  // algebraic e.g. "c1"
     let arrowTo: String?    // algebraic e.g. "f4"
@@ -12,6 +12,8 @@ struct MoveArrowOverlay: View {
     let ghostFrom: String?
     let ghostTo: String?
     let ghostOpacity: Double
+
+    @State private var drawProgress: CGFloat = 0
 
     init(
         arrowFrom: String? = nil,
@@ -32,49 +34,79 @@ struct MoveArrowOverlay: View {
     }
 
     var body: some View {
-        Canvas { context, size in
-            guard let from = arrowFrom, let to = arrowTo else { return }
-            guard let fromPoint = squareCenter(from, in: size),
-                  let toPoint = squareCenter(to, in: size) else { return }
-
-            let arrowColor = AppColor.arrowSuggestion
-            let lineWidth: CGFloat = size.width / 28
-            let angle = atan2(toPoint.y - fromPoint.y, toPoint.x - fromPoint.x)
-            let headLength: CGFloat = size.width / 10
-            let headAngle: CGFloat = .pi / 5
-
-            // Shorten shaft so it stops at the base of the arrowhead (no overlap)
-            let shaftEnd = CGPoint(
-                x: toPoint.x - headLength * 0.7 * cos(angle),
-                y: toPoint.y - headLength * 0.7 * sin(angle)
-            )
-
-            // Draw arrow shaft
-            var path = Path()
-            path.move(to: fromPoint)
-            path.addLine(to: shaftEnd)
-            context.stroke(path, with: .color(arrowColor), style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
-
-            // Draw arrowhead
-            var headPath = Path()
-            headPath.move(to: toPoint)
-            headPath.addLine(to: CGPoint(
-                x: toPoint.x - headLength * cos(angle - headAngle),
-                y: toPoint.y - headLength * sin(angle - headAngle)
-            ))
-            headPath.addLine(to: CGPoint(
-                x: toPoint.x - headLength * cos(angle + headAngle),
-                y: toPoint.y - headLength * sin(angle + headAngle)
-            ))
-            headPath.closeSubpath()
-            context.fill(headPath, with: .color(arrowColor))
+        Group {
+            if let from = arrowFrom, let to = arrowTo {
+                ArrowShape(
+                    from: from,
+                    to: to,
+                    boardSize: boardSize,
+                    perspective: perspective
+                )
+                .trim(from: 0, to: drawProgress)
+                .stroke(AppColor.arrowSuggestion, style: StrokeStyle(lineWidth: boardSize / 28, lineCap: .round))
+                .onAppear {
+                    drawProgress = 0
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        drawProgress = 1
+                    }
+                }
+                .onChange(of: from + to) {
+                    drawProgress = 0
+                    withAnimation(.easeOut(duration: 0.3)) {
+                        drawProgress = 1
+                    }
+                }
+            }
         }
         .allowsHitTesting(false)
         .accessibilityHidden(true)
         .frame(width: boardSize, height: boardSize)
     }
+}
 
-    /// Convert algebraic coordinate (e.g. "e4") to pixel center on board.
+/// A Shape that draws an arrow with shaft and arrowhead between two chess squares.
+private struct ArrowShape: Shape {
+    let from: String
+    let to: String
+    let boardSize: CGFloat
+    let perspective: Bool
+
+    func path(in rect: CGRect) -> Path {
+        guard let fromPoint = squareCenter(from, in: rect.size),
+              let toPoint = squareCenter(to, in: rect.size) else {
+            return Path()
+        }
+
+        var path = Path()
+        let angle = atan2(toPoint.y - fromPoint.y, toPoint.x - fromPoint.x)
+        let headLength: CGFloat = rect.width / 10
+        let headAngle: CGFloat = .pi / 5
+
+        // Shorten shaft so it stops at the base of the arrowhead
+        let shaftEnd = CGPoint(
+            x: toPoint.x - headLength * 0.7 * cos(angle),
+            y: toPoint.y - headLength * 0.7 * sin(angle)
+        )
+
+        // Arrow shaft
+        path.move(to: fromPoint)
+        path.addLine(to: shaftEnd)
+
+        // Arrowhead (two strokes from tip to wings)
+        path.move(to: toPoint)
+        path.addLine(to: CGPoint(
+            x: toPoint.x - headLength * cos(angle - headAngle),
+            y: toPoint.y - headLength * sin(angle - headAngle)
+        ))
+        path.move(to: toPoint)
+        path.addLine(to: CGPoint(
+            x: toPoint.x - headLength * cos(angle + headAngle),
+            y: toPoint.y - headLength * sin(angle + headAngle)
+        ))
+
+        return path
+    }
+
     private func squareCenter(_ coord: String, in size: CGSize) -> CGPoint? {
         guard coord.count == 2,
               let fileChar = coord.first,
@@ -90,11 +122,9 @@ struct MoveArrowOverlay: View {
         let y: CGFloat
 
         if perspective {
-            // White on bottom: file left-to-right, rank bottom-to-top
             x = (CGFloat(file) + 0.5) * squareSize
             y = (CGFloat(7 - rank) + 0.5) * squareSize
         } else {
-            // Black on bottom: file right-to-left, rank top-to-bottom
             x = (CGFloat(7 - file) + 0.5) * squareSize
             y = (CGFloat(rank) + 0.5) * squareSize
         }

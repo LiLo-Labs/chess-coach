@@ -4,6 +4,10 @@
   "description": "A flexible opening where White delays committing to a pawn structure, keeping options for both quiet and aggressive play.",
   "color": "white",
   "difficulty": 2,
+  "tags": [
+    "tactical",
+    "gambit"
+  ],
   "tree": {
     "id": "vienna/root",
     "children": [
@@ -373,17 +377,55 @@
   "plan": {
     "summary": "Develop your queen's knight to c3 to keep the f-pawn free, then choose your moment to strike with f4. If Black plays quietly, establish an Italian-style position with Bc4 and d3. If Black is aggressive, counter with the Vienna Gambit and use your lead in development to attack.",
     "strategicGoals": [
-      { "description": "Develop the queen's knight to c3 early, preserving the option of f4", "priority": 1 },
-      { "description": "Control the center with pawns on e4 and d4 or e4 and f4", "priority": 2 },
-      { "description": "Castle kingside to keep the king safe before attacking", "priority": 3 },
-      { "description": "Open the f-file or center with f4-f5 or d4 to create attacking chances", "priority": 4 }
+      {
+        "description": "Develop the queen's knight to c3 early, preserving the option of f4",
+        "priority": 1
+      },
+      {
+        "description": "Control the center with pawns on e4 and d4 or e4 and f4",
+        "priority": 2
+      },
+      {
+        "description": "Castle kingside to keep the king safe before attacking",
+        "priority": 3
+      },
+      {
+        "description": "Open the f-file or center with f4-f5 or d4 to create attacking chances",
+        "priority": 4
+      }
     ],
     "pawnStructureTarget": "e4/f4 pawn duo or e4/d4 center — flexible depending on Black's response",
-    "keySquares": ["e4", "f4", "d4", "c3", "f5"],
+    "keySquares": [
+      "e4",
+      "f4",
+      "d4",
+      "c3",
+      "f5"
+    ],
     "pieceTargets": [
-      { "piece": "queen's knight", "idealSquares": ["c3"], "reasoning": "On c3 it supports e4, prepares f4, and controls d5 — the ideal Vienna square" },
-      { "piece": "king's knight", "idealSquares": ["f3", "e2"], "reasoning": "f3 controls the center; e2 keeps the f-file open for an f4-f5 advance" },
-      { "piece": "light-squared bishop", "idealSquares": ["c4", "d3"], "reasoning": "c4 attacks f7; d3 supports e4 and the kingside after f4" }
+      {
+        "piece": "queen's knight",
+        "idealSquares": [
+          "c3"
+        ],
+        "reasoning": "On c3 it supports e4, prepares f4, and controls d5 — the ideal Vienna square"
+      },
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f3",
+          "e2"
+        ],
+        "reasoning": "f3 controls the center; e2 keeps the f-file open for an f4-f5 advance"
+      },
+      {
+        "piece": "light-squared bishop",
+        "idealSquares": [
+          "c4",
+          "d3"
+        ],
+        "reasoning": "c4 attacks f7; d3 supports e4 and the kingside after f4"
+      }
     ],
     "typicalPlans": [
       "Play f4 to launch the Vienna Gambit and gain rapid development for a pawn",
@@ -401,40 +443,86 @@
         "title": "The Vienna Idea: Keep f4 Free",
         "description": "By playing 2.Nc3 instead of 2.Nf3, White keeps the f-pawn free to advance. This gives you the option of a gambit with f4 at any moment — a surprise weapon Black must always respect!",
         "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/2N5/PPPP1PPP/R1BQKBNR b KQkq - 1 2",
-        "highlights": ["c3", "f2"],
-        "arrows": [{"from": "f2", "to": "f4"}],
+        "highlights": [
+          "c3",
+          "f2"
+        ],
+        "arrows": [
+          {
+            "from": "f2",
+            "to": "f4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Vienna Gambit: Attack with f4!",
         "description": "After 1.e4 e5 2.Nc3 Nf6 3.f4, you offer a pawn for a massive lead in development. The open f-file will become a highway for your rook after you castle!",
         "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4PP2/2N5/PPPP2PP/R1BQKBNR b KQkq f3 0 3",
-        "highlights": ["f4", "e4", "c3"],
-        "arrows": [{"from": "f1", "to": "c4"}, {"from": "e1", "to": "g1"}],
+        "highlights": [
+          "f4",
+          "e4",
+          "c3"
+        ],
+        "arrows": [
+          {
+            "from": "f1",
+            "to": "c4"
+          },
+          {
+            "from": "e1",
+            "to": "g1"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Don't Let Black Keep the Pawn for Free",
         "description": "If Black takes on f4 and you don't react sharply with d4, Black gets a free pawn and you get nothing. Always strike back in the center immediately!",
         "fen": "rnbqkb1r/pppp1ppp/5n2/8/4Pp2/2N5/PPPP2PP/R1BQKBNR w KQkq - 0 4",
-        "highlights": ["f4", "d2"],
-        "arrows": [{"from": "d2", "to": "d4"}],
+        "highlights": [
+          "f4",
+          "d2"
+        ],
+        "arrows": [
+          {
+            "from": "d2",
+            "to": "d4"
+          }
+        ],
         "style": "bad"
       },
       {
         "title": "The Italian-Vienna Setup: Quiet but Strong",
         "description": "After 2.Nc3 Nc6 3.Bc4, you combine Vienna and Italian ideas. The bishop aims at f7 and you have extra flexibility compared to a normal Italian because of the Nc3.",
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/2N5/PPPP1PPP/R1BQK1NR b KQkq - 3 3",
-        "highlights": ["c4", "f7", "c3"],
-        "arrows": [{"from": "c4", "to": "f7"}],
+        "highlights": [
+          "c4",
+          "f7",
+          "c3"
+        ],
+        "arrows": [
+          {
+            "from": "c4",
+            "to": "f7"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Castle Before Attacking!",
         "description": "Even in the sharp Vienna Gambit lines, always castle before launching your attack. A king left in the center will be punished by Black's counterplay.",
         "fen": "r1bqkb1r/pppp1ppp/5n2/4p3/2B1PP2/2N5/PPPP2PP/R1BQK2R w KQkq - 2 4",
-        "highlights": ["e1", "g1"],
-        "arrows": [{"from": "e1", "to": "g1"}],
+        "highlights": [
+          "e1",
+          "g1"
+        ],
+        "arrows": [
+          {
+            "from": "e1",
+            "to": "g1"
+          }
+        ],
         "style": "good"
       }
     ],
@@ -443,40 +531,91 @@
         "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/2N5/PPPP1PPP/R1BQKBNR b KQkq - 1 2",
         "prompt": "Why does White play 2.Nc3 in the Vienna instead of 2.Nf3?",
         "choices": [
-          {"text": "To keep the f-pawn free so White can play f4 later", "isCorrect": true},
-          {"text": "Because the knight is stronger on c3 than f3", "isCorrect": false},
-          {"text": "To stop Black from playing d5", "isCorrect": false}
+          {
+            "text": "To keep the f-pawn free so White can play f4 later",
+            "isCorrect": true
+          },
+          {
+            "text": "Because the knight is stronger on c3 than f3",
+            "isCorrect": false
+          },
+          {
+            "text": "To stop Black from playing d5",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "2.Nc3 is the Vienna's secret weapon — it leaves the f-pawn free so White can play f4 at any moment, launching the Vienna Gambit for a sharp attacking game.",
-        "boardHighlightsOnReveal": ["c3", "f2"],
-        "arrowsOnReveal": [{"from": "f2", "to": "f4"}]
+        "boardHighlightsOnReveal": [
+          "c3",
+          "f2"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f2",
+            "to": "f4"
+          }
+        ]
       },
       {
         "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4PP2/2N5/PPPP2PP/R1BQKBNR b KQkq f3 0 3",
         "prompt": "Black can take the f4 pawn. What should White do in response?",
         "choices": [
-          {"text": "Play d4 immediately to grab the center and regain the initiative", "isCorrect": true},
-          {"text": "Take back the pawn right away with Nxf4", "isCorrect": false},
-          {"text": "Develop with Nf3 without doing anything special", "isCorrect": false}
+          {
+            "text": "Play d4 immediately to grab the center and regain the initiative",
+            "isCorrect": true
+          },
+          {
+            "text": "Take back the pawn right away with Nxf4",
+            "isCorrect": false
+          },
+          {
+            "text": "Develop with Nf3 without doing anything special",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "After Black takes on f4, playing d4 is the key! It seizes the center, develops with tempo, and compensates for the pawn with rapid piece activity and an open f-file.",
-        "boardHighlightsOnReveal": ["d4", "e4"],
-        "arrowsOnReveal": [{"from": "d2", "to": "d4"}]
+        "boardHighlightsOnReveal": [
+          "d4",
+          "e4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "d2",
+            "to": "d4"
+          }
+        ]
       },
       {
         "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1PP2/2N5/PPPP2PP/R1BQK2R w KQkq - 2 4",
         "prompt": "White has Bc4 and f4 developed. What is the most important next step?",
         "choices": [
-          {"text": "Castle kingside to keep the king safe", "isCorrect": true},
-          {"text": "Push f5 immediately to attack", "isCorrect": false},
-          {"text": "Develop the queen to h5 for an attack", "isCorrect": false}
+          {
+            "text": "Castle kingside to keep the king safe",
+            "isCorrect": true
+          },
+          {
+            "text": "Push f5 immediately to attack",
+            "isCorrect": false
+          },
+          {
+            "text": "Develop the queen to h5 for an attack",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Castle first! With the f-file semi-open, White's king needs to be tucked away safely on g1 before launching an attack. King safety always comes before aggression.",
-        "boardHighlightsOnReveal": ["g1", "f1"],
-        "arrowsOnReveal": [{"from": "e1", "to": "g1"}]
+        "boardHighlightsOnReveal": [
+          "g1",
+          "f1"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e1",
+            "to": "g1"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -484,32 +623,72 @@
         "title": "Vienna Gambit (C26/C28)",
         "description": "After 1.e4 e5 2.Nc3 Nf6 3.f4, White offers a pawn for rapid development. This is one of the oldest gambits in chess, beloved by 19th century attacking masters who wanted wild tactical battles.",
         "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4PP2/2N5/PPPP2PP/R1BQKBNR b KQkq f3 0 3",
-        "highlights": ["f4", "c3", "e4"],
-        "arrows": [{"from": "f2", "to": "f4"}],
+        "highlights": [
+          "f4",
+          "c3",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "f2",
+            "to": "f4"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Vienna: Bc4 System (C25)",
         "description": "With 2.Nc3 followed by Bc4, White combines Vienna and Italian ideas. The bishop targets f7 while the knight on c3 adds extra support and the option of f4 remains. This setup is excellent for beginners.",
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/2N5/PPPP1PPP/R1BQK1NR b KQkq - 3 3",
-        "highlights": ["c4", "c3", "f7"],
-        "arrows": [{"from": "c4", "to": "f7"}],
+        "highlights": [
+          "c4",
+          "c3",
+          "f7"
+        ],
+        "arrows": [
+          {
+            "from": "c4",
+            "to": "f7"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Main Line: 2...Nf6 3.f4 d5 (C29)",
         "description": "After 3...d5, Black fights back in the center immediately. This is Black's best response to the Vienna Gambit. White plays 4.fxe5 Nxe4 5.Nf3 and aims for rapid development — a rich and complex position!",
         "fen": "rnbqkb1r/ppp2ppp/5n2/3pP3/4N3/2N5/PPPP2PP/R1BQKB1R w KQkq d6 0 5",
-        "highlights": ["e5", "e4", "d5"],
-        "arrows": [{"from": "f3", "to": "f3"}, {"from": "d2", "to": "d4"}],
+        "highlights": [
+          "e5",
+          "e4",
+          "d5"
+        ],
+        "arrows": [
+          {
+            "from": "f3",
+            "to": "f3"
+          },
+          {
+            "from": "d2",
+            "to": "d4"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Vienna Gambit Accepted: 3...exf4 4.d4 (C28)",
         "description": "When Black takes on f4, White strikes with d4! This creates a strong pawn center and the open f-file becomes a powerful weapon. After Nf3 and Bc4, White will castle and attack down the f-file.",
         "fen": "rnbqkb1r/pppp1ppp/5n2/8/3PPp2/2N5/PPP3PP/R1BQKBNR b KQkq d3 0 4",
-        "highlights": ["d4", "e4", "f4"],
-        "arrows": [{"from": "f1", "to": "c4"}],
+        "highlights": [
+          "d4",
+          "e4",
+          "f4"
+        ],
+        "arrows": [
+          {
+            "from": "f1",
+            "to": "c4"
+          }
+        ],
         "style": "theory"
       }
     ],
@@ -518,46 +697,96 @@
         "fen": "rnbqkb1r/pppp1ppp/5n2/4p3/4PP2/2N5/PPPP2PP/R1BQKBNR b KQkq f3 0 3",
         "prompt": "What is the name of the variation that begins 1.e4 e5 2.Nc3 Nf6 3.f4?",
         "choices": [
-          {"text": "Vienna Gambit", "isCorrect": true},
-          {"text": "King's Gambit", "isCorrect": false},
-          {"text": "Evans Gambit", "isCorrect": false},
-          {"text": "Falkbeer Counter-Gambit", "isCorrect": false}
+          {
+            "text": "Vienna Gambit",
+            "isCorrect": true
+          },
+          {
+            "text": "King's Gambit",
+            "isCorrect": false
+          },
+          {
+            "text": "Evans Gambit",
+            "isCorrect": false
+          },
+          {
+            "text": "Falkbeer Counter-Gambit",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Vienna Gambit — White offers a pawn with f4 to gain a development advantage. It's different from the King's Gambit (2.f4) because the knight on c3 is already developed.",
-        "boardHighlightsOnReveal": ["f4", "c3"],
-        "arrowsOnReveal": [{"from": "f2", "to": "f4"}]
+        "boardHighlightsOnReveal": [
+          "f4",
+          "c3"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f2",
+            "to": "f4"
+          }
+        ]
       },
       {
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/2N5/PPPP1PPP/R1BQK1NR b KQkq - 3 3",
         "prompt": "After 1.e4 e5 2.Nc3 Nc6 3.Bc4, what is the key strategic threat White has?",
         "choices": [
-          {"text": "The bishop on c4 targets f7, Black's weakest point near the king", "isCorrect": true},
-          {"text": "White threatens to take the e5 pawn immediately", "isCorrect": false},
-          {"text": "White threatens to advance d4 and win a piece", "isCorrect": false}
+          {
+            "text": "The bishop on c4 targets f7, Black's weakest point near the king",
+            "isCorrect": true
+          },
+          {
+            "text": "White threatens to take the e5 pawn immediately",
+            "isCorrect": false
+          },
+          {
+            "text": "White threatens to advance d4 and win a piece",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Just like in the Italian Game, Bc4 targets the f7 square — only defended by Black's king. This is why Bc4 is such a powerful move, creating long-term pressure on Black's kingside.",
-        "boardHighlightsOnReveal": ["c4", "f7"],
-        "arrowsOnReveal": [{"from": "c4", "to": "f7"}]
+        "boardHighlightsOnReveal": [
+          "c4",
+          "f7"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c4",
+            "to": "f7"
+          }
+        ]
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["e2e4", "e7e5", "b1c3", "g8f6"],
+    "afterMoves": [
+      "e2e4",
+      "e7e5",
+      "b1c3",
+      "g8f6"
+    ],
     "responses": [
       {
         "id": "vienna-gambit",
-        "move": { "uci": "f2f4", "san": "f4", "explanation": "White launches the Vienna Gambit, offering a pawn for a strong attack." },
+        "move": {
+          "uci": "f2f4",
+          "san": "f4",
+          "explanation": "White launches the Vienna Gambit, offering a pawn for a strong attack."
+        },
         "name": "Vienna Gambit",
         "eco": "C28",
-        "frequency": 0.40,
+        "frequency": 0.4,
         "description": "White pushes f4, offering a pawn sacrifice for rapid development and an open f-file. The sharpest and most popular Vienna line.",
         "planAdjustment": "Play d4 if Black takes on f4, building a strong center. If Black plays d5, take fxe5 and develop rapidly with Nf3 and Bc4."
       },
       {
         "id": "vienna-bc4",
-        "move": { "uci": "f1c4", "san": "Bc4", "explanation": "White plays the Italian-Vienna, targeting f7 with the bishop." },
+        "move": {
+          "uci": "f1c4",
+          "san": "Bc4",
+          "explanation": "White plays the Italian-Vienna, targeting f7 with the bishop."
+        },
         "name": "Vienna with Bc4",
         "eco": "C25",
         "frequency": 0.35,
@@ -566,7 +795,11 @@
       },
       {
         "id": "vienna-nf3",
-        "move": { "uci": "g1f3", "san": "Nf3", "explanation": "White plays the usual knight development, maintaining flexibility." },
+        "move": {
+          "uci": "g1f3",
+          "san": "Nf3",
+          "explanation": "White plays the usual knight development, maintaining flexibility."
+        },
         "name": "Vienna with Nf3",
         "eco": "C26",
         "frequency": 0.15,
@@ -575,10 +808,14 @@
       },
       {
         "id": "vienna-g3",
-        "move": { "uci": "g2g3", "san": "g3", "explanation": "White plays g3, preparing to fianchetto the bishop on g2." },
+        "move": {
+          "uci": "g2g3",
+          "san": "g3",
+          "explanation": "White plays g3, preparing to fianchetto the bishop on g2."
+        },
         "name": "Vienna with g3",
         "eco": "C26",
-        "frequency": 0.10,
+        "frequency": 0.1,
         "description": "A rare but interesting setup where White fianchettoes the bishop, creating a solid long-term position.",
         "planAdjustment": "Develop the bishop to g2, then castle and play d3 and f4 when the moment is right."
       }

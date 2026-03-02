@@ -8,6 +8,7 @@ struct SessionView: View {
     @State private var navigateToNextStage = false
     @State private var showFeedbackForm = false
     @State private var showChatPanel = false
+    @State private var coachChatState = CoachChatState()
     @Environment(\.dismiss) private var dismiss
     @Environment(SubscriptionService.self) private var subscriptionService
 
@@ -78,6 +79,30 @@ struct SessionView: View {
                     .padding(.horizontal, 16)
                     .animation(.spring(response: 0.35, dampingFraction: 0.9), value: viewModel.moveCount)
 
+                // Coach personality quip overlay
+                if viewModel.showPersonalityQuip, let quip = viewModel.personalityQuip {
+                    HStack(spacing: 6) {
+                        Image(systemName: viewModel.coachPersonality.displayIcon(engineMode: false))
+                            .font(.caption)
+                            .foregroundStyle(phaseColor)
+                        Text(viewModel.coachPersonality.displayName(engineMode: false))
+                            .font(.caption2.weight(.bold))
+                            .foregroundStyle(phaseColor)
+                        Text(quip)
+                            .font(.caption)
+                            .foregroundStyle(.primary.opacity(0.85))
+                            .lineLimit(2)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(phaseColor.opacity(0.1), in: RoundedRectangle(cornerRadius: 12))
+                    .padding(.horizontal, 16)
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .top).combined(with: .opacity),
+                        removal: .opacity
+                    ))
+                }
+
                 replayBar
 
                 // Coaching area — fills remaining space
@@ -99,7 +124,9 @@ struct SessionView: View {
                     fen: viewModel.displayGameState.fen,
                     moveHistory: viewModel.moveHistorySAN,
                     currentPly: viewModel.moveCount,
-                    isPresented: $showChatPanel
+                    coachPersonality: viewModel.coachPersonality,
+                    isPresented: $showChatPanel,
+                    chatState: coachChatState
                 )
                 .transition(.move(edge: .trailing).combined(with: .opacity))
                 .padding(.top, 60)
@@ -523,7 +550,7 @@ struct SessionView: View {
             }
         }
         .frame(height: height)
-        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: viewModel.evalScore)
+        .animation(.spring(response: 0.7, dampingFraction: 0.65), value: viewModel.evalScore)
         .accessibilityLabel(evalAccessibilityLabel)
         .accessibilityValue(viewModel.evalText)
     }
@@ -638,7 +665,7 @@ struct SessionView: View {
         HStack(spacing: 6) {
             ProgressView()
                 .controlSize(.mini)
-            Text("Coach coming online...")
+            Text("\(viewModel.coachPersonality.displayName(engineMode: false)) coming online...")
                 .font(.caption2.weight(.medium))
                 .foregroundStyle(.secondary)
             Spacer()
@@ -682,6 +709,9 @@ struct SessionView: View {
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(.green.opacity(0.15), in: Capsule())
+                        .phaseAnimator([false, true]) { content, phase in
+                            content.opacity(phase ? 1.0 : 0.6)
+                        } animation: { _ in .easeInOut(duration: 0.8) }
                 }
                 Text("\(viewModel.userELO)")
                     .font(.caption2.monospacedDigit())
@@ -787,7 +817,8 @@ struct SessionView: View {
             onTryAgain: { Task { await viewModel.restartSession() } },
             onDone: { dismiss() },
             onReviewNow: (viewModel.sessionResult?.dueReviewCount ?? 0) > 0 ? { showReview = true } : nil,
-            onNextStage: nextStageAction
+            onNextStage: nextStageAction,
+            coachPersonality: CoachPersonality.forOpening(viewModel.opening)
         )
         .sheet(isPresented: $showReview) {
             NavigationStack {

@@ -6,10 +6,13 @@ import ChessKit
 struct TrainerModeView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(AppServices.self) private var appServices
+    @Environment(SubscriptionService.self) private var subscriptionService
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var phase: TrainerPhase = .setup
     @State private var selectedBotELO: Int = 800
     @State private var playerColor: PieceColor = .white
+    @State private var useRandomColor: Bool = false
     @State private var engineMode: TrainerEngineMode = .humanLike
     @State private var gameState: GameState?
     @State private var botThinking = false
@@ -23,12 +26,20 @@ struct TrainerModeView: View {
 
     // Coaching integration
     @State private var currentOpening: OpeningDetection = .none
+    @State private var holisticDetection: HolisticDetection = .none
     @State private var showCoachChat = false
+    @State private var coachChatState = CoachChatState()
     @State private var coachingFeed: [TrainerCoachingEntry] = []
     @State private var isEvaluating = false
     @State private var lastEvalScore: Int = 0  // Stockfish eval before player's move
     @State private var showLeaveConfirmation = false
+    @State private var showProUpgrade = false
+    @State private var showIntersectingOpenings = false
     private let openingDetector = OpeningDetector()
+    private let holisticDetector = HolisticDetector()
+
+    // Accessibility move input
+    @State private var voiceOverMoveText = ""
 
     // Replay state
     @State private var replayPly: Int?
@@ -48,7 +59,11 @@ struct TrainerModeView: View {
     }
 
     private var botPersonality: OpponentPersonality {
-        OpponentPersonality.forELO(selectedBotELO)
+        switch engineMode {
+        case .humanLike: OpponentPersonality.forELO(selectedBotELO)
+        case .engine: OpponentPersonality.engineForELO(selectedBotELO)
+        case .custom: OpponentPersonality.customEngine(depth: 12)
+        }
     }
 
     private var currentStats: TrainerStats {
@@ -64,12 +79,24 @@ struct TrainerModeView: View {
             switch phase {
             case .setup:
                 setupView
+                    .transition(reduceMotion ? .opacity : .asymmetric(
+                        insertion: .move(edge: .leading).combined(with: .opacity),
+                        removal: .move(edge: .leading).combined(with: .opacity)
+                    ))
             case .playing:
                 if let gs = gameState {
                     playingView(gameState: gs)
+                        .transition(reduceMotion ? .opacity : .asymmetric(
+                            insertion: .move(edge: .trailing).combined(with: .opacity),
+                            removal: .opacity
+                        ))
                 }
             case .gameOver:
                 gameOverView
+                    .transition(reduceMotion ? .opacity : .asymmetric(
+                        insertion: .move(edge: .bottom).combined(with: .opacity),
+                        removal: .opacity
+                    ))
             }
         }
         .preferredColorScheme(.dark)
@@ -85,10 +112,8 @@ struct TrainerModeView: View {
                 Spacer(minLength: AppSpacing.md)
 
                 // Bot avatar
-                Image(systemName: botPersonality.icon)
-                    .font(.system(size: 52))
-                    .foregroundStyle(accentColor)
-                    .symbolEffect(.bounce, value: selectedBotELO)
+                BotAvatarView(personality: botPersonality, size: .large)
+                    .id("\(selectedBotELO)-\(engineMode.rawValue)") // force re-render on ELO or mode change
 
                 Text(botPersonality.name)
                     .font(.title2.weight(.bold))
@@ -112,8 +137,10 @@ struct TrainerModeView: View {
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(AppColor.secondaryText)
 
-                    ForEach(botELOs, id: \.self) { elo in
+                    ForEach(Array(botELOs.enumerated()), id: \.element) { index, elo in
                         botCard(elo: elo)
+                            .transition(reduceMotion ? .opacity : .move(edge: .leading).combined(with: .opacity))
+                            .animation(reduceMotion ? .none : .spring(response: 0.4, dampingFraction: 0.8).delay(Double(index) * 0.05), value: phase)
                     }
                 }
                 .padding(.horizontal, AppSpacing.screenPadding)
@@ -127,6 +154,7 @@ struct TrainerModeView: View {
                     HStack(spacing: AppSpacing.md) {
                         colorButton(.white, label: "White", icon: "circle.fill")
                         colorButton(.black, label: "Black", icon: "circle.fill")
+                        randomColorButton
                     }
                     .padding(.horizontal, AppSpacing.xxl)
                 }
@@ -145,7 +173,7 @@ struct TrainerModeView: View {
                     .padding(.vertical, 16)
                     .background(accentColor, in: RoundedRectangle(cornerRadius: AppRadius.lg))
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(ScaleButtonStyle())
                 .padding(.horizontal, AppSpacing.xxl)
 
                 Spacer(minLength: AppSpacing.lg)
@@ -175,6 +203,7 @@ struct TrainerModeView: View {
                         engineMode == mode ? accentColor : Color.clear,
                         in: RoundedRectangle(cornerRadius: AppRadius.md)
                     )
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
             }
@@ -187,17 +216,17 @@ struct TrainerModeView: View {
     // MARK: - Bot Card
 
     private func botCard(elo: Int) -> some View {
-        let personality = OpponentPersonality.forELO(elo)
+        let personality = engineMode == .engine
+            ? OpponentPersonality.engineForELO(elo)
+            : OpponentPersonality.forELO(elo)
         let isSelected = selectedBotELO == elo
 
         return Button {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { selectedBotELO = elo }
         } label: {
             HStack(spacing: AppSpacing.md) {
-                Image(systemName: personality.icon)
-                    .font(.title3)
-                    .foregroundStyle(isSelected ? accentColor : AppColor.tertiaryText)
-                    .frame(width: 32)
+                BotAvatarView(personality: personality, size: .small)
+                    .opacity(isSelected ? 1.0 : 0.6)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(personality.name)
@@ -233,14 +262,19 @@ struct TrainerModeView: View {
     }
 
     private func colorButton(_ color: PieceColor, label: String, icon: String) -> some View {
-        Button {
-            withAnimation(.easeInOut(duration: 0.15)) { playerColor = color }
+        let isSelected = !useRandomColor && playerColor == color
+        return Button {
+            withAnimation(.easeInOut(duration: 0.15)) {
+                playerColor = color
+                useRandomColor = false
+            }
         } label: {
             HStack(spacing: 6) {
                 Circle()
                     .fill(color == .white ? Color.white : Color(white: 0.2))
                     .frame(width: 16, height: 16)
                     .overlay(Circle().stroke(Color.gray.opacity(0.3), lineWidth: 0.5))
+                    .accessibilityHidden(true)
                 Text(label)
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(AppColor.primaryText)
@@ -248,16 +282,45 @@ struct TrainerModeView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 10)
             .background(
-                playerColor == color ? accentColor.opacity(0.12) : AppColor.cardBackground,
+                isSelected ? accentColor.opacity(0.12) : AppColor.cardBackground,
                 in: RoundedRectangle(cornerRadius: AppRadius.md)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: AppRadius.md)
-                    .stroke(playerColor == color ? accentColor.opacity(0.4) : .clear, lineWidth: 1.5)
+                    .stroke(isSelected ? accentColor.opacity(0.4) : .clear, lineWidth: 1.5)
             )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Play as \(label)\(playerColor == color ? ", selected" : "")")
+        .accessibilityLabel("Play as \(label)\(isSelected ? ", selected" : "")")
+    }
+
+    private var randomColorButton: some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.15)) {
+                useRandomColor = true
+            }
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "dice.fill")
+                    .font(.system(size: 14))
+                    .foregroundStyle(AppColor.secondaryText)
+                Text("Random")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(AppColor.primaryText)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(
+                useRandomColor ? accentColor.opacity(0.12) : AppColor.cardBackground,
+                in: RoundedRectangle(cornerRadius: AppRadius.md)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: AppRadius.md)
+                    .stroke(useRandomColor ? accentColor.opacity(0.4) : .clear, lineWidth: 1.5)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Play as random color\(useRandomColor ? ", selected" : "")")
     }
 
     // MARK: - Playing
@@ -269,9 +332,7 @@ struct TrainerModeView: View {
             VStack(spacing: 0) {
                 // Bot info bar with personality
                 HStack(spacing: AppSpacing.sm) {
-                    Image(systemName: botPersonality.icon)
-                        .font(.title3)
-                        .foregroundStyle(accentColor)
+                    BotAvatarView(personality: botPersonality, size: .small)
 
                     VStack(alignment: .leading, spacing: 1) {
                         HStack(spacing: 4) {
@@ -285,7 +346,7 @@ struct TrainerModeView: View {
 
                         HStack(spacing: 4) {
                             Image(systemName: engineMode.icon)
-                                .font(.system(size: 9))
+                                .font(.caption2)
                             Text(engineMode.displayName)
                                 .font(.caption2)
                         }
@@ -301,35 +362,21 @@ struct TrainerModeView: View {
                 }
                 .padding(.horizontal, AppSpacing.screenPadding)
                 .padding(.vertical, AppSpacing.sm)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Playing \(botPersonality.name), rated \(selectedBotELO), \(engineMode.displayName) mode. Move \(gameState.plyCount / 2 + 1).")
 
                 // Opening bar / chat bubble / thinking — overlaid in fixed-height slot
                 ZStack(alignment: .bottom) {
                     Color.clear.frame(height: 44)
 
-                    if let match = currentOpening.best {
-                        HStack(spacing: AppSpacing.xs) {
-                            Image(systemName: "book.fill")
-                                .font(.caption2)
-                                .foregroundStyle(.cyan)
-                            Text(match.variationName ?? match.opening.name)
-                                .font(.caption.weight(.medium))
-                                .foregroundStyle(AppColor.primaryText)
-                                .lineLimit(1)
-                            if !match.nextBookMoves.isEmpty {
-                                Text("In book")
-                                    .font(.caption2)
-                                    .foregroundStyle(AppColor.success)
-                            } else {
-                                Text("Out of book")
-                                    .font(.caption2)
-                                    .foregroundStyle(AppColor.warning)
-                            }
-                            Spacer()
+                    if !botThinking && !showBotMessage {
+                        if settings.holisticOpeningHints, holisticDetection.whiteFramework.primary != nil || holisticDetection.blackFramework.primary != nil {
+                            // Dual-perspective opening bar
+                            holisticOpeningBar
+                        } else if let match = currentOpening.best {
+                            // Classic single-line opening bar
+                            classicOpeningBar(match: match)
                         }
-                        .padding(.horizontal, AppSpacing.screenPadding)
-                        .padding(.vertical, 4)
-                        .background(Color.cyan.opacity(0.05))
-                        .transition(.opacity)
                     }
 
                     if showBotMessage, let message = botMessage {
@@ -337,6 +384,7 @@ struct TrainerModeView: View {
                             Image(systemName: botPersonality.icon)
                                 .font(.caption)
                                 .foregroundStyle(accentColor)
+                                .accessibilityHidden(true)
                             Text(message)
                                 .font(.caption)
                                 .foregroundStyle(AppColor.primaryText)
@@ -346,6 +394,8 @@ struct TrainerModeView: View {
                         .padding(.vertical, 6)
                         .background(accentColor.opacity(0.1), in: RoundedRectangle(cornerRadius: 12))
                         .padding(.horizontal, AppSpacing.screenPadding)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("\(botPersonality.name) says: \(message)")
                         .transition(.asymmetric(
                             insertion: .move(edge: .top).combined(with: .opacity),
                             removal: .opacity
@@ -380,8 +430,19 @@ struct TrainerModeView: View {
                         SoundService.shared.hapticPiecePlaced()
 
                         let moveUCI = "\(from)\(to)"
+                        let preMoveDet = currentOpening
+                        // GameBoardView already applied the move, so gameState.fen is post-move.
+                        // Reconstruct pre-move FEN by replaying all moves except the last.
+                        let preMoveFen: String = {
+                            let preMoveHistory = Array(gameState.moveHistory.dropLast())
+                            let temp = GameState()
+                            for m in preMoveHistory {
+                                temp.makeMove(from: m.from, to: m.to, promotion: m.promotion)
+                            }
+                            return temp.fen
+                        }()
                         updateOpeningDetection(gameState: gameState)
-                        evaluatePlayerMove(gameState: gameState, moveUCI: moveUCI)
+                        evaluatePlayerMove(gameState: gameState, moveUCI: moveUCI, preMoveFen: preMoveFen, preMoveDetection: preMoveDet)
                         checkGameEnd(gameState: gameState)
                         if !isGameOver(gameState) {
                             makeBotMove(gameState: gameState)
@@ -391,11 +452,53 @@ struct TrainerModeView: View {
                 .frame(width: boardSize, height: boardSize)
                 .padding(.horizontal, AppSpacing.sm)
 
+                // VoiceOver move input — only shown when VoiceOver is active
+                if UIAccessibility.isVoiceOverRunning && isPlayerTurn && !botThinking {
+                    HStack(spacing: 8) {
+                        TextField("Type move (e.g. e4, Nf3)", text: $voiceOverMoveText)
+                            .textFieldStyle(.plain)
+                            .font(.subheadline)
+                            .foregroundStyle(AppColor.primaryText)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(AppColor.inputBackground, in: RoundedRectangle(cornerRadius: 8))
+                            .autocorrectionDisabled()
+                            .textInputAutocapitalization(.never)
+
+                        Button {
+                            submitVoiceOverMove(gameState: gameState)
+                        } label: {
+                            Text("Move")
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 16)
+                                .frame(minHeight: 44)
+                                .background(AppColor.guided, in: RoundedRectangle(cornerRadius: 8))
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(voiceOverMoveText.trimmingCharacters(in: .whitespaces).isEmpty)
+                    }
+                    .padding(.horizontal, AppSpacing.screenPadding)
+                    .padding(.vertical, 4)
+                    .accessibilityElement(children: .contain)
+                    .accessibilityLabel("Enter move using algebraic notation")
+                }
+
                 // Coaching feed in remaining space
                 VStack(spacing: 0) {
                     if !coachingFeed.isEmpty || isEvaluating {
-                        TrainerCoachingFeedView(entries: coachingFeed, isLoading: isEvaluating)
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                        TrainerCoachingFeedView(
+                            entries: coachingFeed,
+                            isLoading: isEvaluating,
+                            onRequestExplanation: { entry in
+                                if subscriptionService.isFeatureUnlocked(.deepExplanation) {
+                                    requestExplanation(for: entry)
+                                } else {
+                                    showProUpgrade = true
+                                }
+                            }
+                        )
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
                     } else {
                         Spacer(minLength: 0)
                     }
@@ -409,6 +512,7 @@ struct TrainerModeView: View {
                             Text("Leave")
                                 .font(.caption.weight(.medium))
                                 .foregroundStyle(AppColor.secondaryText)
+                                .frame(minHeight: 44)
                         }
                         .buttonStyle(.plain)
 
@@ -427,10 +531,10 @@ struct TrainerModeView: View {
                                 }
                                 .foregroundStyle(AppColor.practice)
                                 .padding(.horizontal, 14)
-                                .padding(.vertical, 8)
+                                .frame(minHeight: 44)
                                 .background(AppColor.practice.opacity(0.1), in: Capsule())
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(ScaleButtonStyle())
                         }
 
                         Spacer()
@@ -446,10 +550,10 @@ struct TrainerModeView: View {
                             }
                             .foregroundStyle(AppColor.error)
                             .padding(.horizontal, 14)
-                            .padding(.vertical, 8)
+                            .frame(minHeight: 44)
                             .background(AppColor.error.opacity(0.1), in: Capsule())
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(ScaleButtonStyle())
                     }
                     .padding(.horizontal, AppSpacing.screenPadding)
                     .padding(.bottom, AppSpacing.lg)
@@ -472,7 +576,10 @@ struct TrainerModeView: View {
                     fen: gameState.fen,
                     moveHistory: gameState.moveHistory.map { "\($0.from)\($0.to)" },
                     currentPly: gameState.plyCount,
-                    isPresented: $showCoachChat
+                    coachPersonality: CoachPersonality.forOpening(match.opening),
+                    isEngineMode: engineMode != .humanLike,
+                    isPresented: $showCoachChat,
+                    chatState: coachChatState
                 )
                 .transition(.move(edge: .trailing).combined(with: .opacity))
             }
@@ -485,6 +592,9 @@ struct TrainerModeView: View {
         } message: {
             Text("The game will not count as a loss.")
         }
+        .sheet(isPresented: $showProUpgrade) {
+            ProUpgradeView()
+        }
     }
 
     // MARK: - Game Over
@@ -494,15 +604,17 @@ struct TrainerModeView: View {
             Spacer()
 
             if let result = gameResult {
-                // Result icon with animation
+                // Result icon with scale-in animation
                 Image(systemName: resultIcon(result.outcome))
                     .font(.system(size: 64))
                     .foregroundStyle(resultColor(result.outcome))
-                    .symbolEffect(.bounce, value: result.id)
+                    .transition(.scale(scale: 0).combined(with: .opacity))
+                    .accessibilityHidden(true)
 
                 Text(outcomeText(result.outcome))
                     .font(.title.weight(.bold))
                     .foregroundStyle(AppColor.primaryText)
+                    .transition(.opacity)
 
                 // Bot reaction
                 if let reaction = botReactionForResult(result.outcome) {
@@ -510,11 +622,14 @@ struct TrainerModeView: View {
                         Image(systemName: botPersonality.icon)
                             .font(.caption)
                             .foregroundStyle(accentColor)
+                            .accessibilityHidden(true)
                         Text(reaction)
                             .font(.subheadline)
                             .foregroundStyle(AppColor.secondaryText)
                             .italic()
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("\(botPersonality.name) says: \(reaction)")
                 }
 
                 // Game info
@@ -535,6 +650,7 @@ struct TrainerModeView: View {
                         HStack(spacing: 4) {
                             Image(systemName: engineMode.icon)
                                 .font(.caption2)
+                                .accessibilityHidden(true)
                             Text(engineMode.displayName)
                         }
                         .foregroundStyle(AppColor.primaryText)
@@ -553,6 +669,8 @@ struct TrainerModeView: View {
                 .padding(AppSpacing.cardPadding)
                 .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
                 .padding(.horizontal, AppSpacing.xxl)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Opponent: \(result.botName), rated \(result.botELO). Mode: \(engineMode.displayName). Moves: \(result.moveCount / 2).")
 
                 // Stats for this mode
                 statsBar(stats: currentStats, label: "\(engineMode.displayName) Record")
@@ -574,7 +692,7 @@ struct TrainerModeView: View {
                     .padding(.vertical, 14)
                     .background(accentColor, in: RoundedRectangle(cornerRadius: AppRadius.lg))
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(ScaleButtonStyle())
 
                 Button {
                     withAnimation(.spring(response: 0.3)) { phase = .setup }
@@ -606,6 +724,191 @@ struct TrainerModeView: View {
                 miniStat(label: "Win Rate", value: "\(Int(stats.winRate * 100))%")
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(stats.gamesPlayed) played, \(stats.wins) wins, \(stats.losses) losses, \(Int(stats.winRate * 100)) percent win rate")
+    }
+
+    // MARK: - Opening Bar
+
+    /// Classic single-line opening bar (used when holistic mode is off).
+    private func classicOpeningBar(match: OpeningMatch) -> some View {
+        HStack(spacing: AppSpacing.xs) {
+            Image(systemName: "book.fill")
+                .font(.caption2)
+                .foregroundStyle(.cyan)
+                .accessibilityHidden(true)
+            Text(match.variationName ?? match.opening.name)
+                .font(.caption.weight(.medium))
+                .foregroundStyle(AppColor.primaryText)
+                .lineLimit(1)
+            if !match.nextBookMoves.isEmpty {
+                Text("In book")
+                    .font(.caption2)
+                    .foregroundStyle(AppColor.success)
+            } else {
+                Text("Out of book")
+                    .font(.caption2)
+                    .foregroundStyle(AppColor.warning)
+            }
+            Spacer()
+        }
+        .padding(.horizontal, AppSpacing.screenPadding)
+        .padding(.vertical, 4)
+        .background(Color.cyan.opacity(0.05))
+        .transition(.opacity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(match.variationName ?? match.opening.name), \(match.nextBookMoves.isEmpty ? "out of book" : "in book")")
+    }
+
+    /// Dual-perspective opening bar showing White and Black frameworks.
+    @ViewBuilder
+    private var holisticOpeningBar: some View {
+        let hd = holisticDetection
+        let whiteName = hd.whiteFramework.primary?.variationName ?? hd.whiteFramework.primary?.opening.name
+        let blackName = hd.blackFramework.primary?.variationName ?? hd.blackFramework.primary?.opening.name
+        let intersectCount = hd.intersectingOpenings.count
+
+        HStack(spacing: AppSpacing.xs) {
+            Image(systemName: "book.fill")
+                .font(.caption2)
+                .foregroundStyle(.cyan)
+                .accessibilityHidden(true)
+
+            if let wName = whiteName {
+                Text("W:")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.white.opacity(0.7))
+                Text(wName)
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(AppColor.primaryText)
+                    .lineLimit(1)
+            }
+
+            if whiteName != nil && blackName != nil {
+                Text("|")
+                    .font(.caption2)
+                    .foregroundStyle(AppColor.tertiaryText)
+            }
+
+            if let bName = blackName {
+                Text("B:")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.gray)
+                Text(bName)
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(AppColor.secondaryText)
+                    .lineLimit(1)
+            }
+
+            if hd.isInBook {
+                Text("In book")
+                    .font(.caption2)
+                    .foregroundStyle(AppColor.success)
+            } else if whiteName != nil || blackName != nil {
+                Text("Out of book")
+                    .font(.caption2)
+                    .foregroundStyle(AppColor.warning)
+            }
+
+            Spacer()
+
+            if intersectCount > 1 {
+                Button {
+                    showIntersectingOpenings = true
+                } label: {
+                    Text("\(intersectCount)")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(.cyan)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Color.cyan.opacity(0.15), in: Capsule())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.horizontal, AppSpacing.screenPadding)
+        .padding(.vertical, 4)
+        .background(Color.cyan.opacity(0.05))
+        .transition(.opacity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(holisticOpeningAccessibilityLabel)
+        .sheet(isPresented: $showIntersectingOpenings) {
+            intersectingOpeningsSheet
+        }
+    }
+
+    private var holisticOpeningAccessibilityLabel: String {
+        let hd = holisticDetection
+        var parts: [String] = []
+        if let w = hd.whiteFramework.primary {
+            parts.append("White: \(w.variationName ?? w.opening.name)")
+        }
+        if let b = hd.blackFramework.primary {
+            parts.append("Black: \(b.variationName ?? b.opening.name)")
+        }
+        parts.append(hd.isInBook ? "in book" : "out of book")
+        let count = hd.intersectingOpenings.count
+        if count > 1 {
+            parts.append("\(count) openings match")
+        }
+        return parts.joined(separator: ", ")
+    }
+
+    private var intersectingOpeningsSheet: some View {
+        NavigationStack {
+            List {
+                let hd = holisticDetection
+                if !hd.intersectingOpenings.isEmpty {
+                    Section("Matching Openings") {
+                        ForEach(Array(hd.intersectingOpenings.enumerated()), id: \.offset) { _, match in
+                            HStack {
+                                Text(match.opening.color == .white ? "W" : "B")
+                                    .font(.caption2.weight(.bold))
+                                    .foregroundStyle(match.opening.color == .white ? .white : .gray)
+                                    .frame(width: 20)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(match.variationName ?? match.opening.name)
+                                        .font(.subheadline.weight(.medium))
+                                    if !match.nextBookMoves.isEmpty {
+                                        Text("\(match.nextBookMoves.count) continuation\(match.nextBookMoves.count == 1 ? "" : "s")")
+                                            .font(.caption)
+                                            .foregroundStyle(AppColor.secondaryText)
+                                    }
+                                }
+                                Spacer()
+                                Text("depth \(match.matchDepth)")
+                                    .font(.caption2)
+                                    .foregroundStyle(AppColor.tertiaryText)
+                            }
+                        }
+                    }
+
+                    if !hd.branchAlternatives.isEmpty {
+                        Section("Branch Points") {
+                            ForEach(Array(hd.branchAlternatives.enumerated()), id: \.offset) { _, branch in
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("Ply \(branch.ply)")
+                                        .font(.caption.weight(.semibold))
+                                    ForEach(Array(branch.alternatives.prefix(3).enumerated()), id: \.offset) { _, alt in
+                                        Text(alt.opening.name)
+                                            .font(.caption)
+                                            .foregroundStyle(AppColor.secondaryText)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Opening Detection")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") { showIntersectingOpenings = false }
+                }
+            }
+        }
+        .presentationDetents([.medium])
     }
 
     // MARK: - Helpers
@@ -688,13 +991,21 @@ struct TrainerModeView: View {
     // MARK: - Game Logic
 
     private func startGame() {
+        // Resolve random color before starting
+        if useRandomColor {
+            playerColor = Bool.random() ? .white : .black
+        }
+
         let gs = GameState()
         gameState = gs
         gameResult = nil
         botMessage = nil
         showBotMessage = false
         currentOpening = .none
+        holisticDetection = .none
+        showIntersectingOpenings = false
         showCoachChat = false
+        coachChatState = CoachChatState()
         coachingFeed = []
         isEvaluating = false
         lastEvalScore = 0
@@ -758,6 +1069,10 @@ struct TrainerModeView: View {
                 // Pure Stockfish at capped depth
                 let depth = AppConfig.engine.depthForELO(selectedBotELO)
                 selectedMove = await appServices.stockfish.bestMove(fen: fen, depth: depth)
+
+            case .custom:
+                let depth = botPersonality.customDepth ?? 12
+                selectedMove = await appServices.stockfish.bestMove(fen: fen, depth: depth)
             }
 
             // Final fallback: random legal move
@@ -800,6 +1115,10 @@ struct TrainerModeView: View {
 
             withAnimation(.easeOut(duration: 0.2)) { botThinking = false }
             if let move = selectedMove {
+                // Announce bot move for VoiceOver
+                let sanLabel = OpeningMove.friendlyName(from: botMoveSAN)
+                AccessibilityNotification.Announcement("\(botPersonality.name) played \(sanLabel). Your turn.").post()
+
                 addBotMoveEntry(gameState: gameState, moveUCI: move, moveSAN: botMoveSAN)
                 // Quick eval to set baseline for next player move's cpLoss
                 if let eval = await appServices.stockfish.evaluate(fen: gameState.fen, depth: 8) {
@@ -814,6 +1133,9 @@ struct TrainerModeView: View {
     private func updateOpeningDetection(gameState: GameState) {
         let uciMoves = gameState.moveHistory.map { "\($0.from)\($0.to)\($0.promotion?.rawValue ?? "")" }
         currentOpening = openingDetector.detect(moves: uciMoves)
+        if settings.holisticOpeningHints {
+            holisticDetection = holisticDetector.detect(moves: uciMoves)
+        }
     }
 
     // MARK: - Coaching Feed
@@ -833,11 +1155,22 @@ struct TrainerModeView: View {
         let moveNumber = (ply + 1) / 2
         // Use pre-move detection for book move checking (nextBookMoves are continuations
         // from the position BEFORE the move, so they contain the move just played).
+        // Check ALL matched openings — not just "best" — because at branch points
+        // (e.g., after 1. d4 d5) multiple openings match equally and we don't yet
+        // know which one the player is following until they make their next move.
         let preDetection = preMoveDetection ?? currentOpening
         let postDetection = currentOpening
-        let bookMove = preDetection.best?.nextBookMoves.first(where: { $0.uci == moveUCI })
-            ?? preDetection.best?.nextBookMoves.first
-        let isBookMove = preDetection.best?.nextBookMoves.contains(where: { $0.uci == moveUCI }) ?? false
+        // When holistic mode is on, use all intersecting openings for broader book coverage
+        let allPreBookMoves: [OpeningMove]
+        if settings.holisticOpeningHints {
+            // Deduplicate by UCI across holistic + classic matches
+            var seen = Set<String>()
+            allPreBookMoves = (holisticDetection.allNextBookMoves + preDetection.matches.flatMap(\.nextBookMoves))
+                .filter { seen.insert($0.uci).inserted }
+        } else {
+            allPreBookMoves = preDetection.matches.flatMap(\.nextBookMoves)
+        }
+        let isBookMove = allPreBookMoves.contains(where: { $0.uci == moveUCI })
         let isInBook = isBookMove || (postDetection.best?.nextBookMoves.isEmpty == false)
         let openingName = (postDetection.best ?? preDetection.best)?.opening.name
         let scoreBefore = lastEvalScore
@@ -872,32 +1205,37 @@ struct TrainerModeView: View {
 
             let scoreCategory = ScoreCategory.from(score: soundness)
 
-            // Build coaching text
+            // Build coaching text using personality witticisms
+            let personality: CoachPersonality
+            if let matchedOpening = (postDetection.best ?? preDetection.best)?.opening {
+                personality = CoachPersonality.forOpening(matchedOpening)
+            } else {
+                personality = .defaultPersonality
+            }
             let coaching: String
             switch category {
             case .goodMove:
-                if isBookMove, let name = openingName {
-                    coaching = "Follows the \(name) plan."
-                } else {
-                    coaching = "Solid move — keeps your position strong."
-                }
+                coaching = personality.witticism(for: .goodMove)
             case .okayMove:
-                if !isBookMove, let bm = preDetection.best?.nextBookMoves.first {
-                    coaching = "Playable, but \(bm.san) is the book move here."
+                if !isBookMove, let bm = allPreBookMoves.first {
+                    let quip = personality.witticism(for: .okayMove)
+                    coaching = "\(quip) The book move is \(bm.san)."
                 } else {
-                    coaching = "Decent, but there might be a stronger option."
+                    coaching = personality.witticism(for: .okayMove)
                 }
             case .mistake:
-                if !isBookMove, let bm = preDetection.best?.nextBookMoves.first {
-                    coaching = "The plan calls for \(bm.san) here."
+                if !isBookMove, let bm = allPreBookMoves.first {
+                    let quip = personality.witticism(for: .mistake)
+                    coaching = "\(quip) The recommended move here is \(bm.san)."
                 } else if let bestUCI = eval?.bestMove {
                     let san = GameState.sanForUCI(bestUCI, inFEN: fen)
-                    coaching = "Better was \(san ?? bestUCI). Lost \(cpLoss) centipawns."
+                    let quip = personality.witticism(for: .mistake)
+                    coaching = "\(quip) Better was \(san)."
                 } else {
-                    coaching = "This loses material or position. Consider alternatives."
+                    coaching = personality.witticism(for: .mistake)
                 }
             default:
-                coaching = "Your move."
+                coaching = personality.witticism(for: .goodMove)
             }
 
             let entry = TrainerCoachingEntry(
@@ -919,6 +1257,14 @@ struct TrainerModeView: View {
                 isEvaluating = false
             }
 
+            // Announce evaluation result for VoiceOver
+            let qualityLabel = entry.scoreCategory?.displayName ?? category.feedLabel
+            AccessibilityNotification.Announcement("\(qualityLabel) move. \(coaching)").post()
+
+            // Mirror coaching into chat history so coach chat has full context
+            let moveLabel = OpeningMove.friendlyName(from: moveSAN)
+            coachChatState.appendMessage(role: "coach", text: "[\(moveLabel)] \(coaching)")
+
             // Store eval for next move's cpLoss calculation
             lastEvalScore = scoreAfter
         }
@@ -933,13 +1279,24 @@ struct TrainerModeView: View {
         let openingName = detection.best?.opening.name
         let isDeviation = detection.best != nil && !isInBook
 
+        let opponentColorName = playerColor == .white ? "Black" : "White"
         let coaching: String
-        if isDeviation, let name = openingName {
-            coaching = "Opponent went off the \(name) plan."
+        if isDeviation, let bestOpening = detection.best?.opening,
+           let catalogue = bestOpening.opponentResponses {
+            let movesSoFar = gameState.moveHistory.dropLast().map { "\($0.from)\($0.to)" }
+            if let response = catalogue.matchResponse(moveUCI: moveUCI, afterMoves: Array(movesSoFar)) {
+                coaching = "\(opponentColorName) played the \(response.name). \(response.planAdjustment)"
+            } else if let name = openingName {
+                coaching = "\(opponentColorName) went off the \(name) plan."
+            } else {
+                coaching = "\(opponentColorName)'s move."
+            }
+        } else if isDeviation, let name = openingName {
+            coaching = "\(opponentColorName) went off the \(name) plan."
         } else if isInBook, let name = openingName {
-            coaching = "Standard \(name) response."
+            coaching = "Standard \(name) response by \(opponentColorName)."
         } else {
-            coaching = "Opponent's move."
+            coaching = "\(opponentColorName)'s move."
         }
 
         let entry = TrainerCoachingEntry(
@@ -958,6 +1315,80 @@ struct TrainerModeView: View {
 
         withAnimation(.easeInOut(duration: 0.2)) {
             coachingFeed.append(entry)
+        }
+
+        // Mirror coaching into chat history so coach chat has full context
+        let botMoveLabel = OpeningMove.friendlyName(from: moveSAN ?? moveUCI)
+        coachChatState.appendMessage(role: "coach", text: "[\(botMoveLabel)] \(coaching)")
+    }
+
+    // MARK: - Explain in Detail (LLM)
+
+    /// Request an LLM-generated explanation for a coaching feed entry.
+    private func requestExplanation(for entry: TrainerCoachingEntry) {
+        guard subscriptionService.isFeatureUnlocked(.deepExplanation) else { return }
+        guard !entry.isExplaining, entry.explanation == nil else { return }
+        guard let fen = entry.fen else { return }
+
+        entry.isExplaining = true
+
+        let detection = currentOpening
+        let openingName = detection.best?.opening.name ?? entry.openingName ?? "this opening"
+        let playerIsWhite = playerColor == .white
+        let studentColor = playerIsWhite ? "White" : "Black"
+        let opponentColor = playerIsWhite ? "Black" : "White"
+        let userELO = settings.userELO
+
+        // Build move history string from game state
+        let moveHistoryStr: String = {
+            guard let gs = gameState else { return "" }
+            return gs.moveHistory.enumerated().map { i, m in
+                let uci = "\(m.from)\(m.to)\(m.promotion?.rawValue ?? "")"
+                return i % 2 == 0 ? "\(i / 2 + 1). \(uci)" : uci
+            }.joined(separator: " ")
+        }()
+
+        let boardState = LLMService.boardStateSummary(fen: fen, studentColor: studentColor)
+        let occupied = LLMService.occupiedSquares(fen: fen)
+
+        let moveDisplay = entry.moveSAN
+        let coaching = entry.coaching
+
+        let perspective = entry.isPlayerMove
+            ? "The student (\(studentColor)) played \(moveDisplay). Explain why this move matters."
+            : "The opponent (\(opponentColor)) played \(moveDisplay). Explain what it means for the student."
+
+        let prompt = PromptCatalog.explanationPrompt(params: .init(
+            openingName: openingName,
+            studentColor: studentColor,
+            opponentColor: opponentColor,
+            userELO: userELO,
+            perspective: perspective,
+            moveHistoryStr: moveHistoryStr,
+            boardState: boardState,
+            occupiedSquares: occupied,
+            moveDisplay: moveDisplay,
+            moveUCI: "",
+            moveFraming: "\(entry.moveNumber). \(moveDisplay)",
+            coachingText: coaching,
+            forUserMove: entry.isPlayerMove
+        ))
+
+        Task {
+            do {
+                let response = try await appServices.llmService.generate(prompt: prompt, maxTokens: AppConfig.tokens.explanation)
+                let parsed = CoachingValidator.parse(response: response)
+                let validated = CoachingValidator.validate(parsed: parsed, fen: fen) ?? parsed.text
+                await MainActor.run {
+                    entry.explanation = validated
+                    entry.isExplaining = false
+                }
+            } catch {
+                await MainActor.run {
+                    entry.explanation = "Couldn't generate explanation right now."
+                    entry.isExplaining = false
+                }
+            }
         }
     }
 
@@ -1039,7 +1470,77 @@ struct TrainerModeView: View {
             moveCount: gameState.plyCount
         )
 
+        // Announce game result for VoiceOver
+        let resultText: String
+        switch outcome {
+        case .win: resultText = "Game over. You win!"
+        case .loss: resultText = "Game over. \(botPersonality.name) wins."
+        case .draw: resultText = "Game over. Draw."
+        case .resigned: resultText = "Game over. You resigned."
+        }
+        AccessibilityNotification.Announcement(resultText).post()
+
         withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) { phase = .gameOver }
+    }
+
+    // MARK: - VoiceOver Move Input
+
+    /// Submit a move typed in algebraic notation (e.g. "e4", "Nf3", "O-O").
+    private func submitVoiceOverMove(gameState: GameState) {
+        let input = voiceOverMoveText.trimmingCharacters(in: .whitespaces)
+        guard !input.isEmpty else { return }
+
+        // Try to match input against legal moves by comparing SAN
+        let legalMoves = gameState.legalMoves
+        var matchedUCI: String?
+        for move in legalMoves {
+            let san = SanSerialization.default.san(for: move, in: gameState.game)
+            // Compare case-insensitively, strip check/mate symbols
+            let cleanSAN = san.replacingOccurrences(of: "+", with: "").replacingOccurrences(of: "#", with: "")
+            let cleanInput = input.replacingOccurrences(of: "+", with: "").replacingOccurrences(of: "#", with: "")
+            if cleanSAN.lowercased() == cleanInput.lowercased() {
+                matchedUCI = "\(move.from.coordinate)\(move.to.coordinate)"
+                if let promo = move.promotion {
+                    matchedUCI! += promo.rawValue.lowercased()
+                }
+                break
+            }
+        }
+
+        // Also try matching raw UCI input (e.g. "e2e4")
+        if matchedUCI == nil && input.count >= 4 {
+            let from = String(input.prefix(2)).lowercased()
+            let to = String(input.dropFirst(2).prefix(2)).lowercased()
+            if legalMoves.contains(where: { $0.from.coordinate == from && $0.to.coordinate == to }) {
+                matchedUCI = "\(from)\(to)"
+                if input.count == 5 {
+                    matchedUCI! += String(input.last!).lowercased()
+                }
+            }
+        }
+
+        guard let uci = matchedUCI else {
+            AccessibilityNotification.Announcement("Invalid move: \(input). Try again.").post()
+            return
+        }
+
+        voiceOverMoveText = ""
+
+        // Apply the move — same flow as board tap
+        let preMoveDet = currentOpening
+        let preMoveFen = gameState.fen
+        if gameState.makeMoveUCI(uci) {
+            SoundService.shared.play(.move)
+            SoundService.shared.hapticPiecePlaced()
+            updateOpeningDetection(gameState: gameState)
+            evaluatePlayerMove(gameState: gameState, moveUCI: uci, preMoveFen: preMoveFen, preMoveDetection: preMoveDet)
+            checkGameEnd(gameState: gameState)
+            if !isGameOver(gameState) {
+                makeBotMove(gameState: gameState)
+            }
+        } else {
+            AccessibilityNotification.Announcement("Move could not be applied. Try again.").post()
+        }
     }
 
     // MARK: - Replay

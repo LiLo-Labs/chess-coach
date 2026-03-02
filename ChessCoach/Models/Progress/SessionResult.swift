@@ -21,6 +21,11 @@ struct SessionResult {
     let moveScores: [PlanExecutionScore]?
     let layerPromotion: LayerPromotion?
 
+    // Sub-milestone tracking
+    var completedMilestones: [SubMilestone] = []
+    var nextMilestone: SubMilestone? = nil
+    var coachSessionMessage: String? = nil
+
     struct PhasePromotion {
         let from: LearningPhase
         let to: LearningPhase

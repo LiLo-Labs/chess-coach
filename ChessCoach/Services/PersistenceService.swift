@@ -19,6 +19,7 @@ final class PersistenceService: @unchecked Sendable {
     private let mistakeTrackerKey = "chess_coach_mistakes"
     private let speedRunKey = "chess_coach_speed_runs"
     private let masteryKey = "chess_coach_mastery"
+    private let importedGamesKey = "chess_coach_imported_games"
 
     private static let currentSchemaVersion = 3
 
@@ -146,6 +147,43 @@ final class PersistenceService: @unchecked Sendable {
     func clearSessionState() {
         queue.sync {
             defaults.removeObject(forKey: "chess_coach_saved_session")
+        }
+    }
+
+    // MARK: - Imported Games
+
+    func loadImportedGames() -> [ImportedGame] {
+        queue.sync {
+            guard let data = defaults.data(forKey: importedGamesKey),
+                  let games = try? decoder.decode([ImportedGame].self, from: data) else {
+                return []
+            }
+            return games
+        }
+    }
+
+    func saveImportedGames(_ games: [ImportedGame]) {
+        queue.sync {
+            if let data = try? encoder.encode(games) {
+                defaults.set(data, forKey: importedGamesKey)
+            }
+        }
+    }
+
+    /// Append new games, deduplicating by id.
+    func appendImportedGames(_ newGames: [ImportedGame]) {
+        queue.sync {
+            var existing: [ImportedGame] = []
+            if let data = defaults.data(forKey: importedGamesKey),
+               let decoded = try? decoder.decode([ImportedGame].self, from: data) {
+                existing = decoded
+            }
+            let existingIDs = Set(existing.map(\.id))
+            let unique = newGames.filter { !existingIDs.contains($0.id) }
+            let merged = existing + unique
+            if let data = try? encoder.encode(merged) {
+                defaults.set(data, forKey: importedGamesKey)
+            }
         }
     }
 

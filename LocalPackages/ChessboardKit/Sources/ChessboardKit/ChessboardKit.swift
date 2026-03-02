@@ -95,6 +95,13 @@ public class ChessboardModel {
 
     /// Square where a capture just occurred — triggers a brief visual effect.
     public var captureSquare: BoardSquare?
+
+    /// Optional texture images for board squares (overrides flat color when set).
+    public var lightSquareTexture: UIImage?
+    public var darkSquareTexture: UIImage?
+
+    /// Square where the king is in check — triggers a pulsing red ring.
+    public var checkSquare: BoardSquare?
     
     public init(fen: String = EMPTY_FEN,
                 perspective: PieceColor = .white,
@@ -393,7 +400,7 @@ private struct MovingPieceView: View {
                     position = CGPoint(x: chessboardModel.size / 16 + chessboardModel.size / 8 * CGFloat(chessboardModel.shouldFlipBoard ? 7 - movingPiece.from.column : movingPiece.from.column),
                                        y: chessboardModel.size / 16 + chessboardModel.size / 8 * CGFloat(chessboardModel.shouldFlipBoard ? movingPiece.from.row : 7 - movingPiece.from.row))
                     
-                    withAnimation(.spring(response: 0.25, dampingFraction: 0.85)) {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
                         position = CGPoint(x: chessboardModel.size / 16 + chessboardModel.size / 8 * CGFloat(chessboardModel.shouldFlipBoard ? 7 - movingPiece.to.column : movingPiece.to.column),
                                            y: chessboardModel.size / 16 + chessboardModel.size / 8 * CGFloat(chessboardModel.shouldFlipBoard ? movingPiece.to.row : 7 - movingPiece.to.row))
                     } completion: {
@@ -405,12 +412,49 @@ private struct MovingPieceView: View {
     }
 }
 
-/// Burst ring effect shown on the square where a capture occurred.
+/// Pulsing red ring on the king's square when in check.
+private struct CheckFlashView: View {
+    @Environment(ChessboardModel.self) var chessboardModel
+
+    @State private var pulseScale: CGFloat = 0.8
+    @State private var pulseOpacity: Double = 0.0
+
+    var body: some View {
+        Group {
+            if let square = chessboardModel.checkSquare {
+                let squareSize = chessboardModel.size / 8
+                let x = squareSize / 2 + squareSize * CGFloat(chessboardModel.shouldFlipBoard ? 7 - square.column : square.column)
+                let y = squareSize / 2 + squareSize * CGFloat(chessboardModel.shouldFlipBoard ? square.row : 7 - square.row)
+
+                Circle()
+                    .stroke(Color.red.opacity(pulseOpacity), lineWidth: 3)
+                    .frame(width: squareSize * pulseScale, height: squareSize * pulseScale)
+                    .position(x: x, y: y)
+                    .onAppear {
+                        pulseScale = 0.8
+                        pulseOpacity = 0.9
+                        withAnimation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true)) {
+                            pulseScale = 1.1
+                            pulseOpacity = 0.4
+                        }
+                    }
+                    .onDisappear {
+                        pulseScale = 0.8
+                        pulseOpacity = 0.0
+                    }
+            }
+        }
+        .allowsHitTesting(false)
+    }
+}
+
+/// Burst ring + square flash effect shown on the square where a capture occurred.
 private struct CaptureEffectView: View {
     @Environment(ChessboardModel.self) var chessboardModel
 
     @State private var scale: CGFloat = 0.3
     @State private var opacity: Double = 0.8
+    @State private var flashOpacity: Double = 0.0
 
     var body: some View {
         Group {
@@ -419,6 +463,13 @@ private struct CaptureEffectView: View {
                 let x = squareSize / 2 + squareSize * CGFloat(chessboardModel.shouldFlipBoard ? 7 - square.column : square.column)
                 let y = squareSize / 2 + squareSize * CGFloat(chessboardModel.shouldFlipBoard ? square.row : 7 - square.row)
 
+                // Orange square flash
+                Rectangle()
+                    .fill(Color.orange.opacity(flashOpacity))
+                    .frame(width: squareSize, height: squareSize)
+                    .position(x: x, y: y)
+
+                // Expanding ring
                 Circle()
                     .stroke(Color.orange.opacity(opacity), lineWidth: 3)
                     .frame(width: squareSize * scale, height: squareSize * scale)
@@ -426,6 +477,10 @@ private struct CaptureEffectView: View {
                     .onAppear {
                         scale = 0.3
                         opacity = 0.8
+                        flashOpacity = 0.35
+                        withAnimation(.easeOut(duration: 0.15)) {
+                            flashOpacity = 0.0
+                        }
                         withAnimation(.easeOut(duration: 0.35)) {
                             scale = 1.4
                             opacity = 0.0
@@ -460,6 +515,7 @@ public struct Chessboard: View {
                 
                 MovingPieceView(animation: animation)
                 CaptureEffectView()
+                CheckFlashView()
 
                 if chessboardModel.showPromotionPicker {
                     promotionPickerView
@@ -566,10 +622,19 @@ public struct Chessboard: View {
                 let row = index / 8
                 let column = index % 8
                 let isLightSquare = (row + column) % 2 == 0
-                
-                Rectangle()
-                    .fill(isLightSquare ? chessboardModel.colorScheme.light : chessboardModel.colorScheme.dark)
-                    .frame(width: chessboardModel.size / 8, height: chessboardModel.size / 8)
+                let texture = isLightSquare ? chessboardModel.lightSquareTexture : chessboardModel.darkSquareTexture
+
+                Group {
+                    if let texture {
+                        Image(uiImage: texture)
+                            .resizable()
+                            .interpolation(.medium)
+                    } else {
+                        Rectangle()
+                            .fill(isLightSquare ? chessboardModel.colorScheme.light : chessboardModel.colorScheme.dark)
+                    }
+                }
+                .frame(width: chessboardModel.size / 8, height: chessboardModel.size / 8)
             }
         }
     }
@@ -673,10 +738,12 @@ public struct Chessboard: View {
                 Circle()
                     .fill(chessboardModel.colorScheme.legalMove)
                     .frame(width: chessboardModel.size / 24, height: chessboardModel.size / 24)
+                    .transition(.scale(scale: 0.5).combined(with: .opacity))
                     .position(x: chessboardModel.size / 16 + chessboardModel.size / 8 * CGFloat(chessboardModel.shouldFlipBoard ? 7 - square.column : square.column),
                               y: chessboardModel.size / 16 + chessboardModel.size / 8 * CGFloat(chessboardModel.shouldFlipBoard ? square.row : 7 - square.row))
             }
         }
+        .animation(.easeOut(duration: 0.15), value: chessboardModel.legalMoveSquares)
         .allowsHitTesting(false)
     }
     

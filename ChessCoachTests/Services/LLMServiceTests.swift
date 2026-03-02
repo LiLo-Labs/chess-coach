@@ -18,7 +18,10 @@ import Testing
         isUserMove: true,
         studentColor: "white",
         plyNumber: 1,
-        mainLineSoFar: "1. e4"
+        mainLineSoFar: "1. e4",
+        matchedResponseName: nil,
+        matchedResponseAdjustment: nil,
+        coachPersonalityPrompt: nil
     )
     let prompt = LLMService.buildPrompt(for: context)
     #expect(prompt.contains("e2e4"))
@@ -42,7 +45,10 @@ import Testing
         isUserMove: true,
         studentColor: "white",
         plyNumber: 1,
-        mainLineSoFar: "1. e4"
+        mainLineSoFar: "1. e4",
+        matchedResponseName: nil,
+        matchedResponseAdjustment: nil,
+        coachPersonalityPrompt: nil
     )
     let result = LLMService.buildPrompt(for: context)
     #expect(result.contains("correct"))
@@ -65,7 +71,10 @@ import Testing
         isUserMove: true,
         studentColor: "white",
         plyNumber: 1,
-        mainLineSoFar: "1. e4"
+        mainLineSoFar: "1. e4",
+        matchedResponseName: nil,
+        matchedResponseAdjustment: nil,
+        coachPersonalityPrompt: nil
     )
     let prompt = LLMService.buildPrompt(for: context)
     #expect(prompt.contains("e2e4"))

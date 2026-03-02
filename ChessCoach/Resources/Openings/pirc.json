@@ -4,6 +4,10 @@
   "description": "A hypermodern defense where Black invites White to build a center, planning to undermine it later.",
   "color": "black",
   "difficulty": 3,
+  "tags": [
+    "hypermodern",
+    "tactical"
+  ],
   "tree": {
     "id": "pirc/root",
     "children": [
@@ -373,18 +377,58 @@
   "plan": {
     "summary": "Let White build a big center with e4-d4, then attack it! Play ...d6, ...Nf6, ...g6, and ...Bg7 to fianchetto the bishop. This powerful bishop on g7 will pressure White's entire center from a distance. Castle kingside, then counterattack with ...c5 or ...e5 to undermine White's pawns. This is the hypermodern strategy — inviting the center to overextend, then attacking its base!",
     "strategicGoals": [
-      { "description": "Let White build a big center, then pressure it with the fianchettoed bishop on g7", "priority": 1 },
-      { "description": "Develop quickly: ...d6, ...Nf6, ...g6, ...Bg7, and castle", "priority": 2 },
-      { "description": "Castle kingside to tuck the king safely behind the g7 bishop", "priority": 3 },
-      { "description": "Launch ...c5 or ...e5 to counterattack and undermine White's center", "priority": 4 },
-      { "description": "Use piece activity — knight outposts and rook pressure — to fight White's space advantage", "priority": 5 }
+      {
+        "description": "Let White build a big center, then pressure it with the fianchettoed bishop on g7",
+        "priority": 1
+      },
+      {
+        "description": "Develop quickly: ...d6, ...Nf6, ...g6, ...Bg7, and castle",
+        "priority": 2
+      },
+      {
+        "description": "Castle kingside to tuck the king safely behind the g7 bishop",
+        "priority": 3
+      },
+      {
+        "description": "Launch ...c5 or ...e5 to counterattack and undermine White's center",
+        "priority": 4
+      },
+      {
+        "description": "Use piece activity — knight outposts and rook pressure — to fight White's space advantage",
+        "priority": 5
+      }
     ],
     "pawnStructureTarget": "Solid structure with pawns on d6 and e7 (or e6), with the fianchetto on g6-g7; aim for ...c5 or ...e5 breaks to challenge White's center",
-    "keySquares": ["g7", "d4", "e4", "e5", "c5"],
+    "keySquares": [
+      "g7",
+      "d4",
+      "e4",
+      "e5",
+      "c5"
+    ],
     "pieceTargets": [
-      { "piece": "king's bishop", "idealSquares": ["g7"], "reasoning": "The Pirc's signature piece — on g7 it controls the long diagonal and pressures White's entire center from a safe distance" },
-      { "piece": "king's knight", "idealSquares": ["f6"], "reasoning": "Attacks e4 immediately and keeps White's center under constant pressure" },
-      { "piece": "queen's knight", "idealSquares": ["c6", "d7"], "reasoning": "Supports ...e5 and ...c5 counterattack plans; d7 is solid and flexible" }
+      {
+        "piece": "king's bishop",
+        "idealSquares": [
+          "g7"
+        ],
+        "reasoning": "The Pirc's signature piece — on g7 it controls the long diagonal and pressures White's entire center from a safe distance"
+      },
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f6"
+        ],
+        "reasoning": "Attacks e4 immediately and keeps White's center under constant pressure"
+      },
+      {
+        "piece": "queen's knight",
+        "idealSquares": [
+          "c6",
+          "d7"
+        ],
+        "reasoning": "Supports ...e5 and ...c5 counterattack plans; d7 is solid and flexible"
+      }
     ],
     "typicalPlans": [
       "After castling, play ...c5 to challenge White's d4 pawn and open the c-file",
@@ -404,31 +448,64 @@
         "title": "The Hypermodern Idea",
         "description": "In the Pirc, you INVITE White to build a big center! Instead of fighting for center squares with pawns, you plan to attack the center later with pieces. The g7 bishop will pressure d4 and e5 from a safe distance. This 'hypermodern' strategy is clever and surprising!",
         "fen": "rnbqkbnr/ppp1pppp/3p4/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2",
-        "highlights": ["d4", "e4", "g7"],
-        "arrows": [{"from": "g7", "to": "d4"}],
+        "highlights": [
+          "d4",
+          "e4",
+          "g7"
+        ],
+        "arrows": [
+          {
+            "from": "g7",
+            "to": "d4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Fianchetto: Bg7 is the Key",
         "description": "The Pirc bishop on g7 is the most important piece in the opening! After ...g6 and ...Bg7, this bishop controls the long a1-h8 diagonal and pressures White's entire center. Always protect it and keep it active!",
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PP3/2N2N2/PPP2PPP/R1BQKB1R b KQkq - 3 5",
-        "highlights": ["g7"],
-        "arrows": [{"from": "g7", "to": "d4"}, {"from": "g7", "to": "e5"}],
+        "highlights": [
+          "g7"
+        ],
+        "arrows": [
+          {
+            "from": "g7",
+            "to": "d4"
+          },
+          {
+            "from": "g7",
+            "to": "e5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Austrian Attack: Don't Panic!",
         "description": "When White plays f4 (the Austrian Attack), it looks very scary — three pawns on e4, d4, f4! But don't worry. After you castle, your g7 bishop pressures this whole pawn mass. Play ...c5 or ...e5 to counterattack and the center becomes vulnerable.",
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PPP2/2N5/PPP3PP/R1BQKBNR b KQkq f3 0 5",
-        "highlights": ["e4", "d4", "f4", "g7"],
-        "arrows": [{"from": "c7", "to": "c5"}],
+        "highlights": [
+          "e4",
+          "d4",
+          "f4",
+          "g7"
+        ],
+        "arrows": [
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ],
         "style": "neutral"
       },
       {
         "title": "Castle Before You Counterattack",
         "description": "In the Pirc, your king needs to castle before you start pushing ...c5 or ...e5. If you counterattack too early without castling, White can hit you with f5 and your king could be in danger in the center!",
         "fen": "rnbq1rk1/ppp1ppbp/3p1np1/8/3PPP2/2N2N2/PPP1B1PP/R1BQ1RK1 b - - 3 7",
-        "highlights": ["g8", "g1"],
+        "highlights": [
+          "g8",
+          "g1"
+        ],
         "arrows": [],
         "style": "good"
       },
@@ -436,8 +513,16 @@
         "title": "Don't Trade the g7 Bishop!",
         "description": "Your bishop on g7 is too valuable to trade away for nothing! If you let White capture it with a bishop on h6, you lose your best attacking piece and your king becomes less safe. Keep the dragon bishop alive!",
         "fen": "r1bq1rk1/ppp1ppb1/3p1npp/8/3PPP2/2N2NB1/PPP3PP/R2QKB1R b KQ - 1 8",
-        "highlights": ["g7", "g3"],
-        "arrows": [{"from": "g3", "to": "g7"}],
+        "highlights": [
+          "g7",
+          "g3"
+        ],
+        "arrows": [
+          {
+            "from": "g3",
+            "to": "g7"
+          }
+        ],
         "style": "bad"
       }
     ],
@@ -446,40 +531,97 @@
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PPP2/2N2N2/PPP3PP/R1BQKB1R b KQkq - 1 6",
         "prompt": "White has played e4, d4, and f4 — the Austrian Attack. What is Black's best plan?",
         "choices": [
-          {"text": "Castle kingside first, then play ...c5 or ...e5 to counterattack", "isCorrect": true},
-          {"text": "Play ...dxe4 immediately to destroy the center", "isCorrect": false},
-          {"text": "Play ...Bg4 to pin the Nf3", "isCorrect": false}
+          {
+            "text": "Castle kingside first, then play ...c5 or ...e5 to counterattack",
+            "isCorrect": true
+          },
+          {
+            "text": "Play ...dxe4 immediately to destroy the center",
+            "isCorrect": false
+          },
+          {
+            "text": "Play ...Bg4 to pin the Nf3",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Castle first! Get your king safe behind the g7 bishop. Then play ...c5 or ...e5 to counterattack White's big pawn center. The Pirc strategy is: let White build the center, then attack it when you're ready!",
-        "boardHighlightsOnReveal": ["g8", "c7"],
-        "arrowsOnReveal": [{"from": "e8", "to": "g8"}, {"from": "c7", "to": "c5"}]
+        "boardHighlightsOnReveal": [
+          "g8",
+          "c7"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e8",
+            "to": "g8"
+          },
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ]
       },
       {
         "fen": "r1bq1rk1/ppp1ppbp/3p1np1/8/3PPP2/2N2N2/PPP1B1PP/R1BQ1RK1 b - - 3 7",
         "prompt": "Both sides have castled in the Pirc. What is Black's most important piece for the upcoming battle?",
         "choices": [
-          {"text": "The bishop on g7 — it pressures White's center from a distance", "isCorrect": true},
-          {"text": "The knight on f6 — it attacks e4", "isCorrect": false},
-          {"text": "The queen — it can come to b6 or a5", "isCorrect": false}
+          {
+            "text": "The bishop on g7 — it pressures White's center from a distance",
+            "isCorrect": true
+          },
+          {
+            "text": "The knight on f6 — it attacks e4",
+            "isCorrect": false
+          },
+          {
+            "text": "The queen — it can come to b6 or a5",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The g7 bishop is Black's most important piece in the Pirc! It controls the long diagonal and pressures White's entire center. Never trade it away without excellent compensation. Keep it active and it will reward you!",
-        "boardHighlightsOnReveal": ["g7", "d4", "e5"],
-        "arrowsOnReveal": [{"from": "g7", "to": "d4"}]
+        "boardHighlightsOnReveal": [
+          "g7",
+          "d4",
+          "e5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "g7",
+            "to": "d4"
+          }
+        ]
       },
       {
         "fen": "rnbqkbnr/ppp1pppp/3p4/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
         "prompt": "After 1.e4 d6, what is the main idea of the Pirc Defense?",
         "choices": [
-          {"text": "Let White build a center, then attack it with the fianchettoed Bg7 and pawn breaks", "isCorrect": true},
-          {"text": "Fight for the center immediately with ...d5", "isCorrect": false},
-          {"text": "Develop all pieces to their best squares and castle", "isCorrect": false}
+          {
+            "text": "Let White build a center, then attack it with the fianchettoed Bg7 and pawn breaks",
+            "isCorrect": true
+          },
+          {
+            "text": "Fight for the center immediately with ...d5",
+            "isCorrect": false
+          },
+          {
+            "text": "Develop all pieces to their best squares and castle",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The Pirc is a hypermodern defense! You INVITE White to build a big center with e4 and d4, then attack it with pieces — especially the fianchettoed bishop on g7. When the center overextends, you strike with ...c5 or ...e5!",
-        "boardHighlightsOnReveal": ["d4", "e4", "g7"],
-        "arrowsOnReveal": [{"from": "g7", "to": "d4"}]
+        "boardHighlightsOnReveal": [
+          "d4",
+          "e4",
+          "g7"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "g7",
+            "to": "d4"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -487,15 +629,27 @@
         "title": "Austrian Attack (B09)",
         "description": "After 4.f4, White builds a massive pawn center with e4-d4-f4 — the Austrian Attack. This is the most aggressive system against the Pirc. Black must castle quickly and then counterattack with ...c5 or ...e5 before White pushes f5!",
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PPP2/2N5/PPP3PP/R1BQKBNR b KQkq f3 0 5",
-        "highlights": ["e4", "d4", "f4"],
-        "arrows": [{"from": "f4", "to": "f5"}],
+        "highlights": [
+          "e4",
+          "d4",
+          "f4"
+        ],
+        "arrows": [
+          {
+            "from": "f4",
+            "to": "f5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Classical System (B07)",
         "description": "After 4.Nf3 g6 5.Be2, White develops calmly without f4. The game is less sharp but still rich. Black's plan is the same: fianchetto Bg7, castle, and counterattack with ...c5 or ...e5. More strategic than the Austrian Attack.",
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PP3/2N2N2/PPP1BPPP/R1BQK2R b KQkq - 3 6",
-        "highlights": ["e2", "g7"],
+        "highlights": [
+          "e2",
+          "g7"
+        ],
         "arrows": [],
         "style": "theory"
       },
@@ -503,15 +657,25 @@
         "title": "The ...Bg4 System",
         "description": "Instead of immediately going for ...g6 and ...Bg7, Black can play ...Bg4 to pin White's knight. This is a solid alternative that avoids the Austrian Attack entirely and leads to flexible, positional play.",
         "fen": "rn1qkbnr/ppp1pppp/3p4/8/3PP1b1/2N2N2/PPP2PPP/R1BQKB1R b KQkq - 3 4",
-        "highlights": ["g4", "f3"],
-        "arrows": [{"from": "g4", "to": "f3"}],
+        "highlights": [
+          "g4",
+          "f3"
+        ],
+        "arrows": [
+          {
+            "from": "g4",
+            "to": "f3"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "The Pirc vs. Modern: What's the Difference?",
         "description": "The Pirc starts 1...d6 2...Nf6 3...g6. The Modern Defense starts 1...g6 immediately without ...Nf6 right away. Both use the fianchetto strategy but the move order matters: in the Pirc, ...Nf6 attacks e4 early; in the Modern, Black is more flexible about where to place the knight.",
         "fen": "rnbqkbnr/pppppp1p/6p1/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
-        "highlights": ["g6"],
+        "highlights": [
+          "g6"
+        ],
         "arrows": [],
         "style": "theory"
       }
@@ -521,33 +685,76 @@
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PPP2/2N5/PPP3PP/R1BQKBNR b KQkq f3 0 5",
         "prompt": "White played f4 — the Austrian Attack. What is this system called and what is Black's key response plan?",
         "choices": [
-          {"text": "Austrian Attack — Black should castle and then counterattack with ...c5 or ...e5", "isCorrect": true},
-          {"text": "Classical System — Black should play ...Bg4 to pin Nf3", "isCorrect": false},
-          {"text": "Exchange Variation — Black should play ...dxe4 to relieve tension", "isCorrect": false}
+          {
+            "text": "Austrian Attack — Black should castle and then counterattack with ...c5 or ...e5",
+            "isCorrect": true
+          },
+          {
+            "text": "Classical System — Black should play ...Bg4 to pin Nf3",
+            "isCorrect": false
+          },
+          {
+            "text": "Exchange Variation — Black should play ...dxe4 to relieve tension",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Austrian Attack (B09)! White's three-pawn center looks scary, but after Black castles and plays ...c5 or ...e5, the center becomes vulnerable to attack. The Pirc strategy: let White overextend, then strike!",
-        "boardHighlightsOnReveal": ["e4", "d4", "f4", "g8"],
-        "arrowsOnReveal": [{"from": "e8", "to": "g8"}, {"from": "c7", "to": "c5"}]
+        "boardHighlightsOnReveal": [
+          "e4",
+          "d4",
+          "f4",
+          "g8"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e8",
+            "to": "g8"
+          },
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ]
       },
       {
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/3PP3/2N2N2/PPP1BPPP/R1BQK2R b KQkq - 3 6",
         "prompt": "White has played Nf3 and Be2 without f4. What variation of the Pirc is this?",
         "choices": [
-          {"text": "Classical System", "isCorrect": true},
-          {"text": "Austrian Attack", "isCorrect": false},
-          {"text": "Pirc: ...Bg4 line", "isCorrect": false},
-          {"text": "Pirc: ...c6 system", "isCorrect": false}
+          {
+            "text": "Classical System",
+            "isCorrect": true
+          },
+          {
+            "text": "Austrian Attack",
+            "isCorrect": false
+          },
+          {
+            "text": "Pirc: ...Bg4 line",
+            "isCorrect": false
+          },
+          {
+            "text": "Pirc: ...c6 system",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Classical System (B07)! White develops calmly with Nf3 and Be2 without the aggressive f4. The game is more positional. Black's plan is the same: castle behind Bg7 and counterattack with ...c5 or ...e5.",
-        "boardHighlightsOnReveal": ["e2", "f3"],
+        "boardHighlightsOnReveal": [
+          "e2",
+          "f3"
+        ],
         "arrowsOnReveal": []
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["e2e4", "d7d6", "d2d4", "g8f6"],
+    "afterMoves": [
+      "e2e4",
+      "d7d6",
+      "d2d4",
+      "g8f6"
+    ],
     "responses": [
       {
         "id": "pirc-austrian",
@@ -558,7 +765,7 @@
         },
         "name": "Austrian Attack setup",
         "eco": "B09",
-        "frequency": 0.40,
+        "frequency": 0.4,
         "description": "White's most aggressive response — Nc3 followed by f4 builds a massive pawn center. Black must castle quickly and counterattack.",
         "planAdjustment": "Play ...g6, ...Bg7 and castle immediately. Don't delay! After castling, counterattack with ...c5 or ...e5. The Austrian Attack is sharp, but your fianchettoed bishop will pressure White's whole center."
       },
@@ -571,7 +778,7 @@
         },
         "name": "Classical System",
         "eco": "B07",
-        "frequency": 0.30,
+        "frequency": 0.3,
         "description": "White plays Nf3 and Be2, avoiding the Austrian Attack. The game is less sharp and more positional.",
         "planAdjustment": "Develop normally: ...g6, ...Bg7, castle. Then play ...c6 followed by ...d5 or ...e5 to challenge the center. The Classical is a slower battle — patience and good piece placement will reward you."
       },
@@ -584,7 +791,7 @@
         },
         "name": "150 Attack",
         "eco": "B07",
-        "frequency": 0.20,
+        "frequency": 0.2,
         "description": "White plays Nc3, Be3, Qd2 and O-O-O — the '150 Attack'. White plans h4-h5 to attack the kingside. Black should counterattack with ...c5.",
         "planAdjustment": "When White sets up Be3 and Qd2 planning O-O-O, react with ...c5 immediately! Attack White's queenside before White's h4-h5 attack gains momentum. Speed matters — counterattack right away."
       },
@@ -597,7 +804,7 @@
         },
         "name": "Four Pawns Attack",
         "eco": "B09",
-        "frequency": 0.10,
+        "frequency": 0.1,
         "description": "An extremely aggressive approach — White builds a massive four-pawn center. Black must react quickly to undermine it.",
         "planAdjustment": "Develop quickly with ...g6, ...Bg7, and castle as fast as possible. Then hit back with ...c5 or ...e5 immediately — White's big pawn center is overextended and can crumble if you strike at the right moment!"
       }

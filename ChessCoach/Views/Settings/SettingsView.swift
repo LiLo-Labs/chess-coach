@@ -9,63 +9,103 @@ struct SettingsView: View {
     @State private var showingAPIKey = false
     @State private var showOnboarding = false
     @State private var showProUpgrade = false
+    @State private var showELOAssessment = false
 
     var body: some View {
         @Bindable var s = settings
 
         Form {
-            // MARK: - Appearance
+            // MARK: - Your Level
 
             Section {
-                boardThemePicker
+                Stepper("Skill Level: \(s.userELO)", value: $s.userELO, in: 400...2000, step: 100)
+
+                Button {
+                    showELOAssessment = true
+                } label: {
+                    Label("Assess My Level", systemImage: "brain.head.profile")
+                }
             } header: {
-                Label("Board Theme", systemImage: "checkerboard.rectangle")
+                Label("Your Level", systemImage: "chart.bar.fill")
+            } footer: {
+                Text("This affects opponent difficulty, coaching language, and scoring thresholds")
             }
+            .listRowBackground(AppColor.cardBackground)
 
-            Section("Piece Style") {
-                pieceStylePicker
-            }
+            // MARK: - Board & Appearance
 
-            Section("Display") {
+            Section {
+                NavigationLink {
+                    BoardThemePickerView()
+                } label: {
+                    HStack {
+                        Text("Board Theme")
+                        Spacer()
+                        boardThemeMiniSwatch(settings.boardTheme)
+                    }
+                }
+
+                NavigationLink {
+                    PieceStylePickerView()
+                } label: {
+                    HStack {
+                        Text("Piece Style")
+                        Spacer()
+                        pieceStyleMiniPreview(settings.pieceStyle)
+                    }
+                }
+
                 Picker("Move Notation", selection: $s.notationStyle) {
                     Text("Standard (Nf3)").tag("san")
                     Text("English (Knight f3)").tag("english")
                     Text("UCI (g1f3)").tag("uci")
                 }
+
                 Toggle("Show Legal Moves", isOn: $s.showLegalMovesImmediately)
-                Toggle("Celebration Effects", isOn: $s.confettiEnabled)
+
                 Toggle("Color-Blind Friendly", isOn: $s.colorblindMode)
                 if s.colorblindMode {
                     Text("Stage indicators use shapes in addition to colors")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppColor.secondaryText)
                 }
+            } header: {
+                Label("Board & Appearance", systemImage: "paintbrush")
             }
+            .listRowBackground(AppColor.cardBackground)
 
             // MARK: - Gameplay
 
-            Section("Player") {
-                Stepper("Your Skill Level: \(s.userELO)", value: $s.userELO, in: 400...2000, step: 100)
+            Section {
                 Stepper("Opponent Level: \(s.opponentELO)", value: $s.opponentELO, in: 800...2000, step: 100)
-                Text("The AI opponent adjusts to match the skill level")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Section("Goals & Preferences") {
-                Stepper("Daily Goal: \(s.dailyGoalTarget) games/day", value: $s.dailyGoalTarget, in: 1...10)
 
                 HStack {
                     Text("Auto-play Speed")
                     Spacer()
                     Text("\(s.autoPlaySpeed, specifier: "%.1f")s")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppColor.secondaryText)
                 }
                 Slider(value: $s.autoPlaySpeed, in: 1.0...6.0, step: 0.5)
 
+                Stepper("Daily Goal: \(s.dailyGoalTarget) games/day", value: $s.dailyGoalTarget, in: 1...10)
+                Toggle("Celebration Effects", isOn: $s.confettiEnabled)
+                Toggle("Dual Opening Detection", isOn: $s.holisticOpeningHints)
+            } header: {
+                Label("Gameplay", systemImage: "gamecontroller")
+            } footer: {
+                Text("Opponent Level sets default strength in trainer mode. Auto-play Speed controls opening demo animations. Dual Opening Detection shows what each side is playing independently.")
+            }
+            .listRowBackground(AppColor.cardBackground)
+
+            // MARK: - Sound & Feedback
+
+            Section {
                 Toggle("Sound Effects", isOn: $s.soundEnabled)
                 Toggle("Haptic Feedback", isOn: $s.hapticsEnabled)
+            } header: {
+                Label("Sound & Feedback", systemImage: "speaker.wave.2")
             }
+            .listRowBackground(AppColor.cardBackground)
 
             // MARK: - AI Coach
 
@@ -76,6 +116,9 @@ struct SettingsView: View {
                         Text("Cloud (Claude)").tag("claude")
                         Text("Local Server").tag("ollama")
                     }
+
+                    // Provider description
+                    providerDescription(for: s.llmProvider)
 
                     if s.llmProvider == "onDevice" {
                         modelDownloadRow
@@ -93,14 +136,14 @@ struct SettingsView: View {
                                 showingAPIKey.toggle()
                             } label: {
                                 Image(systemName: showingAPIKey ? "eye.slash" : "eye")
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(AppColor.secondaryText)
                             }
                         }
 
                         if s.claudeAPIKey.isEmpty {
                             Text("Required for Cloud mode. Get a key at console.anthropic.com")
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(AppColor.secondaryText)
                         } else {
                             Label("Key saved", systemImage: "checkmark.circle.fill")
                                 .font(.caption)
@@ -114,7 +157,7 @@ struct SettingsView: View {
                             Spacer()
                             TextField("host:port", text: $s.ollamaHost)
                                 .multilineTextAlignment(.trailing)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(AppColor.secondaryText)
                                 .autocorrectionDisabled()
                                 .textInputAutocapitalization(.never)
                         }
@@ -123,7 +166,7 @@ struct SettingsView: View {
                             Spacer()
                             TextField("model name", text: $s.ollamaModel)
                                 .multilineTextAlignment(.trailing)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(AppColor.secondaryText)
                                 .autocorrectionDisabled()
                                 .textInputAutocapitalization(.never)
                         }
@@ -131,16 +174,20 @@ struct SettingsView: View {
                 } header: {
                     Label("AI Coach", systemImage: "brain.head.profile")
                 }
+                .listRowBackground(AppColor.cardBackground)
             } else {
-                Section("AI Coaching") {
+                Section {
                     ProGateBanner(feature: "AI coaching settings")
+                } header: {
+                    Label("AI Coach", systemImage: "brain.head.profile")
                 }
+                .listRowBackground(AppColor.cardBackground)
             }
 
-            // MARK: - Account & Info
+            // MARK: - Subscription
 
-            if subscriptionService.isPro {
-                Section {
+            Section {
+                if subscriptionService.isPro {
                     HStack {
                         Image(systemName: "crown.fill")
                             .foregroundStyle(.yellow)
@@ -148,43 +195,72 @@ struct SettingsView: View {
                             .font(.subheadline.weight(.medium))
                         Spacer()
                     }
+                } else {
+                    Button {
+                        showProUpgrade = true
+                    } label: {
+                        Label("Upgrade to Pro", systemImage: "crown")
+                    }
+                }
+
+                if subscriptionService.isPro {
+                    NavigationLink {
+                        GameImportView()
+                    } label: {
+                        Label("Import Games", systemImage: "square.and.arrow.down")
+                    }
+                }
+            } header: {
+                Label("Subscription", systemImage: "crown.fill")
+            } footer: {
+                if subscriptionService.isPro {
+                    Text("Import PGN files from other apps")
                 }
             }
+            .listRowBackground(AppColor.cardBackground)
 
-            Section("Help") {
+            // MARK: - About
+
+            Section {
                 Button {
                     showOnboarding = true
                 } label: {
                     Label("Replay Introduction", systemImage: "arrow.counterclockwise")
                 }
-                FeedbackButton(screen: "Settings")
-            }
 
-            Section("About") {
-                HStack {
-                    Text("Version")
-                    Spacer()
-                    Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
-                        .foregroundStyle(.secondary)
-                }
+                FeedbackButton(screen: "Settings")
 
                 NavigationLink {
                     AcknowledgmentsView()
                 } label: {
                     Label("Acknowledgments", systemImage: "hands.clap")
                 }
+
                 Link("Privacy Policy", destination: URL(string: "https://chesscoach.app/privacy")!)
                 Link("Support", destination: URL(string: "mailto:chesscoach@marklifson.com")!)
+
+                HStack {
+                    Text("Version")
+                    Spacer()
+                    Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
+                        .foregroundStyle(AppColor.secondaryText)
+                }
+            } header: {
+                Label("About", systemImage: "info.circle")
             }
+            .listRowBackground(AppColor.cardBackground)
 
             #if DEBUG
-            Section("Developer") {
+            Section {
                 NavigationLink {
                     DebugStateView()
                 } label: {
                     Label("Debug States", systemImage: "ladybug")
                 }
+            } header: {
+                Label("Developer", systemImage: "hammer")
             }
+            .listRowBackground(AppColor.cardBackground)
             #endif
         }
         .navigationTitle("Settings")
@@ -193,6 +269,64 @@ struct SettingsView: View {
         }
         .fullScreenCover(isPresented: $showOnboarding) {
             OnboardingView()
+        }
+        .sheet(isPresented: $showELOAssessment) {
+            ELOAssessmentView { elo in
+                settings.userELO = elo
+            }
+        }
+    }
+
+    // MARK: - Provider Descriptions
+
+    @ViewBuilder
+    private func providerDescription(for provider: String) -> some View {
+        switch provider {
+        case "onDevice":
+            Text("Runs privately on your phone. No internet needed.")
+                .font(.caption)
+                .foregroundStyle(AppColor.secondaryText)
+        case "claude":
+            Text("Uses Anthropic's API. Requires API key.")
+                .font(.caption)
+                .foregroundStyle(AppColor.secondaryText)
+        case "ollama":
+            Text("Connect to your own Ollama instance.")
+                .font(.caption)
+                .foregroundStyle(AppColor.secondaryText)
+        default:
+            EmptyView()
+        }
+    }
+
+    // MARK: - Inline Previews
+
+    private func boardThemeMiniSwatch(_ theme: BoardTheme) -> some View {
+        Grid(horizontalSpacing: 0, verticalSpacing: 0) {
+            GridRow {
+                theme.lightColor.frame(width: 14, height: 14)
+                theme.darkColor.frame(width: 14, height: 14)
+            }
+            GridRow {
+                theme.darkColor.frame(width: 14, height: 14)
+                theme.lightColor.frame(width: 14, height: 14)
+            }
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 3))
+    }
+
+    private func pieceStyleMiniPreview(_ style: PieceStyle) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 4)
+                .fill(settings.boardTheme.darkColor)
+                .frame(width: 28, height: 28)
+
+            if let uiImage = ChessboardModel.pieceImage(named: "wK", folder: style.assetFolder) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 22, height: 22)
+            }
         }
     }
 
@@ -210,7 +344,7 @@ struct SettingsView: View {
                     if let size = modelDownloadService.downloadedModelSize {
                         Text(ByteCountFormatter.string(fromByteCount: size, countStyle: .file))
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(AppColor.secondaryText)
                     }
                 }
 
@@ -234,7 +368,7 @@ struct SettingsView: View {
                     }
                     Text("~\(ByteCountFormatter.string(fromByteCount: AppConfig.modelDownload.expectedSizeBytes, countStyle: .file)) — Wi-Fi recommended")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppColor.secondaryText)
                 }
 
             case .downloading(let progress):
@@ -245,7 +379,7 @@ struct SettingsView: View {
                         Spacer()
                         Text("\(Int(progress * 100))%")
                             .font(.caption.monospacedDigit())
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(AppColor.secondaryText)
                     }
                     ProgressView(value: progress)
                         .tint(.cyan)
@@ -263,7 +397,7 @@ struct SettingsView: View {
                         .foregroundStyle(.orange)
                     Text(message)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppColor.secondaryText)
                     Button {
                         modelDownloadService.startDownload()
                     } label: {
@@ -273,161 +407,5 @@ struct SettingsView: View {
                 }
             }
         }
-    }
-
-    // MARK: - Board Theme Picker
-
-    private var boardThemePicker: some View {
-        let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 4)
-        return VStack(alignment: .leading, spacing: 12) {
-            LazyVGrid(columns: columns, spacing: 10) {
-                ForEach(BoardTheme.freeThemes) { theme in
-                    boardThemeSwatch(theme)
-                }
-            }
-
-            if !BoardTheme.proThemes.isEmpty {
-                Text("Premium")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
-
-                LazyVGrid(columns: columns, spacing: 10) {
-                    ForEach(BoardTheme.proThemes) { theme in
-                        boardThemeSwatch(theme)
-                    }
-                }
-            }
-        }
-        .padding(.vertical, 4)
-    }
-
-    private func boardThemeSwatch(_ theme: BoardTheme) -> some View {
-        let locked = theme.isPro && !subscriptionService.isPro
-        return Button {
-            if locked { return }
-            withAnimation(.easeInOut(duration: 0.2)) {
-                settings.boardTheme = theme
-            }
-        } label: {
-            VStack(spacing: 4) {
-                ZStack {
-                    Grid(horizontalSpacing: 0, verticalSpacing: 0) {
-                        GridRow {
-                            theme.lightColor.frame(width: 20, height: 20)
-                            theme.darkColor.frame(width: 20, height: 20)
-                        }
-                        GridRow {
-                            theme.darkColor.frame(width: 20, height: 20)
-                            theme.lightColor.frame(width: 20, height: 20)
-                        }
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 4))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4)
-                            .stroke(
-                                settings.boardTheme == theme ? Color.accentColor : Color.clear,
-                                lineWidth: 2
-                            )
-                    )
-                    .opacity(locked ? 0.5 : 1.0)
-
-                    if locked {
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: 10))
-                            .foregroundStyle(.white)
-                            .padding(3)
-                            .background(.black.opacity(0.5), in: Circle())
-                    }
-                }
-
-                Text(theme.displayName)
-                    .font(.caption2)
-                    .foregroundStyle(
-                        settings.boardTheme == theme
-                            ? Color.accentColor
-                            : locked ? .secondary.opacity(0.5) : .secondary
-                    )
-            }
-        }
-        .buttonStyle(.plain)
-        .disabled(locked)
-    }
-
-    // MARK: - Piece Style Picker
-
-    private var pieceStylePicker: some View {
-        let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 3)
-        return VStack(alignment: .leading, spacing: 12) {
-            LazyVGrid(columns: columns, spacing: 10) {
-                ForEach(PieceStyle.freeStyles) { style in
-                    pieceStyleSwatch(style)
-                }
-            }
-
-            if !PieceStyle.proStyles.isEmpty {
-                Text("Premium")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
-
-                LazyVGrid(columns: columns, spacing: 10) {
-                    ForEach(PieceStyle.proStyles) { style in
-                        pieceStyleSwatch(style)
-                    }
-                }
-            }
-        }
-        .padding(.vertical, 4)
-    }
-
-    private func pieceStyleSwatch(_ style: PieceStyle) -> some View {
-        let locked = style.isPro && !subscriptionService.isPro
-        return Button {
-            if locked { return }
-            withAnimation(.easeInOut(duration: 0.2)) {
-                settings.pieceStyle = style
-            }
-        } label: {
-            VStack(spacing: 4) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(settings.boardTheme.darkColor)
-                        .frame(width: 48, height: 48)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 6)
-                                .stroke(
-                                    settings.pieceStyle == style ? Color.accentColor : Color.clear,
-                                    lineWidth: 2
-                                )
-                        )
-                        .opacity(locked ? 0.5 : 1.0)
-
-                    if let uiImage = ChessboardModel.pieceImage(named: "wK", folder: style.assetFolder) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 36, height: 36)
-                            .opacity(locked ? 0.5 : 1.0)
-                    }
-
-                    if locked {
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: 10))
-                            .foregroundStyle(.white)
-                            .padding(3)
-                            .background(.black.opacity(0.5), in: Circle())
-                    }
-                }
-
-                Text(style.displayName)
-                    .font(.caption2)
-                    .foregroundStyle(
-                        settings.pieceStyle == style
-                            ? Color.accentColor
-                            : locked ? .secondary.opacity(0.5) : .secondary
-                    )
-            }
-        }
-        .buttonStyle(.plain)
-        .disabled(locked)
     }
 }

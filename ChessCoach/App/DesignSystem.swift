@@ -289,3 +289,17 @@ enum TimeAgo {
         return "\(days / 30)mo ago"
     }
 }
+
+// MARK: - Button Styles
+
+/// Scales button down slightly on press for tactile feedback.
+struct ScaleButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(reduceMotion ? 1.0 : (configuration.isPressed ? 0.95 : 1.0))
+            .opacity(configuration.isPressed ? 0.8 : 1.0)
+            .animation(reduceMotion ? nil : .spring(response: 0.15, dampingFraction: 0.7), value: configuration.isPressed)
+    }
+}

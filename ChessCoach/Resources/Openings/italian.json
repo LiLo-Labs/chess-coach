@@ -4,80 +4,132 @@
   "description": "A classic opening that develops pieces quickly toward the center and kingside.",
   "color": "white",
   "difficulty": 1,
+  "tags": [
+    "classical",
+    "tactical"
+  ],
   "tree": {
     "id": "italian/root",
     "children": [
       {
         "id": "italian/e2e4",
-        "move": { "uci": "e2e4", "san": "e4", "explanation": "Control the center with your king's pawn. This opens lines for your bishop and queen." },
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "Control the center with your king's pawn. This opens lines for your bishop and queen."
+        },
         "isMainLine": true,
         "weight": 300,
         "children": [
           {
             "id": "italian/e2e4/e7e5",
-            "move": { "uci": "e7e5", "san": "e5", "explanation": "Black mirrors your move, also fighting for the center." },
+            "move": {
+              "uci": "e7e5",
+              "san": "e5",
+              "explanation": "Black mirrors your move, also fighting for the center."
+            },
             "isMainLine": true,
             "weight": 250,
             "children": [
               {
                 "id": "italian/e2e4/e7e5/g1f3",
-                "move": { "uci": "g1f3", "san": "Nf3", "explanation": "Develop your knight toward the center and attack Black's e5 pawn." },
+                "move": {
+                  "uci": "g1f3",
+                  "san": "Nf3",
+                  "explanation": "Develop your knight toward the center and attack Black's e5 pawn."
+                },
                 "isMainLine": true,
                 "weight": 240,
                 "children": [
                   {
                     "id": "italian/e2e4/e7e5/g1f3/b8c6",
-                    "move": { "uci": "b8c6", "san": "Nc6", "explanation": "Black defends the e5 pawn with the knight while developing a piece." },
+                    "move": {
+                      "uci": "b8c6",
+                      "san": "Nc6",
+                      "explanation": "Black defends the e5 pawn with the knight while developing a piece."
+                    },
                     "isMainLine": true,
                     "weight": 230,
                     "children": [
                       {
                         "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4",
-                        "move": { "uci": "f1c4", "san": "Bc4", "explanation": "The Italian Bishop! Aims at the f7 square, which is Black's weakest point near the king." },
+                        "move": {
+                          "uci": "f1c4",
+                          "san": "Bc4",
+                          "explanation": "The Italian Bishop! Aims at the f7 square, which is Black's weakest point near the king."
+                        },
                         "isMainLine": true,
                         "weight": 220,
                         "children": [
                           {
                             "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5",
-                            "move": { "uci": "f8c5", "san": "Bc5", "explanation": "The Giuoco Piano — Black develops the bishop actively, mirroring your strategy." },
+                            "move": {
+                              "uci": "f8c5",
+                              "san": "Bc5",
+                              "explanation": "The Giuoco Piano — Black develops the bishop actively, mirroring your strategy."
+                            },
                             "isMainLine": true,
                             "variationName": "Giuoco Piano",
                             "weight": 180,
                             "children": [
                               {
                                 "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/d2d3",
-                                "move": { "uci": "d2d3", "san": "d3", "explanation": "The quiet Italian. Support e4 and prepare to develop your other bishop." },
+                                "move": {
+                                  "uci": "d2d3",
+                                  "san": "d3",
+                                  "explanation": "The quiet Italian. Support e4 and prepare to develop your other bishop."
+                                },
                                 "isMainLine": true,
                                 "variationName": "Giuoco Pianissimo",
                                 "weight": 140,
                                 "children": [
                                   {
                                     "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/d2d3/g8f6",
-                                    "move": { "uci": "g8f6", "san": "Nf6", "explanation": "Black develops the knight, attacking your e4 pawn." },
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Black develops the knight, attacking your e4 pawn."
+                                    },
                                     "isMainLine": true,
                                     "weight": 130,
                                     "children": [
                                       {
                                         "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/d2d3/g8f6/e1g1",
-                                        "move": { "uci": "e1g1", "san": "O-O", "explanation": "Castle to safety. Your king is secure and your rook enters the game." },
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle to safety. Your king is secure and your rook enters the game."
+                                        },
                                         "isMainLine": true,
                                         "weight": 120,
                                         "children": [
                                           {
                                             "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/d2d3/g8f6/e1g1/e8g8",
-                                            "move": { "uci": "e8g8", "san": "O-O", "explanation": "Black castles too. Both sides are fully developed — the middlegame begins." },
+                                            "move": {
+                                              "uci": "e8g8",
+                                              "san": "O-O",
+                                              "explanation": "Black castles too. Both sides are fully developed — the middlegame begins."
+                                            },
                                             "isMainLine": true,
                                             "weight": 110,
                                             "children": [
                                               {
                                                 "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/d2d3/g8f6/e1g1/e8g8/c2c3",
-                                                "move": { "uci": "c2c3", "san": "c3", "explanation": "Prepare d4 to open the center. This is the key plan in the Giuoco Pianissimo." },
+                                                "move": {
+                                                  "uci": "c2c3",
+                                                  "san": "c3",
+                                                  "explanation": "Prepare d4 to open the center. This is the key plan in the Giuoco Pianissimo."
+                                                },
                                                 "isMainLine": true,
                                                 "weight": 100,
                                                 "children": [
                                                   {
                                                     "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/d2d3/g8f6/e1g1/e8g8/c2c3/d7d6",
-                                                    "move": { "uci": "d7d6", "san": "d6", "explanation": "Black solidifies. Now both sides maneuver — Re1, a4, and d4 are your ideas." },
+                                                    "move": {
+                                                      "uci": "d7d6",
+                                                      "san": "d6",
+                                                      "explanation": "Black solidifies. Now both sides maneuver — Re1, a4, and d4 are your ideas."
+                                                    },
                                                     "isMainLine": true,
                                                     "weight": 90,
                                                     "children": []
@@ -92,14 +144,22 @@
                                   },
                                   {
                                     "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/d2d3/d7d6",
-                                    "move": { "uci": "d7d6", "san": "d6", "explanation": "Black plays solidly, preparing to develop the knight later." },
+                                    "move": {
+                                      "uci": "d7d6",
+                                      "san": "d6",
+                                      "explanation": "Black plays solidly, preparing to develop the knight later."
+                                    },
                                     "isMainLine": false,
                                     "variationName": "Quiet ...d6",
                                     "weight": 90,
                                     "children": [
                                       {
                                         "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/d2d3/d7d6/c2c3",
-                                        "move": { "uci": "c2c3", "san": "c3", "explanation": "Prepare d4. The plan is always the same — open the center when ready." },
+                                        "move": {
+                                          "uci": "c2c3",
+                                          "san": "c3",
+                                          "explanation": "Prepare d4. The plan is always the same — open the center when ready."
+                                        },
                                         "isMainLine": true,
                                         "weight": 80,
                                         "children": []
@@ -110,44 +170,72 @@
                               },
                               {
                                 "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/c2c3",
-                                "move": { "uci": "c2c3", "san": "c3", "explanation": "Prepare d4 immediately! This is the aggressive Giuoco Piano with an early center push." },
+                                "move": {
+                                  "uci": "c2c3",
+                                  "san": "c3",
+                                  "explanation": "Prepare d4 immediately! This is the aggressive Giuoco Piano with an early center push."
+                                },
                                 "isMainLine": false,
                                 "variationName": "Giuoco Piano c3",
                                 "weight": 120,
                                 "children": [
                                   {
                                     "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/c2c3/g8f6",
-                                    "move": { "uci": "g8f6", "san": "Nf6", "explanation": "Black develops and pressures e4, trying to prevent d4." },
+                                    "move": {
+                                      "uci": "g8f6",
+                                      "san": "Nf6",
+                                      "explanation": "Black develops and pressures e4, trying to prevent d4."
+                                    },
                                     "isMainLine": true,
                                     "weight": 110,
                                     "children": [
                                       {
                                         "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/c2c3/g8f6/d2d4",
-                                        "move": { "uci": "d2d4", "san": "d4", "explanation": "Push! Open the center while your pieces are more active." },
+                                        "move": {
+                                          "uci": "d2d4",
+                                          "san": "d4",
+                                          "explanation": "Push! Open the center while your pieces are more active."
+                                        },
                                         "isMainLine": true,
                                         "weight": 100,
                                         "children": [
                                           {
                                             "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/c2c3/g8f6/d2d4/e5d4",
-                                            "move": { "uci": "e5d4", "san": "exd4", "explanation": "Black captures. Now recapture with the pawn for a strong center." },
+                                            "move": {
+                                              "uci": "e5d4",
+                                              "san": "exd4",
+                                              "explanation": "Black captures. Now recapture with the pawn for a strong center."
+                                            },
                                             "isMainLine": true,
                                             "weight": 90,
                                             "children": [
                                               {
                                                 "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/c2c3/g8f6/d2d4/e5d4/c3d4",
-                                                "move": { "uci": "c3d4", "san": "cxd4", "explanation": "You have a powerful pawn center on d4 and e4. This is the ideal Italian position." },
+                                                "move": {
+                                                  "uci": "c3d4",
+                                                  "san": "cxd4",
+                                                  "explanation": "You have a powerful pawn center on d4 and e4. This is the ideal Italian position."
+                                                },
                                                 "isMainLine": true,
                                                 "weight": 80,
                                                 "children": [
                                                   {
                                                     "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/c2c3/g8f6/d2d4/e5d4/c3d4/c5b4",
-                                                    "move": { "uci": "c5b4", "san": "Bb4+", "explanation": "Black gives check to disrupt your development." },
+                                                    "move": {
+                                                      "uci": "c5b4",
+                                                      "san": "Bb4+",
+                                                      "explanation": "Black gives check to disrupt your development."
+                                                    },
                                                     "isMainLine": true,
                                                     "weight": 70,
                                                     "children": [
                                                       {
                                                         "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/c2c3/g8f6/d2d4/e5d4/c3d4/c5b4/c1d2",
-                                                        "move": { "uci": "c1d2", "san": "Bd2", "explanation": "Block with the bishop. After the exchange, you'll have excellent central control." },
+                                                        "move": {
+                                                          "uci": "c1d2",
+                                                          "san": "Bd2",
+                                                          "explanation": "Block with the bishop. After the exchange, you'll have excellent central control."
+                                                        },
                                                         "isMainLine": true,
                                                         "weight": 60,
                                                         "children": []
@@ -166,32 +254,52 @@
                               },
                               {
                                 "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/b2b4",
-                                "move": { "uci": "b2b4", "san": "b4", "explanation": "The Evans Gambit! Sacrifice a pawn to gain a huge development advantage." },
+                                "move": {
+                                  "uci": "b2b4",
+                                  "san": "b4",
+                                  "explanation": "The Evans Gambit! Sacrifice a pawn to gain a huge development advantage."
+                                },
                                 "isMainLine": false,
                                 "variationName": "Evans Gambit",
                                 "weight": 80,
                                 "children": [
                                   {
                                     "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/b2b4/c5b4",
-                                    "move": { "uci": "c5b4", "san": "Bxb4", "explanation": "Black accepts the gambit. Now you gain time by attacking the bishop." },
+                                    "move": {
+                                      "uci": "c5b4",
+                                      "san": "Bxb4",
+                                      "explanation": "Black accepts the gambit. Now you gain time by attacking the bishop."
+                                    },
                                     "isMainLine": true,
                                     "weight": 70,
                                     "children": [
                                       {
                                         "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/b2b4/c5b4/c2c3",
-                                        "move": { "uci": "c2c3", "san": "c3", "explanation": "Attack the bishop and prepare d4. You'll have a massive center after the bishop retreats." },
+                                        "move": {
+                                          "uci": "c2c3",
+                                          "san": "c3",
+                                          "explanation": "Attack the bishop and prepare d4. You'll have a massive center after the bishop retreats."
+                                        },
                                         "isMainLine": true,
                                         "weight": 60,
                                         "children": [
                                           {
                                             "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/b2b4/c5b4/c2c3/b4a5",
-                                            "move": { "uci": "b4a5", "san": "Ba5", "explanation": "The bishop retreats but stays on the a5-e1 diagonal." },
+                                            "move": {
+                                              "uci": "b4a5",
+                                              "san": "Ba5",
+                                              "explanation": "The bishop retreats but stays on the a5-e1 diagonal."
+                                            },
                                             "isMainLine": true,
                                             "weight": 50,
                                             "children": [
                                               {
                                                 "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8c5/b2b4/c5b4/c2c3/b4a5/d2d4",
-                                                "move": { "uci": "d2d4", "san": "d4", "explanation": "Open the center! With your lead in development, the open position favors you." },
+                                                "move": {
+                                                  "uci": "d2d4",
+                                                  "san": "d4",
+                                                  "explanation": "Open the center! With your lead in development, the open position favors you."
+                                                },
                                                 "isMainLine": true,
                                                 "weight": 40,
                                                 "children": []
@@ -208,27 +316,43 @@
                           },
                           {
                             "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/g8f6",
-                            "move": { "uci": "g8f6", "san": "Nf6", "explanation": "The Two Knights Defense — Black immediately counterattacks your e4 pawn instead of developing the bishop." },
+                            "move": {
+                              "uci": "g8f6",
+                              "san": "Nf6",
+                              "explanation": "The Two Knights Defense — Black immediately counterattacks your e4 pawn instead of developing the bishop."
+                            },
                             "isMainLine": false,
                             "variationName": "Two Knights Defense",
                             "weight": 150,
                             "children": [
                               {
                                 "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/g8f6/d2d3",
-                                "move": { "uci": "d2d3", "san": "d3", "explanation": "The quiet approach. Defend e4 and develop normally." },
+                                "move": {
+                                  "uci": "d2d3",
+                                  "san": "d3",
+                                  "explanation": "The quiet approach. Defend e4 and develop normally."
+                                },
                                 "isMainLine": true,
                                 "variationName": "Quiet d3 vs Two Knights",
                                 "weight": 100,
                                 "children": [
                                   {
                                     "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/g8f6/d2d3/f8c5",
-                                    "move": { "uci": "f8c5", "san": "Bc5", "explanation": "Black develops the bishop actively. The game transposes to a Giuoco Piano structure." },
+                                    "move": {
+                                      "uci": "f8c5",
+                                      "san": "Bc5",
+                                      "explanation": "Black develops the bishop actively. The game transposes to a Giuoco Piano structure."
+                                    },
                                     "isMainLine": true,
                                     "weight": 90,
                                     "children": [
                                       {
                                         "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/g8f6/d2d3/f8c5/e1g1",
-                                        "move": { "uci": "e1g1", "san": "O-O", "explanation": "Castle and prepare c3-d4. The position is similar to the Giuoco Pianissimo." },
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle and prepare c3-d4. The position is similar to the Giuoco Pianissimo."
+                                        },
                                         "isMainLine": true,
                                         "weight": 80,
                                         "children": []
@@ -237,14 +361,22 @@
                                   },
                                   {
                                     "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/g8f6/d2d3/f8e7",
-                                    "move": { "uci": "f8e7", "san": "Be7", "explanation": "Black develops modestly. A solid but passive choice." },
+                                    "move": {
+                                      "uci": "f8e7",
+                                      "san": "Be7",
+                                      "explanation": "Black develops modestly. A solid but passive choice."
+                                    },
                                     "isMainLine": false,
                                     "variationName": "Quiet ...Be7",
                                     "weight": 60,
                                     "children": [
                                       {
                                         "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/g8f6/d2d3/f8e7/e1g1",
-                                        "move": { "uci": "e1g1", "san": "O-O", "explanation": "Castle. You have a comfortable position with more active pieces." },
+                                        "move": {
+                                          "uci": "e1g1",
+                                          "san": "O-O",
+                                          "explanation": "Castle. You have a comfortable position with more active pieces."
+                                        },
                                         "isMainLine": true,
                                         "weight": 50,
                                         "children": []
@@ -255,20 +387,32 @@
                               },
                               {
                                 "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/g8f6/f3g5",
-                                "move": { "uci": "f3g5", "san": "Ng5", "explanation": "The Fried Liver Attack path! Knight jumps to g5 threatening f7. Very aggressive." },
+                                "move": {
+                                  "uci": "f3g5",
+                                  "san": "Ng5",
+                                  "explanation": "The Fried Liver Attack path! Knight jumps to g5 threatening f7. Very aggressive."
+                                },
                                 "isMainLine": false,
                                 "variationName": "Fried Liver/Traxler",
                                 "weight": 70,
                                 "children": [
                                   {
                                     "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/g8f6/f3g5/d7d5",
-                                    "move": { "uci": "d7d5", "san": "d5", "explanation": "The main defense. Black counterattacks in the center." },
+                                    "move": {
+                                      "uci": "d7d5",
+                                      "san": "d5",
+                                      "explanation": "The main defense. Black counterattacks in the center."
+                                    },
                                     "isMainLine": true,
                                     "weight": 60,
                                     "children": [
                                       {
                                         "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/g8f6/f3g5/d7d5/e4d5",
-                                        "move": { "uci": "e4d5", "san": "exd5", "explanation": "Capture. Now Black must decide how to recapture." },
+                                        "move": {
+                                          "uci": "e4d5",
+                                          "san": "exd5",
+                                          "explanation": "Capture. Now Black must decide how to recapture."
+                                        },
                                         "isMainLine": true,
                                         "weight": 50,
                                         "children": []
@@ -281,20 +425,32 @@
                           },
                           {
                             "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8e7",
-                            "move": { "uci": "f8e7", "san": "Be7", "explanation": "The Hungarian Defense — a very solid but passive choice by Black." },
+                            "move": {
+                              "uci": "f8e7",
+                              "san": "Be7",
+                              "explanation": "The Hungarian Defense — a very solid but passive choice by Black."
+                            },
                             "isMainLine": false,
                             "variationName": "Hungarian Defense",
                             "weight": 60,
                             "children": [
                               {
                                 "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8e7/d2d4",
-                                "move": { "uci": "d2d4", "san": "d4", "explanation": "Take advantage of Black's passive setup by seizing the center immediately." },
+                                "move": {
+                                  "uci": "d2d4",
+                                  "san": "d4",
+                                  "explanation": "Take advantage of Black's passive setup by seizing the center immediately."
+                                },
                                 "isMainLine": true,
                                 "weight": 50,
                                 "children": [
                                   {
                                     "id": "italian/e2e4/e7e5/g1f3/b8c6/f1c4/f8e7/d2d4/d7d6",
-                                    "move": { "uci": "d7d6", "san": "d6", "explanation": "Black defends e5 with the pawn. You have more space and a development lead." },
+                                    "move": {
+                                      "uci": "d7d6",
+                                      "san": "d6",
+                                      "explanation": "Black defends e5 with the pawn. You have more space and a development lead."
+                                    },
                                     "isMainLine": true,
                                     "weight": 40,
                                     "children": []
@@ -320,17 +476,54 @@
   "plan": {
     "summary": "Develop your pieces quickly toward the center and kingside, aim your bishop at f7 — Black's weakest point near the king — then castle and prepare a central or kingside attack.",
     "strategicGoals": [
-      { "description": "Control the center with pawns on e4 and d3/d4", "priority": 1 },
-      { "description": "Aim the light-squared bishop at f7", "priority": 2 },
-      { "description": "Castle kingside within the first 8 moves", "priority": 3 },
-      { "description": "Develop knights to active central squares", "priority": 4 }
+      {
+        "description": "Control the center with pawns on e4 and d3/d4",
+        "priority": 1
+      },
+      {
+        "description": "Aim the light-squared bishop at f7",
+        "priority": 2
+      },
+      {
+        "description": "Castle kingside within the first 8 moves",
+        "priority": 3
+      },
+      {
+        "description": "Develop knights to active central squares",
+        "priority": 4
+      }
     ],
     "pawnStructureTarget": "e4/d3 center with option to push d4 later",
-    "keySquares": ["e4", "f7", "c4", "f3"],
+    "keySquares": [
+      "e4",
+      "f7",
+      "c4",
+      "f3"
+    ],
     "pieceTargets": [
-      { "piece": "light-squared bishop", "idealSquares": ["c4", "b3"], "reasoning": "Aims at f7, Black's weakest point near the king" },
-      { "piece": "king's knight", "idealSquares": ["f3"], "reasoning": "Controls center, supports d4 push, and defends kingside" },
-      { "piece": "queen's knight", "idealSquares": ["c3", "d2"], "reasoning": "Supports e4 pawn and prepares for central play" }
+      {
+        "piece": "light-squared bishop",
+        "idealSquares": [
+          "c4",
+          "b3"
+        ],
+        "reasoning": "Aims at f7, Black's weakest point near the king"
+      },
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f3"
+        ],
+        "reasoning": "Controls center, supports d4 push, and defends kingside"
+      },
+      {
+        "piece": "queen's knight",
+        "idealSquares": [
+          "c3",
+          "d2"
+        ],
+        "reasoning": "Supports e4 pawn and prepares for central play"
+      }
     ],
     "typicalPlans": [
       "Push d4 to open the center when your pieces are developed",
@@ -348,31 +541,61 @@
         "title": "Control the Center",
         "description": "1.e4 stakes a claim in the center. This pawn controls d5 and f5 and opens lines for your bishop and queen.",
         "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
-        "highlights": ["e4"],
-        "arrows": [{"from": "e2", "to": "e4"}],
+        "highlights": [
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "e2",
+            "to": "e4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Italian Bishop",
         "description": "After 3.Bc4, your bishop aims directly at f7 — Black's weakest square near the king. This is the heart of the Italian Game.",
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
-        "highlights": ["c4", "f7"],
-        "arrows": [{"from": "c4", "to": "f7"}],
+        "highlights": [
+          "c4",
+          "f7"
+        ],
+        "arrows": [
+          {
+            "from": "c4",
+            "to": "f7"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Don't Move the Same Piece Twice",
         "description": "Moving your bishop again (e.g. Bc4-b3-c4) wastes tempo. Develop a NEW piece each move in the opening.",
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
-        "highlights": ["c4", "b3"],
-        "arrows": [{"from": "c4", "to": "b3"}, {"from": "b3", "to": "c4"}],
+        "highlights": [
+          "c4",
+          "b3"
+        ],
+        "arrows": [
+          {
+            "from": "c4",
+            "to": "b3"
+          },
+          {
+            "from": "b3",
+            "to": "c4"
+          }
+        ],
         "style": "bad"
       },
       {
         "title": "Castle Early",
         "description": "After castling, your king is safe on g1 and your rook joins the fight on f1. Don't delay!",
         "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/3P1N2/PPP2PPP/RNBQ1RK1 b kq - 0 5",
-        "highlights": ["g1", "f1"],
+        "highlights": [
+          "g1",
+          "f1"
+        ],
         "arrows": [],
         "style": "good"
       },
@@ -380,8 +603,16 @@
         "title": "Don't Push d4 Too Early",
         "description": "Playing d4 before you're developed can backfire. Here Black captures and your center is weakened prematurely.",
         "fen": "rnbqkbnr/pppp1ppp/8/4p3/3PP3/8/PPP2PPP/RNBQKBNR b KQkq d3 0 2",
-        "highlights": ["d4", "e5"],
-        "arrows": [{"from": "e5", "to": "d4"}],
+        "highlights": [
+          "d4",
+          "e5"
+        ],
+        "arrows": [
+          {
+            "from": "e5",
+            "to": "d4"
+          }
+        ],
         "style": "bad"
       }
     ],
@@ -390,40 +621,89 @@
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
         "prompt": "What square does the bishop on c4 aim at?",
         "choices": [
-          {"text": "f7 — Black's weakest point", "isCorrect": true},
-          {"text": "d5 — the center", "isCorrect": false},
-          {"text": "a6 — the queenside", "isCorrect": false}
+          {
+            "text": "f7 — Black's weakest point",
+            "isCorrect": true
+          },
+          {
+            "text": "d5 — the center",
+            "isCorrect": false
+          },
+          {
+            "text": "a6 — the queenside",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The bishop on c4 targets f7, which is only defended by Black's king. This is the heart of the Italian Game.",
-        "boardHighlightsOnReveal": ["c4", "f7"],
-        "arrowsOnReveal": [{"from": "c4", "to": "f7"}]
+        "boardHighlightsOnReveal": [
+          "c4",
+          "f7"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c4",
+            "to": "f7"
+          }
+        ]
       },
       {
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
         "prompt": "Where should the king's knight develop?",
         "choices": [
-          {"text": "f3 — controls center and supports d4", "isCorrect": true},
-          {"text": "h3 — safe but passive", "isCorrect": false},
-          {"text": "e2 — blocks the bishop", "isCorrect": false}
+          {
+            "text": "f3 — controls center and supports d4",
+            "isCorrect": true
+          },
+          {
+            "text": "h3 — safe but passive",
+            "isCorrect": false
+          },
+          {
+            "text": "e2 — blocks the bishop",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Nf3 is the ideal square — it controls d4 and e5, supports a future d4 push, and helps defend the kingside.",
-        "boardHighlightsOnReveal": ["f3"],
-        "arrowsOnReveal": [{"from": "g1", "to": "f3"}]
+        "boardHighlightsOnReveal": [
+          "f3"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "g1",
+            "to": "f3"
+          }
+        ]
       },
       {
         "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 0 4",
         "prompt": "What's the priority: castle or push d4?",
         "choices": [
-          {"text": "Castle first — king safety comes first", "isCorrect": true},
-          {"text": "Push d4 — seize the center now", "isCorrect": false},
-          {"text": "Develop the queen — add pressure", "isCorrect": false}
+          {
+            "text": "Castle first — king safety comes first",
+            "isCorrect": true
+          },
+          {
+            "text": "Push d4 — seize the center now",
+            "isCorrect": false
+          },
+          {
+            "text": "Develop the queen — add pressure",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Castle first! Your king needs to be safe before you open the center with d4. Rushing d4 before castling can leave your king exposed.",
-        "boardHighlightsOnReveal": ["g1"],
-        "arrowsOnReveal": [{"from": "e1", "to": "g1"}]
+        "boardHighlightsOnReveal": [
+          "g1"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e1",
+            "to": "g1"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -431,32 +711,64 @@
         "title": "Giuoco Piano (C54)",
         "description": "After 3...Bc5, Black mirrors your strategy. The name means 'Quiet Game' in Italian — both sides develop harmoniously.",
         "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
-        "highlights": ["c5", "c4"],
-        "arrows": [{"from": "c5", "to": "f2"}],
+        "highlights": [
+          "c5",
+          "c4"
+        ],
+        "arrows": [
+          {
+            "from": "c5",
+            "to": "f2"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Why Nf3 Before Bc4",
         "description": "Playing 2.Bc4 too early lets Black play ...d5 immediately, challenging your center and attacking the bishop. Nf3 first prevents this.",
         "fen": "rnbqkbnr/pppp1ppp/8/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 2",
-        "highlights": ["c4", "d5"],
-        "arrows": [{"from": "d7", "to": "d5"}],
+        "highlights": [
+          "c4",
+          "d5"
+        ],
+        "arrows": [
+          {
+            "from": "d7",
+            "to": "d5"
+          }
+        ],
         "style": "bad"
       },
       {
         "title": "Two Knights Defense (C55)",
         "description": "After 3...Nf6, Black counterattacks your e4 pawn immediately. You must decide: the aggressive Ng5 or the solid d3?",
         "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
-        "highlights": ["f6", "e4"],
-        "arrows": [{"from": "f6", "to": "e4"}],
+        "highlights": [
+          "f6",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "f6",
+            "to": "e4"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "The Evans Gambit",
         "description": "4.b4!? sacrifices a pawn to gain rapid development. After 4...Bxb4 5.c3, White builds a massive center. A famous attacking weapon!",
         "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/1PB1P3/5N2/P1PP1PPP/RNBQK2R b KQkq b3 0 4",
-        "highlights": ["b4", "c5"],
-        "arrows": [{"from": "b2", "to": "b4"}],
+        "highlights": [
+          "b4",
+          "c5"
+        ],
+        "arrows": [
+          {
+            "from": "b2",
+            "to": "b4"
+          }
+        ],
         "style": "theory"
       }
     ],
@@ -465,37 +777,79 @@
         "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
         "prompt": "Why must Nf3 come before Bc4?",
         "choices": [
-          {"text": "Nf3 prevents Black's ...d5 counterattack", "isCorrect": true},
-          {"text": "Nf3 controls the center better", "isCorrect": false},
-          {"text": "Nf3 develops faster than Bc4", "isCorrect": false}
+          {
+            "text": "Nf3 prevents Black's ...d5 counterattack",
+            "isCorrect": true
+          },
+          {
+            "text": "Nf3 controls the center better",
+            "isCorrect": false
+          },
+          {
+            "text": "Nf3 develops faster than Bc4",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Playing Bc4 too early (before Nf3) allows Black to play ...d5 immediately, attacking the bishop and challenging the center. Nf3 first prevents this.",
-        "boardHighlightsOnReveal": ["f3", "d5"],
-        "arrowsOnReveal": [{"from": "d7", "to": "d5"}]
+        "boardHighlightsOnReveal": [
+          "f3",
+          "d5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "d7",
+            "to": "d5"
+          }
+        ]
       },
       {
         "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
         "prompt": "Black just played Bc5. What is this variation called?",
         "choices": [
-          {"text": "Giuoco Piano", "isCorrect": true},
-          {"text": "Two Knights Defense", "isCorrect": false},
-          {"text": "Evans Gambit", "isCorrect": false},
-          {"text": "Hungarian Defense", "isCorrect": false}
+          {
+            "text": "Giuoco Piano",
+            "isCorrect": true
+          },
+          {
+            "text": "Two Knights Defense",
+            "isCorrect": false
+          },
+          {
+            "text": "Evans Gambit",
+            "isCorrect": false
+          },
+          {
+            "text": "Hungarian Defense",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Giuoco Piano (C54) — 'Quiet Game' in Italian. Black mirrors White's development strategy with an active bishop on c5.",
-        "boardHighlightsOnReveal": ["c5", "c4"],
+        "boardHighlightsOnReveal": [
+          "c5",
+          "c4"
+        ],
         "arrowsOnReveal": []
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["e2e4", "e7e5", "g1f3", "b8c6", "f1c4"],
+    "afterMoves": [
+      "e2e4",
+      "e7e5",
+      "g1f3",
+      "b8c6",
+      "f1c4"
+    ],
     "responses": [
       {
         "id": "giuoco-piano",
-        "move": { "uci": "f8c5", "san": "Bc5", "explanation": "The classical response — Black mirrors your strategy and develops the bishop actively." },
+        "move": {
+          "uci": "f8c5",
+          "san": "Bc5",
+          "explanation": "The classical response — Black mirrors your strategy and develops the bishop actively."
+        },
         "name": "Giuoco Piano",
         "eco": "C54",
         "frequency": 0.45,
@@ -504,7 +858,11 @@
       },
       {
         "id": "two-knights",
-        "move": { "uci": "g8f6", "san": "Nf6", "explanation": "Black counterattacks your e4 pawn immediately instead of developing the bishop." },
+        "move": {
+          "uci": "g8f6",
+          "san": "Nf6",
+          "explanation": "Black counterattacks your e4 pawn immediately instead of developing the bishop."
+        },
         "name": "Two Knights Defense",
         "eco": "C55",
         "frequency": 0.35,
@@ -513,19 +871,27 @@
       },
       {
         "id": "hungarian",
-        "move": { "uci": "f8e7", "san": "Be7", "explanation": "A passive but solid response. Black develops but doesn't fight for the center." },
+        "move": {
+          "uci": "f8e7",
+          "san": "Be7",
+          "explanation": "A passive but solid response. Black develops but doesn't fight for the center."
+        },
         "name": "Hungarian Defense",
         "eco": "C50",
-        "frequency": 0.10,
+        "frequency": 0.1,
         "description": "A passive but solid response. Black develops but concedes the center.",
         "planAdjustment": "Black isn't fighting for the center — you can play d4 immediately and seize a space advantage."
       },
       {
         "id": "evans-gambit-declined",
-        "move": { "uci": "d7d6", "san": "d6", "explanation": "Black supports the e5 pawn solidly but blocks the dark-squared bishop." },
+        "move": {
+          "uci": "d7d6",
+          "san": "d6",
+          "explanation": "Black supports the e5 pawn solidly but blocks the dark-squared bishop."
+        },
         "name": "Philidor-style",
         "eco": "C50",
-        "frequency": 0.10,
+        "frequency": 0.1,
         "description": "Black plays solidly but passively, blocking the dark-squared bishop.",
         "planAdjustment": "You have a free hand to build up. Play d4 when ready — Black's bishop is stuck behind the d6 pawn."
       }

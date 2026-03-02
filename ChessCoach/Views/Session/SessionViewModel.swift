@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import ChessKit
 
 /// Debug log that writes to a file (survives stdout redirect + crash)
@@ -122,6 +123,12 @@ final class SessionViewModel {
     private let featureAccess: any FeatureAccessProviding
     private(set) var isPro: Bool = true  // kept for UI-only gating (paywall, badges)
     private(set) var showProUpgrade: Bool = false
+
+    // Coach personality (resolved from opening tags)
+    private(set) var coachPersonality: CoachPersonality = .defaultPersonality
+    private(set) var personalityQuip: String?
+    private(set) var showPersonalityQuip: Bool = false
+    private var quipDismissTask: Task<Void, Never>?
 
     // Plan Execution Score state
     private(set) var lastMovePES: PlanExecutionScore?
@@ -331,6 +338,7 @@ final class SessionViewModel {
         self.activeLine = resolvedLine
         self.curriculumService = resolvedCurriculum
         self.coachingService = CoachingService(llmService: self.llmService, curriculumService: resolvedCurriculum, featureAccess: featureAccess)
+        self.coachPersonality = CoachPersonality.forOpening(opening)
 
         // Load current learning layer from mastery
         let mastery = PersistenceService.shared.loadMastery(forOpening: opening.id)
@@ -406,6 +414,36 @@ final class SessionViewModel {
 
         showProactiveCoaching()
         captureSnapshot()
+
+        // Show coach greeting
+        showCoachQuip(coachPersonality.onGreeting.randomElement() ?? "Let's begin!")
+    }
+
+    /// Show a personality quip as a brief overlay that auto-dismisses.
+    func showCoachQuip(_ message: String) {
+        quipDismissTask?.cancel()
+        personalityQuip = message
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            showPersonalityQuip = true
+        }
+        quipDismissTask = Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .seconds(3.5))
+            guard !Task.isCancelled else { return }
+            withAnimation(.easeOut(duration: 0.3)) {
+                self?.showPersonalityQuip = false
+            }
+        }
+    }
+
+    /// Roll a random check and maybe show a contextual quip after coaching.
+    func maybeShowQuip(for category: MoveCategory) {
+        guard Double.random(in: 0...1) < 0.28 else { return }
+        let quip = coachPersonality.witticism(for: category)
+        guard !quip.isEmpty else { return }
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(1.2))
+            showCoachQuip(quip)
+        }
     }
 
     /// Show the next book move and its explanation BEFORE the user plays.
@@ -638,6 +676,10 @@ final class SessionViewModel {
             expectedSAN: expectedSAN,
             expectedUCI: expectedUCI
         )
+
+        // Random personality quip (~28% chance)
+        let category: MoveCategory = isDeviation ? .mistake : .goodMove
+        maybeShowQuip(for: category)
 
         // Compute Plan Execution Score — only meaningful when the user knows the plan (Layer 2+)
         if sessionMode != .guided, currentLayer.rawValue >= LearningLayer.executePlan.rawValue {
@@ -891,7 +933,7 @@ final class SessionViewModel {
         let moveHistoryStr = buildMoveHistoryString()
         let studentColor = opening.color == .white ? "White" : "Black"
         let opponentColor = studentColor == "White" ? "Black" : "White"
-        let boardState = LLMService.boardStateSummary(fen: ctx.fen)
+        let boardState = LLMService.boardStateSummary(fen: ctx.fen, studentColor: studentColor)
         let occupied = LLMService.occupiedSquares(fen: ctx.fen)
 
         let perspective: String
@@ -1015,7 +1057,7 @@ final class SessionViewModel {
             }
         }
 
-        let boardState = LLMService.boardStateSummary(fen: currentFen)
+        let boardState = LLMService.boardStateSummary(fen: currentFen, studentColor: studentColor)
         let occupied = LLMService.occupiedSquares(fen: currentFen)
 
         let prompt = PromptCatalog.offBookExplanationPrompt(params: .init(
@@ -1170,21 +1212,24 @@ final class SessionViewModel {
 
         // Save to OpeningMastery (v3 plan-first model)
         var mastery = PersistenceService.shared.loadMastery(forOpening: opening.id)
+        let masteryBefore = mastery
         let sessionPES = stats.averagePES
         switch mastery.currentLayer {
         case .understandPlan:
             break // Layer 1 completion is handled separately
         case .executePlan:
-            mastery.recordExecutionSession(pes: sessionPES)
+            let modeStr = sessionMode == .guided ? "guided" : "unguided"
+            mastery.recordExecutionSession(pes: sessionPES, mode: modeStr)
         case .discoverTheory:
             break // Layer 3 completion is handled separately
         case .handleVariety:
             // If we know which opponent response was faced, record it
             if let responses = opening.opponentResponses?.responses {
                 let moveHistory = gameState.moveHistory.map { $0.from + $0.to }
+                let modeStr = sessionMode == .guided ? "guided" : "unguided"
                 for response in responses {
                     if moveHistory.contains(response.move.uci) {
-                        mastery.recordResponseHandled(responseID: response.id, pes: sessionPES)
+                        mastery.recordResponseHandled(responseID: response.id, pes: sessionPES, mode: modeStr)
                     }
                 }
             }
@@ -1249,6 +1294,13 @@ final class SessionViewModel {
             layerPromotion = nil
         }
 
+        // Milestone tracking
+        let completedMilestones = OpeningMastery.newlyCompletedMilestones(before: masteryBefore, after: mastery)
+        let nextMilestone = mastery.currentLayer.nextMilestone(from: mastery)
+        let coach = CoachPersonality.forOpening(opening)
+        let guidance = CoachGuidance(personality: coach, mastery: mastery, openingName: opening.name)
+        let coachMessage = guidance.sessionCompleteMessage(pes: sessionPES, completedMilestones: completedMilestones)
+
         sessionResult = SessionResult(
             accuracy: accuracy,
             isPersonalBest: isPersonalBest,
@@ -1264,7 +1316,10 @@ final class SessionViewModel {
             averagePES: stats.moveScores.isEmpty ? nil : stats.averagePES,
             pesCategory: stats.moveScores.isEmpty ? nil : stats.pesCategory,
             moveScores: stats.moveScores.isEmpty ? nil : stats.moveScores,
-            layerPromotion: layerPromotion
+            layerPromotion: layerPromotion,
+            completedMilestones: completedMilestones,
+            nextMilestone: nextMilestone,
+            coachSessionMessage: coachMessage
         )
     }
 
@@ -1519,6 +1574,16 @@ final class SessionViewModel {
                 _ = tempState.makeMoveUCI(opponentMove)
                 return tempState.fen
             }()
+            // Look up named opponent response for variation coaching
+            let movesSoFar = gameState.moveHistory.dropLast().map { "\($0.from)\($0.to)" }
+            var responseName: String?
+            var responseAdjustment: String?
+            if let catalogue = opening.opponentResponses,
+               let response = catalogue.matchResponse(moveUCI: opponentMove, afterMoves: Array(movesSoFar)) {
+                responseName = response.name
+                responseAdjustment = response.planAdjustment
+            }
+
             let capturedGen = gen
             let coaching = coachingService
             coachingTask = Task {
@@ -1532,7 +1597,9 @@ final class SessionViewModel {
                     userELO: self.userELO,
                     moveHistory: moveHistoryStr,
                     isUserMove: false,
-                    studentColor: studentColor
+                    studentColor: studentColor,
+                    matchedResponseName: responseName,
+                    matchedResponseAdjustment: responseAdjustment
                 )
             }
         }
@@ -1770,6 +1837,17 @@ final class SessionViewModel {
 
         let moveHistoryStr = buildMoveHistoryString()
 
+        // Look up named opponent response for variation coaching
+        var responseName: String?
+        var responseAdjustment: String?
+        if !isUserMove, let catalogue = opening.opponentResponses {
+            let movesSoFar = gameState.moveHistory.dropLast().map { "\($0.from)\($0.to)" }
+            if let response = catalogue.matchResponse(moveUCI: move, afterMoves: Array(movesSoFar)) {
+                responseName = response.name
+                responseAdjustment = response.planAdjustment
+            }
+        }
+
         let text = await coachingService.getCoaching(
             fen: gameState.fen,
             lastMove: move,
@@ -1779,7 +1857,9 @@ final class SessionViewModel {
             userELO: userELO,
             moveHistory: moveHistoryStr,
             isUserMove: isUserMove,
-            studentColor: opening.color == .white ? "White" : "Black"
+            studentColor: opening.color == .white ? "White" : "Black",
+            matchedResponseName: responseName,
+            matchedResponseAdjustment: responseAdjustment
         )
 
         if let text {
@@ -1871,7 +1951,7 @@ final class SessionViewModel {
         let moveHistoryStr = buildMoveHistoryString()
         let studentColor = opening.color == .white ? "White" : "Black"
         let opponentColor = studentColor == "White" ? "Black" : "White"
-        let boardState = LLMService.boardStateSummary(fen: fen)
+        let boardState = LLMService.boardStateSummary(fen: fen, studentColor: studentColor)
         let occupied = LLMService.occupiedSquares(fen: fen)
 
         let prompt: String

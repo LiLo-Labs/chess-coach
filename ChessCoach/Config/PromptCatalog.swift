@@ -24,14 +24,17 @@ enum PromptCatalog {
             feedback = ""
         }
 
+        let opponentColor = studentColor == "White" ? "Black" : "White"
+        let personalityNote = context.coachPersonalityPrompt.map { "Style: \($0)\n" } ?? ""
+
         return """
-        Side to move: \(studentColor)
+        \(personalityNote)Student plays: \(studentColor). Opponent plays: \(opponentColor).
 
         Board:
         \(boardSummary)
 
         Opening: \(context.openingName)
-        Last move: \(context.lastMove)
+        Student's last move: \(context.lastMove)
 
         \(feedback)
 
@@ -39,7 +42,7 @@ enum PromptCatalog {
 
         Respond with ONLY:
         REFS: <up to 3 key squares with pieces on them>
-        COACHING: <one sentence>
+        COACHING: <one sentence, addressed to the student who plays \(studentColor)>
         """
     }
 
@@ -49,14 +52,18 @@ enum PromptCatalog {
         let opponentColor = studentColor == "White" ? "Black" : "White"
 
         let guidance: String
-        if context.moveCategory == .deviation {
-            guidance = "The opponent deviated from the \(context.openingName) by playing \(context.lastMove). Explain that the student is now out of book."
+        if context.moveCategory == .deviation, let name = context.matchedResponseName, let adj = context.matchedResponseAdjustment {
+            guidance = "The opponent played the \(name) variation (\(context.lastMove)). Plan adjustment: \(adj). Explain what this means for the student."
+        } else if context.moveCategory == .deviation {
+            guidance = "The opponent (\(opponentColor)) deviated from the \(context.openingName) by playing \(context.lastMove). Explain that the student is now out of book."
         } else {
-            guidance = "The opponent (\(opponentColor)) played \(context.lastMove). Explain what this move means for the student's position."
+            guidance = "The opponent (\(opponentColor)) played \(context.lastMove). Explain what this move means for the student (\(studentColor))."
         }
 
+        let personalityNote = context.coachPersonalityPrompt.map { "Style: \($0)\n" } ?? ""
+
         return """
-        Side to move: \(studentColor)
+        \(personalityNote)Student plays: \(studentColor). Opponent plays: \(opponentColor).
 
         Board:
         \(boardSummary)
@@ -107,9 +114,19 @@ enum PromptCatalog {
         occupiedSquares: String,
         moveHistory: String,
         currentPly: Int,
-        userELO: Int
+        userELO: Int,
+        conversationHistory: [(role: String, text: String)] = []
     ) -> String {
-        """
+        // Build conversation transcript from prior turns (keep last 10 to stay within token budget)
+        let recentHistory = conversationHistory.suffix(10)
+        let transcript = recentHistory.isEmpty ? "" : {
+            let lines = recentHistory.map { turn in
+                turn.role == "user" ? "Student: \(turn.text)" : "Coach: \(turn.text)"
+            }
+            return "\nPrior conversation:\n\(lines.joined(separator: "\n"))\n"
+        }()
+
+        return """
         You are a friendly chess coach. The student (ELO ~\(userELO)) is studying the \(openingName) (\(lineName)).
 
         Board:
@@ -117,10 +134,10 @@ enum PromptCatalog {
 
         Move history: \(moveHistory)
         Current ply: \(currentPly)
-
+        \(transcript)
         The student asks: \(question)
 
-        Explain clearly. Use simple language.
+        Explain clearly. Use simple language. Build on what you've already told the student — don't repeat yourself.
         Keep your response concise (2-4 sentences). Spell out piece names, avoid algebraic notation symbols.
 
         Squares that currently have pieces: \(occupiedSquares)

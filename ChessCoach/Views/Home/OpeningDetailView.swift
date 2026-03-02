@@ -3,8 +3,11 @@ import SwiftUI
 /// Navigation target for the 5-layer training pipeline.
 enum TrainingNavigation: Identifiable, Equatable {
     case planUnderstanding
+    case planMasteryQuiz
     case executePlan(lineID: String)
     case discoverTheory
+    case theoryExercise(mode: TheoryExerciseView.ExerciseMode)
+    case scoutReport
     case handleVariety(lineID: String)
     case realConditions(lineID: String)
     // Legacy
@@ -16,8 +19,11 @@ enum TrainingNavigation: Identifiable, Equatable {
     var id: String {
         switch self {
         case .planUnderstanding: return "planUnderstanding"
+        case .planMasteryQuiz: return "planMasteryQuiz"
         case .executePlan(let id): return "execute-\(id)"
         case .discoverTheory: return "discoverTheory"
+        case .theoryExercise(let mode): return "theoryExercise-\(mode)"
+        case .scoutReport: return "scoutReport"
         case .handleVariety(let id): return "variety-\(id)"
         case .realConditions(let id): return "real-\(id)"
         case .study(let id): return "study-\(id)"
@@ -139,8 +145,38 @@ struct OpeningDetailView: View {
                 mastery = m
                 activeNavigation = nil
             }
+        case .planMasteryQuiz:
+            PlanUnderstandingView(opening: opening) { quizScore in
+                var m = mastery
+                let passed = quizScore >= 1.0 // 3/3 correct
+                m.recordPlanMasteryQuiz(passed: passed)
+                PersistenceService.shared.saveMastery(m)
+                mastery = m
+                activeNavigation = nil
+            }
+        case .theoryExercise(let mode):
+            TheoryExerciseView(opening: opening, mode: mode) { passed in
+                var m = mastery
+                switch mode {
+                case .naming:
+                    m.recordNameTheOpening(passed: passed)
+                case .spotting:
+                    m.recordSpotTheVariation(passed: passed)
+                }
+                PersistenceService.shared.saveMastery(m)
+                mastery = m
+                activeNavigation = nil
+            }
+        case .scoutReport:
+            ScoutReportView(opening: opening) {
+                var m = mastery
+                m.recordScoutReportRead()
+                PersistenceService.shared.saveMastery(m)
+                mastery = m
+                activeNavigation = nil
+            }
         case .executePlan(let lineID):
-            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, sessionMode: .guided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+            GamePlayView(mode: .guided(opening: opening, lineID: lineID), isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .discoverTheory:
             TheoryDiscoveryView(opening: opening) { quizScore in
@@ -151,10 +187,10 @@ struct OpeningDetailView: View {
                 activeNavigation = nil
             }
         case .handleVariety(let lineID):
-            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, sessionMode: .unguided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+            GamePlayView(mode: .unguided(opening: opening, lineID: lineID), isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .realConditions(let lineID):
-            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, sessionMode: .practice, stockfish: appServices.stockfish, llmService: appServices.llmService)
+            GamePlayView(mode: .practice(opening: opening, lineID: lineID), isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .study(let lineID):
             if let line = allLines.first(where: { $0.id == lineID }) {
@@ -175,10 +211,10 @@ struct OpeningDetailView: View {
                 .environment(subscriptionService)
             }
         case .guided(let lineID):
-            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, sessionMode: .guided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+            GamePlayView(mode: .guided(opening: opening, lineID: lineID), isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .unguided(let lineID):
-            SessionView(opening: opening, lineID: lineID, isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, sessionMode: .unguided, stockfish: appServices.stockfish, llmService: appServices.llmService)
+            GamePlayView(mode: .unguided(opening: opening, lineID: lineID), isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .practice:
             PracticeOpeningView(opening: opening, stockfish: appServices.stockfish)
@@ -350,6 +386,47 @@ struct OpeningDetailView: View {
         }
     }
 
+    // MARK: - Coach Quote Card
+
+    private var coachQuoteCard: some View {
+        let coach = CoachPersonality.forOpening(opening)
+        let guidance = CoachGuidance(
+            personality: coach,
+            mastery: mastery,
+            openingName: opening.name
+        )
+
+        return HStack(alignment: .top, spacing: AppSpacing.md) {
+            Image(systemName: coach.humanIcon)
+                .font(.system(size: 18))
+                .foregroundStyle(AppColor.layer(mastery.currentLayer))
+                .frame(width: 36, height: 36)
+                .background(AppColor.layer(mastery.currentLayer).opacity(0.12), in: Circle())
+
+            VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
+                Text(coach.humanName)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(AppColor.layer(mastery.currentLayer))
+
+                Text(guidance.layerGuidanceMessage)
+                    .font(.subheadline)
+                    .foregroundStyle(AppColor.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(AppSpacing.cardPadding)
+        .background {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(AppColor.layer(mastery.currentLayer).opacity(0.06))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .strokeBorder(AppColor.layer(mastery.currentLayer).opacity(0.15), lineWidth: 1)
+                )
+        }
+    }
+
     // MARK: - 5-Layer Pipeline Section
 
     private var layerPipelineSection: some View {
@@ -373,6 +450,11 @@ struct OpeningDetailView: View {
             .padding(.horizontal, AppSpacing.cardPadding)
             .padding(.top, AppSpacing.cardPadding)
             .padding(.bottom, AppSpacing.md)
+
+            // Coach quote card for current layer
+            coachQuoteCard
+                .padding(.horizontal, AppSpacing.cardPadding)
+                .padding(.bottom, AppSpacing.md)
 
             Divider()
                 .opacity(0.3)
@@ -416,6 +498,9 @@ struct OpeningDetailView: View {
         let isLocked = !isCompleted && !isCurrent
         let isFree = layer.isFreeLayer
         let canAccess = isFree || subscriptionService.isPro
+        let milestones = layer.milestones(from: mastery)
+        let completedCount = milestones.filter(\.isComplete).count
+        let totalCount = milestones.count
 
         return Button {
             if isLocked && !canAccess {
@@ -467,9 +552,42 @@ struct OpeningDetailView: View {
                         }
                     }
 
-                    Text(layerDetail(layer))
-                        .font(.caption)
-                        .foregroundStyle(AppColor.secondaryText)
+                    // Sub-milestone progress bar (current or completed layers)
+                    if isCurrent || isCompleted {
+                        HStack(spacing: AppSpacing.xs) {
+                            // Mini progress bar
+                            GeometryReader { geo in
+                                ZStack(alignment: .leading) {
+                                    RoundedRectangle(cornerRadius: 2)
+                                        .fill(Color.white.opacity(0.08))
+                                    RoundedRectangle(cornerRadius: 2)
+                                        .fill(AppColor.layer(layer))
+                                        .frame(width: geo.size.width * (totalCount > 0 ? Double(completedCount) / Double(totalCount) : 0))
+                                }
+                            }
+                            .frame(height: 4)
+
+                            Text("\(completedCount)/\(totalCount)")
+                                .font(.system(size: 10, weight: .medium).monospacedDigit())
+                                .foregroundStyle(AppColor.tertiaryText)
+                        }
+                        .frame(maxWidth: 160, alignment: .leading)
+
+                        // Next milestone hint (current layer only)
+                        if isCurrent, let next = layer.nextMilestone(from: mastery) {
+                            Text("Next: \(next.title)")
+                                .font(.caption2)
+                                .foregroundStyle(AppColor.secondaryText)
+                        } else if isCompleted {
+                            Text("All checkpoints complete")
+                                .font(.caption2)
+                                .foregroundStyle(AppColor.tertiaryText)
+                        }
+                    } else {
+                        Text(layer.layerDescription)
+                            .font(.caption)
+                            .foregroundStyle(AppColor.secondaryText)
+                    }
                 }
 
                 Spacer()
@@ -499,39 +617,41 @@ struct OpeningDetailView: View {
         .buttonStyle(.plain)
     }
 
-    private func layerDetail(_ layer: LearningLayer) -> String {
-        switch layer {
-        case .understandPlan:
-            return mastery.planUnderstanding ? "Completed" : "Learn what you're aiming for"
-        case .executePlan:
-            if mastery.executionScores.isEmpty {
-                return "Play it your way"
-            }
-            return mastery.isExecutionComplete ? "Complete" : "Keep practicing"
-        case .discoverTheory:
-            return mastery.theoryCompleted ? "Completed" : "Discover the history"
-        case .handleVariety:
-            let count = mastery.varietyResponseCount
-            return count > 0 ? "\(count)/3 responses handled" : "Face different opponents"
-        case .realConditions:
-            if mastery.realConditionScores.isEmpty {
-                return "No hints — just you and the board"
-            }
-            return "\(mastery.realConditionScores.count) sessions completed"
-        }
-    }
-
     private func navigateToLayer(_ layer: LearningLayer) {
         let mainLineID = allLines.first?.id ?? "\(opening.id)/main"
+        let nextMilestone = layer.nextMilestone(from: mastery)
+
         switch layer {
         case .understandPlan:
-            activeNavigation = .planUnderstanding
+            switch nextMilestone?.id {
+            case "L1.practice", "L1.apply":
+                // Both milestones use the full GamePlayView with tile feed + coaching
+                activeNavigation = .executePlan(lineID: mainLineID)
+            case "L1.mastery":
+                activeNavigation = .planMasteryQuiz
+            default:
+                activeNavigation = .planUnderstanding
+            }
         case .executePlan:
             activeNavigation = .executePlan(lineID: mainLineID)
         case .discoverTheory:
-            activeNavigation = .discoverTheory
+            switch nextMilestone?.id {
+            case "L3.name":
+                activeNavigation = .theoryExercise(mode: .naming)
+            case "L3.spot":
+                activeNavigation = .theoryExercise(mode: .spotting)
+            case "L3.reinforce":
+                activeNavigation = .executePlan(lineID: mainLineID)
+            default:
+                activeNavigation = .discoverTheory
+            }
         case .handleVariety:
-            activeNavigation = .handleVariety(lineID: mainLineID)
+            switch nextMilestone?.id {
+            case "L4.scout":
+                activeNavigation = .scoutReport
+            default:
+                activeNavigation = .handleVariety(lineID: mainLineID)
+            }
         case .realConditions:
             activeNavigation = .realConditions(lineID: mainLineID)
         }
@@ -593,7 +713,15 @@ struct OpeningDetailView: View {
     }
 
     private func lineRow(line: OpeningLine, lp: LineProgress, unlocked: Bool) -> some View {
-        Button {
+        let coach = CoachPersonality.forOpening(opening)
+        let guidance = CoachGuidance(
+            personality: coach,
+            mastery: mastery,
+            openingName: opening.name
+        )
+        let parentName = allLines.first?.name ?? opening.name
+
+        return Button {
             if unlocked {
                 activeNavigation = .executePlan(lineID: line.id)
             }
@@ -616,7 +744,13 @@ struct OpeningDetailView: View {
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(unlocked ? AppColor.primaryText : AppColor.tertiaryText)
 
-                    if lp.guidedCompletions > 0 || lp.unguidedCompletions > 0 {
+                    if !unlocked {
+                        // Narrative locked message from coach
+                        Text("\(coach.humanName): \"\(guidance.lockedPathMessage(lineName: line.name, parentLineName: parentName))\"")
+                            .font(.caption2)
+                            .foregroundStyle(AppColor.tertiaryText)
+                            .italic()
+                    } else if lp.guidedCompletions > 0 || lp.unguidedCompletions > 0 {
                         HStack(spacing: AppSpacing.sm) {
                             if lp.guidedCompletions > 0 {
                                 HStack(spacing: 3) {

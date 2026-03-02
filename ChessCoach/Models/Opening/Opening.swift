@@ -147,6 +147,7 @@ struct Opening: Codable, Sendable, Identifiable, Hashable {
     let description: String
     let color: PlayerColor
     let difficulty: Int // 1-5
+    let tags: [String]?
     let mainLine: [OpeningMove]
 
     // Tree-based opening data (nil for legacy hardcoded openings)

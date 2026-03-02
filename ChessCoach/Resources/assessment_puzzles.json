@@ -1,0 +1,502 @@
+[
+  {
+    "id": "A001",
+    "fen": "r1bqkbnr/pppppppp/2n5/4N3/4P3/8/PPPP1PPP/RNBQKB1R b KQkq - 0 2",
+    "setupMoveUCI": "g1e5",
+    "solutionUCI": "c6e5",
+    "solutionSAN": "Nxe5",
+    "themes": ["capture", "opening"],
+    "rating": 450,
+    "explanation": "The knight on e5 is unprotected. Capture it for free."
+  },
+  {
+    "id": "A002",
+    "fen": "rnbqkbnr/pppp1ppp/8/4p3/2B1P3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 2",
+    "setupMoveUCI": "f1c4",
+    "solutionUCI": "d7d6",
+    "solutionSAN": "d6",
+    "themes": ["defense", "opening"],
+    "rating": 480,
+    "explanation": "Defend the e5 pawn and prepare to develop."
+  },
+  {
+    "id": "A003",
+    "fen": "rnbqkb1r/pppppppp/5n2/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq - 0 2",
+    "setupMoveUCI": "d2d4",
+    "solutionUCI": "f6e4",
+    "solutionSAN": "Nxe4",
+    "themes": ["capture", "center"],
+    "rating": 500,
+    "explanation": "The e4 pawn is undefended. Win a free pawn."
+  },
+  {
+    "id": "A004",
+    "fen": "r1bqkbnr/pppppppp/2n5/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 3",
+    "setupMoveUCI": "c3d4",
+    "solutionUCI": "c6d4",
+    "solutionSAN": "Nxd4",
+    "themes": ["capture", "recapture"],
+    "rating": 420,
+    "explanation": "Recapture the knight on d4."
+  },
+  {
+    "id": "A005",
+    "fen": "rnbqk1nr/pppp1ppp/8/2b1p3/2BPP3/8/PPP2PPP/RNBQK1NR b KQkq - 0 3",
+    "setupMoveUCI": "d2d4",
+    "solutionUCI": "e5d4",
+    "solutionSAN": "exd4",
+    "themes": ["capture", "center"],
+    "rating": 520,
+    "explanation": "Capture the d4 pawn to win material."
+  },
+  {
+    "id": "A006",
+    "fen": "rnbqkbnr/ppp2ppp/3p4/4N3/4P3/8/PPPP1PPP/RNBQKB1R b KQkq - 0 3",
+    "setupMoveUCI": "f3e5",
+    "solutionUCI": "d6e5",
+    "solutionSAN": "dxe5",
+    "themes": ["capture", "recapture"],
+    "rating": 460,
+    "explanation": "Recapture the knight to restore material balance."
+  },
+  {
+    "id": "A007",
+    "fen": "rnbqkbnr/pppp1p1p/6p1/4N3/4P3/8/PPPP1PPP/RNBQKB1R b KQkq - 0 3",
+    "setupMoveUCI": "f3e5",
+    "solutionUCI": "d7d6",
+    "solutionSAN": "d6",
+    "themes": ["defense", "attack"],
+    "rating": 540,
+    "explanation": "Attack the knight on e5 to force it to retreat."
+  },
+  {
+    "id": "A008",
+    "fen": "rnb1kbnr/ppppqppp/8/4N3/4P3/8/PPPP1PPP/RNBQKB1R w KQkq - 1 3",
+    "setupMoveUCI": "d8e7",
+    "solutionUCI": "e5f3",
+    "solutionSAN": "Nf3",
+    "themes": ["retreat", "defense"],
+    "rating": 560,
+    "explanation": "The knight is attacked by the queen. Retreat to safety."
+  },
+  {
+    "id": "A009",
+    "fen": "rnbqkb1r/pppp1ppp/5n2/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2",
+    "setupMoveUCI": "d1h5",
+    "solutionUCI": "b8c6",
+    "solutionSAN": "Nc6",
+    "themes": ["defense", "development"],
+    "rating": 580,
+    "explanation": "Develop the knight while defending the e5 pawn."
+  },
+  {
+    "id": "A010",
+    "fen": "rnbqkb1r/ppp2ppp/3p1n2/4N3/4P3/8/PPPP1PPP/RNBQKB1R b KQkq - 0 3",
+    "setupMoveUCI": "f3e5",
+    "solutionUCI": "f6e4",
+    "solutionSAN": "Nxe4",
+    "themes": ["capture", "counterattack"],
+    "rating": 600,
+    "explanation": "Grab the undefended e4 pawn while the knight is on e5."
+  },
+  {
+    "id": "B001",
+    "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",
+    "setupMoveUCI": "b8c6",
+    "solutionUCI": "h5f7",
+    "solutionSAN": "Qxf7#",
+    "themes": ["mateIn1", "scholarsMate"],
+    "rating": 800,
+    "explanation": "Scholar's mate! The queen takes f7 with check and it's checkmate."
+  },
+  {
+    "id": "B002",
+    "fen": "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2",
+    "setupMoveUCI": "f2f3",
+    "solutionUCI": "d8h4",
+    "solutionSAN": "Qh4#",
+    "themes": ["mateIn1", "foolsMate"],
+    "rating": 820,
+    "explanation": "Fool's mate! The queen delivers checkmate on h4."
+  },
+  {
+    "id": "B003",
+    "fen": "r1bqk2r/pppp1Bpp/2n2n2/2b1p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 4",
+    "setupMoveUCI": "c4f7",
+    "solutionUCI": "e8f7",
+    "solutionSAN": "Kxf7",
+    "themes": ["capture", "recapture"],
+    "rating": 850,
+    "explanation": "The bishop has sacrificed on f7. Recapture it with the king."
+  },
+  {
+    "id": "B004",
+    "fen": "rnbqkb1r/pppppppp/5n2/8/4P3/2N5/PPPP1PPP/R1BQKBNR b KQkq - 2 2",
+    "setupMoveUCI": "b1c3",
+    "solutionUCI": "f6e4",
+    "solutionSAN": "Nxe4",
+    "themes": ["capture", "center"],
+    "rating": 880,
+    "explanation": "Win the e4 pawn. After Nxe4, if Nxe4 d5 wins the knight back with tempo."
+  },
+  {
+    "id": "B005",
+    "fen": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+    "setupMoveUCI": "f1b5",
+    "solutionUCI": "a7a6",
+    "solutionSAN": "a6",
+    "themes": ["defense", "morphy"],
+    "rating": 900,
+    "explanation": "The Morphy Defense. Challenge the bishop with a6, asking it where it wants to go."
+  },
+  {
+    "id": "B006",
+    "fen": "r2qkbnr/ppp2ppp/2np4/4N3/2B1P1b1/8/PPPP1PPP/RNBQK2R w KQkq - 1 5",
+    "setupMoveUCI": "c8g4",
+    "solutionUCI": "c4f7",
+    "solutionSAN": "Bxf7+",
+    "themes": ["sacrifice", "check", "fork"],
+    "rating": 950,
+    "explanation": "Bxf7+ forces the king to move, winning back material."
+  },
+  {
+    "id": "B007",
+    "fen": "rnbqkb1r/pppppp1p/5np1/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3",
+    "setupMoveUCI": "g7g6",
+    "solutionUCI": "b1c3",
+    "solutionSAN": "Nc3",
+    "themes": ["development", "opening"],
+    "rating": 980,
+    "explanation": "Develop the knight to its best square, controlling the center."
+  },
+  {
+    "id": "B008",
+    "fen": "r1bqkbnr/1ppppppp/p1n5/1B6/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 3",
+    "setupMoveUCI": "a7a6",
+    "solutionUCI": "b5a4",
+    "solutionSAN": "Ba4",
+    "themes": ["retreat", "opening"],
+    "rating": 1000,
+    "explanation": "Retreat the bishop to a4, maintaining pressure on the knight."
+  },
+  {
+    "id": "B009",
+    "fen": "r1bqk2r/ppppbppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQ1RK1 w kq - 6 5",
+    "setupMoveUCI": "f8e7",
+    "solutionUCI": "d2d4",
+    "solutionSAN": "d4",
+    "themes": ["center", "opening"],
+    "rating": 1050,
+    "explanation": "Strike the center with d4 while pieces are developed and the king is castled."
+  },
+  {
+    "id": "B010",
+    "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
+    "setupMoveUCI": "f8b4",
+    "solutionUCI": "e2e3",
+    "solutionSAN": "e3",
+    "themes": ["defense", "development"],
+    "rating": 1100,
+    "explanation": "e3 develops the position, prepares Bd3, and supports the center."
+  },
+  {
+    "id": "C001",
+    "fen": "r2qk2r/ppp2ppp/2n1bn2/3pp3/1bPP4/2NBPN2/PP3PPP/R1BQK2R w KQkq - 4 6",
+    "setupMoveUCI": "c8e6",
+    "solutionUCI": "e1g1",
+    "solutionSAN": "O-O",
+    "themes": ["castling", "kingSafety"],
+    "rating": 1200,
+    "explanation": "Castle to safety before the center opens up."
+  },
+  {
+    "id": "C002",
+    "fen": "r1b1kb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",
+    "setupMoveUCI": "b8c6",
+    "solutionUCI": "h5f7",
+    "solutionSAN": "Qxf7+",
+    "themes": ["attack", "check"],
+    "rating": 1210,
+    "explanation": "Qxf7+ wins the f-pawn with check, protected by the bishop on c4. The king must move."
+  },
+  {
+    "id": "C003",
+    "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+    "setupMoveUCI": "b8c6",
+    "solutionUCI": "f1b5",
+    "solutionSAN": "Bb5",
+    "themes": ["development", "pin", "opening"],
+    "rating": 1250,
+    "explanation": "The Ruy Lopez. Bb5 pins the knight to the king and pressures e5."
+  },
+  {
+    "id": "C004",
+    "fen": "rnbqkb1r/pp2pppp/5n2/2ppN3/3P4/8/PPP1PPPP/RNBQKB1R w KQkq - 0 4",
+    "setupMoveUCI": "c7c5",
+    "solutionUCI": "e5f3",
+    "solutionSAN": "Nf3",
+    "themes": ["retreat", "strategy"],
+    "rating": 1280,
+    "explanation": "Retreat the knight. It has no good squares after c5 attacks the center."
+  },
+  {
+    "id": "C005",
+    "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+    "setupMoveUCI": "f8c5",
+    "solutionUCI": "c2c3",
+    "solutionSAN": "c3",
+    "themes": ["center", "preparation"],
+    "rating": 1300,
+    "explanation": "c3 prepares d4 to build a strong pawn center. This is the Italian Game mainline."
+  },
+  {
+    "id": "C006",
+    "fen": "r1bq1rk1/ppppbppp/2n2n2/4p3/2B1P3/3P1N2/PPP2PPP/RNBQ1RK1 w - - 6 6",
+    "setupMoveUCI": "e8g8",
+    "solutionUCI": "c1g5",
+    "solutionSAN": "Bg5",
+    "themes": ["pin", "development"],
+    "rating": 1330,
+    "explanation": "Bg5 pins the knight to the queen. A classic developing move with pressure."
+  },
+  {
+    "id": "C007",
+    "fen": "r2qkb1r/pppb1ppp/2n1pn2/3p4/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 2 5",
+    "setupMoveUCI": "c8d7",
+    "solutionUCI": "c4d5",
+    "solutionSAN": "cxd5",
+    "themes": ["capture", "center"],
+    "rating": 1350,
+    "explanation": "Exchange on d5 to open the position and challenge Black's pawn structure."
+  },
+  {
+    "id": "C008",
+    "fen": "r1bqk2r/ppp2ppp/2n2n2/3pp3/1bP5/2N1PN2/PP1P1PPP/R1BQKB1R w KQkq - 0 5",
+    "setupMoveUCI": "d7d5",
+    "solutionUCI": "f1d3",
+    "solutionSAN": "Bd3",
+    "themes": ["development", "center"],
+    "rating": 1380,
+    "explanation": "Develop the bishop to a strong diagonal aiming at the kingside."
+  },
+  {
+    "id": "C009",
+    "fen": "rnbq1rk1/ppp1bppp/4pn2/3p4/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQ - 2 5",
+    "setupMoveUCI": "e8g8",
+    "solutionUCI": "c1g5",
+    "solutionSAN": "Bg5",
+    "themes": ["pin", "development"],
+    "rating": 1420,
+    "explanation": "Pin the knight against the queen. A key move in the Queen's Gambit."
+  },
+  {
+    "id": "C010",
+    "fen": "r1bq1rk1/pppp1ppp/2n2n2/2b1p3/2B1P3/2PP1N2/PP3PPP/RNBQ1RK1 b - - 0 6",
+    "setupMoveUCI": "c2c3",
+    "solutionUCI": "d7d5",
+    "solutionSAN": "d5",
+    "themes": ["center", "counterplay"],
+    "rating": 1480,
+    "explanation": "Strike back in the center with d5! This challenges White's setup directly."
+  },
+  {
+    "id": "D001",
+    "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2BPP3/5N2/PPP2PPP/RNBQK2R b KQkq d3 0 4",
+    "setupMoveUCI": "d2d4",
+    "solutionUCI": "c5d4",
+    "solutionSAN": "Bxd4",
+    "themes": ["capture", "tactic"],
+    "rating": 1500,
+    "explanation": "Capture the d4 pawn with the bishop, maintaining piece activity."
+  },
+  {
+    "id": "D002",
+    "fen": "r1bqr1k1/pppp1ppp/2n2n2/2b1p3/2B1P3/2PP1N2/PP3PPP/RNBQR1K1 w - - 2 8",
+    "setupMoveUCI": "f8e8",
+    "solutionUCI": "d3d4",
+    "solutionSAN": "d4",
+    "themes": ["center", "pawnBreak"],
+    "rating": 1520,
+    "explanation": "d4 is the thematic pawn break, opening the center when fully developed."
+  },
+  {
+    "id": "D003",
+    "fen": "r1bq1rk1/ppp1bppp/2np1n2/4p3/2B1P3/2NP1N2/PPP2PPP/R1BQ1RK1 w - - 0 7",
+    "setupMoveUCI": "b8d7",
+    "solutionUCI": "c1e3",
+    "solutionSAN": "Be3",
+    "themes": ["development", "preparation"],
+    "rating": 1550,
+    "explanation": "Develop the last minor piece before launching a pawn advance."
+  },
+  {
+    "id": "D004",
+    "fen": "rnbq1rk1/pp2ppbp/2pp1np1/8/2PPP3/2N2N2/PP2BPPP/R1BQK2R w KQ - 0 6",
+    "setupMoveUCI": "d7d6",
+    "solutionUCI": "e1g1",
+    "solutionSAN": "O-O",
+    "themes": ["castling", "kingSafety"],
+    "rating": 1570,
+    "explanation": "Castle to connect rooks and secure the king before central action."
+  },
+  {
+    "id": "D005",
+    "fen": "r2q1rk1/pppbbppp/2n1pn2/3p4/2PP4/2NBPN2/PP3PPP/R1BQ1RK1 w - - 4 8",
+    "setupMoveUCI": "d8d7",
+    "solutionUCI": "e3e4",
+    "solutionSAN": "e4",
+    "themes": ["pawnBreak", "center"],
+    "rating": 1600,
+    "explanation": "e4 breaks open the center, leveraging the well-placed pieces."
+  },
+  {
+    "id": "D006",
+    "fen": "r1bq1rk1/pp2bppp/2n1pn2/2pp4/2PP4/2N1PN2/PPB2PPP/R1BQK2R w KQ - 0 7",
+    "setupMoveUCI": "c7c5",
+    "solutionUCI": "c4d5",
+    "solutionSAN": "cxd5",
+    "themes": ["capture", "center", "strategy"],
+    "rating": 1630,
+    "explanation": "Exchange on d5 to challenge Black's pawn chain and open lines."
+  },
+  {
+    "id": "D007",
+    "fen": "r1bq1rk1/ppp2ppp/2nb1n2/3pp3/2B1P3/2PP1N2/PP3PPP/RNBQ1RK1 w - - 0 7",
+    "setupMoveUCI": "c8d6",
+    "solutionUCI": "c4b3",
+    "solutionSAN": "Bb3",
+    "themes": ["retreat", "prophylaxis"],
+    "rating": 1660,
+    "explanation": "Retreat the bishop before Black plays d4 to lock it in."
+  },
+  {
+    "id": "D008",
+    "fen": "r1bq1rk1/ppppbppp/2n2n2/4p3/2BPP3/2N2N2/PPP2PPP/R1BQK2R b KQ - 5 5",
+    "setupMoveUCI": "d2d4",
+    "solutionUCI": "e5d4",
+    "solutionSAN": "exd4",
+    "themes": ["capture", "center"],
+    "rating": 1700,
+    "explanation": "Capture to force Nxd4, then the position opens favorably."
+  },
+  {
+    "id": "D009",
+    "fen": "r1b2rk1/ppq1bppp/2n1pn2/2pp4/2PP4/2N1PN2/PPQ1BPPP/R1B2RK1 w - - 0 9",
+    "setupMoveUCI": "d8c7",
+    "solutionUCI": "c4d5",
+    "solutionSAN": "cxd5",
+    "themes": ["capture", "tension", "strategy"],
+    "rating": 1730,
+    "explanation": "Resolve the central tension favorably. After exd5, the isolated d-pawn can be targeted."
+  },
+  {
+    "id": "D010",
+    "fen": "r2qr1k1/ppp1bppp/2n2n2/3p4/3P1Bb1/2NBPN2/PPP2PPP/R2Q1RK1 b - - 5 8",
+    "setupMoveUCI": "c1f4",
+    "solutionUCI": "f6h5",
+    "solutionSAN": "Nh5",
+    "themes": ["attack", "bishopPair"],
+    "rating": 1780,
+    "explanation": "Nh5 attacks the bishop on f4, gaining the bishop pair after Bg3 Nxg3."
+  },
+  {
+    "id": "E001",
+    "fen": "r1bq1rk1/pp2ppbp/2np1np1/8/3NP3/2N1BP2/PPPQ2PP/R3KB1R w KQ - 1 8",
+    "setupMoveUCI": "d7d6",
+    "solutionUCI": "e1c1",
+    "solutionSAN": "O-O-O",
+    "themes": ["castling", "attack"],
+    "rating": 1800,
+    "explanation": "Castle queenside to launch a kingside pawn storm. A classic Yugoslav Attack idea."
+  },
+  {
+    "id": "E002",
+    "fen": "r2q1rk1/pp2bppp/2n1bn2/3pp3/8/2NB1N2/PPPQ1PPP/R3R1K1 w - - 0 10",
+    "setupMoveUCI": "c8e6",
+    "solutionUCI": "d3f5",
+    "solutionSAN": "Bf5",
+    "themes": ["exchange", "strategy"],
+    "rating": 1830,
+    "explanation": "Bf5 offers to trade Black's strong bishop and gain control of key squares."
+  },
+  {
+    "id": "E003",
+    "fen": "r1bq1rk1/1pp2ppp/p1np1n2/4p3/1bB1P3/2NP1N2/PPP2PPP/R1BQ1RK1 w - - 0 7",
+    "setupMoveUCI": "a7a6",
+    "solutionUCI": "c4b3",
+    "solutionSAN": "Bb3",
+    "themes": ["retreat", "prophylaxis"],
+    "rating": 1860,
+    "explanation": "Retreat the bishop to b3 to maintain the a2-g8 diagonal and avoid being kicked by b5."
+  },
+  {
+    "id": "E004",
+    "fen": "r2q1rk1/ppp1bppp/2nn4/3pp1B1/8/2NP1N2/PPP1QPPP/R4RK1 w - - 2 10",
+    "setupMoveUCI": "c8d6",
+    "solutionUCI": "f3d2",
+    "solutionSAN": "Nd2",
+    "themes": ["regrouping", "strategy"],
+    "rating": 1900,
+    "explanation": "Reroute the knight via d2 to better squares (c4 or f1-e3)."
+  },
+  {
+    "id": "E005",
+    "fen": "r1b2rk1/pp2bppp/1qn1pn2/2pp4/2PP4/1PN1PN2/PB1Q1PPP/R3KB1R w KQ - 2 8",
+    "setupMoveUCI": "d8b6",
+    "solutionUCI": "c4d5",
+    "solutionSAN": "cxd5",
+    "themes": ["center", "tactics"],
+    "rating": 1920,
+    "explanation": "Open lines in the center to exploit Black's queen being on the queenside."
+  },
+  {
+    "id": "E006",
+    "fen": "r1bq1rk1/pp2ppbp/2np1np1/2p5/2P1P3/2NP2P1/PP2NPBP/R1BQK2R w KQ - 0 7",
+    "setupMoveUCI": "c7c5",
+    "solutionUCI": "e1g1",
+    "solutionSAN": "O-O",
+    "themes": ["castling", "development"],
+    "rating": 1950,
+    "explanation": "Complete development by castling before committing to a plan."
+  },
+  {
+    "id": "E007",
+    "fen": "r2qr1k1/ppp1bpp1/2n1bn1p/3p4/3P1B2/2NBPN2/PPP2PPP/R2QR1K1 w - - 0 9",
+    "setupMoveUCI": "h7h6",
+    "solutionUCI": "f4g3",
+    "solutionSAN": "Bg3",
+    "themes": ["retreat", "prophylaxis"],
+    "rating": 1980,
+    "explanation": "Retreat the bishop to g3 to keep it safe from the h6 pawn advance."
+  },
+  {
+    "id": "E008",
+    "fen": "r2q1rk1/1pp2ppp/p1nb1n2/3pp3/1bB1P3/2NP1N2/PPPB1PPP/R2Q1RK1 w - - 4 8",
+    "setupMoveUCI": "c8d6",
+    "solutionUCI": "c4b3",
+    "solutionSAN": "Bb3",
+    "themes": ["retreat", "strategy"],
+    "rating": 2020,
+    "explanation": "Maintain the bishop on the a2-g8 diagonal. It eyes the f7 weakness."
+  },
+  {
+    "id": "E009",
+    "fen": "r1bq1rk1/ppp1npbp/3p1np1/3Pp3/2P5/2N2NP1/PP2PPBP/R1BQ1RK1 w - - 1 8",
+    "setupMoveUCI": "g8f6",
+    "solutionUCI": "e2e4",
+    "solutionSAN": "e4",
+    "themes": ["center", "space"],
+    "rating": 2050,
+    "explanation": "Claim space with e4, building a strong pawn center in the King's Indian."
+  },
+  {
+    "id": "E010",
+    "fen": "r3r1k1/pp1qbppp/2n1bn2/3p4/3P1B2/1QN1PN2/PP1B1PPP/R3R1K1 w - - 6 11",
+    "setupMoveUCI": "d8d7",
+    "solutionUCI": "f3e5",
+    "solutionSAN": "Ne5",
+    "themes": ["outpost", "centralization"],
+    "rating": 2100,
+    "explanation": "Plant the knight on the e5 outpost where it cannot be driven away by pawns."
+  }
+]

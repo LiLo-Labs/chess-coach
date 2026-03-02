@@ -4,6 +4,10 @@
   "description": "A dynamic defense where Black allows White a big center then attacks it with pieces. Leads to sharp, exciting play that rewards bold thinking.",
   "color": "black",
   "difficulty": 3,
+  "tags": [
+    "hypermodern",
+    "tactical"
+  ],
   "tree": {
     "id": "grunfeld/root",
     "children": [
@@ -397,19 +401,68 @@
   "plan": {
     "summary": "Let White build a giant pawn center on d4 and e4, then systematically destroy it with your fianchettoed bishop on g7, the pawn strike ...c5, and active piece play. You trade your center pawns for a lead in piece activity and attack White's weaknesses.",
     "strategicGoals": [
-      { "description": "Fianchetto the bishop to g7 to control the long diagonal and target White's center", "priority": 1 },
-      { "description": "Strike White's center with ...c5 (and possibly ...Qa5 or ...cxd4) to undermine d4", "priority": 2 },
-      { "description": "Give White doubled c-pawns by trading knight on c3 — structural damage in exchange for tempo", "priority": 3 },
-      { "description": "Castle kingside quickly to keep your king safe during the counterattack", "priority": 4 },
-      { "description": "Use the open d-file and active rooks to pressure White's isolated or doubled pawns", "priority": 5 }
+      {
+        "description": "Fianchetto the bishop to g7 to control the long diagonal and target White's center",
+        "priority": 1
+      },
+      {
+        "description": "Strike White's center with ...c5 (and possibly ...Qa5 or ...cxd4) to undermine d4",
+        "priority": 2
+      },
+      {
+        "description": "Give White doubled c-pawns by trading knight on c3 — structural damage in exchange for tempo",
+        "priority": 3
+      },
+      {
+        "description": "Castle kingside quickly to keep your king safe during the counterattack",
+        "priority": 4
+      },
+      {
+        "description": "Use the open d-file and active rooks to pressure White's isolated or doubled pawns",
+        "priority": 5
+      }
     ],
     "pawnStructureTarget": "Black gets a queenside majority (c5, b7) vs White's doubled c-pawns. The endgame favors Black's mobile pawns.",
-    "keySquares": ["g7", "d4", "c3", "d5", "e4"],
+    "keySquares": [
+      "g7",
+      "d4",
+      "c3",
+      "d5",
+      "e4"
+    ],
     "pieceTargets": [
-      { "piece": "dark-squared bishop", "idealSquares": ["g7"], "reasoning": "The Grünfeld bishop on g7 is the engine of Black's entire strategy — it pressures d4, c3, and the entire long diagonal" },
-      { "piece": "queen", "idealSquares": ["a5", "b6", "d6"], "reasoning": "The queen supports the ...c5 break and can target White's weak c-pawns after the exchange" },
-      { "piece": "king's knight", "idealSquares": ["f6", "d5"], "reasoning": "The knight challenges the center directly and participates in the Nxc3 exchange that gives White doubled pawns" },
-      { "piece": "rooks", "idealSquares": ["d8", "c8"], "reasoning": "Rooks belong on open and half-open files created by ...c5 and ...cxd4" }
+      {
+        "piece": "dark-squared bishop",
+        "idealSquares": [
+          "g7"
+        ],
+        "reasoning": "The Grünfeld bishop on g7 is the engine of Black's entire strategy — it pressures d4, c3, and the entire long diagonal"
+      },
+      {
+        "piece": "queen",
+        "idealSquares": [
+          "a5",
+          "b6",
+          "d6"
+        ],
+        "reasoning": "The queen supports the ...c5 break and can target White's weak c-pawns after the exchange"
+      },
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f6",
+          "d5"
+        ],
+        "reasoning": "The knight challenges the center directly and participates in the Nxc3 exchange that gives White doubled pawns"
+      },
+      {
+        "piece": "rooks",
+        "idealSquares": [
+          "d8",
+          "c8"
+        ],
+        "reasoning": "Rooks belong on open and half-open files created by ...c5 and ...cxd4"
+      }
     ],
     "typicalPlans": [
       "Play ...c5 early to attack the d4 pawn and open the center",
@@ -429,31 +482,64 @@
         "title": "The Big Center — Don't Fear It!",
         "description": "After 1.d4 Nf6 2.c4 g6 3.Nc3, White has a strong center. Your plan is to challenge it with 3...d5 — the Grünfeld move! You're not afraid of White's pawns; you're going to attack them.",
         "fen": "rnbqkb1r/ppp1pp1p/5np1/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq d6 0 4",
-        "highlights": ["d5", "d4", "c4"],
-        "arrows": [{"from": "d7", "to": "d5"}],
+        "highlights": [
+          "d5",
+          "d4",
+          "c4"
+        ],
+        "arrows": [
+          {
+            "from": "d7",
+            "to": "d5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Grünfeld Bishop: Your Best Piece",
         "description": "After trading on c3 and placing your bishop on g7, it fires down the long diagonal at White's pawns on d4 and c3. This bishop is the engine of everything you do in the Grünfeld.",
         "fen": "rnbqk2r/ppp1ppbp/6p1/8/3PP3/2P2N2/PP3PPP/R1BQKB1R b KQkq - 0 7",
-        "highlights": ["g7", "d4", "c3"],
-        "arrows": [{"from": "g7", "to": "d4"}, {"from": "g7", "to": "c3"}],
+        "highlights": [
+          "g7",
+          "d4",
+          "c3"
+        ],
+        "arrows": [
+          {
+            "from": "g7",
+            "to": "d4"
+          },
+          {
+            "from": "g7",
+            "to": "c3"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Attack the Center with ...c5!",
         "description": "Your key pawn break is ...c5! This strikes at White's d4 pawn, opens the c-file for your rook, and keeps the pressure on. Don't let White sit comfortably with that big center.",
         "fen": "r1bqk2r/pp2ppbp/6p1/2p5/3PP3/2P2N2/PP3PPP/R1BQK2R b KQkq - 0 8",
-        "highlights": ["c5", "d4"],
-        "arrows": [{"from": "c7", "to": "c5"}],
+        "highlights": [
+          "c5",
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Don't Be Passive — Keep Attacking!",
         "description": "After giving White doubled c-pawns, some beginners play quietly and let White consolidate. That's wrong! You must keep the pressure going with ...c5, ...Qa5, and active pieces.",
         "fen": "rnbqk2r/ppp1ppbp/6p1/8/3PP3/2P2N2/PP3PPP/R1BQKB1R b KQkq - 0 7",
-        "highlights": ["c3", "d4"],
+        "highlights": [
+          "c3",
+          "d4"
+        ],
         "arrows": [],
         "style": "bad"
       },
@@ -461,7 +547,10 @@
         "title": "Castle First, Then Counterattack",
         "description": "Before launching your attack, make sure your king is safe by castling kingside. Once your king is tucked away on g8, you can play aggressively without worrying about back-rank tricks.",
         "fen": "r1bq1rk1/ppp1ppbp/6p1/2p5/3PP3/2P2N2/PP3PPP/R1BQ1RK1 w - - 2 9",
-        "highlights": ["g8", "g1"],
+        "highlights": [
+          "g8",
+          "g1"
+        ],
         "arrows": [],
         "style": "good"
       }
@@ -471,40 +560,98 @@
         "fen": "rnbqkb1r/ppp1pp1p/5np1/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq d6 0 4",
         "prompt": "Black just played 3...d5, the Grünfeld move. What is the main idea?",
         "choices": [
-          {"text": "Directly challenge White's big center and plan to destroy it with pieces", "isCorrect": true},
-          {"text": "Trade queens and go into an endgame immediately", "isCorrect": false},
-          {"text": "Protect the f6 knight from being attacked", "isCorrect": false}
+          {
+            "text": "Directly challenge White's big center and plan to destroy it with pieces",
+            "isCorrect": true
+          },
+          {
+            "text": "Trade queens and go into an endgame immediately",
+            "isCorrect": false
+          },
+          {
+            "text": "Protect the f6 knight from being attacked",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The Grünfeld is all about challenging White's big center directly. You let White build it, then attack it with ...Bg7, ...c5, and active piece play. The center becomes a target, not a strength!",
-        "boardHighlightsOnReveal": ["d5", "d4", "c4"],
-        "arrowsOnReveal": [{"from": "d7", "to": "d5"}]
+        "boardHighlightsOnReveal": [
+          "d5",
+          "d4",
+          "c4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "d7",
+            "to": "d5"
+          }
+        ]
       },
       {
         "fen": "rnbqk2r/ppp1ppbp/6p1/8/3PP3/2P2N2/PP3PPP/R1BQKB1R b KQkq - 0 7",
         "prompt": "You have your bishop on g7. White has a big center on d4/e4 and doubled c-pawns. What is your best pawn move?",
         "choices": [
-          {"text": "...c5 — attack the d4 pawn and open lines for your pieces", "isCorrect": true},
-          {"text": "...a6 — prepare queenside expansion slowly", "isCorrect": false},
-          {"text": "...h6 — prevent any bishop coming to g5", "isCorrect": false}
+          {
+            "text": "...c5 — attack the d4 pawn and open lines for your pieces",
+            "isCorrect": true
+          },
+          {
+            "text": "...a6 — prepare queenside expansion slowly",
+            "isCorrect": false
+          },
+          {
+            "text": "...h6 — prevent any bishop coming to g5",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "...c5 is the Grünfeld's main counterattack! It hits the d4 pawn directly, opens the c-file for your rook, and keeps the pressure on White's center. Your bishop on g7 loves the open diagonal that results.",
-        "boardHighlightsOnReveal": ["c5", "d4", "g7"],
-        "arrowsOnReveal": [{"from": "c7", "to": "c5"}, {"from": "g7", "to": "d4"}]
+        "boardHighlightsOnReveal": [
+          "c5",
+          "d4",
+          "g7"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c7",
+            "to": "c5"
+          },
+          {
+            "from": "g7",
+            "to": "d4"
+          }
+        ]
       },
       {
         "fen": "r1bqk2r/ppp1ppbp/6p1/2p5/3PP3/2P2N2/PP3PPP/R1BQK2R w KQkq c6 0 8",
         "prompt": "It's time to castle. Where should your king go?",
         "choices": [
-          {"text": "Castle kingside (O-O) — your king will be safe behind the g6 pawn and fianchettoed bishop", "isCorrect": true},
-          {"text": "Castle queenside (O-O-O) — put your king on the open queenside where the action is", "isCorrect": false},
-          {"text": "Keep the king in the center — it's faster to develop rooks that way", "isCorrect": false}
+          {
+            "text": "Castle kingside (O-O) — your king will be safe behind the g6 pawn and fianchettoed bishop",
+            "isCorrect": true
+          },
+          {
+            "text": "Castle queenside (O-O-O) — put your king on the open queenside where the action is",
+            "isCorrect": false
+          },
+          {
+            "text": "Keep the king in the center — it's faster to develop rooks that way",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Castling kingside puts your king safely behind the g6 pawn and your Grünfeld bishop. The queenside is where the pawn battles will happen — your king doesn't want to be there! Always castle kingside in the Grünfeld.",
-        "boardHighlightsOnReveal": ["g8", "g7", "g6"],
-        "arrowsOnReveal": [{"from": "e8", "to": "g8"}]
+        "boardHighlightsOnReveal": [
+          "g8",
+          "g7",
+          "g6"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e8",
+            "to": "g8"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -512,32 +659,80 @@
         "title": "Classical Exchange Variation (D85)",
         "description": "After 1.d4 Nf6 2.c4 g6 3.Nc3 d5 4.cxd5 Nxd5 5.e4 Nxc3 6.bxc3 Bg7, we reach the main Grünfeld position. White has a huge center; Black has the powerful g7 bishop and will play ...c5 to attack it. This is the most important position to know!",
         "fen": "rnbqk2r/ppp1ppbp/6p1/8/3PP3/2P2N2/PP3PPP/R1BQKB1R b KQkq - 0 7",
-        "highlights": ["g7", "d4", "e4", "c3"],
-        "arrows": [{"from": "g7", "to": "d4"}, {"from": "c7", "to": "c5"}],
+        "highlights": [
+          "g7",
+          "d4",
+          "e4",
+          "c3"
+        ],
+        "arrows": [
+          {
+            "from": "g7",
+            "to": "d4"
+          },
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Russian System (D97)",
         "description": "If White plays 5.Nf3 instead of 5.e4, this is the Russian System. White delays grabbing the center and develops first. Black still responds with ...Bg7 and ...0-0, then plays ...c5 to challenge the center when ready.",
         "fen": "rnbqkb1r/ppp1pp1p/6p1/3n4/2PP4/2N2N2/PP2PPPP/R1BQKB1R b KQkq - 2 5",
-        "highlights": ["d5", "f3", "d4"],
-        "arrows": [{"from": "f8", "to": "g7"}, {"from": "e8", "to": "g8"}],
+        "highlights": [
+          "d5",
+          "f3",
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "f8",
+            "to": "g7"
+          },
+          {
+            "from": "e8",
+            "to": "g8"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Fianchetto Variation (D72)",
         "description": "When White plays 4.g3 instead of 4.Nc3, it's the Fianchetto Variation. White builds up slowly with Bg2. Black can capture on c4 (dxc4) and develop freely. The game is less sharp than the Classical lines.",
         "fen": "rnbqkb1r/ppp1pp1p/5np1/3p4/2PP4/2N3P1/PP2PP1P/R1BQKBNR b KQkq - 0 4",
-        "highlights": ["g3", "d5"],
-        "arrows": [{"from": "f1", "to": "g2"}],
+        "highlights": [
+          "g3",
+          "d5"
+        ],
+        "arrows": [
+          {
+            "from": "f1",
+            "to": "g2"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "The Bc4 Line (D87)",
         "description": "After 7.Bc4 (instead of 7.Nf3), White threatens the f7 pawn! But don't panic — Black plays ...c5 immediately to keep the pressure on. Your bishop on g7 counterbalances White's active Bc4.",
         "fen": "rnbqk2r/ppp1ppbp/6p1/8/2BPP3/2P5/PP3PPP/R1BQK1NR b KQkq - 0 7",
-        "highlights": ["c4", "f7", "g7"],
-        "arrows": [{"from": "c4", "to": "f7"}, {"from": "g7", "to": "d4"}],
+        "highlights": [
+          "c4",
+          "f7",
+          "g7"
+        ],
+        "arrows": [
+          {
+            "from": "c4",
+            "to": "f7"
+          },
+          {
+            "from": "g7",
+            "to": "d4"
+          }
+        ],
         "style": "theory"
       }
     ],
@@ -546,46 +741,95 @@
         "fen": "rnbqkb1r/ppp1pp1p/5np1/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq d6 0 4",
         "prompt": "After 1.d4 Nf6 2.c4 g6 3.Nc3 d5, what is this defense called?",
         "choices": [
-          {"text": "Grünfeld Defense", "isCorrect": true},
-          {"text": "King's Indian Defense", "isCorrect": false},
-          {"text": "Nimzo-Indian Defense", "isCorrect": false},
-          {"text": "Modern Defense", "isCorrect": false}
+          {
+            "text": "Grünfeld Defense",
+            "isCorrect": true
+          },
+          {
+            "text": "King's Indian Defense",
+            "isCorrect": false
+          },
+          {
+            "text": "Nimzo-Indian Defense",
+            "isCorrect": false
+          },
+          {
+            "text": "Modern Defense",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Grünfeld Defense! The defining move is 3...d5, immediately challenging White's center. It's named after Ernst Grünfeld who played it in 1922 and was later made famous by Bobby Fischer and Garry Kasparov.",
-        "boardHighlightsOnReveal": ["d5", "d4", "c4"],
+        "boardHighlightsOnReveal": [
+          "d5",
+          "d4",
+          "c4"
+        ],
         "arrowsOnReveal": []
       },
       {
         "fen": "rnbqk2r/ppp1ppbp/6p1/8/3PP3/2P2N2/PP3PPP/R1BQKB1R b KQkq - 0 7",
         "prompt": "After 6.bxc3 Bg7, what is the main line called and what should Black play next?",
         "choices": [
-          {"text": "Classical Exchange Variation — Black plays ...c5 to attack the center", "isCorrect": true},
-          {"text": "Russian System — Black plays ...Nf6 to redevelop the knight", "isCorrect": false},
-          {"text": "Fianchetto Variation — Black plays ...d6 to support the center", "isCorrect": false}
+          {
+            "text": "Classical Exchange Variation — Black plays ...c5 to attack the center",
+            "isCorrect": true
+          },
+          {
+            "text": "Russian System — Black plays ...Nf6 to redevelop the knight",
+            "isCorrect": false
+          },
+          {
+            "text": "Fianchetto Variation — Black plays ...d6 to support the center",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Classical Exchange Variation (D85). After giving White doubled c-pawns and placing the bishop on g7, Black's next move should be ...c5 to attack the d4 pawn. This is the main counterattacking idea in the Grünfeld!",
-        "boardHighlightsOnReveal": ["c3", "d4", "g7"],
-        "arrowsOnReveal": [{"from": "c7", "to": "c5"}]
+        "boardHighlightsOnReveal": [
+          "c3",
+          "d4",
+          "g7"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ]
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["d2d4", "g8f6", "c2c4", "g7g6", "b1c3", "d7d5"],
+    "afterMoves": [
+      "d2d4",
+      "g8f6",
+      "c2c4",
+      "g7g6",
+      "b1c3",
+      "d7d5"
+    ],
     "responses": [
       {
         "id": "grunfeld-exchange",
-        "move": { "uci": "c4d5", "san": "cxd5", "explanation": "White captures your d5 pawn, leading to the Classical Exchange Variation — the sharpest and most popular line." },
+        "move": {
+          "uci": "c4d5",
+          "san": "cxd5",
+          "explanation": "White captures your d5 pawn, leading to the Classical Exchange Variation — the sharpest and most popular line."
+        },
         "name": "Classical Exchange Variation",
         "eco": "D85",
-        "frequency": 0.50,
+        "frequency": 0.5,
         "description": "White accepts the challenge and captures on d5, aiming to build a massive center with e4. This is the most ambitious and popular response.",
         "planAdjustment": "Recapture with Nxd5, then after e4 Nxc3 bxc3, fianchetto your bishop to g7 and play ...c5 to attack the center. This is your main line — trust the plan and keep the pressure on!"
       },
       {
         "id": "grunfeld-fianchetto",
-        "move": { "uci": "g2g3", "san": "g3", "explanation": "White plays the Fianchetto Variation, building up quietly instead of immediately grabbing the center." },
+        "move": {
+          "uci": "g2g3",
+          "san": "g3",
+          "explanation": "White plays the Fianchetto Variation, building up quietly instead of immediately grabbing the center."
+        },
         "name": "Fianchetto Variation",
         "eco": "D72",
         "frequency": 0.25,
@@ -594,7 +838,11 @@
       },
       {
         "id": "grunfeld-russian",
-        "move": { "uci": "g1f3", "san": "Nf3", "explanation": "White develops the knight before pushing e4 — the Russian System. A solid, patient approach." },
+        "move": {
+          "uci": "g1f3",
+          "san": "Nf3",
+          "explanation": "White develops the knight before pushing e4 — the Russian System. A solid, patient approach."
+        },
         "name": "Russian System",
         "eco": "D97",
         "frequency": 0.15,
@@ -603,10 +851,14 @@
       },
       {
         "id": "grunfeld-averbakh",
-        "move": { "uci": "e2e4", "san": "e4", "explanation": "White immediately grabs the center with e4 before developing the knight — the Averbakh/Budapest variation." },
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "White immediately grabs the center with e4 before developing the knight — the Averbakh/Budapest variation."
+        },
         "name": "Averbakh Variation",
         "eco": "D80",
-        "frequency": 0.10,
+        "frequency": 0.1,
         "description": "White grabs the center immediately with e4. This is an unusual move order that can catch beginners off guard.",
         "planAdjustment": "Continue with ...dxc4 to grab the pawn and develop freely, or play ...dxe4 to dissolve the center. Either way, complete your development with ...Bg7 and ...O-O."
       }

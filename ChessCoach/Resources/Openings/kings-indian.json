@@ -4,6 +4,10 @@
   "description": "An aggressive defense where Black lets White build a big center, then counterattacks it with a powerful pawn storm on the kingside.",
   "color": "black",
   "difficulty": 3,
+  "tags": [
+    "aggressive",
+    "hypermodern"
+  ],
   "tree": {
     "id": "kings-indian/root",
     "children": [
@@ -385,19 +389,69 @@
   "plan": {
     "summary": "Let White build a big pawn center with c4, d4, and e4, then launch a powerful kingside counterattack with ...e5 (and later ...f5). Your bishop on g7 is the engine of your attack, and your pawn storm with ...f5-f4 can create a devastating attack on White's king. This is one of the most exciting, aggressive defenses in chess!",
     "strategicGoals": [
-      { "description": "Fianchetto the bishop to g7 — it will power your kingside attack and support ...e5", "priority": 1 },
-      { "description": "Play ...d6 and ...e5 to challenge White's center and lock it — setting up a kingside race", "priority": 2 },
-      { "description": "Castle kingside quickly and start the kingside pawn storm with ...f5", "priority": 3 },
-      { "description": "Attack White's king with the pawn storm ...f5-f4 while White counterattacks on the queenside", "priority": 4 },
-      { "description": "Use the g7 bishop to support your attacking pieces and control the long diagonal", "priority": 5 }
+      {
+        "description": "Fianchetto the bishop to g7 — it will power your kingside attack and support ...e5",
+        "priority": 1
+      },
+      {
+        "description": "Play ...d6 and ...e5 to challenge White's center and lock it — setting up a kingside race",
+        "priority": 2
+      },
+      {
+        "description": "Castle kingside quickly and start the kingside pawn storm with ...f5",
+        "priority": 3
+      },
+      {
+        "description": "Attack White's king with the pawn storm ...f5-f4 while White counterattacks on the queenside",
+        "priority": 4
+      },
+      {
+        "description": "Use the g7 bishop to support your attacking pieces and control the long diagonal",
+        "priority": 5
+      }
     ],
     "pawnStructureTarget": "Black gets a kingside pawn majority (e5, f5, g6) that storms forward. White gets queenside space. Both sides race — usually the attacker who strikes first wins!",
-    "keySquares": ["g7", "e5", "f5", "d6", "e4"],
+    "keySquares": [
+      "g7",
+      "e5",
+      "f5",
+      "d6",
+      "e4"
+    ],
     "pieceTargets": [
-      { "piece": "dark-squared bishop", "idealSquares": ["g7"], "reasoning": "The King's Indian bishop on g7 is Black's most powerful piece — it supports the kingside attack, controls the long diagonal, and keeps White's pieces off key squares" },
-      { "piece": "king's knight", "idealSquares": ["f6", "h5", "d4"], "reasoning": "The knight on f6 can jump to h5 to support ...f5, or reroute to d4 after center exchanges to become a monster piece" },
-      { "piece": "queen", "idealSquares": ["e7", "d7", "h4"], "reasoning": "The queen supports the kingside attack — Qh4 is a classic King's Indian attacking move that creates dangerous threats" },
-      { "piece": "rooks", "idealSquares": ["f8", "e8"], "reasoning": "Rooks belong on the f-file (supporting ...f5) and e-file (supporting the central pawn break)" }
+      {
+        "piece": "dark-squared bishop",
+        "idealSquares": [
+          "g7"
+        ],
+        "reasoning": "The King's Indian bishop on g7 is Black's most powerful piece — it supports the kingside attack, controls the long diagonal, and keeps White's pieces off key squares"
+      },
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f6",
+          "h5",
+          "d4"
+        ],
+        "reasoning": "The knight on f6 can jump to h5 to support ...f5, or reroute to d4 after center exchanges to become a monster piece"
+      },
+      {
+        "piece": "queen",
+        "idealSquares": [
+          "e7",
+          "d7",
+          "h4"
+        ],
+        "reasoning": "The queen supports the kingside attack — Qh4 is a classic King's Indian attacking move that creates dangerous threats"
+      },
+      {
+        "piece": "rooks",
+        "idealSquares": [
+          "f8",
+          "e8"
+        ],
+        "reasoning": "Rooks belong on the f-file (supporting ...f5) and e-file (supporting the central pawn break)"
+      }
     ],
     "typicalPlans": [
       "After ...e5 d5 (center closes), storm forward with ...f5-f4, ...Nf6-h5-f4",
@@ -417,31 +471,67 @@
         "title": "The Setup: Fianchetto and ...d6",
         "description": "The King's Indian setup starts with ...Nf6, ...g6, ...Bg7, and ...d6. These four moves build the fortress around your king and prepare the central strike ...e5. Learn this setup by heart!",
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 5",
-        "highlights": ["g7", "f6", "d6", "g6"],
-        "arrows": [{"from": "e7", "to": "e5"}],
+        "highlights": [
+          "g7",
+          "f6",
+          "d6",
+          "g6"
+        ],
+        "arrows": [
+          {
+            "from": "e7",
+            "to": "e5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Key Strike: ...e5!",
         "description": "After castling, the most important move in the King's Indian is ...e5! This challenges White's center and starts the battle. White usually replies d5, locking the center, and then both sides race — you attack the kingside, White attacks the queenside.",
         "fen": "rnbq1rk1/ppp1ppbp/3p1np1/8/2PPP3/2N2N2/PP2BPPP/R1BQK2R b KQ - 3 6",
-        "highlights": ["e5", "d4", "e4"],
-        "arrows": [{"from": "e7", "to": "e5"}],
+        "highlights": [
+          "e5",
+          "d4",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "e7",
+            "to": "e5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Kingside Pawn Storm",
         "description": "After the center is locked with d5/e5, you launch your kingside attack with ...f5! Then ...f4, ...g5, ...g4 — your pawns march forward like a battering ram. White's king on the queenside is in danger!",
         "fen": "r1bq1rk1/ppp3bp/3p1np1/3Ppp2/2P1P3/2N2N2/PP2BPPP/R1BQ1RK1 b - - 0 9",
-        "highlights": ["f5", "e5", "g6"],
-        "arrows": [{"from": "f7", "to": "f5"}, {"from": "f5", "to": "f4"}],
+        "highlights": [
+          "f5",
+          "e5",
+          "g6"
+        ],
+        "arrows": [
+          {
+            "from": "f7",
+            "to": "f5"
+          },
+          {
+            "from": "f5",
+            "to": "f4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Don't Attack Without Castling!",
         "description": "Launching the kingside pawn storm before castling is dangerous — your king is exposed! Always castle first, then attack. An uncastled king can be a disaster in sharp King's Indian positions.",
         "fen": "rnbqk2r/ppp2pbp/3p1np1/3Pp3/2P1P3/2N2N2/PP2BPPP/R1BQK2R b KQkq - 1 7",
-        "highlights": ["e8", "f7", "f5"],
+        "highlights": [
+          "e8",
+          "f7",
+          "f5"
+        ],
         "arrows": [],
         "style": "bad"
       },
@@ -449,8 +539,17 @@
         "title": "The Sämisch: Counterattack with ...c5 or ...e5",
         "description": "When White plays f3 (the Sämisch), you must counterattack immediately — White is planning a big center and a queenside attack. Play ...c5 or ...e5 right away to create counterplay before White's attack gets too strong.",
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N2P2/PP4PP/R1BQKBNR b KQkq - 0 6",
-        "highlights": ["c5", "e5", "f3"],
-        "arrows": [{"from": "c7", "to": "c5"}],
+        "highlights": [
+          "c5",
+          "e5",
+          "f3"
+        ],
+        "arrows": [
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ],
         "style": "good"
       }
     ],
@@ -459,40 +558,93 @@
         "fen": "rnbq1rk1/ppp1ppbp/3p1np1/8/2PPP3/2N2N2/PP2BPPP/R1BQ1RK1 b - - 3 7",
         "prompt": "Both sides have castled and it's your turn. What is the most important move in the King's Indian Defense?",
         "choices": [
-          {"text": "...e5 — challenge White's center and start the kingside race", "isCorrect": true},
-          {"text": "...a6 — prepare queenside expansion slowly", "isCorrect": false},
-          {"text": "...Nc6 — develop another piece first", "isCorrect": false}
+          {
+            "text": "...e5 — challenge White's center and start the kingside race",
+            "isCorrect": true
+          },
+          {
+            "text": "...a6 — prepare queenside expansion slowly",
+            "isCorrect": false
+          },
+          {
+            "text": "...Nc6 — develop another piece first",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "...e5 is the King's Indian's most important move! It challenges White's big center and forces White to decide whether to exchange (opening the position) or push d5 (closing the center, after which you storm the kingside with ...f5).",
-        "boardHighlightsOnReveal": ["e5", "d4", "g7"],
-        "arrowsOnReveal": [{"from": "e7", "to": "e5"}]
+        "boardHighlightsOnReveal": [
+          "e5",
+          "d4",
+          "g7"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e7",
+            "to": "e5"
+          }
+        ]
       },
       {
         "fen": "r1bq1rk1/ppp3bp/3p1np1/3Ppp2/2P1P3/2N2N2/PP2BPPP/R1BQ1RK1 w - f6 0 10",
         "prompt": "White has pushed d5, closing the center. The center is locked. What should you do next?",
         "choices": [
-          {"text": "Attack the kingside with ...f4 and push your pawns forward", "isCorrect": true},
-          {"text": "Exchange pieces in the center to simplify the position", "isCorrect": false},
-          {"text": "Bring your rook to d8 to pressure the d5 pawn", "isCorrect": false}
+          {
+            "text": "Attack the kingside with ...f4 and push your pawns forward",
+            "isCorrect": true
+          },
+          {
+            "text": "Exchange pieces in the center to simplify the position",
+            "isCorrect": false
+          },
+          {
+            "text": "Bring your rook to d8 to pressure the d5 pawn",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "When the center is locked, the King's Indian plan is crystal clear: attack the kingside with ...f4, ...g5, ...g4, ...Nh5, and march your pawns forward! Meanwhile, White attacks the queenside — this is a race, and you must move fast.",
-        "boardHighlightsOnReveal": ["f5", "e5", "g6"],
-        "arrowsOnReveal": [{"from": "f5", "to": "f4"}]
+        "boardHighlightsOnReveal": [
+          "f5",
+          "e5",
+          "g6"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f5",
+            "to": "f4"
+          }
+        ]
       },
       {
         "fen": "rnbqk2r/ppp2pbp/3p1np1/3Pp3/2P1P3/2N2N2/PP2BPPP/R1BQK2R b KQkq - 1 7",
         "prompt": "White has played d5 and e4, and your king is still on e8. What should you do?",
         "choices": [
-          {"text": "Castle immediately — king safety comes before any attack", "isCorrect": true},
-          {"text": "Play ...f5 right now to start the kingside attack", "isCorrect": false},
-          {"text": "Play ...Nc6 to add pressure to d4", "isCorrect": false}
+          {
+            "text": "Castle immediately — king safety comes before any attack",
+            "isCorrect": true
+          },
+          {
+            "text": "Play ...f5 right now to start the kingside attack",
+            "isCorrect": false
+          },
+          {
+            "text": "Play ...Nc6 to add pressure to d4",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Always castle before attacking! Launching ...f5 with an uncastled king is very dangerous — White could open the center and attack your exposed king. Castle first, then start your kingside storm.",
-        "boardHighlightsOnReveal": ["g8", "e8"],
-        "arrowsOnReveal": [{"from": "e8", "to": "g8"}]
+        "boardHighlightsOnReveal": [
+          "g8",
+          "e8"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e8",
+            "to": "g8"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -500,32 +652,69 @@
         "title": "Classical Variation (E92-E99)",
         "description": "After 6.Be2 e5, we reach the starting position of the Classical King's Indian. White plays solidly with Be2 and will castle kingside. The game usually features a race — Black attacks on the kingside with ...f5 after White pushes d5.",
         "fen": "rnbq1rk1/ppp1ppbp/3p1np1/8/2PPP3/2N2N2/PP2BPPP/R1BQ1RK1 b - - 3 7",
-        "highlights": ["e2", "e5", "g7"],
-        "arrows": [{"from": "e7", "to": "e5"}],
+        "highlights": [
+          "e2",
+          "e5",
+          "g7"
+        ],
+        "arrows": [
+          {
+            "from": "e7",
+            "to": "e5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Sämisch Variation (E80-E89)",
         "description": "White plays 6.f3 in the Sämisch, aiming to build an even bigger center and attack on the queenside. This is a very aggressive system where White often castles queenside! Black must counterattack immediately with ...c5 or ...e5.",
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N2P2/PP4PP/R1BQKBNR b KQkq - 0 6",
-        "highlights": ["f3", "e4", "d4"],
-        "arrows": [{"from": "c7", "to": "c5"}],
+        "highlights": [
+          "f3",
+          "e4",
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Four Pawns Attack (E76-E79)",
         "description": "With 6.f4, White creates a massive four-pawn center. This is White's most ambitious try — four connected central pawns! Black must strike quickly with ...c5 to undermine this pawn chain before it rolls forward.",
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/2PPPP2/2N5/PP4PP/R1BQKBNR b KQkq f3 0 6",
-        "highlights": ["c4", "d4", "e4", "f4"],
-        "arrows": [{"from": "c7", "to": "c5"}],
+        "highlights": [
+          "c4",
+          "d4",
+          "e4",
+          "f4"
+        ],
+        "arrows": [
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Fianchetto Variation (E60-E69)",
         "description": "When White plays g3 and Bg2, it's the Fianchetto Variation. White aims for a long-term positional squeeze rather than an immediate attack. Black keeps the King's Indian setup and plays ...d6, ...e5 when ready.",
         "fen": "rnbq1rk1/ppp1ppbp/3p1np1/8/2PP4/5NP1/PP2PPBP/RNBQ1RK1 b - - 5 7",
-        "highlights": ["g2", "g7", "d6"],
-        "arrows": [{"from": "e7", "to": "e5"}],
+        "highlights": [
+          "g2",
+          "g7",
+          "d6"
+        ],
+        "arrows": [
+          {
+            "from": "e7",
+            "to": "e5"
+          }
+        ],
         "style": "theory"
       }
     ],
@@ -534,36 +723,84 @@
         "fen": "rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N2P2/PP4PP/R1BQKBNR b KQkq - 0 6",
         "prompt": "White has played f3 — the Sämisch Variation. What is the purpose of this move?",
         "choices": [
-          {"text": "To reinforce the e4 pawn and prepare a massive center, often followed by queenside castling", "isCorrect": true},
-          {"text": "To attack the f6 knight and drive it away", "isCorrect": false},
-          {"text": "To prepare an immediate kingside attack with g4", "isCorrect": false}
+          {
+            "text": "To reinforce the e4 pawn and prepare a massive center, often followed by queenside castling",
+            "isCorrect": true
+          },
+          {
+            "text": "To attack the f6 knight and drive it away",
+            "isCorrect": false
+          },
+          {
+            "text": "To prepare an immediate kingside attack with g4",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "In the Sämisch, White plays f3 to support e4 and build an even bigger pawn center. White often castles queenside and attacks on the kingside with g4-g5. Black must counterattack immediately with ...c5 or ...e5 before White's attack gets too strong.",
-        "boardHighlightsOnReveal": ["f3", "e4", "d4", "c4"],
-        "arrowsOnReveal": [{"from": "c7", "to": "c5"}]
+        "boardHighlightsOnReveal": [
+          "f3",
+          "e4",
+          "d4",
+          "c4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ]
       },
       {
         "fen": "rnbq1rk1/ppp1ppbp/3p1np1/8/2PPP3/2N2N2/PP2BPPP/R1BQ1RK1 b - - 3 7",
         "prompt": "After 6.Be2 O-O, what variation are we in and what is Black's best move?",
         "choices": [
-          {"text": "Classical Variation (E92) — Black plays ...e5 to challenge the center", "isCorrect": true},
-          {"text": "Sämisch Variation (E80) — Black plays ...c5 to attack the queenside", "isCorrect": false},
-          {"text": "Four Pawns Attack (E76) — Black plays ...dxe4 to exchange pawns", "isCorrect": false}
+          {
+            "text": "Classical Variation (E92) — Black plays ...e5 to challenge the center",
+            "isCorrect": true
+          },
+          {
+            "text": "Sämisch Variation (E80) — Black plays ...c5 to attack the queenside",
+            "isCorrect": false
+          },
+          {
+            "text": "Four Pawns Attack (E76) — Black plays ...dxe4 to exchange pawns",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "6.Be2 O-O is the Classical Variation (E92-E99). Black's best move is ...e5, the key King's Indian strike. After d5 e5 closes the center, Black attacks the kingside with ...f5 while White counterattacks on the queenside.",
-        "boardHighlightsOnReveal": ["e2", "g7", "e5"],
-        "arrowsOnReveal": [{"from": "e7", "to": "e5"}]
+        "boardHighlightsOnReveal": [
+          "e2",
+          "g7",
+          "e5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e7",
+            "to": "e5"
+          }
+        ]
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["d2d4", "g8f6", "c2c4", "g7g6", "b1c3", "f8g7"],
+    "afterMoves": [
+      "d2d4",
+      "g8f6",
+      "c2c4",
+      "g7g6",
+      "b1c3",
+      "f8g7"
+    ],
     "responses": [
       {
         "id": "kings-indian-classical",
-        "move": { "uci": "e2e4", "san": "e4", "explanation": "White completes the big center with e4. This is the most common move and leads to the main King's Indian lines." },
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "White completes the big center with e4. This is the most common move and leads to the main King's Indian lines."
+        },
         "name": "Classical/Main Line",
         "eco": "E91",
         "frequency": 0.55,
@@ -572,7 +809,11 @@
       },
       {
         "id": "kings-indian-samisch",
-        "move": { "uci": "f2f3", "san": "f3", "explanation": "The Sämisch! White plays f3 to reinforce e4 and prepares to castle queenside for a strong attack." },
+        "move": {
+          "uci": "f2f3",
+          "san": "f3",
+          "explanation": "The Sämisch! White plays f3 to reinforce e4 and prepares to castle queenside for a strong attack."
+        },
         "name": "Sämisch Variation",
         "eco": "E80",
         "frequency": 0.15,
@@ -581,19 +822,27 @@
       },
       {
         "id": "kings-indian-four-pawns",
-        "move": { "uci": "f2f4", "san": "f4", "explanation": "The Four Pawns Attack — White builds a massive pawn center with c4/d4/e4/f4." },
+        "move": {
+          "uci": "f2f4",
+          "san": "f4",
+          "explanation": "The Four Pawns Attack — White builds a massive pawn center with c4/d4/e4/f4."
+        },
         "name": "Four Pawns Attack",
         "eco": "E76",
-        "frequency": 0.10,
+        "frequency": 0.1,
         "description": "White goes for an overwhelming pawn center. This looks very scary but is actually double-edged — such a big center can collapse if you undermine it correctly.",
         "planAdjustment": "Play ...d6, castle, then strike with ...c5 immediately! This undermines the base of White's pawn chain. Don't be intimidated by the four pawns — attack them and they will fall."
       },
       {
         "id": "kings-indian-fianchetto",
-        "move": { "uci": "g2g3", "san": "g3", "explanation": "The Fianchetto Variation — White plays quietly with g3 and Bg2 instead of building the big center." },
+        "move": {
+          "uci": "g2g3",
+          "san": "g3",
+          "explanation": "The Fianchetto Variation — White plays quietly with g3 and Bg2 instead of building the big center."
+        },
         "name": "Fianchetto Variation",
         "eco": "E60",
-        "frequency": 0.20,
+        "frequency": 0.2,
         "description": "White mirrors Black's setup with a fianchettoed bishop on g2. This leads to more positional, strategic battles compared to the main lines.",
         "planAdjustment": "Continue with ...O-O, ...d6, and ...e5 when ready. The plan is the same as in the Classical lines, but the game will be calmer and more positional. Focus on outmaneuvering White rather than a direct attack."
       }

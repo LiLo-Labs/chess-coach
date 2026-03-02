@@ -4,6 +4,10 @@
   "description": "A rock-solid defense that supports d5 with c6 while keeping the light-squared bishop free to develop.",
   "color": "black",
   "difficulty": 2,
+  "tags": [
+    "solid",
+    "positional"
+  ],
   "tree": {
     "id": "slav/root",
     "children": [
@@ -397,18 +401,59 @@
   "plan": {
     "summary": "Support your d5 pawn with c6, then develop your light-squared bishop actively to f5 — something you can't do in the Queen's Gambit Declined. Take on c4 and use b5 to hold the pawn when possible, then castle and activate your pieces.",
     "strategicGoals": [
-      { "description": "Support d5 with c6 to keep the center solid", "priority": 1 },
-      { "description": "Develop the light-squared bishop to f5 before playing e6", "priority": 2 },
-      { "description": "Take the c4 pawn and hold it with ...b5 when possible", "priority": 3 },
-      { "description": "Castle kingside and activate rooks", "priority": 4 },
-      { "description": "Create queenside counterplay with ...c5 or ...b5-b4", "priority": 5 }
+      {
+        "description": "Support d5 with c6 to keep the center solid",
+        "priority": 1
+      },
+      {
+        "description": "Develop the light-squared bishop to f5 before playing e6",
+        "priority": 2
+      },
+      {
+        "description": "Take the c4 pawn and hold it with ...b5 when possible",
+        "priority": 3
+      },
+      {
+        "description": "Castle kingside and activate rooks",
+        "priority": 4
+      },
+      {
+        "description": "Create queenside counterplay with ...c5 or ...b5-b4",
+        "priority": 5
+      }
     ],
     "pawnStructureTarget": "Solid c6/d5 center with free bishop development to f5",
-    "keySquares": ["d5", "c4", "f5", "e4"],
+    "keySquares": [
+      "d5",
+      "c4",
+      "f5",
+      "e4"
+    ],
     "pieceTargets": [
-      { "piece": "light-squared bishop", "idealSquares": ["f5", "g4"], "reasoning": "The Slav's biggest advantage — this bishop gets to come out before e6 locks it in, unlike in the QGD" },
-      { "piece": "king's knight", "idealSquares": ["f6", "e4"], "reasoning": "Controls the center, supports d5, and can leap to e4 for active play" },
-      { "piece": "dark-squared bishop", "idealSquares": ["b4", "d6"], "reasoning": "Can pin the c3 knight or support central pawns" }
+      {
+        "piece": "light-squared bishop",
+        "idealSquares": [
+          "f5",
+          "g4"
+        ],
+        "reasoning": "The Slav's biggest advantage — this bishop gets to come out before e6 locks it in, unlike in the QGD"
+      },
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f6",
+          "e4"
+        ],
+        "reasoning": "Controls the center, supports d5, and can leap to e4 for active play"
+      },
+      {
+        "piece": "dark-squared bishop",
+        "idealSquares": [
+          "b4",
+          "d6"
+        ],
+        "reasoning": "Can pin the c3 knight or support central pawns"
+      }
     ],
     "typicalPlans": [
       "Play ...c6 and ...d5 to claim the center firmly",
@@ -427,39 +472,85 @@
         "title": "The Slav's Secret: Bishop on f5",
         "description": "In the Queen's Gambit Declined, Black plays ...e6 which locks in the light-squared bishop. In the Slav, ...c6 supports d5 WITHOUT blocking the bishop. Now Bf5 is available, giving you a much more active piece!",
         "fen": "rn1qkb1r/pp2pppp/2p2n2/3p1b2/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 2 5",
-        "highlights": ["f5", "e6", "c6"],
-        "arrows": [{"from": "c8", "to": "f5"}],
+        "highlights": [
+          "f5",
+          "e6",
+          "c6"
+        ],
+        "arrows": [
+          {
+            "from": "c8",
+            "to": "f5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Take the Pawn — ...dxc4!",
         "description": "One of the Slav's key ideas is to capture on c4. Unlike in the QGD, you can often hold the pawn with ...b5 later. Even if you can't keep it, taking c4 gives you time to develop your bishop freely.",
         "fen": "rn1qkb1r/pp2pppp/2p2n2/5b2/2pP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 0 6",
-        "highlights": ["c4", "b5"],
-        "arrows": [{"from": "d5", "to": "c4"}, {"from": "b7", "to": "b5"}],
+        "highlights": [
+          "c4",
+          "b5"
+        ],
+        "arrows": [
+          {
+            "from": "d5",
+            "to": "c4"
+          },
+          {
+            "from": "b7",
+            "to": "b5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Don't Play e6 Before Bf5",
         "description": "The biggest mistake in the Slav is playing ...e6 before getting the bishop out. After e6, the bishop on c8 is trapped behind the pawn chain — exactly what happens in the Queen's Gambit Declined, which you were trying to avoid!",
         "fen": "rnbqkb1r/pp2pppp/2p2n2/3p4/2PP4/2N2N2/PP2PPPP/R1BQKB1R b KQkq - 2 4",
-        "highlights": ["c8", "e6", "f5"],
-        "arrows": [{"from": "e7", "to": "e6"}],
+        "highlights": [
+          "c8",
+          "e6",
+          "f5"
+        ],
+        "arrows": [
+          {
+            "from": "e7",
+            "to": "e6"
+          }
+        ],
         "style": "bad"
       },
       {
         "title": "The Semi-Slav — A Fortress Setup",
         "description": "If you play ...e6 anyway, you get the Semi-Slav — a different defense with its own ideas. After ...Nbd7, you can play ...dxc4 and ...b5 to counterattack. This leads to the famous Meran and Marshall Gambits!",
         "fen": "rnbqkb1r/pp1n1ppp/2p1p3/3p4/2PP4/2N1PN2/PP3PPP/R1BQKB1R b KQkq - 0 6",
-        "highlights": ["d7", "c6", "e6"],
-        "arrows": [{"from": "d5", "to": "c4"}, {"from": "b7", "to": "b5"}],
+        "highlights": [
+          "d7",
+          "c6",
+          "e6"
+        ],
+        "arrows": [
+          {
+            "from": "d5",
+            "to": "c4"
+          },
+          {
+            "from": "b7",
+            "to": "b5"
+          }
+        ],
         "style": "neutral"
       },
       {
         "title": "Castle to Complete Your Setup",
         "description": "After developing the bishop to f5 and your knight to f6, always castle! With the king safe on g8, your rooks connect and you can start your queenside counterplay with ...c5 or ...b5-b4.",
         "fen": "rn1q1rk1/pp2ppbp/2p2np1/3p1b2/2PP4/2N1PN2/PP3PPP/R1BQKB1R w KQ - 2 7",
-        "highlights": ["g8", "f8"],
+        "highlights": [
+          "g8",
+          "f8"
+        ],
         "arrows": [],
         "style": "good"
       }
@@ -469,40 +560,93 @@
         "fen": "rnbqkb1r/pp2pppp/2p2n2/3p4/2PP4/2N2N2/PP2PPPP/R1BQKB1R b KQkq - 2 4",
         "prompt": "You've played ...c6 and ...d5. White has c4 attacking your pawn. What is the Slav's key advantage over the Queen's Gambit Declined?",
         "choices": [
-          {"text": "Your light-squared bishop can come to f5 before playing e6", "isCorrect": true},
-          {"text": "You can immediately attack with ...Ng4", "isCorrect": false},
-          {"text": "Your queen is more active in the Slav", "isCorrect": false}
+          {
+            "text": "Your light-squared bishop can come to f5 before playing e6",
+            "isCorrect": true
+          },
+          {
+            "text": "You can immediately attack with ...Ng4",
+            "isCorrect": false
+          },
+          {
+            "text": "Your queen is more active in the Slav",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The key advantage is the bishop! In the QGD, Black plays ...e6 to support d5, which traps the light-squared bishop. In the Slav, ...c6 supports d5 without blocking the bishop, so ...Bf5 is available!",
-        "boardHighlightsOnReveal": ["f5", "c8", "e6"],
-        "arrowsOnReveal": [{"from": "c8", "to": "f5"}]
+        "boardHighlightsOnReveal": [
+          "f5",
+          "c8",
+          "e6"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c8",
+            "to": "f5"
+          }
+        ]
       },
       {
         "fen": "rn1qkb1r/pp2pppp/2p2n2/3p1b2/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 2 5",
         "prompt": "White just played Nc3. What is Black's best move?",
         "choices": [
-          {"text": "dxc4 — take the pawn and prepare to hold it with ...b5", "isCorrect": true},
-          {"text": "e6 — play solidly and keep the tension", "isCorrect": false},
-          {"text": "Bg4 — pin the knight to the queen", "isCorrect": false}
+          {
+            "text": "dxc4 — take the pawn and prepare to hold it with ...b5",
+            "isCorrect": true
+          },
+          {
+            "text": "e6 — play solidly and keep the tension",
+            "isCorrect": false
+          },
+          {
+            "text": "Bg4 — pin the knight to the queen",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Take the pawn with ...dxc4! You already have the bishop out on f5, which means you can temporarily keep the pawn. If White plays a4 to stop ...b5, your bishop has a great square on b4!",
-        "boardHighlightsOnReveal": ["c4", "b5"],
-        "arrowsOnReveal": [{"from": "d5", "to": "c4"}]
+        "boardHighlightsOnReveal": [
+          "c4",
+          "b5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "d5",
+            "to": "c4"
+          }
+        ]
       },
       {
         "fen": "rn1qkb1r/pp2pppp/2p2n2/5b2/2pP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 0 6",
         "prompt": "You've captured on c4 and White plays a4. What is your best response?",
         "choices": [
-          {"text": "Bf5 — keep the bishop active and plan to play e6 next", "isCorrect": false},
-          {"text": "Bb4 — pin the c3 knight and develop actively", "isCorrect": true},
-          {"text": "b5 — try to hold the pawn despite a4", "isCorrect": false}
+          {
+            "text": "Bf5 — keep the bishop active and plan to play e6 next",
+            "isCorrect": false
+          },
+          {
+            "text": "Bb4 — pin the c3 knight and develop actively",
+            "isCorrect": true
+          },
+          {
+            "text": "b5 — try to hold the pawn despite a4",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 1,
         "explanation": "Play ...Bb4! White's a4 stops ...b5, so instead you pin the c3 knight. Now White has a weakness on b4 (created by a4) and you have active piece play. A great Slav idea!",
-        "boardHighlightsOnReveal": ["b4", "c3", "a4"],
-        "arrowsOnReveal": [{"from": "f8", "to": "b4"}]
+        "boardHighlightsOnReveal": [
+          "b4",
+          "c3",
+          "a4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f8",
+            "to": "b4"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -510,23 +654,49 @@
         "title": "Main Line Slav (D17) — The Bf5 Variation",
         "description": "After 1.d4 d5 2.c4 c6 3.Nf3 Nf6 4.Nc3 dxc4 5.a4 Bf5, you've captured the pawn and developed the bishop to f5. This is the heart of the Slav Defense — you have an extra pawn temporarily and an active bishop.",
         "fen": "rn1qkb1r/pp2pppp/2p2n2/5b2/P1pP4/2N2N2/PP2PPPP/R1BQKB1R b KQkq a3 0 6",
-        "highlights": ["f5", "c4", "a4"],
-        "arrows": [{"from": "c8", "to": "f5"}],
+        "highlights": [
+          "f5",
+          "c4",
+          "a4"
+        ],
+        "arrows": [
+          {
+            "from": "c8",
+            "to": "f5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Semi-Slav (D45) — The Meran Variation",
         "description": "After ...e6 and ...Nbd7, the famous Meran Variation begins. After ...dxc4 and ...b5, Black has queenside counterplay. This leads to incredibly sharp, theory-heavy positions loved by grandmasters.",
         "fen": "r1bqkb1r/pp1n1ppp/2p1pn2/3p4/2PP4/2N1PN2/PP3PPP/R1BQKB1R b KQkq - 0 6",
-        "highlights": ["d7", "c6", "e6", "b5"],
-        "arrows": [{"from": "d5", "to": "c4"}, {"from": "b7", "to": "b5"}],
+        "highlights": [
+          "d7",
+          "c6",
+          "e6",
+          "b5"
+        ],
+        "arrows": [
+          {
+            "from": "d5",
+            "to": "c4"
+          },
+          {
+            "from": "b7",
+            "to": "b5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Exchange Slav (D10) — Simplified Play",
         "description": "After cxd5 cxd5, White has traded into a symmetrical structure. White often uses this to avoid complex theory and draw. But Black can play actively with ...Nc6 and ...Bf5 to fight for a win!",
         "fen": "rnbqkbnr/pp2pppp/8/3p4/3P4/8/PP2PPPP/RNBQKBNR w KQkq - 0 4",
-        "highlights": ["d5", "d4"],
+        "highlights": [
+          "d5",
+          "d4"
+        ],
         "arrows": [],
         "style": "neutral"
       },
@@ -534,8 +704,17 @@
         "title": "Why c6 is Better Than e6",
         "description": "Compare: in the QGD, Black plays e6 and the light-squared bishop is stuck for the whole game. In the Slav, c6 does the same job of supporting d5, but the bishop gets to come out! This structural difference is the whole reason the Slav is so popular.",
         "fen": "rnbqkb1r/pp2pppp/2p2n2/3p4/2PP4/5N2/PP2PPPP/RNBQKB1R w KQkq - 0 4",
-        "highlights": ["c6", "d5", "c8"],
-        "arrows": [{"from": "c8", "to": "f5"}],
+        "highlights": [
+          "c6",
+          "d5",
+          "c8"
+        ],
+        "arrows": [
+          {
+            "from": "c8",
+            "to": "f5"
+          }
+        ],
         "style": "good"
       }
     ],
@@ -544,46 +723,91 @@
         "fen": "rn1qkb1r/pp2pppp/2p2n2/5b2/P1pP4/2N2N2/PP2PPPP/R1BQKB1R b KQkq a3 0 6",
         "prompt": "Black has the bishop on f5 and an extra pawn on c4. Why is this position so good for Black?",
         "choices": [
-          {"text": "Black has active piece play and an extra pawn that's hard for White to recapture immediately", "isCorrect": true},
-          {"text": "Black is winning material because White cannot recapture on c4", "isCorrect": false},
-          {"text": "Black has a permanent pawn advantage", "isCorrect": false}
+          {
+            "text": "Black has active piece play and an extra pawn that's hard for White to recapture immediately",
+            "isCorrect": true
+          },
+          {
+            "text": "Black is winning material because White cannot recapture on c4",
+            "isCorrect": false
+          },
+          {
+            "text": "Black has a permanent pawn advantage",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The position is great because Black has an extra pawn AND an active bishop on f5. White will eventually recapture with e3 and Bxc4, but in the meantime Black develops freely and keeps the initiative.",
-        "boardHighlightsOnReveal": ["f5", "c4"],
+        "boardHighlightsOnReveal": [
+          "f5",
+          "c4"
+        ],
         "arrowsOnReveal": []
       },
       {
         "fen": "r1bqkb1r/pp1n1ppp/2p1pn2/3p4/2PP4/2N1PN2/PP3PPP/R1BQKB1R b KQkq - 0 6",
         "prompt": "Black has played ...e6 and ...Nbd7. What variation is this?",
         "choices": [
-          {"text": "Semi-Slav Defense", "isCorrect": true},
-          {"text": "Classical Slav Defense", "isCorrect": false},
-          {"text": "Exchange Slav", "isCorrect": false},
-          {"text": "Chebanenko Slav", "isCorrect": false}
+          {
+            "text": "Semi-Slav Defense",
+            "isCorrect": true
+          },
+          {
+            "text": "Classical Slav Defense",
+            "isCorrect": false
+          },
+          {
+            "text": "Exchange Slav",
+            "isCorrect": false
+          },
+          {
+            "text": "Chebanenko Slav",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Semi-Slav Defense! After 3...c6 and 4...e6, Black has both supporting pawns in the center. The light-squared bishop is temporarily locked in, but the famous Meran Variation (dxc4 and b5) gives excellent counterplay.",
-        "boardHighlightsOnReveal": ["c6", "e6", "d7"],
+        "boardHighlightsOnReveal": [
+          "c6",
+          "e6",
+          "d7"
+        ],
         "arrowsOnReveal": []
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["d2d4", "d7d5", "c2c4", "c7c6", "g1f3", "g8f6", "b1c3", "d5c4"],
+    "afterMoves": [
+      "d2d4",
+      "d7d5",
+      "c2c4",
+      "c7c6",
+      "g1f3",
+      "g8f6",
+      "b1c3",
+      "d5c4"
+    ],
     "responses": [
       {
         "id": "a4-main",
-        "move": { "uci": "a2a4", "san": "a4", "explanation": "White plays a4 to stop ...b5, which would allow Black to hold the c4 pawn. Now you can't hold the pawn with ...b5, but your bishop has a great square on b4!" },
+        "move": {
+          "uci": "a2a4",
+          "san": "a4",
+          "explanation": "White plays a4 to stop ...b5, which would allow Black to hold the c4 pawn. Now you can't hold the pawn with ...b5, but your bishop has a great square on b4!"
+        },
         "name": "a4 Main Line",
         "eco": "D17",
-        "frequency": 0.40,
+        "frequency": 0.4,
         "description": "The main line — White stops ...b5 to recapture the c4 pawn, but creates a weakness on b4.",
         "planAdjustment": "Play ...Bf5 immediately to develop the bishop while you still can. After White plays e3, your plan is ...e6, ...Bb4 to pin the c3 knight, and then ...O-O."
       },
       {
         "id": "e3-quiet",
-        "move": { "uci": "e2e3", "san": "e3", "explanation": "White plays quietly, preparing to recapture on c4 with the bishop. This is solid but gives Black time to develop freely." },
+        "move": {
+          "uci": "e2e3",
+          "san": "e3",
+          "explanation": "White plays quietly, preparing to recapture on c4 with the bishop. This is solid but gives Black time to develop freely."
+        },
         "name": "e3 Quiet Line",
         "eco": "D15",
         "frequency": 0.25,
@@ -592,16 +816,24 @@
       },
       {
         "id": "e4-gambit",
-        "move": { "uci": "e2e4", "san": "e4", "explanation": "White sacrifices a pawn for rapid development and a massive center! This is the Geller Gambit — aggressive but risky." },
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "White sacrifices a pawn for rapid development and a massive center! This is the Geller Gambit — aggressive but risky."
+        },
         "name": "Geller Gambit",
         "eco": "D15",
-        "frequency": 0.20,
+        "frequency": 0.2,
         "description": "An aggressive pawn sacrifice to seize the center and speed up development.",
         "planAdjustment": "Accept the gambit and play solidly. After ...b5, defend carefully and develop. White has activity but you have an extra pawn. Don't rush — just develop normally."
       },
       {
         "id": "ne5-attack",
-        "move": { "uci": "f3e5", "san": "Ne5", "explanation": "White's knight jumps aggressively to e5, eyeing your c4 pawn and threatening Nxc4. This forces immediate action!" },
+        "move": {
+          "uci": "f3e5",
+          "san": "Ne5",
+          "explanation": "White's knight jumps aggressively to e5, eyeing your c4 pawn and threatening Nxc4. This forces immediate action!"
+        },
         "name": "Ne5 Attack",
         "eco": "D17",
         "frequency": 0.15,

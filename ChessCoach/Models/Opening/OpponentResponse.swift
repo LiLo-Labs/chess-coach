@@ -7,6 +7,16 @@ struct OpponentResponseCatalogue: Codable, Sendable {
 }
 
 /// A single opponent response with context about what it means for the plan.
+extension OpponentResponseCatalogue {
+    /// Match an opponent's move against known responses at this decision point.
+    func matchResponse(moveUCI: String, afterMoves currentMoves: [String]) -> OpponentResponse? {
+        guard currentMoves.count >= afterMoves.count else { return nil }
+        let prefix = Array(currentMoves.prefix(afterMoves.count))
+        guard prefix == afterMoves else { return nil }
+        return responses.first { $0.move.uci == moveUCI }
+    }
+}
+
 struct OpponentResponse: Codable, Sendable, Identifiable {
     let id: String                        // unique ID (typically UCI move string)
     let move: OpeningMove                 // the response move

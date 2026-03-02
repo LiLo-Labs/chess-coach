@@ -4,6 +4,10 @@
   "description": "A solid defense where Black builds a strong pawn structure and counterattacks the center.",
   "color": "black",
   "difficulty": 2,
+  "tags": [
+    "positional",
+    "solid"
+  ],
   "tree": {
     "id": "french/root",
     "children": [
@@ -373,18 +377,61 @@
   "plan": {
     "summary": "As Black, prepare ...d5 to challenge White's center, then counterattack with ...c5 to strike the base of White's pawn chain. Your light-squared bishop can be a problem, so activate it early or trade it well. Castle kingside and play for a strong queenside counterattack.",
     "strategicGoals": [
-      { "description": "Challenge the center immediately with ...d5 on move two", "priority": 1 },
-      { "description": "Launch the key ...c5 counterattack to hit White's d4 pawn", "priority": 2 },
-      { "description": "Activate the light-squared bishop — it can get locked in behind the e6 pawn", "priority": 3 },
-      { "description": "Castle kingside to keep your king safe before launching attacks", "priority": 4 },
-      { "description": "Use queenside space to create long-term winning chances", "priority": 5 }
+      {
+        "description": "Challenge the center immediately with ...d5 on move two",
+        "priority": 1
+      },
+      {
+        "description": "Launch the key ...c5 counterattack to hit White's d4 pawn",
+        "priority": 2
+      },
+      {
+        "description": "Activate the light-squared bishop — it can get locked in behind the e6 pawn",
+        "priority": 3
+      },
+      {
+        "description": "Castle kingside to keep your king safe before launching attacks",
+        "priority": 4
+      },
+      {
+        "description": "Use queenside space to create long-term winning chances",
+        "priority": 5
+      }
     ],
     "pawnStructureTarget": "Pawns on e6 and d5 creating a solid chain; aim for ...c5 to strike the base of White's chain",
-    "keySquares": ["d5", "c5", "e6", "d4", "e5"],
+    "keySquares": [
+      "d5",
+      "c5",
+      "e6",
+      "d4",
+      "e5"
+    ],
     "pieceTargets": [
-      { "piece": "light-squared bishop", "idealSquares": ["d6", "b4", "e7"], "reasoning": "Often passive behind the e6 pawn — must be activated early or traded for an important piece" },
-      { "piece": "king's knight", "idealSquares": ["f6", "d7"], "reasoning": "Attacks e4 and prepares the ...c5 counterattack maneuver" },
-      { "piece": "queen's knight", "idealSquares": ["c6", "d7"], "reasoning": "Supports ...c5 push and pressures White's center" }
+      {
+        "piece": "light-squared bishop",
+        "idealSquares": [
+          "d6",
+          "b4",
+          "e7"
+        ],
+        "reasoning": "Often passive behind the e6 pawn — must be activated early or traded for an important piece"
+      },
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f6",
+          "d7"
+        ],
+        "reasoning": "Attacks e4 and prepares the ...c5 counterattack maneuver"
+      },
+      {
+        "piece": "queen's knight",
+        "idealSquares": [
+          "c6",
+          "d7"
+        ],
+        "reasoning": "Supports ...c5 push and pressures White's center"
+      }
     ],
     "typicalPlans": [
       "Play ...c5 to attack the base of White's pawn chain on d4",
@@ -404,23 +451,44 @@
         "title": "The French Pawn Chain",
         "description": "After 1.e4 e6 2.d4 d5, Black's e6-d5 pawn chain directly challenges White's e4-d4 center. The key idea: attack the chain at its BASE — that means ...c5, hitting d4!",
         "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
-        "highlights": ["e6", "d5", "d4"],
-        "arrows": [{"from": "c7", "to": "c5"}],
+        "highlights": [
+          "e6",
+          "d5",
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Key Counterattack: ...c5",
         "description": "In almost every French variation, your best counterplay comes from pushing ...c5 to attack White's d4 pawn. This opens the c-file and gives your pieces room to breathe.",
         "fen": "r1bqkb1r/pp1n1ppp/2p1p3/2pp4/3PP3/2N2N2/PPP2PPP/R1BQKB1R w KQkq - 0 7",
-        "highlights": ["c5", "d4"],
-        "arrows": [{"from": "c5", "to": "d4"}],
+        "highlights": [
+          "c5",
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "c5",
+            "to": "d4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Trapped Light-Squared Bishop Problem",
         "description": "Watch out! In the French, your light-squared bishop on c8 can get stuck behind your own pawns on e6 and d5. You must find a way to activate it — either trade it, or develop it to b4, a6, or along the diagonal after ...e5 or ...f6.",
         "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR b KQkq - 1 3",
-        "highlights": ["c8", "e6", "d5"],
+        "highlights": [
+          "c8",
+          "e6",
+          "d5"
+        ],
         "arrows": [],
         "style": "bad"
       },
@@ -428,15 +496,27 @@
         "title": "The Winawer: Pin the Knight!",
         "description": "With 3...Bb4, you pin White's Nc3 to the king. This is the Winawer — one of the sharpest and most exciting French lines. You'll happily trade bishop for knight to ruin White's pawn structure.",
         "fen": "rnbqk1nr/ppp2ppp/4p3/3p4/1b1PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
-        "highlights": ["b4", "c3", "e1"],
-        "arrows": [{"from": "b4", "to": "c3"}],
+        "highlights": [
+          "b4",
+          "c3",
+          "e1"
+        ],
+        "arrows": [
+          {
+            "from": "b4",
+            "to": "c3"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Castle Before You Attack",
         "description": "Even though the French is all about counterattacking with ...c5, make sure your king is safe first. Castle kingside and then unleash your queenside attack — a safe king is a happy king!",
         "fen": "r1bq1rk1/pp1n1ppp/2p1p3/3p4/3PP3/2N2N2/PPP1BPPP/R1BQ1RK1 w - - 4 9",
-        "highlights": ["g8", "g1"],
+        "highlights": [
+          "g8",
+          "g1"
+        ],
         "arrows": [],
         "style": "good"
       }
@@ -446,40 +526,94 @@
         "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR b KQkq - 1 3",
         "prompt": "White has a big center with pawns on e4 and d4. What is Black's most important counterattack plan?",
         "choices": [
-          {"text": "Push ...c5 to attack the base of White's pawn chain", "isCorrect": true},
-          {"text": "Develop Nc6 to attack e5", "isCorrect": false},
-          {"text": "Play ...Qd6 to put pressure on d4", "isCorrect": false}
+          {
+            "text": "Push ...c5 to attack the base of White's pawn chain",
+            "isCorrect": true
+          },
+          {
+            "text": "Develop Nc6 to attack e5",
+            "isCorrect": false
+          },
+          {
+            "text": "Play ...Qd6 to put pressure on d4",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The key French idea is ...c5, attacking the d4 pawn — the base of White's pawn chain. When you destroy the base, the whole chain falls apart!",
-        "boardHighlightsOnReveal": ["c7", "d4"],
-        "arrowsOnReveal": [{"from": "c7", "to": "c5"}]
+        "boardHighlightsOnReveal": [
+          "c7",
+          "d4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ]
       },
       {
         "fen": "rnbqkb1r/ppp1nppp/4p3/3p4/3PP3/2N2N2/PPP2PPP/R1BQKB1R b KQkq - 3 5",
         "prompt": "White just played e5, pushing your knight back. What is Black's best response?",
         "choices": [
-          {"text": "Nfd7 — retreat to prepare ...c5 counterattack", "isCorrect": true},
-          {"text": "Ne4 — keep the knight active", "isCorrect": false},
-          {"text": "Ng8 — bring the knight all the way back", "isCorrect": false}
+          {
+            "text": "Nfd7 — retreat to prepare ...c5 counterattack",
+            "isCorrect": true
+          },
+          {
+            "text": "Ne4 — keep the knight active",
+            "isCorrect": false
+          },
+          {
+            "text": "Ng8 — bring the knight all the way back",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Nfd7 is the correct maneuver! The knight retreats to d7 to help support the coming ...c5 counterattack. It looks odd but it's the right plan.",
-        "boardHighlightsOnReveal": ["d7", "c5"],
-        "arrowsOnReveal": [{"from": "f6", "to": "d7"}, {"from": "c7", "to": "c5"}]
+        "boardHighlightsOnReveal": [
+          "d7",
+          "c5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f6",
+            "to": "d7"
+          },
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ]
       },
       {
         "fen": "rnbqk2r/ppp1bppp/4pn2/3p4/3PP3/2N2N2/PPP1BPPP/R1BQK2R b KQkq - 4 6",
         "prompt": "Your pieces are developed. What should Black do next?",
         "choices": [
-          {"text": "Castle kingside — get the king to safety", "isCorrect": true},
-          {"text": "Push ...c4 to fix the center", "isCorrect": false},
-          {"text": "Play ...d4 to gain space", "isCorrect": false}
+          {
+            "text": "Castle kingside — get the king to safety",
+            "isCorrect": true
+          },
+          {
+            "text": "Push ...c4 to fix the center",
+            "isCorrect": false
+          },
+          {
+            "text": "Play ...d4 to gain space",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Castle! Your king needs to be safe before you start any counterattacking operations. A king stuck in the center in the French can be very dangerous.",
-        "boardHighlightsOnReveal": ["g8"],
-        "arrowsOnReveal": [{"from": "e8", "to": "g8"}]
+        "boardHighlightsOnReveal": [
+          "g8"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e8",
+            "to": "g8"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -487,23 +621,42 @@
         "title": "Classical Variation (C14/C15)",
         "description": "After 3.Nc3 Nf6 4.Bg5, White pins the knight and prepares e5. Black's key plan is still ...c5 to fight back in the center. This is one of the oldest and most popular French lines.",
         "fen": "rnbqkb1r/ppp2ppp/4pn2/3pP3/3P4/2N5/PPP2PPP/R1BQKBNR b KQkq - 0 5",
-        "highlights": ["e5", "f6", "d4"],
-        "arrows": [{"from": "c7", "to": "c5"}],
+        "highlights": [
+          "e5",
+          "f6",
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "c7",
+            "to": "c5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Winawer Variation (C15-C19)",
         "description": "3...Bb4 is the Winawer — Black pins the Nc3 and will capture it to ruin White's pawn structure. Black gets the two-bishop advantage later; White gets the bishop pair. Very sharp!",
         "fen": "rnbqk1nr/ppp2ppp/4p3/3p4/1b1PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
-        "highlights": ["b4", "c3"],
-        "arrows": [{"from": "b4", "to": "c3"}],
+        "highlights": [
+          "b4",
+          "c3"
+        ],
+        "arrows": [
+          {
+            "from": "b4",
+            "to": "c3"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Tarrasch Variation (C03-C09)",
         "description": "3.Nd2 avoids the Winawer pin — White keeps the knight on d2 so Black cannot play ...Bb4 with tempo. This variation leads to more strategic, slower battles.",
         "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPPN1PPP/R1BQKBNR b KQkq - 1 3",
-        "highlights": ["d2"],
+        "highlights": [
+          "d2"
+        ],
         "arrows": [],
         "style": "theory"
       },
@@ -511,7 +664,10 @@
         "title": "Exchange Variation (C01)",
         "description": "3.exd5 exd5 releases all the tension immediately. The position becomes symmetrical and drawish. As Black, your previously problematic light-squared bishop is now free — a relief compared to other French lines!",
         "fen": "rnbqkbnr/ppp2ppp/8/3p4/3P4/8/PPP2PPP/RNBQKBNR w KQkq - 0 4",
-        "highlights": ["d5", "c8"],
+        "highlights": [
+          "d5",
+          "c8"
+        ],
         "arrows": [],
         "style": "theory"
       }
@@ -521,33 +677,70 @@
         "fen": "rnbqk1nr/ppp2ppp/4p3/3p4/1b1PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 2 4",
         "prompt": "Black just played 3...Bb4. What is this variation called?",
         "choices": [
-          {"text": "Winawer Variation", "isCorrect": true},
-          {"text": "Tarrasch Variation", "isCorrect": false},
-          {"text": "Classical Variation", "isCorrect": false},
-          {"text": "Exchange Variation", "isCorrect": false}
+          {
+            "text": "Winawer Variation",
+            "isCorrect": true
+          },
+          {
+            "text": "Tarrasch Variation",
+            "isCorrect": false
+          },
+          {
+            "text": "Classical Variation",
+            "isCorrect": false
+          },
+          {
+            "text": "Exchange Variation",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Winawer Variation (C15-C19). Black pins the Nc3 with the bishop, planning to capture it later to double White's c-pawns. It's one of the sharpest French lines!",
-        "boardHighlightsOnReveal": ["b4", "c3"],
-        "arrowsOnReveal": [{"from": "b4", "to": "c3"}]
+        "boardHighlightsOnReveal": [
+          "b4",
+          "c3"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "b4",
+            "to": "c3"
+          }
+        ]
       },
       {
         "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPPN1PPP/R1BQKBNR b KQkq - 1 3",
         "prompt": "White played 3.Nd2 instead of 3.Nc3. Why?",
         "choices": [
-          {"text": "To avoid Black playing ...Bb4 pinning the knight", "isCorrect": true},
-          {"text": "Nd2 attacks the d5 pawn more strongly", "isCorrect": false},
-          {"text": "Nd2 prepares Nf1-e3 to control d5", "isCorrect": false}
+          {
+            "text": "To avoid Black playing ...Bb4 pinning the knight",
+            "isCorrect": true
+          },
+          {
+            "text": "Nd2 attacks the d5 pawn more strongly",
+            "isCorrect": false
+          },
+          {
+            "text": "Nd2 prepares Nf1-e3 to control d5",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "3.Nd2 is the Tarrasch Variation — White sidesteps the Winawer pin (...Bb4) by putting the knight on d2 instead of c3. Black cannot pin it to the king.",
-        "boardHighlightsOnReveal": ["d2", "b4"],
+        "boardHighlightsOnReveal": [
+          "d2",
+          "b4"
+        ],
         "arrowsOnReveal": []
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["e2e4", "e7e6", "d2d4", "d7d5"],
+    "afterMoves": [
+      "e2e4",
+      "e7e6",
+      "d2d4",
+      "d7d5"
+    ],
     "responses": [
       {
         "id": "french-classical",
@@ -558,7 +751,7 @@
         },
         "name": "Classical Variation",
         "eco": "C14",
-        "frequency": 0.40,
+        "frequency": 0.4,
         "description": "The most popular response — White supports e4 with the knight and prepares e5 to gain space.",
         "planAdjustment": "Play ...Nf6 to attack e4, then prepare ...c5 to counterattack. If White plays e5, retreat ...Nfd7 and launch ...c5 immediately."
       },
@@ -584,7 +777,7 @@
         },
         "name": "Advance Variation",
         "eco": "C02",
-        "frequency": 0.20,
+        "frequency": 0.2,
         "description": "White advances e5 right away to claim space. Black must react with ...c5 immediately.",
         "planAdjustment": "Play ...c5 immediately to attack d4! In the Advance, your counterplay must come on the queenside. Aim for ...Nc6, ...Qb6, and ...cxd4."
       },

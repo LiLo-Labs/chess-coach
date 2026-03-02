@@ -64,14 +64,15 @@ actor OnDeviceLLMService {
     }
 
     /// Generate a completion for the given prompt. Supports Qwen3 thinking mode.
-    func generate(prompt: String, maxTokens: Int = 200, useThinking: Bool = false) async throws -> String {
+    func generate(prompt: String, maxTokens: Int = 200, useThinking: Bool = false, personalityPrompt: String? = nil) async throws -> String {
         guard isLoaded, let model, let context, let vocab else {
             throw OnDeviceLLMError.modelNotLoaded
         }
 
         // Build ChatML prompt for Qwen3
         let thinkTag = useThinking ? "/think" : "/no_think"
-        let chatMLPrompt = "<|im_start|>system\n\(AppConfig.llm.onDeviceSystemMessage)\(thinkTag)<|im_end|>\n<|im_start|>user\n\(prompt)<|im_end|>\n<|im_start|>assistant\n"
+        let sysMsg = AppConfig.llm.systemMessage(personalityPrompt: personalityPrompt)
+        let chatMLPrompt = "<|im_start|>system\n\(sysMsg)\(thinkTag)<|im_end|>\n<|im_start|>user\n\(prompt)<|im_end|>\n<|im_start|>assistant\n"
 
         let result = try Self.runInference(model: model, context: context, vocab: vocab,
                                              prompt: chatMLPrompt, maxTokens: maxTokens,

@@ -86,6 +86,21 @@ enum BoardTheme: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
+    /// Optional texture images for pro themes (walnut, marble, tournament).
+    /// Returns nil for flat-color themes.
+    var textureImages: (light: UIImage?, dark: UIImage?)? {
+        switch self {
+        case .walnut:
+            return (UIImage(named: "walnut_light"), UIImage(named: "walnut_dark"))
+        case .marble:
+            return (UIImage(named: "marble_light"), UIImage(named: "marble_dark"))
+        case .tournament:
+            return (UIImage(named: "tournament_light"), UIImage(named: "tournament_dark"))
+        default:
+            return nil
+        }
+    }
+
     /// Dark square color for preview swatches.
     var darkColor: Color {
         switch self {

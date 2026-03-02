@@ -1,10 +1,25 @@
 import Foundation
 
+/// An entry in the FEN-based transposition index.
+struct FENIndexEntry: Sendable {
+    let opening: Opening
+    let nodeID: String
+    let depth: Int
+    let variationName: String?
+    let nextMoves: [OpeningMove]
+}
+
 final class OpeningDatabase: Sendable {
     /// Shared singleton — use this instead of creating new instances to avoid redundant file I/O.
     static let shared = OpeningDatabase()
 
     let openings: [Opening]
+
+    /// FEN index for transposition detection. Keys are position FEN (no move counters).
+    let fenIndex: [String: [FENIndexEntry]]
+
+    /// ECO index built from TSV files (~3,600 entries). Keys are position FEN (no move counters).
+    let ecoFENIndex: [String: [ECOIndexEntry]]
 
     init() {
         // Merge JSON tree-based openings with built-in flat openings.
@@ -13,6 +28,8 @@ final class OpeningDatabase: Sendable {
         let jsonIDs = Set(jsonOpenings.map(\.id))
         let remaining = Self.builtInOpenings.filter { !jsonIDs.contains($0.id) }
         self.openings = (jsonOpenings + remaining).sorted { $0.difficulty < $1.difficulty }
+        self.fenIndex = Self.buildFENIndex(openings: self.openings)
+        self.ecoFENIndex = Self.buildECOFENIndex()
     }
 
     func opening(named name: String) -> Opening? {
@@ -25,6 +42,158 @@ final class OpeningDatabase: Sendable {
 
     func openings(forColor color: Opening.PlayerColor) -> [Opening] {
         openings.filter { $0.color == color }
+    }
+
+    /// Returns openings that have at least one of the given tags.
+    func openings(withAnyTag tags: Set<String>) -> [Opening] {
+        openings.filter { opening in
+            guard let openingTags = opening.tags else { return false }
+            return !tags.isDisjoint(with: openingTags)
+        }
+    }
+
+    // MARK: - FEN Index (Transposition Detection)
+
+    /// Look up openings that reach a given FEN position (ignoring move counters).
+    func lookupFEN(_ fen: String) -> [FENIndexEntry] {
+        fenIndex[Self.positionFEN(from: fen)] ?? []
+    }
+
+    /// Look up ECO entries that reach a given FEN position.
+    func lookupECO(_ fen: String) -> [ECOIndexEntry] {
+        ecoFENIndex[Self.positionFEN(from: fen)] ?? []
+    }
+
+    /// Strip halfmove and fullmove counters from FEN, keeping only position + side + castling + en-passant.
+    static func positionFEN(from fen: String) -> String {
+        let parts = fen.split(separator: " ")
+        guard parts.count >= 4 else { return fen }
+        return parts[0...3].joined(separator: " ")
+    }
+
+    /// Walk every opening tree, replay moves to get FEN at each node, build index.
+    private static func buildFENIndex(openings: [Opening]) -> [String: [FENIndexEntry]] {
+        var index: [String: [FENIndexEntry]] = [:]
+
+        for opening in openings {
+            guard let tree = opening.tree else {
+                // Flat opening: index each position along main line
+                let gs = GameState()
+                for (depth, move) in opening.mainLine.enumerated() {
+                    _ = gs.makeMoveUCI(move.uci)
+                    let nextMoves = (depth + 1 < opening.mainLine.count) ? [opening.mainLine[depth + 1]] : []
+                    let key = positionFEN(from: gs.fen)
+                    let entry = FENIndexEntry(
+                        opening: opening,
+                        nodeID: "\(opening.id)/\(depth)",
+                        depth: depth + 1,
+                        variationName: nil,
+                        nextMoves: nextMoves
+                    )
+                    index[key, default: []].append(entry)
+                }
+                continue
+            }
+
+            // Walk the tree DFS, replaying moves
+            func walkTree(node: OpeningNode, gameState: GameState, depth: Int, variationName: String?) {
+                for child in node.children {
+                    guard let move = child.move else { continue }
+                    let gs = GameState(fen: gameState.fen)
+                    guard gs.makeMoveUCI(move.uci) else { continue }
+
+                    let effectiveVariation = child.variationName ?? variationName
+                    let nextMoves = child.children.compactMap(\.move)
+                    let key = positionFEN(from: gs.fen)
+                    let entry = FENIndexEntry(
+                        opening: opening,
+                        nodeID: child.id,
+                        depth: depth + 1,
+                        variationName: effectiveVariation,
+                        nextMoves: nextMoves
+                    )
+                    index[key, default: []].append(entry)
+
+                    walkTree(node: child, gameState: gs, depth: depth + 1, variationName: effectiveVariation)
+                }
+            }
+
+            walkTree(node: tree, gameState: GameState(), depth: 0, variationName: nil)
+        }
+
+        return index
+    }
+
+    // MARK: - ECO FEN Index
+
+    /// Infer opening color from ECO code range.
+    /// A/D = White systems, B/C/E = Black responses (approximation).
+    private static func ecoColor(for eco: String) -> Opening.PlayerColor {
+        guard let letter = eco.first else { return .white }
+        switch letter {
+        case "A", "D": return .white
+        case "B", "C", "E": return .black
+        default: return .white
+        }
+    }
+
+    /// Parse a PGN move string like "e4" or "Nf3" within a numbered sequence.
+    /// Returns UCI moves by replaying on a GameState.
+    private static func replayPGN(_ pgn: String) -> (fen: String, plyCount: Int)? {
+        let gs = GameState()
+        // Strip move numbers and result tokens, leaving just SAN moves.
+        let tokens = pgn.split(separator: " ").compactMap { token -> String? in
+            let s = String(token)
+            // Skip move numbers (e.g., "1.", "12."), result tokens, and ellipsis
+            if s.hasSuffix(".") || s == "1-0" || s == "0-1" || s == "1/2-1/2" || s == "*" { return nil }
+            return s
+        }
+        for san in tokens {
+            guard gs.makeSANMove(san) else { return nil }
+        }
+        return (gs.fen, gs.plyCount)
+    }
+
+    /// Build FEN index from ECO TSV files (a.tsv–e.tsv in OpeningData/).
+    private static func buildECOFENIndex() -> [String: [ECOIndexEntry]] {
+        var index: [String: [ECOIndexEntry]] = [:]
+
+        let tsvFiles = ["a", "b", "c", "d", "e"]
+        for filename in tsvFiles {
+            guard let url = Bundle.main.url(forResource: filename, withExtension: "tsv", subdirectory: "OpeningData"),
+                  let contents = try? String(contentsOf: url, encoding: .utf8) else {
+                continue
+            }
+
+            let lines = contents.components(separatedBy: .newlines)
+            for (i, line) in lines.enumerated() {
+                // Skip header row and empty lines
+                if i == 0 && line.hasPrefix("eco") { continue }
+                guard !line.isEmpty else { continue }
+
+                let columns = line.components(separatedBy: "\t")
+                guard columns.count >= 3 else { continue }
+
+                let eco = columns[0].trimmingCharacters(in: .whitespaces)
+                let name = columns[1].trimmingCharacters(in: .whitespaces)
+                let pgn = columns[2].trimmingCharacters(in: .whitespaces)
+
+                guard !pgn.isEmpty,
+                      let result = replayPGN(pgn) else { continue }
+
+                let entry = ECOIndexEntry(
+                    eco: eco,
+                    name: name,
+                    pgn: pgn,
+                    depth: result.plyCount,
+                    color: ecoColor(for: eco)
+                )
+                let key = positionFEN(from: result.fen)
+                index[key, default: []].append(entry)
+            }
+        }
+
+        return index
     }
 
     // MARK: - JSON Loading
@@ -65,6 +234,7 @@ final class OpeningDatabase: Sendable {
                 description: jsonOpening.description,
                 color: Opening.PlayerColor(rawValue: jsonOpening.color) ?? .white,
                 difficulty: jsonOpening.difficulty,
+                tags: jsonOpening.tags,
                 mainLine: mainLine,
                 tree: tree,
                 lines: lines,
@@ -111,6 +281,7 @@ final class OpeningDatabase: Sendable {
         let description: String
         let color: String
         let difficulty: Int
+        let tags: [String]?
         let tree: JSONOpeningTree
         let plan: OpeningPlan?
         let opponentResponses: OpponentResponseCatalogue?
@@ -134,6 +305,7 @@ final class OpeningDatabase: Sendable {
             description: "A classic opening that develops pieces quickly toward the center and kingside.",
             color: .white,
             difficulty: 1,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center with your king's pawn. This opens lines for your bishop and queen."),
                 OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors your move, also fighting for the center."),
@@ -153,6 +325,7 @@ final class OpeningDatabase: Sendable {
             description: "A solid, easy-to-learn system that works against almost any Black response.",
             color: .white,
             difficulty: 1,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "Control the center with the queen's pawn."),
                 OpeningMove(uci: "d7d5", san: "d5", explanation: "Black fights for the center symmetrically."),
@@ -172,6 +345,7 @@ final class OpeningDatabase: Sendable {
             description: "The most popular and aggressive response to 1.e4. Leads to sharp, exciting games.",
             color: .black,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "White opens with the most popular first move."),
                 OpeningMove(uci: "c7c5", san: "c5", explanation: "The Sicilian! Fight for the center asymmetrically. You'll get counterplay on the queenside."),
@@ -191,6 +365,7 @@ final class OpeningDatabase: Sendable {
             description: "A solid defense where Black builds a strong pawn structure and counterattacks the center.",
             color: .black,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "White opens with the king's pawn."),
                 OpeningMove(uci: "e7e6", san: "e6", explanation: "The French Defense! You prepare to challenge the center with d5 next move."),
@@ -210,6 +385,7 @@ final class OpeningDatabase: Sendable {
             description: "A very solid defense that avoids the cramped positions of the French while keeping good piece activity.",
             color: .black,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "White opens with the king's pawn."),
                 OpeningMove(uci: "c7c6", san: "c6", explanation: "The Caro-Kann! Prepare d5 while keeping the light-squared bishop unblocked."),
@@ -227,6 +403,7 @@ final class OpeningDatabase: Sendable {
             description: "A classical opening where White offers a pawn to gain central control.",
             color: .white,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "Open with the queen's pawn for central control."),
                 OpeningMove(uci: "d7d5", san: "d5", explanation: "Black fights for the center."),
@@ -246,6 +423,7 @@ final class OpeningDatabase: Sendable {
             description: "An aggressive defense where Black lets White build a big center, then counterattacks it.",
             color: .black,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "White opens with the queen's pawn."),
                 OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop the knight first. You'll fianchetto the bishop next."),
@@ -265,6 +443,7 @@ final class OpeningDatabase: Sendable {
             description: "One of the oldest and most respected openings. White puts immediate pressure on Black's center.",
             color: .white,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center."),
                 OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors, fighting for the center."),
@@ -284,6 +463,7 @@ final class OpeningDatabase: Sendable {
             description: "An aggressive opening where White immediately opens the center for active piece play.",
             color: .white,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center."),
                 OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),
@@ -301,6 +481,7 @@ final class OpeningDatabase: Sendable {
             description: "A hypermodern defense where Black invites White to build a center, planning to undermine it later.",
             color: .black,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "White claims the center."),
                 OpeningMove(uci: "d7d6", san: "d6", explanation: "The Pirc! A flexible move that doesn't commit yet. You'll fianchetto and strike later."),
@@ -321,6 +502,7 @@ final class OpeningDatabase: Sendable {
             description: "A flexible opening where White delays committing to a pawn structure, keeping options for both quiet and aggressive play.",
             color: .white,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center with the king's pawn."),
                 OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors, fighting for the center."),
@@ -340,6 +522,7 @@ final class OpeningDatabase: Sendable {
             description: "One of the oldest and most romantic openings. White sacrifices a pawn for rapid development and attacking chances.",
             color: .white,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center."),
                 OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),
@@ -359,6 +542,7 @@ final class OpeningDatabase: Sendable {
             description: "A flexible opening where White controls the center from the flank.",
             color: .white,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "c2c4", san: "c4", explanation: "The English! Control d5 from the flank."),
                 OpeningMove(uci: "e7e5", san: "e5", explanation: "Black takes the center directly."),
@@ -378,6 +562,7 @@ final class OpeningDatabase: Sendable {
             description: "A sophisticated opening combining Queen's Gambit pawn structure with a fianchettoed bishop.",
             color: .white,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "Control the center."),
                 OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Black develops."),
@@ -397,6 +582,7 @@ final class OpeningDatabase: Sendable {
             description: "A hypermodern opening where White controls the center with pieces rather than pawns.",
             color: .white,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "g1f3", san: "Nf3", explanation: "The Reti! Develop the knight first, keeping options open."),
                 OpeningMove(uci: "d7d5", san: "d5", explanation: "Black takes the center."),
@@ -416,6 +602,7 @@ final class OpeningDatabase: Sendable {
             description: "A solid, symmetrical opening where both sides develop their knights first.",
             color: .white,
             difficulty: 1,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center."),
                 OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),
@@ -435,6 +622,7 @@ final class OpeningDatabase: Sendable {
             description: "A simple but effective opening. White develops the bishop early aiming at f7.",
             color: .white,
             difficulty: 1,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "Control the center."),
                 OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),
@@ -454,6 +642,7 @@ final class OpeningDatabase: Sendable {
             description: "A universal system for White. Set up with Nf3, g3, Bg2, d3, Nbd2 and e4 against almost anything.",
             color: .white,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "g1f3", san: "Nf3", explanation: "Flexible development."),
                 OpeningMove(uci: "d7d5", san: "d5", explanation: "Black takes the center."),
@@ -473,6 +662,7 @@ final class OpeningDatabase: Sendable {
             description: "A beginner-friendly system. Set up with d4, Nf3, e3, Bd3, O-O and then push e4 when ready.",
             color: .white,
             difficulty: 1,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "Control the center."),
                 OpeningMove(uci: "d7d5", san: "d5", explanation: "Black mirrors."),
@@ -492,6 +682,7 @@ final class OpeningDatabase: Sendable {
             description: "A surprise weapon where White develops the bishop before the knight, forcing Black to make early decisions.",
             color: .white,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "Control the center."),
                 OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Black develops."),
@@ -514,6 +705,7 @@ final class OpeningDatabase: Sendable {
             description: "A straightforward defense where Black immediately challenges White's center.",
             color: .black,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "White opens with the king's pawn."),
                 OpeningMove(uci: "d7d5", san: "d5", explanation: "The Scandinavian! Challenge the center immediately."),
@@ -533,6 +725,7 @@ final class OpeningDatabase: Sendable {
             description: "One of Black's most respected defenses. The bishop pins White's knight, controlling the center indirectly.",
             color: .black,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "White opens with the queen's pawn."),
                 OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop the knight."),
@@ -552,6 +745,7 @@ final class OpeningDatabase: Sendable {
             description: "A solid, positional defense where Black fianchettoes the queenside bishop to control the center from a distance.",
             color: .black,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "White opens with the queen's pawn."),
                 OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop."),
@@ -571,6 +765,7 @@ final class OpeningDatabase: Sendable {
             description: "A rock-solid defense that supports d5 with c6 while keeping the light-squared bishop free.",
             color: .black,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "White controls the center."),
                 OpeningMove(uci: "d7d5", san: "d5", explanation: "Fight for the center."),
@@ -590,6 +785,7 @@ final class OpeningDatabase: Sendable {
             description: "An aggressive defense where Black immediately fights for control of the e4 square.",
             color: .black,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "White opens with the queen's pawn."),
                 OpeningMove(uci: "f7f5", san: "f5", explanation: "The Dutch! Control e4 and prepare for a kingside attack."),
@@ -609,6 +805,7 @@ final class OpeningDatabase: Sendable {
             description: "A dynamic defense where Black allows White a big center then attacks it.",
             color: .black,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "White controls the center."),
                 OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop."),
@@ -628,6 +825,7 @@ final class OpeningDatabase: Sendable {
             description: "A solid, old-fashioned defense where Black supports e5 with d6.",
             color: .black,
             difficulty: 1,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "White claims the center."),
                 OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),
@@ -647,6 +845,7 @@ final class OpeningDatabase: Sendable {
             description: "A provocative defense where Black invites White to advance pawns and then attacks the overextended center.",
             color: .black,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "White claims the center."),
                 OpeningMove(uci: "g8f6", san: "Nf6", explanation: "The Alekhine! Attack the e4 pawn immediately."),
@@ -666,6 +865,7 @@ final class OpeningDatabase: Sendable {
             description: "An ambitious defense where Black creates an asymmetrical pawn structure and plays for a queenside pawn majority.",
             color: .black,
             difficulty: 3,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "d2d4", san: "d4", explanation: "White controls the center."),
                 OpeningMove(uci: "g8f6", san: "Nf6", explanation: "Develop."),
@@ -685,6 +885,7 @@ final class OpeningDatabase: Sendable {
             description: "A solid, symmetrical defense where Black mirrors White's play. Very reliable.",
             color: .black,
             difficulty: 2,
+            tags: nil,
             mainLine: [
                 OpeningMove(uci: "e2e4", san: "e4", explanation: "White opens."),
                 OpeningMove(uci: "e7e5", san: "e5", explanation: "Black mirrors."),

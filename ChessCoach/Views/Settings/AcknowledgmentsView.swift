@@ -99,6 +99,8 @@ private struct License: Identifiable {
         chessKitEngine,
         llamaCpp,
         onnxRuntime,
+        lichessPuzzles,
+        lichessPieceAssets,
     ]
 }
 
@@ -276,6 +278,49 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+"""
+    )
+    // MARK: Lichess Puzzle Database
+
+    static let lichessPuzzles = License(
+        id: "lichess-puzzles",
+        name: "Lichess Puzzle Database",
+        copyright: "Lichess.org",
+        spdx: "CC0-1.0",
+        note: "Public Domain",
+        text: """
+Creative Commons Legal Code — CC0 1.0 Universal
+
+The Lichess puzzle database is dedicated to the public domain under CC0 1.0.
+
+The person who associated a work with this deed has dedicated the work to the
+public domain by waiving all of his or her rights to the work worldwide under
+copyright law, including all related and neighboring rights, to the extent
+allowed by law.
+
+You can copy, modify, distribute and perform the work, even for commercial
+purposes, all without asking permission.
+
+https://database.lichess.org/#puzzles
+"""
+    )
+
+    // MARK: Lichess Piece Assets
+
+    static let lichessPieceAssets = License(
+        id: "lichess-pieces",
+        name: "Lichess Piece Assets (Cburnett)",
+        copyright: "Colin M.L. Burnett",
+        spdx: "GPL-2.0+",
+        note: nil,
+        text: """
+The Cburnett chess piece set was created by Colin M.L. Burnett and is the
+default piece set used by Lichess.org.
+
+These pieces are licensed under the GNU General Public License version 2
+(or any later version).
+
+For the full terms of the GPL, see https://www.gnu.org/licenses/gpl-2.0.html
 """
     )
 }

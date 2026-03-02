@@ -7,6 +7,7 @@ struct TrainerCoachingFeedView: View {
     let entries: [TrainerCoachingEntry]
     let isLoading: Bool
     var onTapEntry: ((Int) -> Void)?
+    var onRequestExplanation: ((TrainerCoachingEntry) -> Void)?
 
     /// Group consecutive white+black entries into move pairs.
     private var movePairs: [MovePair] {
@@ -94,6 +95,7 @@ struct TrainerCoachingFeedView: View {
                             Circle()
                                 .fill(Color.white)
                                 .frame(width: 8, height: 8)
+                                .accessibilityHidden(true)
                             Text(OpeningMove.friendlyName(from: white.moveSAN))
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(moveColor(white))
@@ -105,11 +107,13 @@ struct TrainerCoachingFeedView: View {
                         if pair.white != nil {
                             Text("·")
                                 .foregroundStyle(.secondary)
+                                .accessibilityHidden(true)
                         }
                         HStack(spacing: 3) {
                             Circle()
                                 .fill(Color(white: 0.35))
                                 .frame(width: 8, height: 8)
+                                .accessibilityHidden(true)
                             Text(OpeningMove.friendlyName(from: black.moveSAN))
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(moveColor(black))
@@ -117,6 +121,33 @@ struct TrainerCoachingFeedView: View {
                     }
 
                     Spacer(minLength: 0)
+
+                    // Explain in detail sparkle button
+                    if let primary = pair.primaryEntry {
+                        if primary.isExplaining {
+                            ProgressView().controlSize(.mini).tint(.purple)
+                                .accessibilityLabel("Loading explanation")
+                        } else if primary.explanation != nil {
+                            Image(systemName: "sparkles")
+                                .font(.caption2)
+                                .foregroundStyle(.purple)
+                                .accessibilityLabel("Explanation available")
+                        } else {
+                            Button {
+                                onRequestExplanation?(primary)
+                            } label: {
+                                HStack(spacing: 3) {
+                                    Image(systemName: "sparkles")
+                                        .font(.caption2)
+                                    Text("Explain")
+                                        .font(.caption2.weight(.medium))
+                                }
+                                .foregroundStyle(.tertiary)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Get detailed explanation")
+                        }
+                    }
 
                     // Category badge for primary entry
                     if let primary = pair.primaryEntry {
@@ -130,13 +161,23 @@ struct TrainerCoachingFeedView: View {
                     .font(.caption2.monospaced())
                     .foregroundStyle(.tertiary)
 
-                // Coaching text from primary entry
+                // Coaching text — show LLM explanation if available, otherwise hardcoded
                 if let primary = pair.primaryEntry {
-                    Text(primary.coaching)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .multilineTextAlignment(.leading)
+                    if let explanation = primary.explanation {
+                        Text(explanation)
+                            .font(.caption)
+                            .foregroundStyle(.primary.opacity(0.8))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(8)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color.purple.opacity(0.06), in: RoundedRectangle(cornerRadius: 6))
+                    } else {
+                        Text(primary.coaching)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .multilineTextAlignment(.leading)
+                    }
                 }
 
                 // Opening indicator
@@ -145,29 +186,72 @@ struct TrainerCoachingFeedView: View {
                     let inBook = entry?.isInBook ?? false
                     HStack(spacing: 3) {
                         Image(systemName: "book.fill")
-                            .font(.system(size: 9))
+                            .font(.caption2)
+                            .accessibilityHidden(true)
                         Text(inBook ? name : "Off book")
                             .font(.caption2)
                     }
                     .foregroundStyle(inBook ? .cyan.opacity(0.7) : AppColor.warning.opacity(0.7))
+                    .accessibilityLabel(inBook ? "Opening: \(name)" : "Off book")
                 }
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(Color(white: 0.13))
-                    .opacity(isNewest ? 1.0 : 0.6)
+                    .fill(Color(white: isNewest ? 0.13 : 0.10))
             )
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .padding(.horizontal, AppSpacing.screenPadding)
         .padding(.vertical, 2)
+        .transition(.move(edge: .top).combined(with: .opacity))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(feedRowAccessibilityText(for: pair))
+        .accessibilityHint("Double tap to replay from this position")
         .id(pair.id)
     }
 
     // MARK: - Helpers
+
+    private func feedRowAccessibilityText(for pair: MovePair) -> String {
+        var parts: [String] = []
+        let num = pair.moveNumber
+
+        if let white = pair.white {
+            let name = OpeningMove.friendlyName(from: white.moveSAN)
+            parts.append("Move \(num), White: \(name)")
+        }
+        if let black = pair.black {
+            let name = OpeningMove.friendlyName(from: black.moveSAN)
+            parts.append("Black: \(name)")
+        }
+
+        if let primary = pair.primaryEntry {
+            // Quality badge
+            if let sc = primary.scoreCategory {
+                parts.append(sc.displayName)
+            } else {
+                parts.append(primary.category.feedLabel)
+            }
+
+            // Coaching text
+            if let explanation = primary.explanation {
+                parts.append(explanation)
+            } else {
+                parts.append(primary.coaching)
+            }
+        }
+
+        if let name = (pair.primaryEntry ?? pair.white ?? pair.black)?.openingName {
+            let entry = pair.primaryEntry ?? pair.white ?? pair.black
+            let inBook = entry?.isInBook ?? false
+            parts.append(inBook ? "Opening: \(name)" : "Off book")
+        }
+
+        return parts.joined(separator: ". ")
+    }
 
     private func moveColor(_ entry: TrainerCoachingEntry) -> Color {
         if entry.category == .mistake { return AppColor.error }
@@ -192,14 +276,14 @@ struct TrainerCoachingFeedView: View {
         Group {
             if let sc = entry.scoreCategory {
                 Text(sc.displayName)
-                    .font(.system(size: 8, weight: .bold))
+                    .font(.caption2.weight(.bold))
                     .foregroundStyle(categoryColor(sc))
                     .padding(.horizontal, 4)
                     .padding(.vertical, 1)
                     .background(categoryColor(sc).opacity(0.15), in: Capsule())
             } else {
                 Text(entry.category.feedLabel)
-                    .font(.system(size: 8, weight: .bold))
+                    .font(.caption2.weight(.bold))
                     .foregroundStyle(moveCategoryColor(entry.category))
                     .padding(.horizontal, 4)
                     .padding(.vertical, 1)
@@ -220,6 +304,8 @@ struct TrainerCoachingFeedView: View {
         .padding(.horizontal, 14)
         .padding(.vertical, 8)
         .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Evaluating your move")
     }
 
     // MARK: - Colors

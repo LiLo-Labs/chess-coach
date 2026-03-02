@@ -38,6 +38,9 @@ final class AppSettings {
         static let pieceStyle = "piece_style"
         static let hasPickedFreeOpening = "has_picked_free_opening"
         static let pickedFreeOpeningID = "picked_free_opening_id"
+        static let holisticOpeningHints = "holistic_opening_hints"
+        static let hasSeenHomeTour = "has_seen_home_tour"
+        static let hasSeenBetaWelcome = "has_seen_beta_welcome"
     }
 
     @ObservationIgnored private let defaults = UserDefaults.standard
@@ -96,6 +99,24 @@ final class AppSettings {
 
     var pickedFreeOpeningID: String? {
         didSet { defaults.set(pickedFreeOpeningID, forKey: Key.pickedFreeOpeningID) }
+    }
+
+    // MARK: - Opening Hints
+
+    var holisticOpeningHints: Bool {
+        didSet { defaults.set(holisticOpeningHints, forKey: Key.holisticOpeningHints) }
+    }
+
+    // MARK: - Home Tour
+
+    var hasSeenHomeTour: Bool {
+        didSet { defaults.set(hasSeenHomeTour, forKey: Key.hasSeenHomeTour) }
+    }
+
+    // MARK: - Beta
+
+    var hasSeenBetaWelcome: Bool {
+        didSet { defaults.set(hasSeenBetaWelcome, forKey: Key.hasSeenBetaWelcome) }
     }
 
     // MARK: - LLM
@@ -220,6 +241,9 @@ final class AppSettings {
         self.pieceStyle = d.string(forKey: Key.pieceStyle).flatMap { PieceStyle(rawValue: $0) } ?? .classic
         self.hasPickedFreeOpening = d.bool(forKey: Key.hasPickedFreeOpening)
         self.pickedFreeOpeningID = d.string(forKey: Key.pickedFreeOpeningID)
+        self.holisticOpeningHints = d.object(forKey: Key.holisticOpeningHints) as? Bool ?? true
+        self.hasSeenHomeTour = d.bool(forKey: Key.hasSeenHomeTour)
+        self.hasSeenBetaWelcome = d.bool(forKey: Key.hasSeenBetaWelcome)
 
         // Daily goal: reset if date changed
         let today = Self.todayString

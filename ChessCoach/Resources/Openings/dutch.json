@@ -4,6 +4,10 @@
   "description": "An aggressive defense where Black immediately fights for control of the e4 square with the f-pawn.",
   "color": "black",
   "difficulty": 3,
+  "tags": [
+    "aggressive",
+    "hypermodern"
+  ],
   "tree": {
     "id": "dutch/root",
     "children": [
@@ -409,17 +413,56 @@
   "plan": {
     "summary": "Control the e4 square with your f-pawn, castle kingside, then launch a powerful kingside attack with your pieces. In the Classical Dutch, use ...Ne4 and ...Qh5. In the Stonewall, plant a knight on e4 and storm with ...g5. In the Leningrad, push ...e5 to blast open the center.",
     "strategicGoals": [
-      { "description": "Control e4 with the f5 pawn — don't let White occupy that key square", "priority": 1 },
-      { "description": "Castle kingside quickly to activate the king's rook for the attack", "priority": 2 },
-      { "description": "Build a kingside attack with Ne4, Qh5, and eventually g5-g4", "priority": 3 },
-      { "description": "Choose your system: Classical (e6/d6), Stonewall (d5/e6), or Leningrad (g6/Bg7)", "priority": 4 }
+      {
+        "description": "Control e4 with the f5 pawn — don't let White occupy that key square",
+        "priority": 1
+      },
+      {
+        "description": "Castle kingside quickly to activate the king's rook for the attack",
+        "priority": 2
+      },
+      {
+        "description": "Build a kingside attack with Ne4, Qh5, and eventually g5-g4",
+        "priority": 3
+      },
+      {
+        "description": "Choose your system: Classical (e6/d6), Stonewall (d5/e6), or Leningrad (g6/Bg7)",
+        "priority": 4
+      }
     ],
     "pawnStructureTarget": "f5/e6/d6 Classical structure, or f5/e6/d5 Stonewall, or f5/g6/d6 Leningrad",
-    "keySquares": ["e4", "f5", "e5", "h5"],
+    "keySquares": [
+      "e4",
+      "f5",
+      "e5",
+      "h5"
+    ],
     "pieceTargets": [
-      { "piece": "king's knight", "idealSquares": ["f6", "e4"], "reasoning": "Ne4 is a powerhouse — it sits in the center, attacks d2 and f2, and anchors the kingside attack" },
-      { "piece": "dark-squared bishop", "idealSquares": ["e7", "d6", "g7"], "reasoning": "Bd6 aims at h2 in the Stonewall; Bg7 in the Leningrad controls the long diagonal" },
-      { "piece": "queen", "idealSquares": ["e8", "h5"], "reasoning": "Qe8-h5 is the classic Dutch queen transfer for a devastating kingside attack" }
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f6",
+          "e4"
+        ],
+        "reasoning": "Ne4 is a powerhouse — it sits in the center, attacks d2 and f2, and anchors the kingside attack"
+      },
+      {
+        "piece": "dark-squared bishop",
+        "idealSquares": [
+          "e7",
+          "d6",
+          "g7"
+        ],
+        "reasoning": "Bd6 aims at h2 in the Stonewall; Bg7 in the Leningrad controls the long diagonal"
+      },
+      {
+        "piece": "queen",
+        "idealSquares": [
+          "e8",
+          "h5"
+        ],
+        "reasoning": "Qe8-h5 is the classic Dutch queen transfer for a devastating kingside attack"
+      }
     ],
     "typicalPlans": [
       "Transfer the queen from d8 to h5 via e8 for a dangerous kingside attack",
@@ -438,40 +481,92 @@
         "title": "The f5 Pawn — Your Most Important Piece",
         "description": "After 1...f5, your pawn on f5 controls the e4 square permanently. White cannot plant a knight or bishop there without losing it. This is the foundation of every Dutch plan — protect f5 and use e4 as your domain!",
         "fen": "rnbqkbnr/ppppp1pp/8/5p2/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
-        "highlights": ["f5", "e4"],
-        "arrows": [{"from": "f5", "to": "e4"}],
+        "highlights": [
+          "f5",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "f5",
+            "to": "e4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Stonewall — A Knight on e4",
         "description": "In the Stonewall Dutch (pawns on d5, e6, f5), your knight on e4 is like a king! It controls d2, f2, c3, and g3 simultaneously. No piece can easily challenge it, and from there you can attack in all directions.",
         "fen": "rnbq1rk1/ppp1b1pp/4pn2/3p1p2/3Pn3/2NBPNP1/PPP2PBP/R1BQ1RK1 w - - 4 9",
-        "highlights": ["e4", "d5", "f5", "e6"],
-        "arrows": [{"from": "f6", "to": "e4"}],
+        "highlights": [
+          "e4",
+          "d5",
+          "f5",
+          "e6"
+        ],
+        "arrows": [
+          {
+            "from": "f6",
+            "to": "e4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Queen Transfer — Qe8-h5",
         "description": "One of the most powerful Dutch attacking plans is to swing the queen from d8 to h5 via e8. Once on h5, the queen attacks h2 directly and coordinates with pieces on e4 and f5 for a devastating kingside attack!",
         "fen": "rnb2rk1/ppp1b1pp/4pn2/3p1p1q/3P4/2NBPNP1/PPP2PBP/R1BQ1RK1 w - - 4 9",
-        "highlights": ["h5", "h2", "e4"],
-        "arrows": [{"from": "d8", "to": "e8"}, {"from": "e8", "to": "h5"}],
+        "highlights": [
+          "h5",
+          "h2",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "d8",
+            "to": "e8"
+          },
+          {
+            "from": "e8",
+            "to": "h5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Leningrad — Two Bishops on the Long Diagonal",
         "description": "In the Leningrad Dutch (f5 and g6), after ...Bg7 and ...d6 and ...e5, your bishop on g7 becomes a monster along the long diagonal! This creates real attacking threats and gives the whole board a dynamic character.",
         "fen": "rnbq1rk1/ppp1ppbp/3p1np1/5p2/2PP4/5NP1/PP2PPBP/RNBQ1RK1 w - - 2 7",
-        "highlights": ["g7", "d4", "e5"],
-        "arrows": [{"from": "g7", "to": "d4"}, {"from": "e5", "to": "d4"}],
+        "highlights": [
+          "g7",
+          "d4",
+          "e5"
+        ],
+        "arrows": [
+          {
+            "from": "g7",
+            "to": "d4"
+          },
+          {
+            "from": "e5",
+            "to": "d4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Don't Let White Play e4",
         "description": "If White manages to play e4, your f5 pawn is under direct attack. If you take on e4, White recaptures with the d-pawn and suddenly has a strong pawn center. Watch out for e4 and prevent it or prepare to deal with it!",
         "fen": "rnbqkb1r/ppppp1pp/5n2/5p2/3PP3/8/PPP2PPP/RNBQKBNR b KQkq e3 0 3",
-        "highlights": ["e4", "f5"],
-        "arrows": [{"from": "e4", "to": "f5"}],
+        "highlights": [
+          "e4",
+          "f5"
+        ],
+        "arrows": [
+          {
+            "from": "e4",
+            "to": "f5"
+          }
+        ],
         "style": "bad"
       }
     ],
@@ -480,40 +575,96 @@
         "fen": "rnbqkb1r/ppppp1pp/5n2/5p2/3P4/6P1/PPP1PP1P/RNBQKBNR b KQkq - 0 3",
         "prompt": "You've played 1...f5 and White has set up with g3. What is your most important strategic idea?",
         "choices": [
-          {"text": "Control e4 with the f5 pawn and plan to put a knight there", "isCorrect": true},
-          {"text": "Attack White's g3 pawn immediately with ...h5", "isCorrect": false},
-          {"text": "Play ...d5 to capture White's d4 pawn", "isCorrect": false}
+          {
+            "text": "Control e4 with the f5 pawn and plan to put a knight there",
+            "isCorrect": true
+          },
+          {
+            "text": "Attack White's g3 pawn immediately with ...h5",
+            "isCorrect": false
+          },
+          {
+            "text": "Play ...d5 to capture White's d4 pawn",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Your f5 pawn controls e4! The whole Dutch strategy is built around that square. You'll castle, then jump the knight to e4 and swing the queen to h5 for a powerful kingside attack.",
-        "boardHighlightsOnReveal": ["f5", "e4"],
-        "arrowsOnReveal": [{"from": "f5", "to": "e4"}]
+        "boardHighlightsOnReveal": [
+          "f5",
+          "e4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f5",
+            "to": "e4"
+          }
+        ]
       },
       {
         "fen": "rnbq1rk1/pppnbppp/4p3/3p1p2/2PP4/2NBPNP1/PP3PBP/R1BQ1RK1 b - - 2 8",
         "prompt": "You're in a Stonewall setup. What is the best knight plan?",
         "choices": [
-          {"text": "Jump the knight from f6 to e4, planting it on the perfect outpost", "isCorrect": true},
-          {"text": "Move the knight to g4 to attack the h2 pawn", "isCorrect": false},
-          {"text": "Move the knight to d7 to support the c5 advance", "isCorrect": false}
+          {
+            "text": "Jump the knight from f6 to e4, planting it on the perfect outpost",
+            "isCorrect": true
+          },
+          {
+            "text": "Move the knight to g4 to attack the h2 pawn",
+            "isCorrect": false
+          },
+          {
+            "text": "Move the knight to d7 to support the c5 advance",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Play ...Ne4! In the Stonewall, the e4 square is your permanent outpost. The knight on e4 controls the center, attacks pieces on d2 and f2, and supports the coming kingside attack. It's the perfect Dutch piece!",
-        "boardHighlightsOnReveal": ["e4", "f6"],
-        "arrowsOnReveal": [{"from": "f6", "to": "e4"}]
+        "boardHighlightsOnReveal": [
+          "e4",
+          "f6"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f6",
+            "to": "e4"
+          }
+        ]
       },
       {
         "fen": "rnbq1rk1/ppp1bppp/4pn2/3p1p2/2PP4/2N1PNP1/PP3PBP/R1BQ1RK1 b - - 4 7",
         "prompt": "You've castled in the Classical Dutch. What's the best attacking plan?",
         "choices": [
-          {"text": "Play ...Qe8 followed by ...Qh5 to swing the queen to the kingside", "isCorrect": true},
-          {"text": "Play ...a5 to attack on the queenside", "isCorrect": false},
-          {"text": "Play ...d4 to close the center immediately", "isCorrect": false}
+          {
+            "text": "Play ...Qe8 followed by ...Qh5 to swing the queen to the kingside",
+            "isCorrect": true
+          },
+          {
+            "text": "Play ...a5 to attack on the queenside",
+            "isCorrect": false
+          },
+          {
+            "text": "Play ...d4 to close the center immediately",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Transfer the queen to h5! Play ...Qe8 then ...Qh5. The queen on h5 combines with your knight on e4 and your f5 pawn to create a mating attack on White's king. This is the classic Dutch attacking formula!",
-        "boardHighlightsOnReveal": ["h5", "e8", "e4"],
-        "arrowsOnReveal": [{"from": "d8", "to": "e8"}, {"from": "e8", "to": "h5"}]
+        "boardHighlightsOnReveal": [
+          "h5",
+          "e8",
+          "e4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "d8",
+            "to": "e8"
+          },
+          {
+            "from": "e8",
+            "to": "h5"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -521,32 +672,81 @@
         "title": "Classical Dutch (A92) — Solid and Attacking",
         "description": "The Classical Dutch features ...e6, ...d6, and ...Be7 with a plan of ...Ne4 and ...Qh5. This is a solid setup that builds up for a kingside attack while keeping the position flexible. Magnus Carlsen has played this at the top level!",
         "fen": "rnbq1rk1/ppp1bppp/3ppn2/5p2/2PP4/2N2NP1/PP2PPBP/R1BQ1RK1 w - - 2 7",
-        "highlights": ["e6", "d6", "e7", "f5"],
-        "arrows": [{"from": "f6", "to": "e4"}, {"from": "d8", "to": "h5"}],
+        "highlights": [
+          "e6",
+          "d6",
+          "e7",
+          "f5"
+        ],
+        "arrows": [
+          {
+            "from": "f6",
+            "to": "e4"
+          },
+          {
+            "from": "d8",
+            "to": "h5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Stonewall Dutch (A90) — The Fortress Attack",
         "description": "The Stonewall is defined by pawns on d5, e6, and f5 — a solid pawn chain that's almost unbreakable. Your bishop goes to d6, your knight goes to e4, and you swing the queen to h5. White struggles to find active counterplay!",
         "fen": "rnbq1rk1/ppp1b1pp/4pn2/3p1p2/2PP4/2NBPNP1/PP3PBP/R1BQ1RK1 w - - 4 9",
-        "highlights": ["d5", "e6", "f5", "d6"],
-        "arrows": [{"from": "f6", "to": "e4"}, {"from": "d6", "to": "h2"}],
+        "highlights": [
+          "d5",
+          "e6",
+          "f5",
+          "d6"
+        ],
+        "arrows": [
+          {
+            "from": "f6",
+            "to": "e4"
+          },
+          {
+            "from": "d6",
+            "to": "h2"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Leningrad Dutch (A87) — The Dynamic Fianchetto",
         "description": "In the Leningrad, you play ...g6 and ...Bg7, fianchettoing the kingside bishop. Then ...d6 and ...Nc6 prepare the explosive ...e5 push, which opens the g7 bishop's diagonal and creates a dynamic attack. Nakamura's favorite!",
         "fen": "rnbq1rk1/ppp1ppbp/3p1np1/5p2/2PP4/5NP1/PP2PPBP/RNBQ1RK1 w - - 2 7",
-        "highlights": ["g7", "e5", "d6"],
-        "arrows": [{"from": "e7", "to": "e5"}, {"from": "g7", "to": "a1"}],
+        "highlights": [
+          "g7",
+          "e5",
+          "d6"
+        ],
+        "arrows": [
+          {
+            "from": "e7",
+            "to": "e5"
+          },
+          {
+            "from": "g7",
+            "to": "a1"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "The Gambit Line — 2.e4!?",
         "description": "Some aggressive players play 2.e4!? immediately after 1...f5, offering a pawn to blast open the center. This is Staunton's Gambit! If you take, White develops rapidly. The safest answer is ...d6 or ...Nf6 to decline the pawn.",
         "fen": "rnbqkbnr/ppppp1pp/8/5p2/3PP3/8/PPP2PPP/RNBQKBNR b KQkq e3 0 2",
-        "highlights": ["e4", "f5"],
-        "arrows": [{"from": "f5", "to": "e4"}],
+        "highlights": [
+          "e4",
+          "f5"
+        ],
+        "arrows": [
+          {
+            "from": "f5",
+            "to": "e4"
+          }
+        ],
         "style": "neutral"
       }
     ],
@@ -555,46 +755,97 @@
         "fen": "rnbq1rk1/ppp1b1pp/4pn2/3p1p2/2PP4/2NBPNP1/PP3PBP/R1BQ1RK1 w - - 4 9",
         "prompt": "The Stonewall pawn structure has pawns on d5, e6, and f5. What is Black's most powerful piece in this structure?",
         "choices": [
-          {"text": "The knight on e4 — it's a permanent outpost that controls the whole center", "isCorrect": true},
-          {"text": "The bishop on e7 — it's perfectly placed", "isCorrect": false},
-          {"text": "The rook on f8 — it can support f5", "isCorrect": false}
+          {
+            "text": "The knight on e4 — it's a permanent outpost that controls the whole center",
+            "isCorrect": true
+          },
+          {
+            "text": "The bishop on e7 — it's perfectly placed",
+            "isCorrect": false
+          },
+          {
+            "text": "The rook on f8 — it can support f5",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The knight on e4 is Black's best piece in the Stonewall! From e4, it attacks d2, f2, c3, and g3 simultaneously. It's almost impossible to kick out and anchors the entire kingside attack.",
-        "boardHighlightsOnReveal": ["e4", "d2", "f2"],
-        "arrowsOnReveal": [{"from": "f6", "to": "e4"}]
+        "boardHighlightsOnReveal": [
+          "e4",
+          "d2",
+          "f2"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f6",
+            "to": "e4"
+          }
+        ]
       },
       {
         "fen": "rnbqkb1r/ppppp1pp/5n2/5p2/3P4/6P1/PPP1PPBP/RNBQK1NR b KQkq - 2 3",
         "prompt": "White has set up with g3 and Bg2. Black now plays ...g6 followed by ...Bg7. What variation is this?",
         "choices": [
-          {"text": "Leningrad Dutch", "isCorrect": true},
-          {"text": "Stonewall Dutch", "isCorrect": false},
-          {"text": "Classical Dutch", "isCorrect": false},
-          {"text": "Ilyin-Zhenevsky Dutch", "isCorrect": false}
+          {
+            "text": "Leningrad Dutch",
+            "isCorrect": true
+          },
+          {
+            "text": "Stonewall Dutch",
+            "isCorrect": false
+          },
+          {
+            "text": "Classical Dutch",
+            "isCorrect": false
+          },
+          {
+            "text": "Ilyin-Zhenevsky Dutch",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Leningrad Dutch (A87)! When Black fianchettoes with ...g6 and ...Bg7, it's the Leningrad. Black's plan is ...d6, ...Nc6, and the explosive ...e5 push to open the Bg7 diagonal.",
-        "boardHighlightsOnReveal": ["g6", "g7"],
-        "arrowsOnReveal": [{"from": "f8", "to": "g7"}]
+        "boardHighlightsOnReveal": [
+          "g6",
+          "g7"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f8",
+            "to": "g7"
+          }
+        ]
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["d2d4", "f7f5", "g2g3", "g8f6"],
+    "afterMoves": [
+      "d2d4",
+      "f7f5",
+      "g2g3",
+      "g8f6"
+    ],
     "responses": [
       {
         "id": "bg2-fianchetto",
-        "move": { "uci": "f1g2", "san": "Bg2", "explanation": "White completes the fianchetto, creating a powerful bishop on g2 that fights against your f5 pawn and controls the long diagonal." },
+        "move": {
+          "uci": "f1g2",
+          "san": "Bg2",
+          "explanation": "White completes the fianchetto, creating a powerful bishop on g2 that fights against your f5 pawn and controls the long diagonal."
+        },
         "name": "Fianchetto System",
         "eco": "A87",
-        "frequency": 0.50,
+        "frequency": 0.5,
         "description": "The most popular response — White fianchettoes on g2 for a long-term positional battle.",
         "planAdjustment": "Continue with your chosen system: ...e6 for Classical, ...d5 for Stonewall, or ...g6 for Leningrad. All three are excellent responses. Castle early and build up for a kingside attack."
       },
       {
         "id": "nf3-develop",
-        "move": { "uci": "g1f3", "san": "Nf3", "explanation": "White develops the knight immediately, pressuring your e5 square and preparing for a quick central setup." },
+        "move": {
+          "uci": "g1f3",
+          "san": "Nf3",
+          "explanation": "White develops the knight immediately, pressuring your e5 square and preparing for a quick central setup."
+        },
         "name": "Nf3 Development",
         "eco": "A82",
         "frequency": 0.25,
@@ -603,7 +854,11 @@
       },
       {
         "id": "e4-staunton",
-        "move": { "uci": "e2e4", "san": "e4", "explanation": "Staunton's Gambit! White sacrifices a pawn to blast the center open immediately. Very aggressive but risky." },
+        "move": {
+          "uci": "e2e4",
+          "san": "e4",
+          "explanation": "Staunton's Gambit! White sacrifices a pawn to blast the center open immediately. Very aggressive but risky."
+        },
         "name": "Staunton Gambit",
         "eco": "A82",
         "frequency": 0.15,
@@ -612,10 +867,14 @@
       },
       {
         "id": "nh3-weird",
-        "move": { "uci": "g1h3", "san": "Nh3", "explanation": "An unusual setup — White develops the knight to h3 to eventually reach f4, pressuring your e6 and f5 pawns." },
+        "move": {
+          "uci": "g1h3",
+          "san": "Nh3",
+          "explanation": "An unusual setup — White develops the knight to h3 to eventually reach f4, pressuring your e6 and f5 pawns."
+        },
         "name": "Nh3 System",
         "eco": "A80",
-        "frequency": 0.10,
+        "frequency": 0.1,
         "description": "An unusual knight development aiming for f4 to pressure the Dutch pawns.",
         "planAdjustment": "Play ...d5 or ...e6 with normal development. The knight on h3 is oddly placed — develop naturally and castle. After ...d6 and ...Nc6, you'll have comfortable play against this unusual setup."
       }

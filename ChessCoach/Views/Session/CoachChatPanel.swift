@@ -1,5 +1,27 @@
 import SwiftUI
 
+/// Chat message for the coach panel.
+struct CoachChatMessage: Identifiable {
+    let id = UUID()
+    let role: String  // "user" or "coach"
+    let text: String
+}
+
+/// Observable state that persists across panel open/close.
+/// Create this in the parent view so it survives the panel being hidden.
+@Observable
+@MainActor
+final class CoachChatState {
+    var messages: [CoachChatMessage] = []
+    var inputText: String = ""
+    var isLoading: Bool = false
+    var coachingService: CoachingService?
+
+    func appendMessage(role: String, text: String) {
+        messages.append(CoachChatMessage(role: role, text: text))
+    }
+}
+
 /// Sliding side panel for AI coach chat during a session.
 /// Has full board context, move history, and opening info pre-loaded.
 struct CoachChatPanel: View {
@@ -7,14 +29,12 @@ struct CoachChatPanel: View {
     let fen: String
     let moveHistory: [String]
     let currentPly: Int
+    let coachPersonality: CoachPersonality
+    var isEngineMode: Bool = false
     @Binding var isPresented: Bool
+    var chatState: CoachChatState
 
     @Environment(AppServices.self) private var appServices
-
-    @State private var messages: [(role: String, text: String)] = []
-    @State private var inputText: String = ""
-    @State private var isLoading: Bool = false
-    @State private var coachingService: CoachingService?
 
     private let suggestions = [
         "Why this move?",
@@ -24,17 +44,17 @@ struct CoachChatPanel: View {
     ]
 
     private var showSuggestions: Bool {
-        messages.isEmpty && inputText.isEmpty && !isLoading
+        // Show suggestions until the user sends their first question
+        let hasUserMessage = chatState.messages.contains { $0.role == "user" }
+        return !hasUserMessage && chatState.inputText.isEmpty && !chatState.isLoading
     }
 
     var body: some View {
         VStack(spacing: 0) {
             // Header
             HStack {
-                Image(systemName: "brain.head.profile")
-                    .font(.subheadline)
-                    .foregroundStyle(AppColor.practice)
-                Text("Ask Coach")
+                coachAvatar(size: 28)
+                Text(coachPersonality.displayName(engineMode: isEngineMode))
                     .font(.headline.weight(.semibold))
                     .foregroundStyle(AppColor.primaryText)
                 Spacer()
@@ -48,6 +68,7 @@ struct CoachChatPanel: View {
                         .foregroundStyle(AppColor.tertiaryText)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Close coach chat")
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
@@ -62,20 +83,26 @@ struct CoachChatPanel: View {
                         // Welcome
                         chatBubble(
                             role: "coach",
-                            text: "Ask me anything about the \(opening.name). I can see the board and your moves."
+                            text: "\(coachPersonality.displayName(engineMode: isEngineMode)) here! Ask me anything about the \(opening.name). I can see the board and your moves."
                         )
+
+                        // Move history context
+                        if !moveHistory.isEmpty {
+                            moveHistorySection
+                                .padding(.horizontal, 12)
+                        }
 
                         if showSuggestions {
                             suggestionChips
                                 .padding(.horizontal, 12)
                         }
 
-                        ForEach(Array(messages.enumerated()), id: \.offset) { index, message in
+                        ForEach(chatState.messages) { message in
                             chatBubble(role: message.role, text: message.text)
-                                .id(index)
+                                .id(message.id)
                         }
 
-                        if isLoading {
+                        if chatState.isLoading {
                             HStack(spacing: 6) {
                                 ProgressView().controlSize(.small).tint(AppColor.secondaryText)
                                 Text("Thinking...")
@@ -84,15 +111,18 @@ struct CoachChatPanel: View {
                             }
                             .padding(.horizontal, 12)
                             .id("loading")
+                            .accessibilityLabel("Coach is thinking")
                         }
                     }
                     .padding(.vertical, 10)
                 }
-                .onChange(of: messages.count) {
-                    withAnimation { proxy.scrollTo(messages.count - 1, anchor: .bottom) }
+                .onChange(of: chatState.messages.count) {
+                    if let last = chatState.messages.last {
+                        withAnimation { proxy.scrollTo(last.id, anchor: .bottom) }
+                    }
                 }
-                .onChange(of: isLoading) {
-                    if isLoading { withAnimation { proxy.scrollTo("loading", anchor: .bottom) } }
+                .onChange(of: chatState.isLoading) {
+                    if chatState.isLoading { withAnimation { proxy.scrollTo("loading", anchor: .bottom) } }
                 }
             }
 
@@ -100,7 +130,7 @@ struct CoachChatPanel: View {
 
             // Input
             HStack(spacing: 8) {
-                TextField("Ask about this position...", text: $inputText)
+                TextField("Ask about this position...", text: Bindable(chatState).inputText)
                     .textFieldStyle(.plain)
                     .font(.subheadline)
                     .foregroundStyle(AppColor.primaryText)
@@ -114,13 +144,14 @@ struct CoachChatPanel: View {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.system(size: 28))
                         .foregroundStyle(
-                            inputText.trimmingCharacters(in: .whitespaces).isEmpty
+                            chatState.inputText.trimmingCharacters(in: .whitespaces).isEmpty
                                 ? AppColor.disabledText
                                 : AppColor.guided
                         )
                 }
                 .buttonStyle(.plain)
-                .disabled(inputText.trimmingCharacters(in: .whitespaces).isEmpty || isLoading)
+                .disabled(chatState.inputText.trimmingCharacters(in: .whitespaces).isEmpty || chatState.isLoading)
+                .accessibilityLabel("Send message")
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -141,17 +172,76 @@ struct CoachChatPanel: View {
 
             ForEach(suggestions, id: \.self) { suggestion in
                 Button {
-                    inputText = suggestion
+                    chatState.inputText = suggestion
                 } label: {
                     Text(suggestion)
                         .font(.caption.weight(.medium))
                         .foregroundStyle(AppColor.secondaryText)
                         .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
+                        .frame(minHeight: 44)
                         .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: 8))
                 }
                 .buttonStyle(.plain)
+                .accessibilityHint("Fills in the text field with this question")
             }
+        }
+    }
+
+    // MARK: - Move History
+
+    private var moveHistorySection: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 4) {
+                Image(systemName: "list.number")
+                    .font(.caption2)
+                    .foregroundStyle(AppColor.tertiaryText)
+                    .accessibilityHidden(true)
+                Text("Moves played (\(moveHistory.count))")
+                    .font(.caption2.weight(.medium))
+                    .foregroundStyle(AppColor.tertiaryText)
+            }
+
+            // Show moves in pairs (1. e4 e5  2. Nf3 Nc6 ...)
+            let paired = formattedMoveHistory
+            Text(paired)
+                .font(.caption2.monospaced())
+                .foregroundStyle(AppColor.secondaryText)
+                .lineLimit(4)
+        }
+        .padding(8)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColor.cardBackground.opacity(0.6), in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private var formattedMoveHistory: String {
+        var result = ""
+        for i in stride(from: 0, to: moveHistory.count, by: 2) {
+            let moveNum = (i / 2) + 1
+            let white = moveHistory[i]
+            let black = i + 1 < moveHistory.count ? moveHistory[i + 1] : ""
+            if !result.isEmpty { result += " " }
+            result += "\(moveNum). \(white)"
+            if !black.isEmpty { result += " \(black)" }
+        }
+        return result.isEmpty ? "No moves yet" : result
+    }
+
+    // MARK: - Coach Avatar
+
+    @ViewBuilder
+    private func coachAvatar(size: CGFloat) -> some View {
+        let assetName = isEngineMode ? coachPersonality.enginePortraitSmall : ""
+        if isEngineMode, let uiImage = UIImage(named: assetName) {
+            Image(uiImage: uiImage)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: size, height: size)
+                .clipShape(Circle())
+        } else {
+            Image(systemName: coachPersonality.displayIcon(engineMode: isEngineMode))
+                .font(.system(size: size * 0.55))
+                .foregroundStyle(AppColor.practice)
+                .frame(width: size, height: size)
         }
     }
 
@@ -159,18 +249,19 @@ struct CoachChatPanel: View {
 
     private func chatBubble(role: String, text: String) -> some View {
         let isUser = role == "user"
+        let coachName = coachPersonality.displayName(engineMode: isEngineMode)
         return HStack {
             if isUser { Spacer(minLength: 20) }
 
             VStack(alignment: isUser ? .trailing : .leading, spacing: 2) {
                 if !isUser {
                     HStack(spacing: 3) {
-                        Image(systemName: "brain.head.profile")
-                            .font(.system(size: 8))
+                        coachAvatar(size: 14)
+                            .accessibilityHidden(true)
+                        Text(coachName)
+                            .font(.caption2.weight(.medium))
                             .foregroundStyle(AppColor.practice)
-                        Text("Coach")
-                            .font(.system(size: 9, weight: .medium))
-                            .foregroundStyle(AppColor.practice)
+                            .accessibilityHidden(true)
                     }
                 }
 
@@ -184,6 +275,8 @@ struct CoachChatPanel: View {
                 isUser ? AppColor.guided.opacity(0.2) : AppColor.cardBackground,
                 in: RoundedRectangle(cornerRadius: 10)
             )
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(isUser ? "You: \(text)" : "\(coachName): \(text)")
 
             if !isUser { Spacer(minLength: 20) }
         }
@@ -193,56 +286,64 @@ struct CoachChatPanel: View {
     // MARK: - Send Message
 
     private func sendMessage() {
-        let question = inputText.trimmingCharacters(in: .whitespaces)
+        let question = chatState.inputText.trimmingCharacters(in: .whitespaces)
         guard !question.isEmpty else { return }
 
-        messages.append((role: "user", text: question))
-        inputText = ""
-        isLoading = true
+        chatState.appendMessage(role: "user", text: question)
+        chatState.inputText = ""
+        chatState.isLoading = true
+
+        // Build conversation history from all prior messages (coaching + Q&A)
+        let history = chatState.messages.map { (role: $0.role, text: $0.text) }
 
         let context = ChatContext(
             fen: fen,
             openingName: opening.name,
             lineName: opening.name,
             moveHistory: moveHistory,
-            currentPly: currentPly
+            currentPly: currentPly,
+            conversationHistory: history
         )
+
+        // Capture what we need for the background task
+        let state = chatState
+        let services = appServices
+        let openingRef = opening
 
         Task {
             do {
-                if coachingService == nil {
-                    // Reuse the shared LLM service (already warmed up at app start)
-                    let llmService = appServices.llmService
-                    let line = opening.lines?.first ?? OpeningLine(
-                        id: "\(opening.id)/main",
-                        name: opening.name,
-                        moves: opening.mainLine,
+                if state.coachingService == nil {
+                    let llmService = services.llmService
+                    let line = openingRef.lines?.first ?? OpeningLine(
+                        id: "\(openingRef.id)/main",
+                        name: openingRef.name,
+                        moves: openingRef.mainLine,
                         branchPoint: 0,
                         parentLineID: nil
                     )
                     let newService = CoachingService(
                         llmService: llmService,
-                        curriculumService: CurriculumService(opening: opening, activeLine: line, phase: .learningMainLine),
+                        curriculumService: CurriculumService(opening: openingRef, activeLine: line, phase: .learningMainLine),
                         featureAccess: UnlockedAccess()
                     )
-                    await MainActor.run { coachingService = newService }
+                    await MainActor.run { state.coachingService = newService }
                 }
-                guard let coachingService else {
+                guard let coachingService = await state.coachingService else {
                     await MainActor.run {
-                        messages.append((role: "coach", text: "Coach is unavailable right now. Try again later."))
-                        isLoading = false
+                        state.appendMessage(role: "coach", text: "Coach is unavailable right now. Try again later.")
+                        state.isLoading = false
                     }
                     return
                 }
                 let response = await coachingService.getChatResponse(question: question, context: context)
                 await MainActor.run {
-                    messages.append((role: "coach", text: response))
-                    isLoading = false
+                    state.appendMessage(role: "coach", text: response)
+                    state.isLoading = false
                 }
             } catch {
                 await MainActor.run {
-                    messages.append((role: "coach", text: "Sorry, I couldn't reach the coach right now. Please try again."))
-                    isLoading = false
+                    state.appendMessage(role: "coach", text: "Sorry, I couldn't reach the coach right now. Please try again.")
+                    state.isLoading = false
                 }
             }
         }

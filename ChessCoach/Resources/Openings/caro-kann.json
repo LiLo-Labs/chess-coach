@@ -4,6 +4,10 @@
   "description": "A very solid defense that avoids cramped positions while keeping good piece activity.",
   "color": "black",
   "difficulty": 2,
+  "tags": [
+    "solid",
+    "positional"
+  ],
   "tree": {
     "id": "caro-kann/root",
     "children": [
@@ -373,18 +377,60 @@
   "plan": {
     "summary": "Play ...c6 then ...d5 to challenge White's center with solid pawn support. After exchanging on e4, develop the light-squared bishop to f5 or g4 — this is the Caro-Kann's biggest advantage over the French. Then castle and enjoy a solid, comfortable position.",
     "strategicGoals": [
-      { "description": "Play ...c6 and ...d5 to firmly challenge White's center", "priority": 1 },
-      { "description": "Develop the light-squared bishop to f5 or g4 BEFORE the position closes", "priority": 2 },
-      { "description": "Trade pawns on e4 to open lines for your pieces", "priority": 3 },
-      { "description": "Castle kingside and complete development smoothly", "priority": 4 },
-      { "description": "Use the half-open c-file for rook activity in the endgame", "priority": 5 }
+      {
+        "description": "Play ...c6 and ...d5 to firmly challenge White's center",
+        "priority": 1
+      },
+      {
+        "description": "Develop the light-squared bishop to f5 or g4 BEFORE the position closes",
+        "priority": 2
+      },
+      {
+        "description": "Trade pawns on e4 to open lines for your pieces",
+        "priority": 3
+      },
+      {
+        "description": "Castle kingside and complete development smoothly",
+        "priority": 4
+      },
+      {
+        "description": "Use the half-open c-file for rook activity in the endgame",
+        "priority": 5
+      }
     ],
     "pawnStructureTarget": "Symmetrical pawn structure after ...dxe4, with the c6 pawn giving extra support and the c-file available for rooks",
-    "keySquares": ["d5", "e4", "f5", "g6", "c6"],
+    "keySquares": [
+      "d5",
+      "e4",
+      "f5",
+      "g6",
+      "c6"
+    ],
     "pieceTargets": [
-      { "piece": "light-squared bishop", "idealSquares": ["f5", "g6"], "reasoning": "The Caro-Kann's biggest advantage — this bishop develops freely unlike in the French Defense" },
-      { "piece": "king's knight", "idealSquares": ["f6", "d7"], "reasoning": "Controls the center and helps support the queenside" },
-      { "piece": "queen's knight", "idealSquares": ["d7", "c6"], "reasoning": "Solid development supporting d5 and preparing future counterplay" }
+      {
+        "piece": "light-squared bishop",
+        "idealSquares": [
+          "f5",
+          "g6"
+        ],
+        "reasoning": "The Caro-Kann's biggest advantage — this bishop develops freely unlike in the French Defense"
+      },
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f6",
+          "d7"
+        ],
+        "reasoning": "Controls the center and helps support the queenside"
+      },
+      {
+        "piece": "queen's knight",
+        "idealSquares": [
+          "d7",
+          "c6"
+        ],
+        "reasoning": "Solid development supporting d5 and preparing future counterplay"
+      }
     ],
     "typicalPlans": [
       "Exchange pawns on e4 to develop the light-squared bishop freely to f5",
@@ -404,23 +450,41 @@
         "title": "The Caro-Kann Idea: ...c6 then ...d5",
         "description": "The big idea: play 1...c6 to prepare 2...d5. This way your d5 pawn is supported by the c6 pawn, making it very stable. Unlike 1...e5, you don't give White a target to attack!",
         "fen": "rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
-        "highlights": ["c6"],
-        "arrows": [{"from": "d7", "to": "d5"}],
+        "highlights": [
+          "c6"
+        ],
+        "arrows": [
+          {
+            "from": "d7",
+            "to": "d5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Free Bishop: Bf5!",
         "description": "After ...dxe4 and Nxe4, you get to play ...Bf5! In the French Defense, this bishop gets locked behind its own pawns. In the Caro-Kann, it develops freely to a great square. This is the key difference!",
         "fen": "rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR w KQkq - 2 5",
-        "highlights": ["f5", "c8"],
-        "arrows": [{"from": "c8", "to": "f5"}],
+        "highlights": [
+          "f5",
+          "c8"
+        ],
+        "arrows": [
+          {
+            "from": "c8",
+            "to": "f5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Don't Play ...e6 Before ...Bf5!",
         "description": "A common mistake: playing ...e6 too early locks your light-squared bishop behind the pawn, just like in the French! Always play ...Bf5 first when you have the chance.",
         "fen": "rnbqkbnr/pp3ppp/2p1p3/3p4/3PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 0 4",
-        "highlights": ["c8", "e6"],
+        "highlights": [
+          "c8",
+          "e6"
+        ],
         "arrows": [],
         "style": "bad"
       },
@@ -428,16 +492,31 @@
         "title": "Using the c-file",
         "description": "One of Black's long-term advantages: the c-file! After your c6 pawn moves or trades, your rooks can use the open c-file to attack White's queenside. Rooks belong on open files!",
         "fen": "r1bq1rk1/pp2ppbp/2n3p1/3p4/3P4/2N1BN2/PPP1BPPP/R2Q1RK1 b - - 2 9",
-        "highlights": ["c8", "c1"],
-        "arrows": [{"from": "c8", "to": "c1"}],
+        "highlights": [
+          "c8",
+          "c1"
+        ],
+        "arrows": [
+          {
+            "from": "c8",
+            "to": "c1"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Advance: Get ...Bf5 Out Fast!",
         "description": "When White plays e5 (Advance Variation), you must play ...Bf5 immediately! If you wait even one move, the bishop gets locked in. Speed is everything when the center closes.",
         "fen": "rnbqkbnr/pp2pppp/2p5/3pP3/3P4/8/PPP2PPP/RNBQKBNR b KQkq - 0 3",
-        "highlights": ["c8"],
-        "arrows": [{"from": "c8", "to": "f5"}],
+        "highlights": [
+          "c8"
+        ],
+        "arrows": [
+          {
+            "from": "c8",
+            "to": "f5"
+          }
+        ],
         "style": "good"
       }
     ],
@@ -446,40 +525,86 @@
         "fen": "rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR w KQkq - 2 5",
         "prompt": "Black just played ...Bf5 after exchanging on e4. Why is this the most important move in the Caro-Kann?",
         "choices": [
-          {"text": "The light-squared bishop develops freely — unlike in the French Defense", "isCorrect": true},
-          {"text": "Bf5 attacks the Nc3", "isCorrect": false},
-          {"text": "Bf5 prevents White from playing d5", "isCorrect": false}
+          {
+            "text": "The light-squared bishop develops freely — unlike in the French Defense",
+            "isCorrect": true
+          },
+          {
+            "text": "Bf5 attacks the Nc3",
+            "isCorrect": false
+          },
+          {
+            "text": "Bf5 prevents White from playing d5",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "In the French Defense, the light-squared bishop gets locked behind the e6 pawn. In the Caro-Kann, it develops freely to f5 after ...dxe4. This active bishop is the Caro-Kann's biggest advantage!",
-        "boardHighlightsOnReveal": ["f5", "c8"],
+        "boardHighlightsOnReveal": [
+          "f5",
+          "c8"
+        ],
         "arrowsOnReveal": []
       },
       {
         "fen": "rnbqkbnr/pp2pppp/2p5/3pP3/3P4/8/PPP2PPP/RNBQKBNR b KQkq - 0 3",
         "prompt": "White just played e5 — the Advance Variation. What must Black do immediately?",
         "choices": [
-          {"text": "Play ...Bf5 to develop the bishop before the position locks", "isCorrect": true},
-          {"text": "Play ...e6 to support the pawn chain", "isCorrect": false},
-          {"text": "Play ...Nd7 to prepare ...c5", "isCorrect": false}
+          {
+            "text": "Play ...Bf5 to develop the bishop before the position locks",
+            "isCorrect": true
+          },
+          {
+            "text": "Play ...e6 to support the pawn chain",
+            "isCorrect": false
+          },
+          {
+            "text": "Play ...Nd7 to prepare ...c5",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "After e5, Black must play ...Bf5 immediately! If you play ...e6 first, the bishop gets locked in just like in the French. Speed matters — develop the bishop before the pawns close the position!",
-        "boardHighlightsOnReveal": ["c8", "f5"],
-        "arrowsOnReveal": [{"from": "c8", "to": "f5"}]
+        "boardHighlightsOnReveal": [
+          "c8",
+          "f5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c8",
+            "to": "f5"
+          }
+        ]
       },
       {
         "fen": "r1bqk2r/pp2ppbp/2n3p1/3p4/3P4/2N1BN2/PPP1BPPP/R2Q1RK1 b kq - 2 9",
         "prompt": "You are fully developed in the Caro-Kann. What is your best long-term plan?",
         "choices": [
-          {"text": "Castle and then use the c-file for rook activity", "isCorrect": true},
-          {"text": "Launch a kingside attack with ...g4", "isCorrect": false},
-          {"text": "Trade all pieces for a draw", "isCorrect": false}
+          {
+            "text": "Castle and then use the c-file for rook activity",
+            "isCorrect": true
+          },
+          {
+            "text": "Launch a kingside attack with ...g4",
+            "isCorrect": false
+          },
+          {
+            "text": "Trade all pieces for a draw",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Castle first to keep the king safe, then aim your rooks at the c-file! After your c6 pawn has moved, the c-file becomes a great highway for your rooks to create pressure on White's queenside.",
-        "boardHighlightsOnReveal": ["g8", "c8"],
-        "arrowsOnReveal": [{"from": "e8", "to": "g8"}]
+        "boardHighlightsOnReveal": [
+          "g8",
+          "c8"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e8",
+            "to": "g8"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -487,23 +612,41 @@
         "title": "Classical Variation (B18/B19)",
         "description": "After 3.Nc3 dxe4 4.Nxe4 Bf5, Black develops the light-squared bishop freely. Then 5.Ng3 Bg6 keeps the bishop safe while staying active. This is the most popular and reliable Caro-Kann line.",
         "fen": "rn1qkbnr/pp2pppp/2p3b1/8/3P4/6N1/PPP2PPP/R1BQKBNR w KQkq - 2 6",
-        "highlights": ["g6", "f5"],
-        "arrows": [{"from": "f5", "to": "g6"}],
+        "highlights": [
+          "g6",
+          "f5"
+        ],
+        "arrows": [
+          {
+            "from": "f5",
+            "to": "g6"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Advance Variation (B12)",
         "description": "3.e5 claims space immediately — the same idea as the French Advance. But here Black can immediately play 3...Bf5, developing the bishop before the position locks. This bishop is the key to Black's counterplay.",
         "fen": "rnbqkbnr/pp2pppp/2p5/3pP3/3P4/8/PPP2PPP/RNBQKBNR b KQkq - 0 3",
-        "highlights": ["e5", "c8"],
-        "arrows": [{"from": "c8", "to": "f5"}],
+        "highlights": [
+          "e5",
+          "c8"
+        ],
+        "arrows": [
+          {
+            "from": "c8",
+            "to": "f5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Exchange Variation (B13)",
         "description": "3.exd5 cxd5 releases all tension — similar to the French Exchange. Black recaptures with the c-pawn, keeping a solid structure. The resulting position is very symmetrical and drawish.",
         "fen": "rnbqkbnr/pp2pppp/8/3p4/3P4/8/PPP2PPP/RNBQKBNR w KQkq - 0 4",
-        "highlights": ["d5"],
+        "highlights": [
+          "d5"
+        ],
         "arrows": [],
         "style": "theory"
       },
@@ -511,8 +654,16 @@
         "title": "The Panov-Botvinnik Attack (B13)",
         "description": "After 3.exd5 cxd5 4.c4! White plays an aggressive pawn advance attacking Black's d5 pawn. This leads to IQP (isolated queen's pawn) positions. Black must develop quickly and challenge White's center!",
         "fen": "rnbqkbnr/pp2pppp/8/3p4/2PP4/8/PP3PPP/RNBQKBNR b KQkq c3 0 4",
-        "highlights": ["c4", "d5"],
-        "arrows": [{"from": "c4", "to": "d5"}],
+        "highlights": [
+          "c4",
+          "d5"
+        ],
+        "arrows": [
+          {
+            "from": "c4",
+            "to": "d5"
+          }
+        ],
         "style": "theory"
       }
     ],
@@ -521,33 +672,71 @@
         "fen": "rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR w KQkq - 2 5",
         "prompt": "After 1.e4 c6 2.d4 d5 3.Nc3 dxe4 4.Nxe4 Bf5, what variation of the Caro-Kann have we reached?",
         "choices": [
-          {"text": "Classical Variation", "isCorrect": true},
-          {"text": "Advance Variation", "isCorrect": false},
-          {"text": "Exchange Variation", "isCorrect": false},
-          {"text": "Panov-Botvinnik Attack", "isCorrect": false}
+          {
+            "text": "Classical Variation",
+            "isCorrect": true
+          },
+          {
+            "text": "Advance Variation",
+            "isCorrect": false
+          },
+          {
+            "text": "Exchange Variation",
+            "isCorrect": false
+          },
+          {
+            "text": "Panov-Botvinnik Attack",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Classical Variation (B18/B19). After 3.Nc3 dxe4 4.Nxe4 Bf5, Black's light-squared bishop develops freely — the defining characteristic of the Classical Caro-Kann.",
-        "boardHighlightsOnReveal": ["f5", "e4"],
+        "boardHighlightsOnReveal": [
+          "f5",
+          "e4"
+        ],
         "arrowsOnReveal": []
       },
       {
         "fen": "rnbqkbnr/pp2pppp/2p5/3pP3/3P4/8/PPP2PPP/RNBQKBNR b KQkq - 0 3",
         "prompt": "White played 3.e5 — what is this variation called and what should Black play?",
         "choices": [
-          {"text": "Advance Variation — play ...Bf5 immediately", "isCorrect": true},
-          {"text": "Classical Variation — play ...dxe4", "isCorrect": false},
-          {"text": "Exchange Variation — play ...exd5", "isCorrect": false}
+          {
+            "text": "Advance Variation — play ...Bf5 immediately",
+            "isCorrect": true
+          },
+          {
+            "text": "Classical Variation — play ...dxe4",
+            "isCorrect": false
+          },
+          {
+            "text": "Exchange Variation — play ...exd5",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Advance Variation (B12). White gains space with e5. Black must play ...Bf5 immediately to develop the light-squared bishop before the position closes. Waiting means the bishop gets locked in!",
-        "boardHighlightsOnReveal": ["e5", "c8", "f5"],
-        "arrowsOnReveal": [{"from": "c8", "to": "f5"}]
+        "boardHighlightsOnReveal": [
+          "e5",
+          "c8",
+          "f5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c8",
+            "to": "f5"
+          }
+        ]
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["e2e4", "c7c6", "d2d4", "d7d5"],
+    "afterMoves": [
+      "e2e4",
+      "c7c6",
+      "d2d4",
+      "d7d5"
+    ],
     "responses": [
       {
         "id": "caro-kann-classical",
@@ -558,7 +747,7 @@
         },
         "name": "Classical Variation",
         "eco": "B18",
-        "frequency": 0.40,
+        "frequency": 0.4,
         "description": "The most popular response — White defends e4 with Nc3, leading to the well-known Classical Caro-Kann after ...dxe4 Nxe4 Bf5.",
         "planAdjustment": "Exchange pawns with ...dxe4, then after Nxe4 play ...Bf5! This is the whole point of the Caro-Kann. After Ng3, put the bishop safely on g6 and continue developing normally."
       },
@@ -584,7 +773,7 @@
         },
         "name": "Two Knights Variation",
         "eco": "B11",
-        "frequency": 0.20,
+        "frequency": 0.2,
         "description": "White develops Nf3 first. The game can transpose to Classical or lead to unique positions where White's Ne5 is a key idea.",
         "planAdjustment": "Exchange ...dxe4 and play ...Bf5 as always. If White plays Ne5, challenge it immediately with ...Bf5 — don't let the knight stay on e5 unopposed."
       },

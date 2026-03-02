@@ -10,8 +10,10 @@ struct SessionCompleteView: View {
     let onDone: () -> Void
     let onReviewNow: (() -> Void)?
     let onNextStage: (() -> Void)?
+    var coachPersonality: CoachPersonality?
 
     @State private var showPromotion = false
+    @State private var showMilestone = false
     @State private var showPersonalBest = false
     @State private var showPESScore = false
     @State private var progressAnimationValue: Double = 0
@@ -21,8 +23,8 @@ struct SessionCompleteView: View {
             Color.black.opacity(0.75)
                 .ignoresSafeArea()
 
-            // Confetti on layer promotion, high PES (non-guided), or high accuracy (guided)
-            if result?.layerPromotion != nil || result?.phasePromotion != nil || (sessionMode != .guided && (result?.averagePES ?? 0) >= 80) || (result?.accuracy ?? 0) >= 0.8 {
+            // Confetti on layer promotion, milestone completion, high PES (non-guided), or high accuracy (guided)
+            if result?.layerPromotion != nil || result?.phasePromotion != nil || !(result?.completedMilestones.isEmpty ?? true) || (sessionMode != .guided && (result?.averagePES ?? 0) >= 80) || (result?.accuracy ?? 0) >= 0.8 {
                 ConfettiView()
                     .ignoresSafeArea()
             }
@@ -84,6 +86,16 @@ struct SessionCompleteView: View {
                     // Newly Unlocked Lines
                     if let result, !result.newlyUnlockedLines.isEmpty {
                         unlockedLinesSection(lines: result.newlyUnlockedLines)
+                    }
+
+                    // Milestone Celebration
+                    if let result, !result.completedMilestones.isEmpty {
+                        milestoneCelebration(milestones: result.completedMilestones)
+                    }
+
+                    // Coach Session Message
+                    if let coach = coachPersonality, let message = result?.coachSessionMessage {
+                        coachMessageCard(coach: coach, message: message)
                     }
 
                     // Review Nudge
@@ -476,6 +488,82 @@ struct SessionCompleteView: View {
 
             FeedbackButton(screen: "Session Complete")
         }
+    }
+
+    // MARK: - Milestone Celebration
+
+    private func milestoneCelebration(milestones: [SubMilestone]) -> some View {
+        VStack(spacing: AppSpacing.sm) {
+            ForEach(milestones) { milestone in
+                VStack(spacing: AppSpacing.xs) {
+                    HStack(spacing: AppSpacing.xxs) {
+                        Image(systemName: "star.fill")
+                            .foregroundStyle(AppColor.gold)
+                        Text("Milestone Complete!")
+                            .font(.subheadline.weight(.bold))
+                            .foregroundStyle(AppColor.gold)
+                        Image(systemName: "star.fill")
+                            .foregroundStyle(AppColor.gold)
+                    }
+                    .scaleEffect(showMilestone ? 1.0 : 0.8)
+                    .opacity(showMilestone ? 1.0 : 0)
+
+                    Text("\"\(milestone.title)\"")
+                        .font(.headline)
+                        .foregroundStyle(AppColor.primaryText)
+
+                    if let coach = coachPersonality {
+                        Text("\(coach.humanName): \"\(coach.onMilestone.randomElement() ?? "Well done!")\"")
+                            .font(.caption)
+                            .foregroundStyle(AppColor.secondaryText)
+                            .italic()
+                            .multilineTextAlignment(.center)
+                    }
+                }
+                .padding(AppSpacing.cardPadding)
+                .frame(maxWidth: .infinity)
+                .background {
+                    RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous)
+                        .fill(AppColor.gold.opacity(0.08))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous)
+                                .strokeBorder(AppColor.gold.opacity(0.2), lineWidth: 1)
+                        )
+                }
+            }
+        }
+        .sensoryFeedback(.success, trigger: showMilestone)
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.7).delay(0.6)) {
+                showMilestone = true
+            }
+        }
+    }
+
+    // MARK: - Coach Message Card
+
+    private func coachMessageCard(coach: CoachPersonality, message: String) -> some View {
+        HStack(alignment: .top, spacing: AppSpacing.md) {
+            Image(systemName: coach.humanIcon)
+                .font(.system(size: 16))
+                .foregroundStyle(AppColor.info)
+                .frame(width: 32, height: 32)
+                .background(AppColor.info.opacity(0.12), in: Circle())
+
+            VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
+                Text(coach.humanName)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(AppColor.info)
+                Text(message)
+                    .font(.subheadline)
+                    .foregroundStyle(AppColor.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(AppSpacing.cardPadding)
+        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
     }
 
     // MARK: - Helpers

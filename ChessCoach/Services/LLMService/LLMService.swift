@@ -57,7 +57,7 @@ actor LLMService: TextGenerating {
     }
 
     static func buildPrompt(for context: CoachingContext) -> String {
-        let boardSummary = boardStateSummary(fen: context.fen)
+        let boardSummary = boardStateSummary(fen: context.fen, studentColor: context.studentColor)
         if context.isUserMove {
             return PromptCatalog.userMovePrompt(for: context, boardSummary: boardSummary)
         } else {
@@ -76,7 +76,7 @@ actor LLMService: TextGenerating {
         }
     }
 
-    static func boardStateSummary(fen: String) -> String {
+    static func boardStateSummary(fen: String, studentColor: String? = nil) -> String {
         let position = FenSerialization.default.deserialize(fen: fen)
         let pieces = position.board.enumeratedPieces()
         let white = pieces.filter { $0.1.color == .white }
@@ -86,7 +86,11 @@ actor LLMService: TextGenerating {
             .map { "\(pieceKindName($0.1.kind)) on \($0.0.coordinate)" }
             .joined(separator: ", ")
 
-        var lines = ["White: \(white)", "Black: \(black)"]
+        // Label pieces with student/opponent role when studentColor is known
+        let studentIsBlack = studentColor == "Black"
+        let whiteLabel = studentIsBlack ? "White (opponent)" : "White (student)"
+        let blackLabel = studentIsBlack ? "Black (student)" : "Black (opponent)"
+        var lines = ["\(whiteLabel): \(white)", "\(blackLabel): \(black)"]
 
         // Add castling rights — helps model understand king safety
         let castlings = position.state.castlings

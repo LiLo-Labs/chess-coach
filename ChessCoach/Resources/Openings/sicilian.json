@@ -4,6 +4,10 @@
   "description": "The most popular and aggressive response to 1.e4. Leads to sharp, exciting games.",
   "color": "black",
   "difficulty": 3,
+  "tags": [
+    "aggressive",
+    "tactical"
+  ],
   "tree": {
     "id": "sicilian/root",
     "children": [
@@ -397,18 +401,59 @@
   "plan": {
     "summary": "Play ...c5 to fight for the d4 square without mirroring White's center. After ...cxd4, you get a half-open c-file for your rooks and exciting counterplay. White attacks on the kingside; you counterattack on the queenside. The Sicilian is the most popular defense in chess for a reason — it's rich, complex, and leads to winning chances for both sides.",
     "strategicGoals": [
-      { "description": "Control the d4 square with ...c5 and gain the half-open c-file", "priority": 1 },
-      { "description": "Develop pieces quickly and castle to keep the king safe", "priority": 2 },
-      { "description": "Launch queenside counterplay (typically ...a5-a4 or ...b5-b4) while White attacks kingside", "priority": 3 },
-      { "description": "Use the open c-file for rook activity and pressure on White's queenside", "priority": 4 },
-      { "description": "In the Najdorf, play ...e5 to gain center space and restrict White's Nd4", "priority": 5 }
+      {
+        "description": "Control the d4 square with ...c5 and gain the half-open c-file",
+        "priority": 1
+      },
+      {
+        "description": "Develop pieces quickly and castle to keep the king safe",
+        "priority": 2
+      },
+      {
+        "description": "Launch queenside counterplay (typically ...a5-a4 or ...b5-b4) while White attacks kingside",
+        "priority": 3
+      },
+      {
+        "description": "Use the open c-file for rook activity and pressure on White's queenside",
+        "priority": 4
+      },
+      {
+        "description": "In the Najdorf, play ...e5 to gain center space and restrict White's Nd4",
+        "priority": 5
+      }
     ],
     "pawnStructureTarget": "Half-open c-file after ...cxd4; Black's queenside majority creates long-term winning chances in the endgame",
-    "keySquares": ["d4", "c5", "d6", "e5", "c8"],
+    "keySquares": [
+      "d4",
+      "c5",
+      "d6",
+      "e5",
+      "c8"
+    ],
     "pieceTargets": [
-      { "piece": "king's knight", "idealSquares": ["f6"], "reasoning": "Attacks e4 and prevents White from freely occupying the center; also supports ...d5 breaks" },
-      { "piece": "dark-squared bishop", "idealSquares": ["g7", "e7"], "reasoning": "In Dragon lines, g7 is the ideal square where it controls the long diagonal; ...e7 is solid and flexible" },
-      { "piece": "queen's rook", "idealSquares": ["c8", "b8"], "reasoning": "The half-open c-file is Black's main counterplay highway; the rook belongs on c8 as soon as possible" }
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f6"
+        ],
+        "reasoning": "Attacks e4 and prevents White from freely occupying the center; also supports ...d5 breaks"
+      },
+      {
+        "piece": "dark-squared bishop",
+        "idealSquares": [
+          "g7",
+          "e7"
+        ],
+        "reasoning": "In Dragon lines, g7 is the ideal square where it controls the long diagonal; ...e7 is solid and flexible"
+      },
+      {
+        "piece": "queen's rook",
+        "idealSquares": [
+          "c8",
+          "b8"
+        ],
+        "reasoning": "The half-open c-file is Black's main counterplay highway; the rook belongs on c8 as soon as possible"
+      }
     ],
     "typicalPlans": [
       "Attack on the queenside with ...a5-a4 or ...b5-b4 while White attacks on the kingside",
@@ -428,40 +473,83 @@
         "title": "Why 1...c5? The Sicilian Logic",
         "description": "Instead of mirroring White with ...e5, you play ...c5! This fights for the d4 square without giving White a symmetric center. After d4 cxd4, White has a pawn on e4 but you have no pawn in the center — and you get a half-open c-file instead!",
         "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2",
-        "highlights": ["c5", "d4"],
-        "arrows": [{"from": "c5", "to": "d4"}],
+        "highlights": [
+          "c5",
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "c5",
+            "to": "d4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Half-Open c-file",
         "description": "After ...cxd4 and Nxd4, White's d-pawn is gone but your c-file is OPEN! This is your reward: rooks love open files, and the c-file becomes your highway for counterplay throughout the game.",
         "fen": "rnbqkb1r/pp1ppppp/5n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R b KQkq - 1 5",
-        "highlights": ["c8", "c1"],
-        "arrows": [{"from": "c8", "to": "c1"}],
+        "highlights": [
+          "c8",
+          "c1"
+        ],
+        "arrows": [
+          {
+            "from": "c8",
+            "to": "c1"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Najdorf: ...a6 is Brilliant",
         "description": "After ...Nf6 and Nc3, Black plays the mysterious ...a6! This little pawn move prevents Nb5 and prepares ...b5 queenside expansion. Bobby Fischer called the Najdorf 'best by test.' It creates rich, unbalanced positions!",
         "fen": "rnbqkb1r/1p1ppppp/p4n2/2p5/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 5",
-        "highlights": ["a6", "b5"],
-        "arrows": [{"from": "a7", "to": "a6"}, {"from": "b7", "to": "b5"}],
+        "highlights": [
+          "a6",
+          "b5"
+        ],
+        "arrows": [
+          {
+            "from": "a7",
+            "to": "a6"
+          },
+          {
+            "from": "b7",
+            "to": "b5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Dragon Bishop",
         "description": "In the Dragon Variation, your bishop on g7 is the most powerful piece on the board! It controls the long h8-a1 diagonal and attacks White's queenside. Never trade this bishop away unless you get something very valuable in return.",
         "fen": "r1bqk2r/pp1pppbp/2n2np1/8/3NP3/2N1B3/PPP1BPPP/R2QK2R b KQkq - 3 8",
-        "highlights": ["g7", "a1"],
-        "arrows": [{"from": "g7", "to": "a1"}],
+        "highlights": [
+          "g7",
+          "a1"
+        ],
+        "arrows": [
+          {
+            "from": "g7",
+            "to": "a1"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Don't Castle Too Late!",
         "description": "In the Sicilian, White often attacks your king very aggressively. Castle early! If your king is still in the center when White launches Bg5, f4, g4, it can be very dangerous. King safety first, then counterattack!",
         "fen": "r1bqk2r/pp2ppbp/2np1np1/8/3NP3/2N1B3/PPP1BPPP/R2QK2R b KQkq - 1 8",
-        "highlights": ["e8"],
-        "arrows": [{"from": "e8", "to": "g8"}],
+        "highlights": [
+          "e8"
+        ],
+        "arrows": [
+          {
+            "from": "e8",
+            "to": "g8"
+          }
+        ],
         "style": "bad"
       }
     ],
@@ -470,40 +558,91 @@
         "fen": "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
         "prompt": "After 1.e4 c5 2.Nf3, what is Black's key strategic advantage from playing ...c5?",
         "choices": [
-          {"text": "Black fights for d4 and will get a half-open c-file after ...cxd4", "isCorrect": true},
-          {"text": "Black controls the center better than with ...e5", "isCorrect": false},
-          {"text": "Black's c-pawn prevents White from ever playing d4", "isCorrect": false}
+          {
+            "text": "Black fights for d4 and will get a half-open c-file after ...cxd4",
+            "isCorrect": true
+          },
+          {
+            "text": "Black controls the center better than with ...e5",
+            "isCorrect": false
+          },
+          {
+            "text": "Black's c-pawn prevents White from ever playing d4",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The Sicilian's big idea: ...c5 fights for d4 without giving White a symmetric center. After d4 cxd4 Nxd4, you have a half-open c-file for your rooks — the key source of Black's counterplay throughout the game!",
-        "boardHighlightsOnReveal": ["c5", "d4"],
-        "arrowsOnReveal": [{"from": "c8", "to": "c1"}]
+        "boardHighlightsOnReveal": [
+          "c5",
+          "d4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c8",
+            "to": "c1"
+          }
+        ]
       },
       {
         "fen": "rnbqkb1r/1p1ppppp/p4n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6",
         "prompt": "Black just played ...a6. What is this famous move and why is it so important?",
         "choices": [
-          {"text": "The Najdorf — it prevents Nb5 and prepares queenside expansion with ...b5", "isCorrect": true},
-          {"text": "A waste of a tempo — there are better developing moves", "isCorrect": false},
-          {"text": "It prepares ...Ba6 to trade the bishop", "isCorrect": false}
+          {
+            "text": "The Najdorf — it prevents Nb5 and prepares queenside expansion with ...b5",
+            "isCorrect": true
+          },
+          {
+            "text": "A waste of a tempo — there are better developing moves",
+            "isCorrect": false
+          },
+          {
+            "text": "It prepares ...Ba6 to trade the bishop",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "...a6 is the Najdorf Variation — one of the most analyzed positions in all of chess! It prevents White's Nb5 (which would be annoying) and prepares ...b5 to expand on the queenside. Bobby Fischer's favorite weapon!",
-        "boardHighlightsOnReveal": ["a6", "b5"],
-        "arrowsOnReveal": [{"from": "b7", "to": "b5"}]
+        "boardHighlightsOnReveal": [
+          "a6",
+          "b5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "b7",
+            "to": "b5"
+          }
+        ]
       },
       {
         "fen": "r1bq1rk1/pp1pppbp/2n2np1/8/3NP3/2N1B3/PPP1BPPP/R2Q1RK1 b - - 5 9",
         "prompt": "In the Dragon Variation, what is Black's most important attacking piece?",
         "choices": [
-          {"text": "The bishop on g7 — it controls the long diagonal toward White's queenside", "isCorrect": true},
-          {"text": "The knight on f6 — it attacks e4", "isCorrect": false},
-          {"text": "The queen — it can move anywhere", "isCorrect": false}
+          {
+            "text": "The bishop on g7 — it controls the long diagonal toward White's queenside",
+            "isCorrect": true
+          },
+          {
+            "text": "The knight on f6 — it attacks e4",
+            "isCorrect": false
+          },
+          {
+            "text": "The queen — it can move anywhere",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The Dragon bishop on g7 is Black's most powerful piece! It controls the entire long diagonal from h8 to a1, which runs through White's queenside. Never trade this bishop — it's worth fighting to keep it active!",
-        "boardHighlightsOnReveal": ["g7", "a1"],
-        "arrowsOnReveal": [{"from": "g7", "to": "a1"}]
+        "boardHighlightsOnReveal": [
+          "g7",
+          "a1"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "g7",
+            "to": "a1"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -511,32 +650,63 @@
         "title": "Najdorf Variation (B90-B99)",
         "description": "After 5...a6, the Najdorf is the most popular Sicilian line at top-level chess. The ...a6 move prevents Nb5 and prepares queenside expansion. Bobby Fischer used it to dominate all opponents. It is both solid and aggressive!",
         "fen": "rnbqkb1r/1p1ppppp/p4n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6",
-        "highlights": ["a6"],
-        "arrows": [{"from": "b7", "to": "b5"}],
+        "highlights": [
+          "a6"
+        ],
+        "arrows": [
+          {
+            "from": "b7",
+            "to": "b5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Dragon Variation (B70-B79)",
         "description": "After 4...g6, Black fianchettoes the bishop to g7 — the 'Dragon' bishop. White often attacks with f3, Be3, Qd2, O-O-O and a blistering kingside attack, while Black counters on the queenside. Maximum tension!",
         "fen": "rnbqk2r/pp1pppbp/3p1np1/8/3NP3/2N1B3/PPP1BPPP/R2QK2R b KQkq - 3 7",
-        "highlights": ["g7"],
-        "arrows": [{"from": "g7", "to": "a1"}],
+        "highlights": [
+          "g7"
+        ],
+        "arrows": [
+          {
+            "from": "g7",
+            "to": "a1"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Sveshnikov Variation (B33)",
         "description": "After 2...Nc6, Black plans ...Nf6 and ...e5! The Sveshnikov (named after Evgeny Sveshnikov) creates a backward pawn on d6 and a hole on d5, but gives Black active play and counterattacking chances.",
         "fen": "r1bqkb1r/pp2pppp/2np1n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 2 6",
-        "highlights": ["e7", "d5"],
-        "arrows": [{"from": "e7", "to": "e5"}],
+        "highlights": [
+          "e7",
+          "d5"
+        ],
+        "arrows": [
+          {
+            "from": "e7",
+            "to": "e5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "The Open Sicilian Position (B20-B99)",
         "description": "After 1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4, both sides have clear plans: White attacks on the kingside, Black counterattacks on the queenside using the open c-file. This dynamic imbalance is why the Sicilian is the most popular defense to 1.e4!",
         "fen": "rnbqkb1r/pp1ppppp/5n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
-        "highlights": ["e4", "c8", "d4"],
-        "arrows": [{"from": "c8", "to": "c1"}],
+        "highlights": [
+          "e4",
+          "c8",
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "c8",
+            "to": "c1"
+          }
+        ],
         "style": "theory"
       }
     ],
@@ -545,34 +715,72 @@
         "fen": "rnbqkb1r/1p1ppppp/p4n2/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6",
         "prompt": "After 1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 a6, what variation is this?",
         "choices": [
-          {"text": "Najdorf Variation", "isCorrect": true},
-          {"text": "Dragon Variation", "isCorrect": false},
-          {"text": "Sveshnikov Variation", "isCorrect": false},
-          {"text": "Classical Sicilian", "isCorrect": false}
+          {
+            "text": "Najdorf Variation",
+            "isCorrect": true
+          },
+          {
+            "text": "Dragon Variation",
+            "isCorrect": false
+          },
+          {
+            "text": "Sveshnikov Variation",
+            "isCorrect": false
+          },
+          {
+            "text": "Classical Sicilian",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Najdorf Variation (B90-B99), one of the most analyzed positions in chess history! The ...a6 move on move 5 is the signature of the Najdorf. It was Bobby Fischer's favorite weapon.",
-        "boardHighlightsOnReveal": ["a6"],
+        "boardHighlightsOnReveal": [
+          "a6"
+        ],
         "arrowsOnReveal": []
       },
       {
         "fen": "rnbqk2r/pp1pppbp/3p1np1/8/3NP3/2N1B3/PPP1BPPP/R2QK2R b KQkq - 3 7",
         "prompt": "Black has fianchettoed the bishop to g7. What Sicilian variation is this?",
         "choices": [
-          {"text": "Dragon Variation", "isCorrect": true},
-          {"text": "Najdorf Variation", "isCorrect": false},
-          {"text": "Scheveningen Variation", "isCorrect": false},
-          {"text": "Sveshnikov Variation", "isCorrect": false}
+          {
+            "text": "Dragon Variation",
+            "isCorrect": true
+          },
+          {
+            "text": "Najdorf Variation",
+            "isCorrect": false
+          },
+          {
+            "text": "Scheveningen Variation",
+            "isCorrect": false
+          },
+          {
+            "text": "Sveshnikov Variation",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "This is the Dragon Variation (B70-B79)! After ...g6 and ...Bg7, Black's bishop fianchettoes to g7 — the famous 'Dragon' bishop. It controls the long diagonal and is Black's most powerful attacking piece.",
-        "boardHighlightsOnReveal": ["g7"],
-        "arrowsOnReveal": [{"from": "g7", "to": "a1"}]
+        "boardHighlightsOnReveal": [
+          "g7"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "g7",
+            "to": "a1"
+          }
+        ]
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["e2e4", "c7c5", "g1f3", "d7d6"],
+    "afterMoves": [
+      "e2e4",
+      "c7c5",
+      "g1f3",
+      "d7d6"
+    ],
     "responses": [
       {
         "id": "sicilian-open",
@@ -596,7 +804,7 @@
         },
         "name": "Closed Sicilian",
         "eco": "B25",
-        "frequency": 0.20,
+        "frequency": 0.2,
         "description": "White plays Nc3 without opening the center. White plans f4-f5 kingside attack while Black counterattacks with ...d5.",
         "planAdjustment": "Play ...g6, ...Bg7, and castle kingside. Then push ...d5 or ...e5 to challenge the center. The Closed Sicilian is less sharp, so develop solidly and play for the ...d5 break."
       },
@@ -622,7 +830,7 @@
         },
         "name": "Grand Prix Attack",
         "eco": "B23",
-        "frequency": 0.10,
+        "frequency": 0.1,
         "description": "White launches an immediate kingside attack with f4. This is the Grand Prix Attack — aggressive but manageable with good development.",
         "planAdjustment": "Play ...Nc6 and ...e6 to prevent e5. Then develop your bishop to e7 or b4 and castle quickly. Don't let White build a strong f4-f5 attack — neutralize it with solid piece play."
       }

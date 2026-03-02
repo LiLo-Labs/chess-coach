@@ -198,7 +198,8 @@ struct LineChatView: View {
             openingName: opening.name,
             lineName: line.name,
             moveHistory: moveHistory,
-            currentPly: currentPly
+            currentPly: currentPly,
+            conversationHistory: messages
         )
 
         Task {

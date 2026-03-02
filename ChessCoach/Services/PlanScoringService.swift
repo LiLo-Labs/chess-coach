@@ -256,8 +256,9 @@ actor PlanScoringService {
         maiaTopMoves: [(move: String, probability: Double)],
         stockfishTopMoves: [(move: String, score: Int)]
     ) -> String {
-        let boardState = LLMService.boardStateSummary(fen: fen)
-        let boardStateBefore = LLMService.boardStateSummary(fen: fenBeforeMove)
+        let studentColor = playerIsWhite ? "White" : "Black"
+        let boardState = LLMService.boardStateSummary(fen: fen, studentColor: studentColor)
+        let boardStateBefore = LLMService.boardStateSummary(fen: fenBeforeMove, studentColor: studentColor)
 
         let goalsText = plan.strategicGoals.map { "  \($0.priority). \($0.description)" }.joined(separator: "\n")
         let pieceTargetsText = plan.pieceTargets.map { "  - \($0.piece): ideal squares \($0.idealSquares.joined(separator: ", ")) — \($0.reasoning)" }.joined(separator: "\n")

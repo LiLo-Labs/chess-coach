@@ -4,6 +4,10 @@
   "description": "A universal system for White. Set up with Nf3, g3, Bg2, d3, Nbd2 and e4 against almost anything.",
   "color": "white",
   "difficulty": 2,
+  "tags": [
+    "positional",
+    "aggressive"
+  ],
   "tree": {
     "id": "kings-indian-attack/root",
     "children": [
@@ -421,17 +425,55 @@
   "plan": {
     "summary": "Build the KIA setup: Nf3, g3, Bg2, O-O, d3, Nbd2 — then launch e4! This powerful system works against almost any Black opening. Once you play e4, the game opens up and your pieces spring to life for a kingside attack.",
     "strategicGoals": [
-      { "description": "Complete the KIA formation: Nf3, g3, Bg2, O-O, d3, Nbd2", "priority": 1 },
-      { "description": "Push e4 at the right moment to open the center", "priority": 2 },
-      { "description": "Use the e5 outpost and attack on the kingside with e4-e5", "priority": 3 },
-      { "description": "Route the queen's knight via Nbd2-f1-e3/g3 for maximum activity", "priority": 4 }
+      {
+        "description": "Complete the KIA formation: Nf3, g3, Bg2, O-O, d3, Nbd2",
+        "priority": 1
+      },
+      {
+        "description": "Push e4 at the right moment to open the center",
+        "priority": 2
+      },
+      {
+        "description": "Use the e5 outpost and attack on the kingside with e4-e5",
+        "priority": 3
+      },
+      {
+        "description": "Route the queen's knight via Nbd2-f1-e3/g3 for maximum activity",
+        "priority": 4
+      }
     ],
     "pawnStructureTarget": "White: e4, d3, c2 — a solid, flexible center that supports kingside attack",
-    "keySquares": ["e4", "e5", "g2", "d3"],
+    "keySquares": [
+      "e4",
+      "e5",
+      "g2",
+      "d3"
+    ],
     "pieceTargets": [
-      { "piece": "king's bishop", "idealSquares": ["g2"], "reasoning": "The fianchettoed bishop supports e4, controls the long diagonal, and defends the king on g1" },
-      { "piece": "queen's knight", "idealSquares": ["d2", "f1", "e3"], "reasoning": "The Nbd2-f1-e3 maneuver is the signature KIA knight route — e3 controls d5, f5, and supports the e4 push" },
-      { "piece": "king's pawn", "idealSquares": ["e4", "e5"], "reasoning": "e4 is the engine of the KIA attack — it opens lines and creates kingside pressure" }
+      {
+        "piece": "king's bishop",
+        "idealSquares": [
+          "g2"
+        ],
+        "reasoning": "The fianchettoed bishop supports e4, controls the long diagonal, and defends the king on g1"
+      },
+      {
+        "piece": "queen's knight",
+        "idealSquares": [
+          "d2",
+          "f1",
+          "e3"
+        ],
+        "reasoning": "The Nbd2-f1-e3 maneuver is the signature KIA knight route — e3 controls d5, f5, and supports the e4 push"
+      },
+      {
+        "piece": "king's pawn",
+        "idealSquares": [
+          "e4",
+          "e5"
+        ],
+        "reasoning": "e4 is the engine of the KIA attack — it opens lines and creates kingside pressure"
+      }
     ],
     "typicalPlans": [
       "After e4, push e5 to gain kingside space and attack with Nf3-h4 and f4",
@@ -449,40 +491,94 @@
         "title": "The KIA Blueprint",
         "description": "Every KIA game follows the same blueprint: Nf3, g3, Bg2, O-O, d3, Nbd2, then e4. It doesn't matter what Black plays — you follow this same plan every time. Learning ONE system you can use against everything is a superpower!",
         "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/8/5NP1/PPPPPPBP/RNBQK2R w KQkq - 2 4",
-        "highlights": ["g2", "f3", "d3"],
-        "arrows": [{"from": "b1", "to": "d2"}, {"from": "e2", "to": "e4"}],
+        "highlights": [
+          "g2",
+          "f3",
+          "d3"
+        ],
+        "arrows": [
+          {
+            "from": "b1",
+            "to": "d2"
+          },
+          {
+            "from": "e2",
+            "to": "e4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Key Move: d3, Not d4!",
         "description": "In the KIA, you play d3 — not d4! This important difference is what makes it a KIA and not a Queen's Gambit. d3 supports the e4 push and keeps the position solid. d4 would be a completely different strategy.",
         "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/8/5NP1/PPPPPPBP/RNBQK2R w KQkq - 2 4",
-        "highlights": ["d3", "e4"],
-        "arrows": [{"from": "d2", "to": "d3"}, {"from": "e2", "to": "e4"}],
+        "highlights": [
+          "d3",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "d2",
+            "to": "d3"
+          },
+          {
+            "from": "e2",
+            "to": "e4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Knight Maneuver: Nbd2-f1-e3",
         "description": "In the KIA, your queen's knight doesn't go to c3 — it goes to d2, then f1, then e3 (or g3). From e3, it controls the key squares d5 and f5 and is perfectly placed to support the e4 attack. This maneuver is the KIA's secret weapon!",
         "fen": "r1bq1rk1/ppp1bppp/4pn2/3p4/4P3/3P1NP1/PPP1NPBP/R1BQ1RK1 b - - 2 7",
-        "highlights": ["d2", "f1", "e3"],
-        "arrows": [{"from": "d2", "to": "f1"}, {"from": "f1", "to": "e3"}],
+        "highlights": [
+          "d2",
+          "f1",
+          "e3"
+        ],
+        "arrows": [
+          {
+            "from": "d2",
+            "to": "f1"
+          },
+          {
+            "from": "f1",
+            "to": "e3"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The e4 Push — The KIA's Punch",
         "description": "After completing your setup, e4 is the move that starts the real game! It challenges Black's center and opens lines for your attack. When you can push e5 too, Black's kingside becomes very vulnerable.",
         "fen": "r1bq1rk1/pp1nbppp/4pn2/2pp4/4P3/3P1NP1/PPP1NPBP/R1BQ1RK1 w - - 2 8",
-        "highlights": ["e4", "e5"],
-        "arrows": [{"from": "e4", "to": "e5"}],
+        "highlights": [
+          "e4",
+          "e5"
+        ],
+        "arrows": [
+          {
+            "from": "e4",
+            "to": "e5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Don't Put the Knight on c3!",
         "description": "In the KIA, the queen's knight goes to d2 — not c3! If you play Nc3, the knight blocks the c-pawn and can't use the f1-e3 route. The Nbd2 maneuver is what makes the KIA work.",
         "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/8/2N2NP1/PPPPPPBP/R1BQK2R b KQkq - 3 4",
-        "highlights": ["c3", "d2"],
-        "arrows": [{"from": "c3", "to": "d2"}],
+        "highlights": [
+          "c3",
+          "d2"
+        ],
+        "arrows": [
+          {
+            "from": "c3",
+            "to": "d2"
+          }
+        ],
         "style": "bad"
       }
     ],
@@ -491,40 +587,92 @@
         "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/8/5NP1/PPPPPPBP/RNBQK2R w KQkq - 2 4",
         "prompt": "You've played Nf3, g3, and Bg2. What should you do next?",
         "choices": [
-          {"text": "O-O — castle to safety first, then play d3 and Nbd2", "isCorrect": true},
-          {"text": "e4 — launch the attack immediately", "isCorrect": false},
-          {"text": "d4 — play a Queen's Gambit instead", "isCorrect": false}
+          {
+            "text": "O-O — castle to safety first, then play d3 and Nbd2",
+            "isCorrect": true
+          },
+          {
+            "text": "e4 — launch the attack immediately",
+            "isCorrect": false
+          },
+          {
+            "text": "d4 — play a Queen's Gambit instead",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Castle first! In the KIA, the correct order is Nf3, g3, Bg2, O-O, d3, Nbd2 — then e4. Your king needs to be safe before you push e4 and open up the position.",
-        "boardHighlightsOnReveal": ["g1"],
-        "arrowsOnReveal": [{"from": "e1", "to": "g1"}]
+        "boardHighlightsOnReveal": [
+          "g1"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e1",
+            "to": "g1"
+          }
+        ]
       },
       {
         "fen": "r1bq1rk1/pp1nbppp/4pn2/2pp4/8/3P1NP1/PPP1PPBP/RNBQ1RK1 w - - 0 7",
         "prompt": "You've castled and played d3. Where should the queen's knight go?",
         "choices": [
-          {"text": "d2 — then f1, then e3: the KIA knight maneuver", "isCorrect": true},
-          {"text": "c3 — the most natural development square", "isCorrect": false},
-          {"text": "a3 — to support c4 later", "isCorrect": false}
+          {
+            "text": "d2 — then f1, then e3: the KIA knight maneuver",
+            "isCorrect": true
+          },
+          {
+            "text": "c3 — the most natural development square",
+            "isCorrect": false
+          },
+          {
+            "text": "a3 — to support c4 later",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Nbd2 is correct! From d2, the knight goes to f1 and then e3. From e3, it perfectly supports the e4 push and controls the key squares d5 and f5. Nc3 would block the c-pawn and miss this important maneuver.",
-        "boardHighlightsOnReveal": ["d2", "f1", "e3"],
-        "arrowsOnReveal": [{"from": "b1", "to": "d2"}]
+        "boardHighlightsOnReveal": [
+          "d2",
+          "f1",
+          "e3"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "b1",
+            "to": "d2"
+          }
+        ]
       },
       {
         "fen": "r1bq1rk1/pp1nbppp/4pn2/2pp4/4P3/3P1NP1/PPP1NPBP/R1BQ1RK1 b - - 2 8",
         "prompt": "You've just played e4. Black has pawns on c5 and d5. What is your next plan?",
         "choices": [
-          {"text": "Push e5 to gain kingside space and attack Black's knight on f6", "isCorrect": true},
-          {"text": "Exchange on d5 with exd5", "isCorrect": false},
-          {"text": "Play d4 to also push the d-pawn", "isCorrect": false}
+          {
+            "text": "Push e5 to gain kingside space and attack Black's knight on f6",
+            "isCorrect": true
+          },
+          {
+            "text": "Exchange on d5 with exd5",
+            "isCorrect": false
+          },
+          {
+            "text": "Play d4 to also push the d-pawn",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "After e4, push e5! This gains kingside space, attacks the f6 knight (which must move), and opens lines for a kingside attack. The bishop on g2 helps control the center while your pieces swarm the kingside.",
-        "boardHighlightsOnReveal": ["e4", "e5", "f6"],
-        "arrowsOnReveal": [{"from": "e4", "to": "e5"}]
+        "boardHighlightsOnReveal": [
+          "e4",
+          "e5",
+          "f6"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e4",
+            "to": "e5"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -532,32 +680,83 @@
         "title": "KIA vs French Setup (A07)",
         "description": "The most famous KIA line is against the French: 1.Nf3 d5 2.g3 e6 3.Bg2 c5 4.O-O Nc6 5.d3. Bobby Fischer used this to crush opponents at the highest level. After Nbd2, e4, e5 — the attack is brutal!",
         "fen": "r1bq1rk1/pp1nbppp/4pn2/2pp4/8/3P1NP1/PPP1PPBP/RNBQ1RK1 w - - 0 7",
-        "highlights": ["e2", "e4", "e5"],
-        "arrows": [{"from": "b1", "to": "d2"}, {"from": "e2", "to": "e4"}],
+        "highlights": [
+          "e2",
+          "e4",
+          "e5"
+        ],
+        "arrows": [
+          {
+            "from": "b1",
+            "to": "d2"
+          },
+          {
+            "from": "e2",
+            "to": "e4"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "KIA vs Sicilian Setup",
         "description": "When Black plays ...c5 and ...Nc6 without d5, the position resembles a reversed Sicilian. White still follows the same KIA plan: d3, Nbd2, e4. But here you might push e5 or keep central tension longer.",
         "fen": "r1bqk2r/pp1nppbp/2n3p1/2pp4/8/3P1NP1/PPP1PPBP/RNBQ1RK1 b kq - 2 7",
-        "highlights": ["e2", "d3", "e4"],
-        "arrows": [{"from": "b1", "to": "d2"}, {"from": "e2", "to": "e4"}],
+        "highlights": [
+          "e2",
+          "d3",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "b1",
+            "to": "d2"
+          },
+          {
+            "from": "e2",
+            "to": "e4"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "The Knight Route: d2-f1-e3",
         "description": "The queen's knight takes a unique path in the KIA: Nb1-d2-f1-e3. This maneuver takes more moves than Nc3, but the knight on e3 is far more powerful — it supports e4, controls d5 and f5, and coordinates perfectly with the bishop on g2.",
         "fen": "r1bq1rk1/pp2bppp/2n1pn2/2pp4/4P3/3P1NP1/PPPNN1BP/R1BQ1RK1 b - - 4 9",
-        "highlights": ["d2", "f1", "e3"],
-        "arrows": [{"from": "d2", "to": "f1"}, {"from": "f1", "to": "e3"}],
+        "highlights": [
+          "d2",
+          "f1",
+          "e3"
+        ],
+        "arrows": [
+          {
+            "from": "d2",
+            "to": "f1"
+          },
+          {
+            "from": "f1",
+            "to": "e3"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "KIA: Fianchetto vs Fianchetto (A07)",
         "description": "When Black also fianchettos with ...g6 and ...Bg7, the game becomes a battle of the long diagonals. Both bishops stare at each other. White's e4 push is still the key plan — open lines and the better-placed pieces will win.",
         "fen": "rnbq1rk1/ppp1ppbp/5np1/3p4/8/3P1NP1/PPP1PPBP/RNBQ1RK1 w - - 4 6",
-        "highlights": ["g2", "g7"],
-        "arrows": [{"from": "g2", "to": "a8"}, {"from": "g7", "to": "h8"}],
+        "highlights": [
+          "g2",
+          "g7"
+        ],
+        "arrows": [
+          {
+            "from": "g2",
+            "to": "a8"
+          },
+          {
+            "from": "g7",
+            "to": "h8"
+          }
+        ],
         "style": "theory"
       }
     ],
@@ -566,32 +765,71 @@
         "fen": "r1bq1rk1/pp1nbppp/4pn2/2pp4/8/3P1NP1/PPP1PPBP/RNBQ1RK1 w - - 0 7",
         "prompt": "This is the KIA vs French setup. What is White's NEXT move?",
         "choices": [
-          {"text": "Nbd2 — the key knight maneuver before e4", "isCorrect": true},
-          {"text": "e4 — launch the attack right now", "isCorrect": false},
-          {"text": "Nc3 — develop the knight to a central square", "isCorrect": false}
+          {
+            "text": "Nbd2 — the key knight maneuver before e4",
+            "isCorrect": true
+          },
+          {
+            "text": "e4 — launch the attack right now",
+            "isCorrect": false
+          },
+          {
+            "text": "Nc3 — develop the knight to a central square",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Nbd2 first! You need to complete the setup before pushing e4. After Nbd2, the knight will go to f1 and then e3, perfectly supporting the e4 push. Playing e4 immediately without Nbd2 leaves the center under-supported.",
-        "boardHighlightsOnReveal": ["d2"],
-        "arrowsOnReveal": [{"from": "b1", "to": "d2"}]
+        "boardHighlightsOnReveal": [
+          "d2"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "b1",
+            "to": "d2"
+          }
+        ]
       },
       {
         "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/8/5NP1/PPPPPPBP/RNBQK2R w KQkq - 2 4",
         "prompt": "The King's Indian Attack setup (Nf3, g3, Bg2) works best against which of these Black setups?",
         "choices": [
-          {"text": "Almost any Black setup — that's the beauty of the KIA!", "isCorrect": true},
-          {"text": "Only against the French Defense (e6/d5)", "isCorrect": false},
-          {"text": "Only against the Sicilian Defense (c5)", "isCorrect": false}
+          {
+            "text": "Almost any Black setup — that's the beauty of the KIA!",
+            "isCorrect": true
+          },
+          {
+            "text": "Only against the French Defense (e6/d5)",
+            "isCorrect": false
+          },
+          {
+            "text": "Only against the Sicilian Defense (c5)",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The KIA works against almost everything! Whether Black plays the French (e6/d5), Sicilian (c5), or any other setup, you follow the same plan: Nf3, g3, Bg2, O-O, d3, Nbd2, then e4. This is what makes the KIA so special.",
-        "boardHighlightsOnReveal": ["g2", "f3", "d3"],
-        "arrowsOnReveal": [{"from": "e2", "to": "e4"}]
+        "boardHighlightsOnReveal": [
+          "g2",
+          "f3",
+          "d3"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e2",
+            "to": "e4"
+          }
+        ]
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["g1f3", "d7d5", "g2g3", "g8f6"],
+    "afterMoves": [
+      "g1f3",
+      "d7d5",
+      "g2g3",
+      "g8f6"
+    ],
     "responses": [
       {
         "id": "kia-french",
@@ -602,7 +840,7 @@
         },
         "name": "KIA vs French Setup",
         "eco": "A07",
-        "frequency": 0.40,
+        "frequency": 0.4,
         "description": "Black sets up a French Defense with d5 and e6. The KIA is especially effective here — after Bg2, O-O, d3, Nbd2, and e4, White launches a powerful kingside attack.",
         "planAdjustment": "Continue with Bg2, O-O, d3, Nbd2, then e4. Push e5 if possible to attack the Nf6 and create kingside space. This is Fischer's famous system!"
       },
@@ -628,7 +866,7 @@
         },
         "name": "KIA: Fianchetto vs Fianchetto",
         "eco": "A07",
-        "frequency": 0.20,
+        "frequency": 0.2,
         "description": "Black also fianchettos with g6 and Bg7. The bishop battle on the long diagonals becomes key. White still pushes e4.",
         "planAdjustment": "Continue with Bg2, O-O, d3, Nbd2, e4. When both sides fianchetto, your e4 push opens the position and your pieces become more active."
       },

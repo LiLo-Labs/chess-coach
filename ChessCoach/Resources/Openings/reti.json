@@ -4,6 +4,10 @@
   "description": "A hypermodern opening where White controls the center with pieces rather than pawns. Very flexible and transpositional.",
   "color": "white",
   "difficulty": 2,
+  "tags": [
+    "hypermodern",
+    "positional"
+  ],
   "tree": {
     "id": "reti/root",
     "children": [
@@ -409,17 +413,53 @@
   "plan": {
     "summary": "Develop the king's knight first, then challenge the center with c4. You can fianchetto the bishop on g2 for long-term pressure, or take a more direct approach. The Réti is extremely flexible — it can transpose into the English, Catalan, or King's Indian Attack depending on how Black responds.",
     "strategicGoals": [
-      { "description": "Control the center with pieces (Nf3) before committing pawns", "priority": 1 },
-      { "description": "Challenge Black's d5 pawn with the flank move c4", "priority": 2 },
-      { "description": "Fianchetto the bishop on g2 for long-term diagonal pressure", "priority": 3 },
-      { "description": "Castle early and complete development before pushing d4", "priority": 4 }
+      {
+        "description": "Control the center with pieces (Nf3) before committing pawns",
+        "priority": 1
+      },
+      {
+        "description": "Challenge Black's d5 pawn with the flank move c4",
+        "priority": 2
+      },
+      {
+        "description": "Fianchetto the bishop on g2 for long-term diagonal pressure",
+        "priority": 3
+      },
+      {
+        "description": "Castle early and complete development before pushing d4",
+        "priority": 4
+      }
     ],
     "pawnStructureTarget": "Flexible — c4 challenges d5; d4 can be played later after development",
-    "keySquares": ["d5", "c4", "g2", "d4"],
+    "keySquares": [
+      "d5",
+      "c4",
+      "g2",
+      "d4"
+    ],
     "pieceTargets": [
-      { "piece": "king's knight", "idealSquares": ["f3"], "reasoning": "Controls d4 and e5 immediately, fights for the center without pawns — the hypermodern principle" },
-      { "piece": "king's bishop", "idealSquares": ["g2", "c4"], "reasoning": "On g2 it pressures d5 long-term; on c4 after ...dxc4 it aims at f7 and controls the center" },
-      { "piece": "queen's pawn", "idealSquares": ["d4"], "reasoning": "Played after development is complete, d4 establishes a strong center at the right moment" }
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f3"
+        ],
+        "reasoning": "Controls d4 and e5 immediately, fights for the center without pawns — the hypermodern principle"
+      },
+      {
+        "piece": "king's bishop",
+        "idealSquares": [
+          "g2",
+          "c4"
+        ],
+        "reasoning": "On g2 it pressures d5 long-term; on c4 after ...dxc4 it aims at f7 and controls the center"
+      },
+      {
+        "piece": "queen's pawn",
+        "idealSquares": [
+          "d4"
+        ],
+        "reasoning": "Played after development is complete, d4 establishes a strong center at the right moment"
+      }
     ],
     "typicalPlans": [
       "After ...dxc4: play e3 and Bxc4 to recapture the pawn with tempo and activity",
@@ -437,40 +477,93 @@
         "title": "The Hypermodern Idea: Control Without Occupying",
         "description": "In the Réti, you control d5 and e4 with your knight on f3 — no pawns needed! This 'hypermodern' idea surprised the chess world in the 1920s. Your pieces watch the center rather than pawns occupying it.",
         "fen": "rnbqkbnr/ppp1pppp/8/3p4/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 0 2",
-        "highlights": ["f3", "d5", "e4"],
-        "arrows": [{"from": "f3", "to": "d5"}, {"from": "f3", "to": "e5"}],
+        "highlights": [
+          "f3",
+          "d5",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "f3",
+            "to": "d5"
+          },
+          {
+            "from": "f3",
+            "to": "e5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Réti Move: 2.c4!",
         "description": "After 1...d5, instead of meeting it head-on with d4, you attack the pawn from the side with c4! This is the Réti move — a flank challenge that Black must answer carefully.",
         "fen": "rnbqkbnr/ppp1pppp/8/3p4/2P5/5N2/PP1PPPPP/RNBQKB1R b KQkq c3 0 2",
-        "highlights": ["c4", "d5"],
-        "arrows": [{"from": "c4", "to": "d5"}],
+        "highlights": [
+          "c4",
+          "d5"
+        ],
+        "arrows": [
+          {
+            "from": "c4",
+            "to": "d5"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "When Black Captures dxc4 — Don't Panic!",
         "description": "After ...dxc4, Black has an extra pawn — but only for a moment! Play e3 and then Bxc4 to recapture with the bishop beautifully developed. You get the pawn back and great piece activity.",
         "fen": "rnbqkbnr/ppp1pppp/8/8/2p5/4PN2/PP1P1PPP/RNBQKB1R b KQkq - 0 3",
-        "highlights": ["c4", "e3"],
-        "arrows": [{"from": "e3", "to": "c4"}, {"from": "f1", "to": "c4"}],
+        "highlights": [
+          "c4",
+          "e3"
+        ],
+        "arrows": [
+          {
+            "from": "e3",
+            "to": "c4"
+          },
+          {
+            "from": "f1",
+            "to": "c4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Réti Fianchetto: g3 and Bg2",
         "description": "When Black keeps d5 instead of capturing, play g3 and Bg2. This bishop will pressure d5 and the queenside for the entire game — very similar to the Catalan Opening.",
         "fen": "rnbqkbnr/ppp1pppp/8/3p4/2P5/5NP1/PP1PPP1P/RNBQKB1R b KQkq - 0 3",
-        "highlights": ["g3", "g2"],
-        "arrows": [{"from": "f1", "to": "g2"}, {"from": "g2", "to": "a8"}],
+        "highlights": [
+          "g3",
+          "g2"
+        ],
+        "arrows": [
+          {
+            "from": "f1",
+            "to": "g2"
+          },
+          {
+            "from": "g2",
+            "to": "a8"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Flexibility: Don't Be Predictable",
         "description": "The Réti is special because it can become many different openings depending on Black's choice. If Black plays e6 and d5, you can go Catalan. If Black plays c5, you can go English. This flexibility is a weapon!",
         "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/2P5/5NP1/PP1PPP1P/RNBQKB1R b KQkq - 0 3",
-        "highlights": ["c4", "g3"],
-        "arrows": [{"from": "f1", "to": "g2"}],
+        "highlights": [
+          "c4",
+          "g3"
+        ],
+        "arrows": [
+          {
+            "from": "f1",
+            "to": "g2"
+          }
+        ],
         "style": "neutral"
       }
     ],
@@ -479,40 +572,92 @@
         "fen": "rnbqkbnr/ppp1pppp/8/3p4/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 0 2",
         "prompt": "You played 1.Nf3 and Black responded with 1...d5. What is your best next move?",
         "choices": [
-          {"text": "c4 — the Réti move! Challenge d5 from the flank", "isCorrect": true},
-          {"text": "d4 — play like a Queen's Gambit", "isCorrect": false},
-          {"text": "e4 — put a pawn in the center", "isCorrect": false}
+          {
+            "text": "c4 — the Réti move! Challenge d5 from the flank",
+            "isCorrect": true
+          },
+          {
+            "text": "d4 — play like a Queen's Gambit",
+            "isCorrect": false
+          },
+          {
+            "text": "e4 — put a pawn in the center",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "c4 is the Réti! Instead of meeting d5 head-on with d4, you challenge it from the flank with c4. This keeps the position flexible and is the heart of the Réti Opening's hypermodern philosophy.",
-        "boardHighlightsOnReveal": ["c4", "d5"],
-        "arrowsOnReveal": [{"from": "c2", "to": "c4"}]
+        "boardHighlightsOnReveal": [
+          "c4",
+          "d5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c2",
+            "to": "c4"
+          }
+        ]
       },
       {
         "fen": "rnbqkbnr/ppp1pppp/8/8/2p5/5N2/PPPPPPPP/RNBQKB1R w KQkq - 0 3",
         "prompt": "Black just captured ...dxc4. How do you recapture the pawn most effectively?",
         "choices": [
-          {"text": "e3 then Bxc4 — develop the bishop with tempo", "isCorrect": true},
-          {"text": "Qa4+ immediately — win the pawn right away", "isCorrect": false},
-          {"text": "Na3 — use the knight to chase the pawn", "isCorrect": false}
+          {
+            "text": "e3 then Bxc4 — develop the bishop with tempo",
+            "isCorrect": true
+          },
+          {
+            "text": "Qa4+ immediately — win the pawn right away",
+            "isCorrect": false
+          },
+          {
+            "text": "Na3 — use the knight to chase the pawn",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Play e3 first, then Bxc4! This is the best way — you develop your bishop to a great active square and recover the pawn at the same time. The bishop on c4 will be a powerful piece pointing at f7.",
-        "boardHighlightsOnReveal": ["e3", "c4"],
-        "arrowsOnReveal": [{"from": "f1", "to": "c4"}]
+        "boardHighlightsOnReveal": [
+          "e3",
+          "c4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f1",
+            "to": "c4"
+          }
+        ]
       },
       {
         "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/2P5/5N2/PP1PPPPP/RNBQKB1R w KQkq - 2 3",
         "prompt": "Black played ...Nf6 instead of capturing. What is White's best plan?",
         "choices": [
-          {"text": "g3 — begin the fianchetto, like a Catalan", "isCorrect": true},
-          {"text": "Nc3 — develop another knight", "isCorrect": false},
-          {"text": "e4 — push to the center immediately", "isCorrect": false}
+          {
+            "text": "g3 — begin the fianchetto, like a Catalan",
+            "isCorrect": true
+          },
+          {
+            "text": "Nc3 — develop another knight",
+            "isCorrect": false
+          },
+          {
+            "text": "e4 — push to the center immediately",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "g3 is the best plan! Begin the fianchetto with g3, Bg2, and O-O. The bishop on g2 will pressure the d5 pawn and the queenside for the entire game — this is a Catalan-style approach within the Réti.",
-        "boardHighlightsOnReveal": ["g3", "g2", "d5"],
-        "arrowsOnReveal": [{"from": "f1", "to": "g2"}]
+        "boardHighlightsOnReveal": [
+          "g3",
+          "g2",
+          "d5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f1",
+            "to": "g2"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -520,32 +665,72 @@
         "title": "Reti Accepted (A09)",
         "description": "After 1.Nf3 d5 2.c4 dxc4, Black grabs the pawn. White plays 3.e3 and 4.Bxc4 to recover it with excellent piece activity. This is the sharpest and most principled line.",
         "fen": "rnbqkbnr/ppp1pppp/8/8/2p5/4PN2/PP1P1PPP/RNBQKB1R b KQkq - 0 3",
-        "highlights": ["c4", "e3"],
-        "arrows": [{"from": "f1", "to": "c4"}],
+        "highlights": [
+          "c4",
+          "e3"
+        ],
+        "arrows": [
+          {
+            "from": "f1",
+            "to": "c4"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Reti with Fianchetto (A07)",
         "description": "The main Réti line: 1.Nf3 d5 2.c4 Nf6 3.g3 — White fianchettos the bishop, creating a Catalan-like pressure on the long diagonal. The bishop on g2 is White's main weapon.",
         "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/2P5/5NP1/PP1PPP1P/RNBQKB1R b KQkq - 0 3",
-        "highlights": ["g3", "d5"],
-        "arrows": [{"from": "f1", "to": "g2"}, {"from": "g2", "to": "d5"}],
+        "highlights": [
+          "g3",
+          "d5"
+        ],
+        "arrows": [
+          {
+            "from": "f1",
+            "to": "g2"
+          },
+          {
+            "from": "g2",
+            "to": "d5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "The ...c6 System: Reti vs Caro-Kann Setup",
         "description": "When Black plays 1...c6 preparing d5, White continues with g3 and Bg2 anyway. The bishop on g2 will still pressure the d5 pawn, and White can develop flexibly. The Réti works against everything!",
         "fen": "rnbqkbnr/pp1ppppp/2p5/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 0 2",
-        "highlights": ["c6", "g3"],
-        "arrows": [{"from": "g2", "to": "d5"}],
+        "highlights": [
+          "c6",
+          "g3"
+        ],
+        "arrows": [
+          {
+            "from": "g2",
+            "to": "d5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Richard Reti's Famous Idea",
         "description": "In 1924, Réti showed the world that 1.Nf3 — controlling the center with a knight — was just as valid as 1.e4 or 1.d4. He beat world champion Capablanca with this idea. The 'hypermodern' school was born!",
         "fen": "rnbqkbnr/ppp1pppp/8/3p4/2P5/5N2/PP1PPPPP/RNBQKB1R b KQkq c3 0 2",
-        "highlights": ["f3", "c4"],
-        "arrows": [{"from": "f3", "to": "d4"}, {"from": "c4", "to": "d5"}],
+        "highlights": [
+          "f3",
+          "c4"
+        ],
+        "arrows": [
+          {
+            "from": "f3",
+            "to": "d4"
+          },
+          {
+            "from": "c4",
+            "to": "d5"
+          }
+        ],
         "style": "theory"
       }
     ],
@@ -554,33 +739,75 @@
         "fen": "rnbqkbnr/ppp1pppp/8/8/2p5/4PN2/PP1P1PPP/RNBQKB1R b KQkq - 0 3",
         "prompt": "White has played e3 after Black captured ...dxc4. This variation is called the...?",
         "choices": [
-          {"text": "Reti Accepted", "isCorrect": true},
-          {"text": "Reti Fianchetto", "isCorrect": false},
-          {"text": "Symmetrical Reti", "isCorrect": false},
-          {"text": "Anglo-Reti", "isCorrect": false}
+          {
+            "text": "Reti Accepted",
+            "isCorrect": true
+          },
+          {
+            "text": "Reti Fianchetto",
+            "isCorrect": false
+          },
+          {
+            "text": "Symmetrical Reti",
+            "isCorrect": false
+          },
+          {
+            "text": "Anglo-Reti",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "When Black captures ...dxc4, it's the Reti Accepted (A09). White plays e3 and then Bxc4 to recapture the pawn with an actively placed bishop.",
-        "boardHighlightsOnReveal": ["c4", "e3"],
-        "arrowsOnReveal": [{"from": "f1", "to": "c4"}]
+        "boardHighlightsOnReveal": [
+          "c4",
+          "e3"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "f1",
+            "to": "c4"
+          }
+        ]
       },
       {
         "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/2P5/5NP1/PP1PPP1P/RNBQKB1R b KQkq - 0 3",
         "prompt": "White has played 1.Nf3 d5 2.c4 Nf6 3.g3. Why does White choose g3 instead of developing another piece?",
         "choices": [
-          {"text": "To fianchetto the bishop on g2 for long-term pressure on d5", "isCorrect": true},
-          {"text": "To prepare h4 for a kingside attack", "isCorrect": false},
-          {"text": "To protect the f2 pawn from attack", "isCorrect": false}
+          {
+            "text": "To fianchetto the bishop on g2 for long-term pressure on d5",
+            "isCorrect": true
+          },
+          {
+            "text": "To prepare h4 for a kingside attack",
+            "isCorrect": false
+          },
+          {
+            "text": "To protect the f2 pawn from attack",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "g3 prepares Bg2! The bishop on g2 will pressure the d5 pawn and the queenside for the entire game — this is the core idea of the Réti fianchetto variation, very similar to the Catalan Opening.",
-        "boardHighlightsOnReveal": ["g3", "g2", "d5"],
-        "arrowsOnReveal": [{"from": "g2", "to": "d5"}]
+        "boardHighlightsOnReveal": [
+          "g3",
+          "g2",
+          "d5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "g2",
+            "to": "d5"
+          }
+        ]
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["g1f3", "d7d5", "c2c4"],
+    "afterMoves": [
+      "g1f3",
+      "d7d5",
+      "c2c4"
+    ],
     "responses": [
       {
         "id": "reti-dxc4",
@@ -604,7 +831,7 @@
         },
         "name": "Reti: ...Nf6",
         "eco": "A07",
-        "frequency": 0.30,
+        "frequency": 0.3,
         "description": "Black develops Nf6, defending d5 without committing to a capture. This leads to the fianchetto variation of the Réti.",
         "planAdjustment": "Play g3, Bg2, and O-O — the Catalan-style approach. Your bishop on g2 will pressure d5 for the entire game. Then play d4 when fully developed."
       },
@@ -617,7 +844,7 @@
         },
         "name": "Reti: ...e6 System",
         "eco": "A07",
-        "frequency": 0.20,
+        "frequency": 0.2,
         "description": "Black plays e6, leading to a Queen's Gambit Declined-type position. White continues with g3, Bg2, and O-O for a Catalan-like structure.",
         "planAdjustment": "Continue with g3, Bg2, O-O — the position will be nearly identical to the Catalan Opening with your bishop pressing the long diagonal."
       },

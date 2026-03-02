@@ -230,6 +230,9 @@ struct PracticeOpeningView: View {
                     .padding(.horizontal, AppSpacing.sm)
                     .padding(.vertical, AppSpacing.xxxs)
                     .background(AppColor.success.opacity(0.15), in: Capsule())
+                    .phaseAnimator([false, true]) { content, phase in
+                        content.opacity(phase ? 1.0 : 0.6)
+                    } animation: { _ in .easeInOut(duration: 0.8) }
             }
         }
         .padding(.horizontal, AppSpacing.screenPadding)
@@ -260,7 +263,7 @@ struct PracticeOpeningView: View {
             }
         }
         .frame(height: height)
-        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: viewModel.evalScore)
+        .animation(.spring(response: 0.7, dampingFraction: 0.65), value: viewModel.evalScore)
     }
 
     // MARK: - Complete Overlay

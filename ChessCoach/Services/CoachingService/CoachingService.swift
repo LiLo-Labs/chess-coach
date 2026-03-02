@@ -40,7 +40,9 @@ actor CoachingService {
         userELO: Int,
         moveHistory: String = "",
         isUserMove: Bool = true,
-        studentColor: String? = nil
+        studentColor: String? = nil,
+        matchedResponseName: String? = nil,
+        matchedResponseAdjustment: String? = nil
     ) async -> String? {
         let moveCategory = curriculumService.categorizeUserMove(
             atPly: ply,
@@ -61,7 +63,9 @@ actor CoachingService {
                 fen: fen, lastMove: lastMove, scoreBefore: scoreBefore, scoreAfter: scoreAfter,
                 ply: ply, userELO: userELO, moveHistory: moveHistory,
                 isUserMove: isUserMove, studentColor: studentColor,
-                category: isUserMove ? moveCategory : (curriculumService.isDeviation(atPly: ply, move: lastMove) ? .deviation : .opponentMove)
+                category: isUserMove ? moveCategory : (curriculumService.isDeviation(atPly: ply, move: lastMove) ? .deviation : .opponentMove),
+                matchedResponseName: matchedResponseName,
+                matchedResponseAdjustment: matchedResponseAdjustment
             )
             return fallbackCoaching(for: context)
         }
@@ -81,7 +85,9 @@ actor CoachingService {
         let context = buildContext(
             fen: fen, lastMove: lastMove, scoreBefore: scoreBefore, scoreAfter: scoreAfter,
             ply: ply, userELO: userELO, moveHistory: moveHistory,
-            isUserMove: isUserMove, studentColor: studentColor, category: category
+            isUserMove: isUserMove, studentColor: studentColor, category: category,
+            matchedResponseName: matchedResponseName,
+            matchedResponseAdjustment: matchedResponseAdjustment
         )
 
         do {
@@ -265,7 +271,8 @@ actor CoachingService {
             occupiedSquares: occupied,
             moveHistory: moveHistoryStr,
             currentPly: context.currentPly,
-            userELO: userELO
+            userELO: userELO,
+            conversationHistory: context.conversationHistory
         )
 
         do {
@@ -285,10 +292,12 @@ actor CoachingService {
     private func buildContext(
         fen: String, lastMove: String, scoreBefore: Int, scoreAfter: Int,
         ply: Int, userELO: Int, moveHistory: String,
-        isUserMove: Bool, studentColor: String?, category: MoveCategory
+        isUserMove: Bool, studentColor: String?, category: MoveCategory,
+        matchedResponseName: String? = nil, matchedResponseAdjustment: String? = nil
     ) -> CoachingContext {
         let opening = curriculumService.opening
         let expectedMove = opening.expectedMove(atPly: ply)
+        let personality = CoachPersonality.forOpening(opening)
 
         let mainLineSoFar = opening.mainLine.prefix(ply + 1)
             .map(\.san)
@@ -312,30 +321,40 @@ actor CoachingService {
             isUserMove: isUserMove,
             studentColor: studentColor,
             plyNumber: ply,
-            mainLineSoFar: mainLineSoFar
+            mainLineSoFar: mainLineSoFar,
+            matchedResponseName: matchedResponseName,
+            matchedResponseAdjustment: matchedResponseAdjustment,
+            coachPersonalityPrompt: personality.personalityPrompt
         )
     }
 
     private func fallbackCoaching(for context: CoachingContext) -> String? {
         let cfg = AppConfig.coaching
+        let personality = CoachPersonality.forOpening(curriculumService.opening)
+
         if context.isUserMove {
             switch context.moveCategory {
             case .goodMove:
-                return String(format: cfg.goodMoveTemplate, context.openingName)
+                return personality.witticism(for: .goodMove)
             case .okayMove:
                 let expected = context.expectedMoveSAN ?? "the book move"
-                return String(format: cfg.okayMoveTemplate, expected)
+                let quip = personality.witticism(for: .okayMove)
+                return "\(quip) The book move is \(expected)."
             case .mistake:
                 let expected = context.expectedMoveSAN ?? "the book move"
-                return String(format: cfg.mistakeMoveTemplate, expected)
+                let quip = personality.witticism(for: .mistake)
+                return "\(quip) The recommended move here is \(expected)."
             default:
                 return nil
             }
         } else {
             if context.moveCategory == .deviation {
-                return String(format: cfg.deviationTemplate, context.openingName)
+                if let name = context.matchedResponseName, let adj = context.matchedResponseAdjustment {
+                    return "Your opponent played the \(name). \(adj)"
+                }
+                return personality.witticism(for: .deviation)
             } else {
-                return cfg.standardOpponentTemplate
+                return personality.witticism(for: .opponentMove)
             }
         }
     }

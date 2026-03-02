@@ -4,6 +4,10 @@
   "description": "An aggressive opening where White immediately opens the center for active piece play.",
   "color": "white",
   "difficulty": 2,
+  "tags": [
+    "tactical",
+    "aggressive"
+  ],
   "tree": {
     "id": "scotch/root",
     "children": [
@@ -373,17 +377,54 @@
   "plan": {
     "summary": "Strike in the center immediately with d4 on move 3, trade the e5 pawn, and bring your knight to the powerful d4 square. Use your lead in development and active pieces to pressure Black before they can complete their setup.",
     "strategicGoals": [
-      { "description": "Open the center with d4 immediately — don't wait!", "priority": 1 },
-      { "description": "Place the knight on d4, controlling the center with a piece", "priority": 2 },
-      { "description": "Develop bishop to d3 or c4 to pressure Black's kingside", "priority": 3 },
-      { "description": "Castle quickly and use your active pieces to attack", "priority": 4 }
+      {
+        "description": "Open the center with d4 immediately — don't wait!",
+        "priority": 1
+      },
+      {
+        "description": "Place the knight on d4, controlling the center with a piece",
+        "priority": 2
+      },
+      {
+        "description": "Develop bishop to d3 or c4 to pressure Black's kingside",
+        "priority": 3
+      },
+      {
+        "description": "Castle quickly and use your active pieces to attack",
+        "priority": 4
+      }
     ],
     "pawnStructureTarget": "e4 pawn as a strong center anchor after the d4-exd4 trade",
-    "keySquares": ["d4", "e4", "d3", "c6"],
+    "keySquares": [
+      "d4",
+      "e4",
+      "d3",
+      "c6"
+    ],
     "pieceTargets": [
-      { "piece": "king's knight", "idealSquares": ["d4", "c6"], "reasoning": "The Scotch knight dominates from d4, then trades on c6 to create Black's doubled pawns" },
-      { "piece": "light-squared bishop", "idealSquares": ["d3", "c4"], "reasoning": "From d3 it supports e4 and eyes h7; from c4 it targets f7 for immediate pressure" },
-      { "piece": "queen's knight", "idealSquares": ["c3"], "reasoning": "Supports e4 and d4, prepares to exert pressure in the center" }
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "d4",
+          "c6"
+        ],
+        "reasoning": "The Scotch knight dominates from d4, then trades on c6 to create Black's doubled pawns"
+      },
+      {
+        "piece": "light-squared bishop",
+        "idealSquares": [
+          "d3",
+          "c4"
+        ],
+        "reasoning": "From d3 it supports e4 and eyes h7; from c4 it targets f7 for immediate pressure"
+      },
+      {
+        "piece": "queen's knight",
+        "idealSquares": [
+          "c3"
+        ],
+        "reasoning": "Supports e4 and d4, prepares to exert pressure in the center"
+      }
     ],
     "typicalPlans": [
       "After Nxd4 and ...Nf6, play Nxc6 to create Black's doubled c-pawns, then develop bishop to d3",
@@ -403,40 +444,95 @@
         "title": "The Scotch Strike — d4 on Move 3",
         "description": "Instead of developing another piece, White immediately plays d4! This challenges Black's e5 pawn right away and opens the center before Black is ready.",
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq d3 0 3",
-        "highlights": ["d4", "e5"],
-        "arrows": [{"from": "d2", "to": "d4"}, {"from": "e5", "to": "d4"}],
+        "highlights": [
+          "d4",
+          "e5"
+        ],
+        "arrows": [
+          {
+            "from": "d2",
+            "to": "d4"
+          },
+          {
+            "from": "e5",
+            "to": "d4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Knight on d4 — A Central Monster",
         "description": "After Nxd4, your knight sits in the center controlling b3, b5, c6, e6, f5, and f3. This is a dream square for a knight — it can leap anywhere!",
         "fen": "r1bqkbnr/pppp1ppp/2n5/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4",
-        "highlights": ["d4"],
-        "arrows": [{"from": "d4", "to": "c6"}, {"from": "d4", "to": "f5"}, {"from": "d4", "to": "e6"}],
+        "highlights": [
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "d4",
+            "to": "c6"
+          },
+          {
+            "from": "d4",
+            "to": "f5"
+          },
+          {
+            "from": "d4",
+            "to": "e6"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Creating Doubled Pawns with Nxc6",
         "description": "After ...Nf6, you play Nxc6! Black must recapture, creating doubled c-pawns. These pawns are hard to advance and weak in the endgame — a long-term advantage for you!",
         "fen": "r1bqkb1r/pppp1ppp/2n2n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 2 5",
-        "highlights": ["d4", "c6"],
-        "arrows": [{"from": "d4", "to": "c6"}],
+        "highlights": [
+          "d4",
+          "c6"
+        ],
+        "arrows": [
+          {
+            "from": "d4",
+            "to": "c6"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Watch Out for the Early Queen — Qh4!",
         "description": "If Black plays ...Qh4, don't panic! Move the knight to b3 and then block the check with Be3. Black's queen is exposed and you gain development with each tempo.",
         "fen": "r1b1kbnr/pppp1ppp/2n5/8/3NP2q/8/PPP2PPP/RNBQKB1R w KQkq - 2 5",
-        "highlights": ["h4", "e4"],
-        "arrows": [{"from": "d4", "to": "b3"}, {"from": "c1", "to": "e3"}],
+        "highlights": [
+          "h4",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "d4",
+            "to": "b3"
+          },
+          {
+            "from": "c1",
+            "to": "e3"
+          }
+        ],
         "style": "neutral"
       },
       {
         "title": "Don't Block in Your Own Bishop",
         "description": "A common mistake is playing d3 after d4, which blocks the c1 bishop. In the Scotch, you want open lines and active pieces — keep the diagonals open!",
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/3PP3/3P4/PPP3PP/RNBQKBNR b KQkq - 0 3",
-        "highlights": ["d3", "c1"],
-        "arrows": [{"from": "c1", "to": "d2"}],
+        "highlights": [
+          "d3",
+          "c1"
+        ],
+        "arrows": [
+          {
+            "from": "c1",
+            "to": "d2"
+          }
+        ],
         "style": "bad"
       }
     ],
@@ -445,40 +541,91 @@
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq d3 0 3",
         "prompt": "White just played d4. What is the main idea of this Scotch move?",
         "choices": [
-          {"text": "Open the center immediately before Black is ready", "isCorrect": true},
-          {"text": "Protect the e4 pawn with a pawn", "isCorrect": false},
-          {"text": "Prepare to develop the dark-squared bishop", "isCorrect": false}
+          {
+            "text": "Open the center immediately before Black is ready",
+            "isCorrect": true
+          },
+          {
+            "text": "Protect the e4 pawn with a pawn",
+            "isCorrect": false
+          },
+          {
+            "text": "Prepare to develop the dark-squared bishop",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "d4 is the Scotch move! It immediately challenges Black's e5 pawn and opens the center. Rather than developing slowly, White strikes in the middle before Black can complete development.",
-        "boardHighlightsOnReveal": ["d4", "e5"],
-        "arrowsOnReveal": [{"from": "e5", "to": "d4"}]
+        "boardHighlightsOnReveal": [
+          "d4",
+          "e5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e5",
+            "to": "d4"
+          }
+        ]
       },
       {
         "fen": "r1bqkb1r/pppp1ppp/2n2n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 2 5",
         "prompt": "Black just played ...Nf6. What should White do with the knight on d4?",
         "choices": [
-          {"text": "Nxc6 — trade to create Black's doubled pawns", "isCorrect": true},
-          {"text": "Nb5 — attack the queen", "isCorrect": false},
-          {"text": "Nf3 — retreat to safety", "isCorrect": false}
+          {
+            "text": "Nxc6 — trade to create Black's doubled pawns",
+            "isCorrect": true
+          },
+          {
+            "text": "Nb5 — attack the queen",
+            "isCorrect": false
+          },
+          {
+            "text": "Nf3 — retreat to safety",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Nxc6! After the trade, Black must recapture with the b-pawn (bxc6), creating doubled c-pawns. These pawns are structurally weak, especially in the endgame — a long-term Scotch advantage.",
-        "boardHighlightsOnReveal": ["d4", "c6"],
-        "arrowsOnReveal": [{"from": "d4", "to": "c6"}]
+        "boardHighlightsOnReveal": [
+          "d4",
+          "c6"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "d4",
+            "to": "c6"
+          }
+        ]
       },
       {
         "fen": "r1bqkbnr/pppp1ppp/2n5/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4",
         "prompt": "After Nxd4, Black plays ...Bc5. What is the best response?",
         "choices": [
-          {"text": "Be3 — challenge the bishop and develop", "isCorrect": true},
-          {"text": "f3 — protect d4 with the pawn", "isCorrect": false},
-          {"text": "Nxc6 — trade immediately", "isCorrect": false}
+          {
+            "text": "Be3 — challenge the bishop and develop",
+            "isCorrect": true
+          },
+          {
+            "text": "f3 — protect d4 with the pawn",
+            "isCorrect": false
+          },
+          {
+            "text": "Nxc6 — trade immediately",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Be3! This develops a piece, challenges Black's bishop, and creates the threat of winning material. If Black takes on e3, you recapture with fxe3, opening the f-file for your rook.",
-        "boardHighlightsOnReveal": ["e3", "c5"],
-        "arrowsOnReveal": [{"from": "c1", "to": "e3"}]
+        "boardHighlightsOnReveal": [
+          "e3",
+          "c5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c1",
+            "to": "e3"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -486,32 +633,74 @@
         "title": "The Scotch Game (C45) — The Opening Move",
         "description": "The Scotch is defined by 1.e4 e5 2.Nf3 Nc6 3.d4. Unlike the Italian (3.Bc4), White strikes immediately in the center. After 3...exd4 4.Nxd4, White has a powerful knight on d4 and active piece play.",
         "fen": "r1bqkbnr/pppp1ppp/2n5/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4",
-        "highlights": ["d4", "e4"],
-        "arrows": [{"from": "d4", "to": "c6"}, {"from": "d4", "to": "f5"}],
+        "highlights": [
+          "d4",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "d4",
+            "to": "c6"
+          },
+          {
+            "from": "d4",
+            "to": "f5"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Classical Variation: ...Bc5 (C45)",
         "description": "After 4...Bc5, Black aims the bishop at the d4 knight and the weak f2 pawn. White responds with Be3, challenging the bishop. This is a rich, positional variation that Garry Kasparov studied deeply.",
         "fen": "r1bqk1nr/pppp1ppp/2n5/2b5/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
-        "highlights": ["c5", "d4"],
-        "arrows": [{"from": "c5", "to": "d4"}, {"from": "c1", "to": "e3"}],
+        "highlights": [
+          "c5",
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "c5",
+            "to": "d4"
+          },
+          {
+            "from": "c1",
+            "to": "e3"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Mieses-Kotroc: ...Nf6 and Nxc6 (C45)",
         "description": "After 4...Nf6 5.Nxc6 bxc6, Black has doubled pawns but an open b-file and two bishops. White has better pawn structure and a space advantage with e4. This is the most popular main line.",
         "fen": "r1bqkb1r/p1pp1ppp/2p2n2/8/4P3/8/PPP2PPP/RNBQKB1R w KQkq - 0 6",
-        "highlights": ["c6", "c7"],
-        "arrows": [{"from": "f1", "to": "d3"}],
+        "highlights": [
+          "c6",
+          "c7"
+        ],
+        "arrows": [
+          {
+            "from": "f1",
+            "to": "d3"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Scotch Four Knights (C47)",
         "description": "If Black plays 3...Nf6 instead of 3...exd4, we get the Scotch Four Knights after 4.Nc3. The position resembles the Four Knights Game but with a d4 pawn already committed. Both sides have dynamic play.",
         "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/3PP3/2N2N2/PPP3PP/R1BQKB1R b KQkq d3 0 4",
-        "highlights": ["c3", "f3", "c6", "f6"],
-        "arrows": [{"from": "d4", "to": "e5"}],
+        "highlights": [
+          "c3",
+          "f3",
+          "c6",
+          "f6"
+        ],
+        "arrows": [
+          {
+            "from": "d4",
+            "to": "e5"
+          }
+        ],
         "style": "theory"
       }
     ],
@@ -520,33 +709,77 @@
         "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
         "prompt": "What move defines the Scotch Game?",
         "choices": [
-          {"text": "d4 — immediately challenging the center", "isCorrect": true},
-          {"text": "Bc4 — developing the bishop aggressively", "isCorrect": false},
-          {"text": "Nc3 — developing the queen's knight", "isCorrect": false},
-          {"text": "d3 — quietly supporting e4", "isCorrect": false}
+          {
+            "text": "d4 — immediately challenging the center",
+            "isCorrect": true
+          },
+          {
+            "text": "Bc4 — developing the bishop aggressively",
+            "isCorrect": false
+          },
+          {
+            "text": "Nc3 — developing the queen's knight",
+            "isCorrect": false
+          },
+          {
+            "text": "d3 — quietly supporting e4",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "3.d4 defines the Scotch Game! This immediate central challenge sets it apart from the Italian (3.Bc4) and the Spanish/Ruy Lopez (3.Bb5). The Scotch opens the game quickly and leads to active piece play.",
-        "boardHighlightsOnReveal": ["d4", "e5"],
-        "arrowsOnReveal": [{"from": "d2", "to": "d4"}]
+        "boardHighlightsOnReveal": [
+          "d4",
+          "e5"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "d2",
+            "to": "d4"
+          }
+        ]
       },
       {
         "fen": "r1bqkb1r/pppp1ppp/2n2n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 2 5",
         "prompt": "This position after 4.Nxd4 Nf6 is the start of which variation?",
         "choices": [
-          {"text": "Mieses-Kotroc Variation", "isCorrect": true},
-          {"text": "Classical Variation", "isCorrect": false},
-          {"text": "Scotch Four Knights", "isCorrect": false}
+          {
+            "text": "Mieses-Kotroc Variation",
+            "isCorrect": true
+          },
+          {
+            "text": "Classical Variation",
+            "isCorrect": false
+          },
+          {
+            "text": "Scotch Four Knights",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "After 4.Nxd4 Nf6, this is the Mieses-Kotroc Variation (C45). White typically continues 5.Nxc6 bxc6 6.Bd3, giving Black doubled pawns in exchange for the bishop pair and an active position.",
-        "boardHighlightsOnReveal": ["d4", "f6"],
-        "arrowsOnReveal": [{"from": "d4", "to": "c6"}]
+        "boardHighlightsOnReveal": [
+          "d4",
+          "f6"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "d4",
+            "to": "c6"
+          }
+        ]
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["e2e4", "e7e5", "g1f3", "b8c6", "d2d4", "e5d4"],
+    "afterMoves": [
+      "e2e4",
+      "e7e5",
+      "g1f3",
+      "b8c6",
+      "d2d4",
+      "e5d4"
+    ],
     "responses": [
       {
         "id": "scotch-nxd4-nf6",
@@ -557,7 +790,7 @@
         },
         "name": "Mieses-Kotroc (...Nf6)",
         "eco": "C45",
-        "frequency": 0.50,
+        "frequency": 0.5,
         "description": "The most popular response. Black develops naturally and pressures e4.",
         "planAdjustment": "Play Nxc6 to create doubled pawns, then Bd3 and castle. You have a structural advantage with the superior pawn structure."
       },
@@ -570,7 +803,7 @@
         },
         "name": "Classical (...Bc5)",
         "eco": "C45",
-        "frequency": 0.30,
+        "frequency": 0.3,
         "description": "The Classical Variation. Black develops actively and fights for the center.",
         "planAdjustment": "Play Be3 to challenge the bishop. If Black takes, recapture with fxe3 to open the f-file. Then c3 and Nd2 to consolidate."
       },

@@ -32,6 +32,9 @@ struct CoachingContext: Sendable {
     let studentColor: String?
     let plyNumber: Int
     let mainLineSoFar: String
+    let matchedResponseName: String?
+    let matchedResponseAdjustment: String?
+    let coachPersonalityPrompt: String?
 }
 
 enum LLMProvider: Sendable {
@@ -57,4 +60,15 @@ struct ChatContext: Sendable {
     let lineName: String
     let moveHistory: [String]
     let currentPly: Int
+    /// Prior conversation turns (coaching + user Q&A) for continuity.
+    let conversationHistory: [(role: String, text: String)]
+
+    init(fen: String, openingName: String, lineName: String, moveHistory: [String], currentPly: Int, conversationHistory: [(role: String, text: String)] = []) {
+        self.fen = fen
+        self.openingName = openingName
+        self.lineName = lineName
+        self.moveHistory = moveHistory
+        self.currentPly = currentPly
+        self.conversationHistory = conversationHistory
+    }
 }

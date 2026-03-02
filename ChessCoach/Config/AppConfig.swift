@@ -33,6 +33,14 @@ enum AppConfig {
         let ollamaTimeout: TimeInterval
 
         let onDeviceSystemMessage: String
+
+        /// Build system message with optional personality flavor.
+        func systemMessage(personalityPrompt: String? = nil) -> String {
+            if let personality = personalityPrompt, !personality.isEmpty {
+                return "You are a chess coach. \(personality)"
+            }
+            return onDeviceSystemMessage
+        }
     }
 
     static let llm = LLM(

@@ -95,6 +95,23 @@ final class OpeningDetector: Sendable {
             return a.isMainLine && !b.isMainLine
         }
 
+        // FEN-based fallback for transposition detection
+        if matches.isEmpty || (matches.first.map { $0.matchDepth < moves.count && $0.nextBookMoves.isEmpty } ?? false) {
+            let fenMatches = lookupByFEN(moves: moves)
+            for fm in fenMatches {
+                // Avoid duplicates
+                if !matches.contains(where: { $0.opening.id == fm.opening.id && $0.matchDepth >= fm.matchDepth }) {
+                    matches.append(fm)
+                }
+            }
+            // Re-sort after adding FEN matches
+            matches.sort { a, b in
+                if a.matchDepth != b.matchDepth { return a.matchDepth > b.matchDepth }
+                if a.nextBookMoves.isEmpty != b.nextBookMoves.isEmpty { return !a.nextBookMoves.isEmpty }
+                return a.isMainLine && !b.isMainLine
+            }
+        }
+
         // Determine if we've left book
         let leftBookAtPly: Int?
         if matches.isEmpty {
@@ -155,6 +172,25 @@ final class OpeningDetector: Sendable {
             node = child
         }
         return lastVariation
+    }
+
+    /// FEN-based transposition lookup: replay moves to get current position, check index.
+    private func lookupByFEN(moves: [String]) -> [OpeningMatch] {
+        let gs = GameState()
+        for move in moves {
+            guard gs.makeMoveUCI(move) else { return [] }
+        }
+        let entries = database.lookupFEN(gs.fen)
+        return entries.map { entry in
+            OpeningMatch(
+                opening: entry.opening,
+                line: nil,
+                variationName: entry.variationName,
+                matchDepth: entry.depth,
+                nextBookMoves: entry.nextMoves,
+                isMainLine: false
+            )
+        }
     }
 
     private func findDivergencePly(moves: [String], allOpenings: [Opening]) -> Int? {

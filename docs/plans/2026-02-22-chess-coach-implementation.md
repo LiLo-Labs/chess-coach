@@ -1,14 +1,12 @@
 # ChessCoach Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
-
 **Goal:** Build a SwiftUI iOS app that teaches chess openings through play-first learning against curriculum-guided Maia 2, with real-time LLM coaching.
 
 **Architecture:** Native SwiftUI app using ChessKit for game logic, ChessKit Engine for Stockfish analysis, ChessboardKit for the board UI, Maia 2 (Core ML) for human-like opponent, and a tiered LLM service (DGX Ollama primary, Claude API fallback) for coaching explanations.
 
 **Tech Stack:** Swift 6, SwiftUI, ChessKit, ChessKit Engine (Stockfish 17), ChessboardKit, Core ML (Maia 2), GRDB.swift (SQLite), URLSession (LLM API)
 
-**Development environment:** macOS, Xcode, Claude Code on Mac
+**Development environment:** macOS, Xcode
 
 ---
 

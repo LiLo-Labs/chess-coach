@@ -4,6 +4,10 @@
   "description": "One of Black's most respected defenses. The bishop pins White's knight, controlling the center indirectly.",
   "color": "black",
   "difficulty": 3,
+  "tags": [
+    "positional",
+    "solid"
+  ],
   "tree": {
     "id": "nimzo-indian/root",
     "children": [
@@ -397,18 +401,60 @@
   "plan": {
     "summary": "Pin White's knight on c3 with your bishop, force doubled pawns when White pushes you away, then attack those structural weaknesses with ...c5 and ...d5. You trade a bishop for a knight but get a long-term pawn structure advantage.",
     "strategicGoals": [
-      { "description": "Pin the Nc3 with Bb4 to prevent White from playing e4 freely", "priority": 1 },
-      { "description": "Force doubled pawns on the c-file when White plays a3", "priority": 2 },
-      { "description": "Castle kingside to ensure king safety early", "priority": 3 },
-      { "description": "Attack the doubled c-pawns with ...c5 and ...d5", "priority": 4 },
-      { "description": "Activate pieces using the open b-file and central outposts", "priority": 5 }
+      {
+        "description": "Pin the Nc3 with Bb4 to prevent White from playing e4 freely",
+        "priority": 1
+      },
+      {
+        "description": "Force doubled pawns on the c-file when White plays a3",
+        "priority": 2
+      },
+      {
+        "description": "Castle kingside to ensure king safety early",
+        "priority": 3
+      },
+      {
+        "description": "Attack the doubled c-pawns with ...c5 and ...d5",
+        "priority": 4
+      },
+      {
+        "description": "Activate pieces using the open b-file and central outposts",
+        "priority": 5
+      }
     ],
     "pawnStructureTarget": "Solid e6/d5 center with c5 counterplay against White's doubled c-pawns",
-    "keySquares": ["c3", "c4", "d4", "e4", "d5"],
+    "keySquares": [
+      "c3",
+      "c4",
+      "d4",
+      "e4",
+      "d5"
+    ],
     "pieceTargets": [
-      { "piece": "dark-squared bishop", "idealSquares": ["b4", "c3"], "reasoning": "Pins the Nc3, preventing e4, then trades off to create structural damage" },
-      { "piece": "king's knight", "idealSquares": ["f6", "e4"], "reasoning": "Controls the center and can target the weak c3 pawn" },
-      { "piece": "queen's knight", "idealSquares": ["c6", "d7"], "reasoning": "Supports d5 and c5 pawn advances" }
+      {
+        "piece": "dark-squared bishop",
+        "idealSquares": [
+          "b4",
+          "c3"
+        ],
+        "reasoning": "Pins the Nc3, preventing e4, then trades off to create structural damage"
+      },
+      {
+        "piece": "king's knight",
+        "idealSquares": [
+          "f6",
+          "e4"
+        ],
+        "reasoning": "Controls the center and can target the weak c3 pawn"
+      },
+      {
+        "piece": "queen's knight",
+        "idealSquares": [
+          "c6",
+          "d7"
+        ],
+        "reasoning": "Supports d5 and c5 pawn advances"
+      }
     ],
     "typicalPlans": [
       "Trade your bishop for the c3 knight to create White's doubled pawns",
@@ -427,31 +473,68 @@
         "title": "The Pin — Your Secret Weapon",
         "description": "After 3.Nc3 Bb4, your bishop pins the knight. White cannot play e4 without losing the pawn to ...Nxe4, because the knight on c3 is tied down. This is indirect center control at its best!",
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
-        "highlights": ["b4", "c3", "e4"],
-        "arrows": [{"from": "b4", "to": "c3"}, {"from": "c3", "to": "e4"}],
+        "highlights": [
+          "b4",
+          "c3",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "b4",
+            "to": "c3"
+          },
+          {
+            "from": "c3",
+            "to": "e4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "The Whole Plan — Create Doubled Pawns",
         "description": "When White plays a3, you trade your bishop for the knight. Now White has ugly doubled pawns on c3 and c4. These are weak pawns you'll attack for the rest of the game!",
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/2PP4/P1P5/4PPPP/R1BQKBNR b KQkq - 0 6",
-        "highlights": ["c3", "c4"],
-        "arrows": [{"from": "c4", "to": "c3"}],
+        "highlights": [
+          "c3",
+          "c4"
+        ],
+        "arrows": [
+          {
+            "from": "c4",
+            "to": "c3"
+          }
+        ],
         "style": "bad"
       },
       {
         "title": "Attack the Doubled Pawns with ...c5",
         "description": "After creating the doubled pawns, play ...c5! This attacks both the c4 pawn and indirectly pressures d4. White is always struggling to defend this structure.",
         "fen": "rnbqk2r/pp1p1ppp/4pn2/2p5/2PP4/P1P5/4PPPP/R1BQKBNR w KQkq c6 0 7",
-        "highlights": ["c5", "c4", "d4"],
-        "arrows": [{"from": "c5", "to": "c4"}, {"from": "c5", "to": "d4"}],
+        "highlights": [
+          "c5",
+          "c4",
+          "d4"
+        ],
+        "arrows": [
+          {
+            "from": "c5",
+            "to": "c4"
+          },
+          {
+            "from": "c5",
+            "to": "d4"
+          }
+        ],
         "style": "good"
       },
       {
         "title": "Castle First, Attack Second",
         "description": "Before launching ...c5 and ...d5, always castle! Your king on g8 is safe and your rook on f8 supports future play on the f-file.",
         "fen": "rnbq1rk1/pppp1ppp/4pn2/8/1bPP4/2N1P3/PP3PPP/R1BQKBNR w KQ - 2 5",
-        "highlights": ["g8", "f8"],
+        "highlights": [
+          "g8",
+          "f8"
+        ],
         "arrows": [],
         "style": "good"
       },
@@ -459,8 +542,16 @@
         "title": "Don't Retreat the Bishop for Nothing",
         "description": "If you play ...Be7 or ...Ba5 without capturing on c3, you've wasted moves and White gets a free e4 push. The whole point of Bb4 is to trade it for the knight when the time is right!",
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/2PP4/2N1P3/PP3PPP/R1BQKBNR b KQkq - 0 5",
-        "highlights": ["c3", "e4"],
-        "arrows": [{"from": "e2", "to": "e4"}],
+        "highlights": [
+          "c3",
+          "e4"
+        ],
+        "arrows": [
+          {
+            "from": "e2",
+            "to": "e4"
+          }
+        ],
         "style": "bad"
       }
     ],
@@ -469,40 +560,98 @@
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4",
         "prompt": "Your bishop is on b4 pinning the knight on c3. What is the main goal of this pin?",
         "choices": [
-          {"text": "To prevent White from playing e4 for free and control the center with a piece", "isCorrect": true},
-          {"text": "To attack the White king directly", "isCorrect": false},
-          {"text": "To win the c3 knight immediately", "isCorrect": false}
+          {
+            "text": "To prevent White from playing e4 for free and control the center with a piece",
+            "isCorrect": true
+          },
+          {
+            "text": "To attack the White king directly",
+            "isCorrect": false
+          },
+          {
+            "text": "To win the c3 knight immediately",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "The bishop on b4 pins the c3 knight so White cannot play e4 without losing the pawn. This is indirect center control — the heart of the Nimzo-Indian Defense!",
-        "boardHighlightsOnReveal": ["b4", "c3", "e4"],
-        "arrowsOnReveal": [{"from": "b4", "to": "c3"}]
+        "boardHighlightsOnReveal": [
+          "b4",
+          "c3",
+          "e4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "b4",
+            "to": "c3"
+          }
+        ]
       },
       {
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/2PP4/P1P2N2/4PPPP/R1BQKB1R b KQkq - 0 6",
         "prompt": "White has doubled pawns on c3 and c4. What is Black's best plan?",
         "choices": [
-          {"text": "Play ...c5 and ...d5 to attack the weak doubled pawns", "isCorrect": true},
-          {"text": "Play ...a6 to stop any queenside expansion", "isCorrect": false},
-          {"text": "Develop the queen early to put pressure on White", "isCorrect": false}
+          {
+            "text": "Play ...c5 and ...d5 to attack the weak doubled pawns",
+            "isCorrect": true
+          },
+          {
+            "text": "Play ...a6 to stop any queenside expansion",
+            "isCorrect": false
+          },
+          {
+            "text": "Develop the queen early to put pressure on White",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "After forcing doubled pawns, attack them with ...c5 and ...d5! These pawn advances put pressure on both c4 and d4, making White's life very difficult.",
-        "boardHighlightsOnReveal": ["c3", "c4", "d4"],
-        "arrowsOnReveal": [{"from": "c7", "to": "c5"}, {"from": "d7", "to": "d5"}]
+        "boardHighlightsOnReveal": [
+          "c3",
+          "c4",
+          "d4"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "c7",
+            "to": "c5"
+          },
+          {
+            "from": "d7",
+            "to": "d5"
+          }
+        ]
       },
       {
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N1P3/PP3PPP/R1BQKBNR b KQkq - 0 5",
         "prompt": "White played e3 instead of a3. Should you trade your bishop for the knight now or wait?",
         "choices": [
-          {"text": "Castle first, then decide later — king safety is always the priority", "isCorrect": true},
-          {"text": "Trade immediately with Bxc3+ to create doubled pawns right away", "isCorrect": false},
-          {"text": "Retreat the bishop to e7 — it's not needed anymore", "isCorrect": false}
+          {
+            "text": "Castle first, then decide later — king safety is always the priority",
+            "isCorrect": true
+          },
+          {
+            "text": "Trade immediately with Bxc3+ to create doubled pawns right away",
+            "isCorrect": false
+          },
+          {
+            "text": "Retreat the bishop to e7 — it's not needed anymore",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Castle first! There's no rush to trade the bishop. Get your king safe on g8 and your rook into play before committing to the trade. The pin remains powerful for now.",
-        "boardHighlightsOnReveal": ["g8", "b4", "c3"],
-        "arrowsOnReveal": [{"from": "e8", "to": "g8"}]
+        "boardHighlightsOnReveal": [
+          "g8",
+          "b4",
+          "c3"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "e8",
+            "to": "g8"
+          }
+        ]
       }
     ],
     "theoryLessons": [
@@ -510,32 +659,85 @@
         "title": "Rubinstein Variation (E53) — The Classical Approach",
         "description": "After 4.e3, White plays solidly. The main line continues 4...O-O 5.Bd3 d5, and now Black has a solid center with the bishop still pinning the knight. Named after the great Akiba Rubinstein.",
         "fen": "rnbq1rk1/pppp1ppp/4pn2/8/1bPP4/2NBP3/PP3PPP/R1BQK1NR w KQ - 4 6",
-        "highlights": ["b4", "c3", "d5", "d3"],
-        "arrows": [{"from": "b4", "to": "c3"}, {"from": "d5", "to": "c4"}],
+        "highlights": [
+          "b4",
+          "c3",
+          "d5",
+          "d3"
+        ],
+        "arrows": [
+          {
+            "from": "b4",
+            "to": "c3"
+          },
+          {
+            "from": "d5",
+            "to": "c4"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Capablanca Variation (E41) — Qc2 Sidesteps the Pin",
         "description": "4.Qc2 is White's most direct attempt to neutralize the pin. White says 'I don't care about the pin — I'll recapture on c3 with the queen!' Black should respond with ...d5 or ...c5 to fight back in the center.",
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PPQ1PPPP/R1B1KBNR b KQkq - 3 4",
-        "highlights": ["c2", "c3", "b4"],
-        "arrows": [{"from": "b4", "to": "c3"}, {"from": "c2", "to": "c3"}],
+        "highlights": [
+          "c2",
+          "c3",
+          "b4"
+        ],
+        "arrows": [
+          {
+            "from": "b4",
+            "to": "c3"
+          },
+          {
+            "from": "c2",
+            "to": "c3"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "Samisch Variation (E24) — The Aggressive f3",
         "description": "4.f3 is White's most aggressive choice, planning e4 by force. It weakens the kingside and gives Black targets, but White gets a huge center. Respond with ...d5 and ...c5 to challenge it immediately.",
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N2P2/PP2P1PP/R1BQKBNR b KQkq - 0 4",
-        "highlights": ["f3", "e4", "b4"],
-        "arrows": [{"from": "f3", "to": "e4"}, {"from": "b4", "to": "c3"}],
+        "highlights": [
+          "f3",
+          "e4",
+          "b4"
+        ],
+        "arrows": [
+          {
+            "from": "f3",
+            "to": "e4"
+          },
+          {
+            "from": "b4",
+            "to": "c3"
+          }
+        ],
         "style": "theory"
       },
       {
         "title": "The Doubled Pawn Advantage",
         "description": "After ...Bxc3+ bxc3, White has doubled pawns on c3 and c4. These pawns can't protect each other and become targets in the endgame. Black's long-term advantage is real — be patient!",
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/2PP4/P1P5/4PPPP/R1BQKBNR b KQkq - 0 6",
-        "highlights": ["c3", "c4", "b2"],
-        "arrows": [{"from": "c5", "to": "c4"}, {"from": "d5", "to": "c4"}],
+        "highlights": [
+          "c3",
+          "c4",
+          "b2"
+        ],
+        "arrows": [
+          {
+            "from": "c5",
+            "to": "c4"
+          },
+          {
+            "from": "d5",
+            "to": "c4"
+          }
+        ],
         "style": "good"
       }
     ],
@@ -544,66 +746,128 @@
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PPQ1PPPP/R1B1KBNR b KQkq - 3 4",
         "prompt": "White just played Qc2. What is White's plan with this move?",
         "choices": [
-          {"text": "To recapture on c3 with the queen so the doubled pawns are avoided", "isCorrect": true},
-          {"text": "To develop the queen and start attacking immediately", "isCorrect": false},
-          {"text": "To prevent Black from castling", "isCorrect": false}
+          {
+            "text": "To recapture on c3 with the queen so the doubled pawns are avoided",
+            "isCorrect": true
+          },
+          {
+            "text": "To develop the queen and start attacking immediately",
+            "isCorrect": false
+          },
+          {
+            "text": "To prevent Black from castling",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Qc2 sidesteps the whole doubled-pawn problem! If Black plays ...Bxc3+, White recaptures Qxc3 — no doubled pawns. Black should respond with ...d5 or ...c5 to fight in the center instead.",
-        "boardHighlightsOnReveal": ["c2", "c3"],
-        "arrowsOnReveal": [{"from": "b4", "to": "c3"}, {"from": "c2", "to": "c3"}]
+        "boardHighlightsOnReveal": [
+          "c2",
+          "c3"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "b4",
+            "to": "c3"
+          },
+          {
+            "from": "c2",
+            "to": "c3"
+          }
+        ]
       },
       {
         "fen": "rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N2P2/PP2P1PP/R1BQKBNR b KQkq - 0 4",
         "prompt": "White played f3 — the Samisch Variation. What should Black do?",
         "choices": [
-          {"text": "Play ...d5 to challenge the center right away", "isCorrect": true},
-          {"text": "Immediately play ...Bxc3+ to create doubled pawns", "isCorrect": false},
-          {"text": "Play ...Nf6-e4 to attack the f3 pawn", "isCorrect": false}
+          {
+            "text": "Play ...d5 to challenge the center right away",
+            "isCorrect": true
+          },
+          {
+            "text": "Immediately play ...Bxc3+ to create doubled pawns",
+            "isCorrect": false
+          },
+          {
+            "text": "Play ...Nf6-e4 to attack the f3 pawn",
+            "isCorrect": false
+          }
         ],
         "correctIndex": 0,
         "explanation": "Play ...d5 to fight for the center! White wants to play e4, and ...d5 stops that plan while maintaining your solid pawn structure. You can always decide when to trade on c3 later.",
-        "boardHighlightsOnReveal": ["d5", "e4", "f3"],
-        "arrowsOnReveal": [{"from": "d7", "to": "d5"}]
+        "boardHighlightsOnReveal": [
+          "d5",
+          "e4",
+          "f3"
+        ],
+        "arrowsOnReveal": [
+          {
+            "from": "d7",
+            "to": "d5"
+          }
+        ]
       }
     ]
   },
   "opponentResponses": {
-    "afterMoves": ["d2d4", "g8f6", "c2c4", "e7e6", "b1c3", "f8b4"],
+    "afterMoves": [
+      "d2d4",
+      "g8f6",
+      "c2c4",
+      "e7e6",
+      "b1c3",
+      "f8b4"
+    ],
     "responses": [
       {
         "id": "rubinstein",
-        "move": { "uci": "e2e3", "san": "e3", "explanation": "White plays solidly, supporting d4 and preparing to develop the bishop to d3. The classical main line." },
+        "move": {
+          "uci": "e2e3",
+          "san": "e3",
+          "explanation": "White plays solidly, supporting d4 and preparing to develop the bishop to d3. The classical main line."
+        },
         "name": "Rubinstein Variation",
         "eco": "E53",
-        "frequency": 0.40,
+        "frequency": 0.4,
         "description": "The most classical response — White builds a solid center and prepares Bd3. The position is balanced and strategic.",
         "planAdjustment": "Castle, then play ...d5 and ...c5 to fight in the center. The doubled pawn plan works well here after White eventually plays a3."
       },
       {
         "id": "capablanca",
-        "move": { "uci": "d1c2", "san": "Qc2", "explanation": "White sidesteps the doubled pawn problem — if Black captures on c3, White recaptures with the queen, avoiding the structural damage." },
+        "move": {
+          "uci": "d1c2",
+          "san": "Qc2",
+          "explanation": "White sidesteps the doubled pawn problem — if Black captures on c3, White recaptures with the queen, avoiding the structural damage."
+        },
         "name": "Capablanca Variation",
         "eco": "E41",
-        "frequency": 0.30,
+        "frequency": 0.3,
         "description": "White's sharpest try to neutralize the Nimzo-Indian — Qc2 prevents doubled pawns after Bxc3.",
         "planAdjustment": "Play ...d5 or ...c5 immediately! The whole doubled-pawn plan is off, so fight for the center instead. ...c5 followed by ...Nc6 is a solid approach."
       },
       {
         "id": "samisch",
-        "move": { "uci": "f2f3", "san": "f3", "explanation": "White's most aggressive move — planning e4 by force regardless of the pin. This weakens the kingside but gives White a massive center." },
+        "move": {
+          "uci": "f2f3",
+          "san": "f3",
+          "explanation": "White's most aggressive move — planning e4 by force regardless of the pin. This weakens the kingside but gives White a massive center."
+        },
         "name": "Samisch Variation",
         "eco": "E24",
-        "frequency": 0.20,
+        "frequency": 0.2,
         "description": "An aggressive pawn thrust that weakens White's kingside but grabs tremendous space.",
         "planAdjustment": "Play ...d5 immediately to challenge the center. After the inevitable a3 and Bxc3+, you'll have doubled pawns to target AND White's weakened kingside."
       },
       {
         "id": "classical-4nf3",
-        "move": { "uci": "g1f3", "san": "Nf3", "explanation": "White develops the knight first, keeping options flexible before committing to a pawn structure." },
+        "move": {
+          "uci": "g1f3",
+          "san": "Nf3",
+          "explanation": "White develops the knight first, keeping options flexible before committing to a pawn structure."
+        },
         "name": "Classical Variation",
         "eco": "E40",
-        "frequency": 0.10,
+        "frequency": 0.1,
         "description": "White develops normally and delays committing to a specific pawn structure.",
         "planAdjustment": "Continue with ...O-O and ...d5. White will likely play e3 next, transposing to the Rubinstein. Stick to your standard plan."
       }

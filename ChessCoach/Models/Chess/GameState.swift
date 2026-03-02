@@ -59,6 +59,18 @@ final class GameState: @unchecked Sendable {
         return makeMove(from: from, to: to, promotion: promotion)
     }
 
+    /// Make a move from SAN notation (e.g. "Nf3", "e4", "O-O").
+    @discardableResult
+    func makeSANMove(_ san: String) -> Bool {
+        let move = SanSerialization.default.move(for: san, in: game)
+        guard game.legalMoves.contains(where: { $0.from == move.from && $0.to == move.to }) else {
+            return false
+        }
+        game.make(move: move)
+        moveHistory.append((from: move.from.coordinate, to: move.to.coordinate, promotion: move.promotion))
+        return true
+    }
+
     /// Undo the last move by replaying all moves except the last from the start position.
     @discardableResult
     func undoLastMove() -> Bool {

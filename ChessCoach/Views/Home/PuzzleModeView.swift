@@ -199,6 +199,7 @@ struct PuzzleModeView: View {
                 Image(systemName: feedbackIsCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
                     .font(.system(size: 40))
                     .foregroundStyle(feedbackIsCorrect ? AppColor.success : AppColor.error)
+                    .transition(.scale(scale: 0).combined(with: .opacity))
 
                 Text(feedbackIsCorrect ? "Correct!" : "Not quite")
                     .font(.title3.weight(.bold))
@@ -228,7 +229,7 @@ struct PuzzleModeView: View {
                         .padding(.vertical, 14)
                         .background(AppColor.info, in: RoundedRectangle(cornerRadius: AppRadius.lg))
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(ScaleButtonStyle())
                 .padding(.horizontal, AppSpacing.xxl)
             }
             .padding(.bottom, AppSpacing.xxxl)
@@ -272,7 +273,7 @@ struct PuzzleModeView: View {
                     .padding(.vertical, 14)
                     .background(AppColor.info, in: RoundedRectangle(cornerRadius: AppRadius.lg))
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(ScaleButtonStyle())
 
                 Button {
                     dismiss()
