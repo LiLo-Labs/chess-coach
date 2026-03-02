@@ -1,7 +1,5 @@
 # ChessCoach Architecture
 
-> Auto-maintained. Last updated: 2026-02-26 (session 2)
-
 ## Tech Stack
 
 | Layer | Technology |
@@ -34,7 +32,7 @@ ChessCoach/
 │   ├── StockfishService.swift    # Actor: position evaluation, best move, hints
 │   ├── OnDeviceLLMService.swift  # Actor: llama.cpp inference (Qwen3-4B)
 │   ├── MaiaService.swift         # CoreML: human-like move prediction
-│   └── Protocols/EngineProtocols.swift  # TextGenerating, PositionEvaluating, MovePredicting
+│   └── Protocols/EngineProtocols.swift  # TextGenerating
 │
 ├── Models/
 │   ├── Chess/GameState.swift     # @Observable game state, move history, FEN
@@ -105,8 +103,6 @@ ContentView
 | Protocol | Purpose | Conformers |
 |----------|---------|-----------|
 | `TextGenerating` | LLM text generation | `OnDeviceLLMService`, `ClaudeProvider`, `OllamaProvider` |
-| `PositionEvaluating` | Chess position eval | `StockfishService` |
-| `MovePredicting` | Human-like moves | `MaiaService` |
 | `FeatureAccessProviding` | Subscription gating | `SubscriptionService`, `StaticFeatureAccess`, `UnlockedAccess` |
 | `ChessboardColorScheme` | Board colors | `ChessComColorScheme`, 8 built-in schemes |
 
@@ -128,16 +124,6 @@ Debug: `DebugStateView` has presets for each tier. `AppSettings.debugTierOverrid
 2. **Practicing Recall** → play from memory, hints available
 3. **Handling Variations** → opponent deviates, student responds
 4. **Review** → spaced repetition of learned lines
-
-## Largest Files (refactoring candidates)
-
-| File | Lines | Notes |
-|------|-------|-------|
-| SessionViewModel.swift | ~2000 | Main session logic, could split |
-| SessionView.swift | ~800 | Large but mostly layout |
-| OpeningDetailView.swift | ~700 | Opening detail + layers |
-| DebugStateView.swift | ~600 | Debug presets |
-| PromptCatalog.swift | ~400 | All LLM prompts |
 
 ## Board Theme System
 
@@ -228,17 +214,6 @@ Human-friendly names shown first everywhere ("Knight to f3"), algebraic notation
 Canonical converter: `OpeningMove.friendlyName(from:)` — handles captures, promotions, castling.
 Applied in: LineStudyView, OpeningPreviewBoard, SessionView feed, deviation banners.
 
-## Overlay Close Buttons
+## On-Device Model
 
-All full-screen overlays have an X close button at top-right:
-- SessionCompleteView, PracticeOpeningView completion, ConceptIntroView
-
-## On-Device Model Download
-
-Instead of bundling the ~2.5GB GGUF model in the app binary, `ModelDownloadService` supports downloading it on demand:
-- **Downloaded model** stored in Documents directory, preferred over bundled copy
-- `OnDeviceLLMService.resolvedModelPath` checks Documents first, then Bundle
-- Download progress shown in Settings (AI Coach section) when provider is "On-Device"
-- Config: `AppConfig.modelDownload` (remote URL, expected size)
-- Gated by `ProFeature.onDeviceModelDownload` (requires onDeviceAI tier or higher)
-- User can delete downloaded model to free space (falls back to bundled if available)
+GGUF is bundled via Git LFS. `ModelDownloadService` also supports downloading on demand to Documents (checked first by `OnDeviceLLMService.resolvedModelPath`). Gated by `ProFeature.onDeviceModelDownload`.
