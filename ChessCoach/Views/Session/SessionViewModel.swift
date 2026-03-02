@@ -2,7 +2,6 @@ import Foundation
 import SwiftUI
 import ChessKit
 
-/// Debug log that writes to a file (survives stdout redirect + crash)
 func debugLog(_ message: String) {
     #if DEBUG
     let dateStr = ISO8601DateFormatter().string(from: Date())
@@ -24,15 +23,13 @@ enum BookStatus: Equatable {
     case onBook
     case userDeviated(expected: OpeningMove, atPly: Int)
     case opponentDeviated(expected: OpeningMove, playedSAN: String, atPly: Int)
-    /// Continuing off-book after the user responded to the initial opponent deviation.
-    case offBook(since: Int)  // ply where deviation happened
+    case offBook(since: Int)
 }
 
-/// Training pipeline mode for SessionView.
 enum SessionMode: String, Codable, Sendable {
-    case guided    // Stage 2: arrows ON, proactive coaching ON, hint timer ON
-    case unguided  // Stage 3: arrows OFF, coaching OFF, but deviation feedback ON
-    case practice  // Stage 4: mixed practice across all lines (handled by PracticeOpeningView)
+    case guided
+    case unguided
+    case practice
 }
 
 struct SessionStats {
@@ -41,7 +38,7 @@ struct SessionStats {
     var deviationPly: Int?
     var deviatedBy: DeviatedBy?
     var restarts: Int = 0
-    var moveScores: [PlanExecutionScore] = []  // PES per user move
+    var moveScores: [PlanExecutionScore] = []
 
     enum DeviatedBy { case user, opponent }
 
@@ -50,35 +47,31 @@ struct SessionStats {
         return Double(movesOnBook) / Double(totalUserMoves)
     }
 
-    /// Average Plan Execution Score for the session.
     var averagePES: Double {
         guard !moveScores.isEmpty else { return 0 }
         return Double(moveScores.map(\.total).reduce(0, +)) / Double(moveScores.count)
     }
 
-    /// Session PES category label.
     var pesCategory: ScoreCategory {
         ScoreCategory.from(score: Int(averagePES))
     }
 }
 
-/// A move-pair entry in the coaching feed (one full move = white + black).
 @Observable
 final class CoachingFeedEntry: Identifiable {
     nonisolated(unsafe) private static var counter = 0
-    let id: Int // unique auto-incrementing ID
+    let id: Int
     let moveNumber: Int
     var whiteSAN: String?
     var blackSAN: String?
-    var coaching: String? // combined narrative for the pair
-    var whitePly: Int // ply index for white's move
-    var blackPly: Int? // ply index for black's move (nil if black hasn't moved yet)
+    var coaching: String?
+    var whitePly: Int
+    var blackPly: Int?
     var isDeviation: Bool
-    var fen: String? // board FEN at this point (for generating explanations per-entry)
-    var playedUCI: String? // UCI of the user's actual move (for deviation explanations)
-    var expectedSAN: String? // book move SAN (when this is a deviation)
-    var expectedUCI: String? // book move UCI (when this is a deviation)
-    // Async explanation
+    var fen: String?
+    var playedUCI: String?
+    var expectedSAN: String?
+    var expectedUCI: String?
     var explanation: String?
     var isExplaining: Bool = false
 
@@ -134,30 +127,21 @@ final class SessionViewModel {
     private(set) var lastMovePES: PlanExecutionScore?
     private(set) var currentLayer: LearningLayer = .understandPlan
 
-    // Mistake plies from last session (for smarter restart - improvement 29)
     private var lastSessionMistakePlies: Set<Int> = []
 
-    // Session timing
     private var sessionStartDate: Date = Date()
 
-    // Move arrow overlay (improvement 1)
     private(set) var arrowFrom: String?
     private(set) var arrowTo: String?
 
-    // "I Know This" skip tracking (improvement 23)
-    // Track consecutive correct plays per ply per line (persisted in UserDefaults)
-    private var consecutiveCorrectPlays: [String: Int] = [:]  // "openingID/lineID/ply" -> count
+    private var consecutiveCorrectPlays: [String: Int] = [:]
 
-    // Coaching history for replay (improvement 5)
     private(set) var coachingHistory: [(ply: Int, text: String)] = []
 
-    // Feed entries — scrollable history below the board
     private(set) var feedEntries: [CoachingFeedEntry] = []
 
-    // Mistake tracker (improvement 2)
     private var mistakeTracker = PersistenceService.shared.loadMistakeTracker()
 
-    // Pulsing hint after delay (improvement 21)
     private var hintTimer: Task<Void, Never>?
     private(set) var hintSquare: String?
 
@@ -225,7 +209,6 @@ final class SessionViewModel {
 
     var displayGameState: GameState { replayGameState ?? gameState }
 
-    /// Move history as UCI strings for chat context.
     var moveHistorySAN: [String] {
         gameState.moveHistory.map { $0.from + $0.to }
     }
@@ -251,7 +234,6 @@ final class SessionViewModel {
 
     var moveCount: Int { gameState.plyCount }
 
-    /// Human-readable best response (e.g. "knight to f3" instead of "g1f3")
     var bestResponseDescription: String? {
         guard let hint = bestResponseHint else { return nil }
         let to = String(hint.dropFirst(2).prefix(2))
@@ -275,7 +257,6 @@ final class SessionViewModel {
         return "\(pieceName) to \(to)"
     }
 
-    /// The moves to check against — active line or main line.
     private var activeMoves: [OpeningMove] {
         activeLine?.moves ?? opening.mainLine
     }
@@ -289,7 +270,6 @@ final class SessionViewModel {
         return activeMoves[ply]
     }
 
-    /// Eval as a fraction from -1.0 (black winning) to 1.0 (white winning)
     var evalFraction: Double {
         let cp = Double(evalScore)
         return cp / (abs(cp) + 400.0)
@@ -305,12 +285,10 @@ final class SessionViewModel {
         return "\(sign)\(String(format: "%.1f", pawns))"
     }
 
-    /// Initialize with a specific line (new tree-based flow).
     init(opening: Opening, lineID: String? = nil, isPro: Bool = true, sessionMode: SessionMode = .guided, featureAccess: any FeatureAccessProviding = UnlockedAccess(), stockfish: StockfishService? = nil, llmService: LLMService? = nil) {
         self.isPro = isPro
         self.featureAccess = featureAccess
         self.sessionMode = sessionMode
-        // Load "I Know This" data (improvement 23)
         self.consecutiveCorrectPlays = UserDefaults.standard.dictionary(forKey: AppSettings.Key.consecutiveCorrect) as? [String: Int] ?? [:]
         self.opening = opening
         self.gameState = GameState()
@@ -419,7 +397,6 @@ final class SessionViewModel {
         showCoachQuip(coachPersonality.onGreeting.randomElement() ?? "Let's begin!")
     }
 
-    /// Show a personality quip as a brief overlay that auto-dismisses.
     func showCoachQuip(_ message: String) {
         quipDismissTask?.cancel()
         personalityQuip = message
@@ -435,7 +412,6 @@ final class SessionViewModel {
         }
     }
 
-    /// Roll a random check and maybe show a contextual quip after coaching.
     func maybeShowQuip(for category: MoveCategory) {
         guard Double.random(in: 0...1) < 0.28 else { return }
         let quip = coachPersonality.witticism(for: category)
@@ -446,9 +422,6 @@ final class SessionViewModel {
         }
     }
 
-    /// Show the next book move and its explanation BEFORE the user plays.
-    /// Uses the hardcoded opening explanation — no LLM, no hallucinations.
-    /// In `.unguided` mode, skips arrows, coaching text, and hint timer entirely.
     private func showProactiveCoaching() {
         guard isOnBook, isUserTurn, !sessionComplete else {
             // Clear proactive coaching if it's not user's turn
@@ -470,28 +443,23 @@ final class SessionViewModel {
         guard ply < moves.count else { return }
         let nextMove = moves[ply]
         let lowerExplanation = nextMove.explanation.prefix(1).lowercased() + nextMove.explanation.dropFirst()
-        // Improvement 23: Abbreviated coaching if user knows this ply well
         let correctKey = "\(opening.id)/\(activeLineID ?? "main")/\(ply)"
         let correctCount = consecutiveCorrectPlays[correctKey] ?? 0
 
-        // Improvement 29: prefix with mistake reminder if this ply was missed last session
         if lastSessionMistakePlies.contains(ply) {
             userCoachingText = "You missed this last time — play \(nextMove.san) — \(lowerExplanation)"
         } else if correctCount >= 5 {
-            // Improvement 23: Abbreviated — user knows this
             userCoachingText = nextMove.san
         } else {
             userCoachingText = "Play \(nextMove.san) — \(lowerExplanation)"
         }
 
-        // Improvement 1: Set arrow overlay from proactive coaching move data
         let uci = nextMove.uci
         if uci.count >= 4 {
             arrowFrom = String(uci.prefix(2))
             arrowTo = String(uci.dropFirst(2).prefix(2))
         }
 
-        // Improvement 21: Start pulsing hint timer (8 seconds)
         startHintTimer(square: arrowTo)
         // Set up explain context so "Explain why" works before they move
         userExplainContext = ExplainContext(
@@ -505,9 +473,6 @@ final class SessionViewModel {
         )
     }
 
-    /// Show guidance when we're off-book: fresh Stockfish hint + general plan advice.
-    /// Unlike `showProactiveCoaching()`, this works in all modes (guided, unguided)
-    /// because the user needs help in unfamiliar territory.
     private func showOffBookGuidance() {
         guard isUserTurn, !sessionComplete else { return }
 
@@ -549,7 +514,6 @@ final class SessionViewModel {
         offBookExplanation = nil
         suggestedVariation = nil
 
-        // Sound & haptics (improvements 10, 11)
         SoundService.shared.play(.move)
         SoundService.shared.hapticPiecePlaced()
 
@@ -617,7 +581,6 @@ final class SessionViewModel {
                 if let item = spacedRepScheduler.findItem(openingID: opening.id, ply: ply) {
                     spacedRepScheduler.review(itemID: item.id, quality: 4)
                 }
-                // Improvement 23: Track consecutive correct plays
                 let correctKey = "\(opening.id)/\(activeLineID ?? "main")/\(ply)"
                 consecutiveCorrectPlays[correctKey, default: 0] += 1
                 UserDefaults.standard.set(consecutiveCorrectPlays, forKey: AppSettings.Key.consecutiveCorrect)
@@ -681,7 +644,6 @@ final class SessionViewModel {
         let category: MoveCategory = isDeviation ? .mistake : .goodMove
         maybeShowQuip(for: category)
 
-        // Compute Plan Execution Score — only meaningful when the user knows the plan (Layer 2+)
         if sessionMode != .guided, currentLayer.rawValue >= LearningLayer.executePlan.rawValue {
             debugLog("Computing PES")
             if let pes = await computePES(forPly: ply, move: uciMove, fenBefore: fenBeforeMove, fenAfter: fenAfterMove) {
@@ -742,14 +704,12 @@ final class SessionViewModel {
         }
     }
 
-    /// Switch to practicing a different line mid-session.
     func switchToLine(_ line: OpeningLine) {
         activeLine = line
         activeLineID = line.id
         suggestedVariation = nil
     }
 
-    /// Undo the user's last move so they can try again from the same position.
     func retryLastMove() {
         sessionGeneration += 1
         gameState.undoLastMove()
@@ -860,7 +820,6 @@ final class SessionViewModel {
         replayGameState = nil
     }
 
-    /// Continue playing after a deviation — make the opponent's response move.
     func continueAfterDeviation() async {
         let ply = gameState.plyCount - 1
         let uciMove = gameState.moveHistory.last.map { $0.from + $0.to } ?? ""
@@ -1084,7 +1043,6 @@ final class SessionViewModel {
         }
     }
 
-    /// Clear arrow and hint when user interacts with the board.
     func clearArrowAndHint() {
         arrowFrom = nil
         arrowTo = nil
@@ -1124,9 +1082,8 @@ final class SessionViewModel {
         }
     }
 
-    // MARK: - Session Auto-Save (improvement 27)
+    // MARK: - Session Auto-Save
 
-    /// Save current session state for resume on app relaunch.
     func saveSessionToDisk() {
         guard !sessionComplete, stats.totalUserMoves > 0 else { return }
         let moveHistory = gameState.moveHistory.map { $0.from + $0.to }
@@ -1142,12 +1099,10 @@ final class SessionViewModel {
         PersistenceService.shared.saveSessionState(state)
     }
 
-    /// Check if there is a saved session to resume.
     static func hasSavedSession() -> Bool {
         PersistenceService.shared.loadSessionState() != nil
     }
 
-    /// Load saved session metadata (opening ID and line ID) for resume prompt.
     static func savedSessionInfo() -> (openingID: String, lineID: String?)? {
         guard let state = PersistenceService.shared.loadSessionState(),
               let openingID = state["openingID"] as? String else { return nil }
@@ -1155,172 +1110,26 @@ final class SessionViewModel {
         return (openingID, lineID?.isEmpty == true ? nil : lineID)
     }
 
-    /// Discard the saved session.
     static func clearSavedSession() {
         PersistenceService.shared.clearSessionState()
     }
 
     private func saveProgress() {
         guard stats.totalUserMoves > 0 else { return }
-        var progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
-        let completed = gameState.plyCount >= activeMoves.count
-        let accuracy = stats.accuracy
-
-        // Check personal best before recording (uses line best if per-line, aggregate otherwise)
-        let previousBest: Double
-        if let lineID = activeLineID {
-            previousBest = progress.progress(forLine: lineID).bestAccuracy
-        } else {
-            previousBest = progress.bestAccuracy
-        }
-        let isPersonalBest = accuracy > previousBest && progress.gamesPlayed > 0
-
-        // Record game and capture promotions
-        var phasePromotion: SessionResult.PhasePromotion?
-        var linePhasePromotion: SessionResult.PhasePromotion?
-
-        if let lineID = activeLineID {
-            let (aggOld, lineOld) = progress.recordLineGame(lineID: lineID, accuracy: accuracy, won: completed)
-            if let old = aggOld {
-                phasePromotion = SessionResult.PhasePromotion(from: old, to: progress.currentPhase)
-            }
-            if let old = lineOld {
-                linePhasePromotion = SessionResult.PhasePromotion(from: old, to: progress.progress(forLine: lineID).currentPhase)
-            }
-
-            // Track guided/unguided completions for training pipeline
-            if completed {
-                switch sessionMode {
-                case .guided:
-                    progress.lineProgress[lineID]?.guidedCompletions += 1
-                case .unguided:
-                    progress.lineProgress[lineID]?.unguidedCompletions += 1
-                    let currentBest = progress.lineProgress[lineID]?.unguidedBestAccuracy ?? 0
-                    progress.lineProgress[lineID]?.unguidedBestAccuracy = max(currentBest, accuracy)
-                case .practice:
-                    break // Practice mode is handled by PracticeOpeningView
-                }
-            }
-        } else {
-            let old = progress.recordGame(accuracy: accuracy, won: completed)
-            if let old {
-                phasePromotion = SessionResult.PhasePromotion(from: old, to: progress.currentPhase)
-            }
-        }
-
-        PersistenceService.shared.saveProgress(progress)
-
-        // Save to OpeningMastery (v3 plan-first model)
-        var mastery = PersistenceService.shared.loadMastery(forOpening: opening.id)
-        let masteryBefore = mastery
-        let sessionPES = stats.averagePES
-        switch mastery.currentLayer {
-        case .understandPlan:
-            break // Layer 1 completion is handled separately
-        case .executePlan:
-            let modeStr = sessionMode == .guided ? "guided" : "unguided"
-            mastery.recordExecutionSession(pes: sessionPES, mode: modeStr)
-        case .discoverTheory:
-            break // Layer 3 completion is handled separately
-        case .handleVariety:
-            // If we know which opponent response was faced, record it
-            if let responses = opening.opponentResponses?.responses {
-                let moveHistory = gameState.moveHistory.map { $0.from + $0.to }
-                let modeStr = sessionMode == .guided ? "guided" : "unguided"
-                for response in responses {
-                    if moveHistory.contains(response.move.uci) {
-                        mastery.recordResponseHandled(responseID: response.id, pes: sessionPES, mode: modeStr)
-                    }
-                }
-            }
-        case .realConditions:
-            mastery.recordRealConditionsSession(pes: sessionPES)
-        }
-        PersistenceService.shared.saveMastery(mastery)
-        currentLayer = mastery.currentLayer
-
-        // Scan for newly unlocked sibling lines
-        var newlyUnlockedLines: [String] = []
-        if let lines = opening.lines {
-            for line in lines {
-                if let parentID = line.parentLineID,
-                   progress.isLineUnlocked(line.id, parentLineID: parentID) {
-                    // Check if this line had no games before (newly accessible)
-                    let lp = progress.progress(forLine: line.id)
-                    if lp.gamesPlayed == 0 {
-                        newlyUnlockedLines.append(line.name)
-                    }
-                }
-            }
-        }
-
-        // Due review count
-        let dueReviewCount = spacedRepScheduler.dueItems().count
-
-        // Composite score and thresholds
-        let currentComposite: Double
-        let currentPhase: LearningPhase
-        if let lineID = activeLineID {
-            let lp = progress.progress(forLine: lineID)
-            currentComposite = lp.compositeScore
-            currentPhase = lp.currentPhase
-        } else {
-            currentComposite = progress.compositeScore
-            currentPhase = progress.currentPhase
-        }
-
-        let nextThreshold = currentPhase.promotionThreshold
-        let minGames = currentPhase.minimumGames
-        let gamesPlayed = activeLineID.map { progress.progress(forLine: $0).gamesPlayed }
-            ?? progress.gamesPlayed
-        let gamesUntilMinimum: Int? = minGames.map { max(0, $0 - gamesPlayed) }
-
-        // Record streak
-        var streak = PersistenceService.shared.loadStreak()
-        streak.recordPractice()
-        PersistenceService.shared.saveStreak(streak)
-
-        let timeSpent = Date().timeIntervalSince(sessionStartDate)
-        let movesPerMinute: Double? = timeSpent > 0
-            ? Double(stats.totalUserMoves) / (timeSpent / 60.0)
-            : nil
-
-        // Detect layer promotion
-        let layerAfter = mastery.currentLayer
-        let layerPromotion: SessionResult.LayerPromotion?
-        if layerAfter != currentLayer {
-            layerPromotion = SessionResult.LayerPromotion(from: currentLayer, to: layerAfter)
-        } else {
-            layerPromotion = nil
-        }
-
-        // Milestone tracking
-        let completedMilestones = OpeningMastery.newlyCompletedMilestones(before: masteryBefore, after: mastery)
-        let nextMilestone = mastery.currentLayer.nextMilestone(from: mastery)
-        let coach = CoachPersonality.forOpening(opening)
-        let guidance = CoachGuidance(personality: coach, mastery: mastery, openingName: opening.name)
-        let coachMessage = guidance.sessionCompleteMessage(pes: sessionPES, completedMilestones: completedMilestones)
-
-        sessionResult = SessionResult(
-            accuracy: accuracy,
-            isPersonalBest: isPersonalBest,
-            phasePromotion: phasePromotion,
-            linePhasePromotion: linePhasePromotion,
-            newlyUnlockedLines: newlyUnlockedLines,
-            dueReviewCount: dueReviewCount,
-            compositeScore: currentComposite,
-            nextPhaseThreshold: nextThreshold,
-            gamesUntilMinimum: gamesUntilMinimum,
-            timeSpent: timeSpent,
-            movesPerMinute: movesPerMinute,
-            averagePES: stats.moveScores.isEmpty ? nil : stats.averagePES,
-            pesCategory: stats.moveScores.isEmpty ? nil : stats.pesCategory,
-            moveScores: stats.moveScores.isEmpty ? nil : stats.moveScores,
-            layerPromotion: layerPromotion,
-            completedMilestones: completedMilestones,
-            nextMilestone: nextMilestone,
-            coachSessionMessage: coachMessage
+        let input = SessionProgressInput(
+            opening: opening,
+            activeLineID: activeLineID,
+            activeMoves: activeMoves,
+            stats: stats,
+            sessionMode: sessionMode,
+            sessionStartDate: sessionStartDate,
+            gameState: gameState,
+            spacedRepScheduler: spacedRepScheduler,
+            currentLayer: currentLayer
         )
+        let output = SessionProgressTracker.saveProgress(input: input)
+        sessionResult = output.sessionResult
+        currentLayer = output.updatedLayer
     }
 
     // MARK: - Private
@@ -1472,8 +1281,6 @@ final class SessionViewModel {
         }
     }
 
-    /// Compute opponent move without applying it or waiting.
-    /// Returns (move, isForced) — isForced is true when the book move was used directly (no engine needed).
     private func computeOpponentMove() async -> (move: String, isForced: Bool)? {
         let ply = gameState.plyCount
         var computedMove: String?
@@ -1526,8 +1333,6 @@ final class SessionViewModel {
         return (move, false)
     }
 
-    /// Batched flow: compute opponent move, get coaching for both moves in one LLM call,
-    /// show user coaching immediately, apply thinking delay, animate opponent move, show opponent coaching.
     private func makeOpponentMoveWithBatchedCoaching(userPly: Int, userMove: String) async {
         isThinking = true
         defer { isThinking = false }
@@ -1739,7 +1544,6 @@ final class SessionViewModel {
         }
     }
 
-    /// Combined hint + eval in a single Stockfish call (off-book optimization)
     private func fetchBestResponseHintAndEval() async {
         let currentFen = gameState.fen
         let depth = max(AppConfig.engine.hintDepth, AppConfig.engine.evalDepth)
@@ -1758,9 +1562,6 @@ final class SessionViewModel {
         }
     }
 
-    /// Compute the Plan Execution Score for a user's move.
-    /// Gathers Maia predictions, Stockfish top moves, and Polyglot weights
-    /// then delegates to PlanScoringService.
     private func computePES(forPly ply: Int, move: String, fenBefore: String, fenAfter: String) async -> PlanExecutionScore? {
         guard let planScoringService else { return nil }
 
@@ -1869,7 +1670,6 @@ final class SessionViewModel {
                 opponentCoachingText = text
             }
             lastCoachingWasUser = isUserMove
-            // Improvement 5: Store coaching for replay
             coachingHistory.append((ply: ply, text: text))
         }
     }
@@ -1886,136 +1686,34 @@ final class SessionViewModel {
         expectedSAN: String? = nil,
         expectedUCI: String? = nil
     ) {
-        let isWhitePly = ply % 2 == 0
-        let moveNumber = ply / 2 + 1
-
-        if isWhitePly {
-            // Start a new move pair
-            let entry = CoachingFeedEntry(moveNumber: moveNumber, whitePly: ply)
-            entry.whiteSAN = san
-            entry.coaching = coaching
-            entry.isDeviation = isDeviation
-            entry.fen = fen
-            entry.playedUCI = playedUCI
-            entry.expectedSAN = expectedSAN
-            entry.expectedUCI = expectedUCI
-            feedEntries.insert(entry, at: 0)
-        } else {
-            // Complete the most recent entry if it's the same move number
-            if let existing = feedEntries.first, existing.moveNumber == moveNumber {
-                existing.blackSAN = san
-                existing.blackPly = ply
-                existing.fen = fen ?? existing.fen
-                // Combine coaching narratives — replace if deviation, append otherwise
-                if let opCoaching = coaching {
-                    if existing.isDeviation {
-                        existing.coaching = opCoaching
-                    } else if let userCoaching = existing.coaching {
-                        existing.coaching = "\(userCoaching)\n\(opCoaching)"
-                    } else {
-                        existing.coaching = opCoaching
-                    }
-                }
-                if isDeviation { existing.isDeviation = true }
-            } else {
-                // Orphan black move (e.g., user plays black, opponent played white first)
-                let entry = CoachingFeedEntry(moveNumber: moveNumber, whitePly: ply - 1)
-                entry.blackSAN = san
-                entry.blackPly = ply
-                entry.coaching = coaching
-                entry.isDeviation = isDeviation
-                entry.fen = fen
-                entry.playedUCI = playedUCI
-                entry.expectedSAN = expectedSAN
-                entry.expectedUCI = expectedUCI
-                feedEntries.insert(entry, at: 0)
-            }
-        }
+        SessionFeedManager.appendToFeed(
+            entries: &feedEntries,
+            ply: ply,
+            san: san,
+            coaching: coaching,
+            isDeviation: isDeviation,
+            fen: fen,
+            playedUCI: playedUCI,
+            expectedSAN: expectedSAN,
+            expectedUCI: expectedUCI
+        )
     }
 
-    /// Request an explanation for a specific feed entry. Runs async — user can keep playing.
     func requestExplanationForEntry(_ entry: CoachingFeedEntry) async {
         guard isPro else {
             showProUpgrade = true
             return
         }
-        guard !entry.isExplaining, entry.explanation == nil else { return }
-
-        entry.isExplaining = true
-        defer { entry.isExplaining = false }
-
-        // Use the entry's own FEN, or fall back to shared context
-        let entryFen = entry.fen ?? userExplainContext?.fen ?? opponentExplainContext?.fen
-        guard let fen = entryFen else { return }
-
-        let moveHistoryStr = buildMoveHistoryString()
-        let studentColor = opening.color == .white ? "White" : "Black"
-        let opponentColor = studentColor == "White" ? "Black" : "White"
-        let boardState = LLMService.boardStateSummary(fen: fen, studentColor: studentColor)
-        let occupied = LLMService.occupiedSquares(fen: fen)
-
-        let prompt: String
-
-        if entry.isDeviation, let expectedSAN = entry.expectedSAN, let expectedUCI = entry.expectedUCI {
-            // Deviation: explain WHY the played move is bad AND why the book move is good
-            let playedSAN = entry.whiteSAN ?? entry.blackSAN ?? "the played move"
-            let evalNote = evalScore != 0
-                ? "Current engine evaluation: \(evalScore > 0 ? "+" : "")\(evalScore) centipawns."
-                : ""
-            prompt = PromptCatalog.offBookExplanationPrompt(params: .init(
-                openingName: opening.name,
-                studentColor: studentColor,
-                opponentColor: opponentColor,
-                userELO: userELO,
-                moveHistoryStr: moveHistoryStr,
-                boardState: boardState,
-                occupiedSquares: occupied,
-                who: "The student",
-                playedMove: playedSAN,
-                expectedSan: expectedSAN,
-                expectedUci: expectedUCI,
-                evalNote: evalNote
-            ))
-        } else {
-            // Normal move: explain the strategic ideas
-            let whiteSAN = entry.whiteSAN ?? "?"
-            let blackSAN = entry.blackSAN ?? ""
-            let moveDisplay = blackSAN.isEmpty ? whiteSAN : "\(whiteSAN) \(blackSAN)"
-
-            let perspective = """
-            The student plays \(studentColor). Explain the move pair: \(entry.moveNumber). \(moveDisplay).
-            Cover both the student's move and the opponent's response as a combined narrative.
-            When referring to \(studentColor) pieces, say "your knight" or "\(studentColor)'s knight".
-            When referring to \(opponentColor) pieces, say "the opponent's bishop" or "\(opponentColor)'s bishop".
-            Explain the strategic ideas behind these moves in the context of the \(opening.name).
-            """
-
-            let moveFraming = "\(entry.moveNumber). \(moveDisplay)"
-
-            prompt = PromptCatalog.explanationPrompt(params: .init(
-                openingName: opening.name,
-                studentColor: studentColor,
-                opponentColor: opponentColor,
-                userELO: userELO,
-                perspective: perspective,
-                moveHistoryStr: moveHistoryStr,
-                boardState: boardState,
-                occupiedSquares: occupied,
-                moveDisplay: moveDisplay,
-                moveUCI: entry.playedUCI ?? "",
-                moveFraming: moveFraming,
-                coachingText: entry.coaching ?? "",
-                forUserMove: true
-            ))
-        }
-
-        do {
-            let response = try await llmService.generate(prompt: prompt, maxTokens: AppConfig.tokens.explanation)
-            let parsed = CoachingValidator.parse(response: response)
-            entry.explanation = CoachingValidator.validate(parsed: parsed, fen: fen) ?? parsed.text
-        } catch {
-            entry.explanation = "Couldn't generate explanation. Try again."
-        }
+        await SessionFeedManager.requestExplanationForEntry(
+            entry,
+            opening: opening,
+            userELO: userELO,
+            evalScore: evalScore,
+            moveHistoryStr: buildMoveHistoryString(),
+            llmService: llmService,
+            userExplainContext: userExplainContext,
+            opponentExplainContext: opponentExplainContext
+        )
     }
 
     private func buildMoveHistoryString() -> String {
