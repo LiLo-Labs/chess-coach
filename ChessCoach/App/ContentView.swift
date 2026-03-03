@@ -108,6 +108,8 @@ struct ContentView: View {
     // MARK: - Startup Sequence
 
     private func performStartup() async {
+        let screenshotMode = ChessCoachApp.isScreenshotMode
+
         // Step 1: Data migration
         updateStep("Checking data...", progress: 0.05)
         _ = PersistenceService.shared // triggers migrateIfNeeded()
@@ -120,10 +122,12 @@ struct ContentView: View {
 
         // Step 3: Check subscription
         updateStep("Checking subscription...", progress: 0.15)
-        do {
-            try await subscriptionService.loadProduct()
-        } catch {
-            errorMessage = error.localizedDescription
+        if !screenshotMode {
+            do {
+                try await subscriptionService.loadProduct()
+            } catch {
+                errorMessage = error.localizedDescription
+            }
         }
         await Task.yield()
 
@@ -132,27 +136,31 @@ struct ContentView: View {
         _ = PersistenceService.shared.loadAllMastery()
         await Task.yield()
 
-        // Step 5: Start chess engine
-        updateStep("Starting chess engine...", progress: 0.3)
-        await appServices.startStockfish()
+        // Step 5: Start chess engine (skip in screenshot mode)
+        if !screenshotMode {
+            updateStep("Starting chess engine...", progress: 0.3)
+            await appServices.startStockfish()
 
-        // Step 6: Load coaching model (skip for free tier users)
-        if subscriptionService.hasAI {
-            updateStep("Loading coaching model...", progress: 0.5)
-            await appServices.startLLM()
+            // Step 6: Load coaching model (skip for free tier users)
+            if subscriptionService.hasAI {
+                updateStep("Loading coaching model...", progress: 0.5)
+                await appServices.startLLM()
+            }
         }
 
         // Step 7: Ready
         updateStep("Ready!", progress: 1.0)
 
-        try? await Task.sleep(for: .milliseconds(300))
+        if !screenshotMode {
+            try? await Task.sleep(for: .milliseconds(300))
+        }
 
         withAnimation {
             isReady = true
         }
 
-        // Show beta welcome once after onboarding
-        if settings.hasSeenOnboarding && !settings.hasSeenBetaWelcome {
+        // Show beta welcome every launch after onboarding (skip in screenshot mode)
+        if settings.hasSeenOnboarding && !screenshotMode {
             try? await Task.sleep(for: .milliseconds(600))
             showBetaWelcome = true
         }

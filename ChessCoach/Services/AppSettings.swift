@@ -189,6 +189,21 @@ final class AppSettings {
     init() {
         let d = UserDefaults.standard
 
+        #if DEBUG
+        // Screenshot mode: configure UserDefaults BEFORE reading them.
+        // This must happen here (not in ChessCoachApp.init) because @State
+        // properties are initialized before the App's init() body runs.
+        if ProcessInfo.processInfo.arguments.contains("--screenshot-mode") {
+            let args = ProcessInfo.processInfo.arguments
+            if let idx = args.firstIndex(of: "--debug-state"), idx + 1 < args.count {
+                ScreenshotStateLoader.loadState(args[idx + 1])
+            }
+            if args.contains("--reset-onboarding") {
+                d.set(false, forKey: Key.hasSeenOnboarding)
+            }
+        }
+        #endif
+
         self.userELO = d.object(forKey: Key.userELO) as? Int ?? 600
         self.opponentELO = d.object(forKey: Key.opponentELO) as? Int ?? 1200
         self.soundEnabled = d.object(forKey: Key.soundEnabled) as? Bool ?? true

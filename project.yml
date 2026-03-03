@@ -53,3 +53,15 @@ targets:
       base:
         SWIFT_VERSION: "6.0"
         GENERATE_INFOPLIST_FILE: YES
+  ChessCoachUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - ChessCoachUITests
+    dependencies:
+      - target: ChessCoach
+    settings:
+      base:
+        SWIFT_VERSION: "6.0"
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: ChessCoach
