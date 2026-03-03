@@ -36,7 +36,6 @@ final class SubscriptionService {
         transactionListener = listener
         Task { await checkEntitlement() }
 
-        #if DEBUG
         NotificationCenter.default.addObserver(
             forName: .debugStateDidChange,
             object: nil,
@@ -47,7 +46,6 @@ final class SubscriptionService {
                 await self.checkEntitlement()
             }
         }
-        #endif
     }
 
     func tearDown() {
@@ -215,16 +213,32 @@ final class SubscriptionService {
 
     // MARK: - Private
 
-    private func checkEntitlement() async {
-        // Check debug override first
+    /// True when running via TestFlight (sandbox receipt present in non-debug builds).
+    static let isTestFlight: Bool = {
+        guard let url = Bundle.main.appStoreReceiptURL else { return false }
+        return url.lastPathComponent == "sandboxReceipt"
+    }()
+
+    /// Whether tier override via Debug States is allowed (DEBUG or TestFlight).
+    static var allowsTierOverride: Bool {
         #if DEBUG
-        if let debugTier = UserDefaults.standard.string(forKey: AppSettings.Key.debugTierOverride),
+        return true
+        #else
+        return isTestFlight
+        #endif
+    }
+
+    private func checkEntitlement() async {
+        // Check debug/beta tier override (works in DEBUG and TestFlight builds)
+        if Self.allowsTierOverride,
+           let debugTier = UserDefaults.standard.string(forKey: AppSettings.Key.debugTierOverride),
            let tier = SubscriptionTier(rawValue: debugTier) {
             currentTier = tier
             loadUnlockedPaths()
             return
         }
-        // Legacy bool override
+        #if DEBUG
+        // Legacy bool override (debug only)
         if UserDefaults.standard.bool(forKey: AppSettings.Key.debugProOverride) {
             currentTier = .pro
             loadUnlockedPaths()

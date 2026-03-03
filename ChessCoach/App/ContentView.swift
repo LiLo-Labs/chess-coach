@@ -58,14 +58,12 @@ struct ContentView: View {
         } message: {
             Text(errorMessage ?? "An unknown error occurred.")
         }
-        #if DEBUG
         .onReceive(NotificationCenter.default.publisher(for: .debugStateDidChange)) { _ in
             Task { await subscriptionService.reloadEntitlement() }
             withAnimation {
                 refreshID = UUID()
             }
         }
-        #endif
     }
 
     // MARK: - Launch Screen
@@ -174,8 +172,6 @@ struct ContentView: View {
     }
 }
 
-#if DEBUG
 extension Notification.Name {
     static let debugStateDidChange = Notification.Name("debugStateDidChange")
 }
-#endif

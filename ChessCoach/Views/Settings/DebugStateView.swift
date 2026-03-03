@@ -1,8 +1,7 @@
 import SwiftUI
 
-#if DEBUG
 /// Debug menu for loading preset app states and exporting/importing snapshots.
-/// Only available in DEBUG builds.
+/// Available in DEBUG and TestFlight builds for beta testing.
 struct DebugStateView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(TokenService.self) private var tokenService
@@ -783,4 +782,3 @@ struct DebugStateView: View {
         return fmt.string(from: Date())
     }
 }
-#endif

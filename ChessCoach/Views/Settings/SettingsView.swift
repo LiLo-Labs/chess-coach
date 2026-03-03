@@ -250,18 +250,18 @@ struct SettingsView: View {
             }
             .listRowBackground(AppColor.cardBackground)
 
-            #if DEBUG
-            Section {
-                NavigationLink {
-                    DebugStateView()
-                } label: {
-                    Label("Debug States", systemImage: "ladybug")
+            if SubscriptionService.allowsTierOverride {
+                Section {
+                    NavigationLink {
+                        DebugStateView()
+                    } label: {
+                        Label("Beta Testing", systemImage: "testtube.2")
+                    }
+                } header: {
+                    Label("Beta", systemImage: "hammer")
                 }
-            } header: {
-                Label("Developer", systemImage: "hammer")
+                .listRowBackground(AppColor.cardBackground)
             }
-            .listRowBackground(AppColor.cardBackground)
-            #endif
         }
         .navigationTitle("Settings")
         .sheet(isPresented: $showProUpgrade) {
