@@ -9,6 +9,9 @@ build/
 # ONNX intermediate files
 *.onnx
 
+# On-device LLM model (downloaded at runtime from Hugging Face)
+*.gguf
+
 # Hugging Face download cache
 .cache/
 

@@ -9,7 +9,7 @@ Requires Xcode 17+, [XcodeGen](https://github.com/yonaskolb/XcodeGen), and [Git 
 ```bash
 brew install xcodegen git-lfs
 git lfs install
-git clone https://github.com/MALathon/chess-coach.git
+git clone https://github.com/LiLo-Labs/chess-coach.git
 cd chess-coach
 ```
 
@@ -24,16 +24,9 @@ Set your signing team and bundle ID in **Target → Signing & Capabilities**, th
 
 ## On-device model
 
-Qwen3-4B (~2.3 GB GGUF) is tracked via Git LFS and bundled in the binary. Beta testers get it automatically through TestFlight.
+Qwen3-4B (~2.3 GB GGUF) is downloaded automatically on first launch from Hugging Face. No manual setup needed.
 
 Fallback providers: Ollama (local network) or Claude API (cloud), configurable in Settings.
-
-To re-download the model manually:
-
-```bash
-curl -L https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf \
-  -o ChessCoach/Resources/qwen3-4b-q4_k_m.gguf
-```
 
 ## Architecture
 
