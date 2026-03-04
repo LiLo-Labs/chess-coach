@@ -106,6 +106,7 @@
 		7F97EB110B25E2CF4417F577 /* BotAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFCAE5777C6BE579572202A0 /* BotAvatarView.swift */; };
 		803818021654390D75E31F42 /* FreeOpeningPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A1EF8E1BADDEBEBF771C2E /* FreeOpeningPickerView.swift */; };
 		883650AE7EAE693E5087F6D2 /* llama.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D28EFD69B9A9AC6E2DCD75B /* llama.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8BE37560F91B86A6846D7192 /* OpeningIndicatorBannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC7551DFA272832EC2159E0 /* OpeningIndicatorBannerTests.swift */; };
 		8CE08A1FABED074CF7F2E648 /* CoachingValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341B1A08A7983B4F1184C6DE /* CoachingValidator.swift */; };
 		8E242137DD49CC9A1D211558 /* FeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FDC260D734D8B831132CF4 /* FeedbackService.swift */; };
 		8E75F54BDD3411D67906D1A8 /* CurriculumService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C265BE80A3610E556D8016C1 /* CurriculumService.swift */; };
@@ -140,6 +141,7 @@
 		ABD380CAB30C6D3F85D6C21E /* d.tsv in Resources */ = {isa = PBXBuildFile; fileRef = 1867A0DA1022B6A0D88542F6 /* d.tsv */; };
 		ACD22C78717532BF8901805C /* CardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B4D2FF3E8F712FB78D1E0A /* CardContainer.swift */; };
 		ADA1C53F5D6201675DF55762 /* ImportedGameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024801AB3D5AFACB32347F4B /* ImportedGameDetailView.swift */; };
+		AE9A032A685AA1908D390995 /* OpeningIndicatorBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BBE51C943D8F454F73F1BC /* OpeningIndicatorBanner.swift */; };
 		AFD70421FEF05BA16D72675E /* GamePlayView+ReplayBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0EC57299D9EA7D6539DCEB /* GamePlayView+ReplayBar.swift */; };
 		B0C1DBEC59D44DEFF1B77568 /* LLMConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C770663D937BE38E72D9613 /* LLMConfig.swift */; };
 		B1A90672488F161FA789E763 /* english.json in Resources */ = {isa = PBXBuildFile; fileRef = 8DA00C7F6D1D7DF09E5B556E /* english.json */; };
@@ -270,6 +272,7 @@
 		31501E26BAA6604484201596 /* french.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = french.json; sourceTree = "<group>"; };
 		316C3C4B6A21C5ECFB7412EB /* OffBookCoachingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffBookCoachingServiceTests.swift; sourceTree = "<group>"; };
 		3175B096AC5C4CC89EC1CCD5 /* ELOAssessmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ELOAssessmentView.swift; sourceTree = "<group>"; };
+		32BBE51C943D8F454F73F1BC /* OpeningIndicatorBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningIndicatorBanner.swift; sourceTree = "<group>"; };
 		332F891136AFED8AAB292209 /* OpponentResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpponentResponse.swift; sourceTree = "<group>"; };
 		336300F72FB21993A4A91474 /* GameAnalysisService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAnalysisService.swift; sourceTree = "<group>"; };
 		341B1A08A7983B4F1184C6DE /* CoachingValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachingValidator.swift; sourceTree = "<group>"; };
@@ -429,6 +432,7 @@
 		F7D0CD4928F8B4836EB000B9 /* CoachGuidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachGuidance.swift; sourceTree = "<group>"; };
 		FA7CF3B22F5147835FC7DBEB /* MoveFeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveFeedbackView.swift; sourceTree = "<group>"; };
 		FC292A6050005623D5DD1496 /* MultiArrowOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiArrowOverlay.swift; sourceTree = "<group>"; };
+		FDC7551DFA272832EC2159E0 /* OpeningIndicatorBannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningIndicatorBannerTests.swift; sourceTree = "<group>"; };
 		FE4AA3F2F495DCEE68EC8C59 /* ConceptIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConceptIntroView.swift; sourceTree = "<group>"; };
 		FF0CC07054E86C382A99D579 /* sicilian.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sicilian.json; sourceTree = "<group>"; };
 		FFFB3DE6F0EF145A730450D0 /* QuickReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickReviewView.swift; sourceTree = "<group>"; };
@@ -539,6 +543,7 @@
 			isa = PBXGroup;
 			children = (
 				2143B3E919308B6096193DB6 /* GameTopBar.swift */,
+				32BBE51C943D8F454F73F1BC /* OpeningIndicatorBanner.swift */,
 				961F8FE3E5223459C2589B33 /* PlayersBar.swift */,
 				24F00812A5CDD0A001B9E998 /* ReplayBar.swift */,
 			);
@@ -679,6 +684,14 @@
 			path = Subscription;
 			sourceTree = "<group>";
 		};
+		5C21ACFDC3D1A4B4F24E7D37 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FDC7551DFA272832EC2159E0 /* OpeningIndicatorBannerTests.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		74F1A30766BC552284FEC95E /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -796,6 +809,7 @@
 				B8C29BA1613ECAC66CAEBEA6 /* ChessCoachTests.swift */,
 				770D8201EC0ED5937BD506C7 /* Models */,
 				B47587F877E79B7DC121AEDB /* Services */,
+				5C21ACFDC3D1A4B4F24E7D37 /* Views */,
 			);
 			path = ChessCoachTests;
 			sourceTree = "<group>";
@@ -1220,6 +1234,7 @@
 				153407464C23E1214B8097CA /* LLMServiceTests.swift in Sources */,
 				FF1C97579B3EFDE64118941E /* OffBookCoachingServiceTests.swift in Sources */,
 				9088B40A68C9CAA472A56AC1 /* OpeningDatabaseTests.swift in Sources */,
+				8BE37560F91B86A6846D7192 /* OpeningIndicatorBannerTests.swift in Sources */,
 				E8EB6F8BD6792748DF4BD638 /* OpeningTests.swift in Sources */,
 				9A02F7CA0B5E5DB2D7028B52 /* PersistenceMigrationTests.swift in Sources */,
 				E75180768E098D74D02DB633 /* SessionResultTests.swift in Sources */,
@@ -1323,6 +1338,7 @@
 				1B2B9B24A0F296310D363E74 /* OpeningDetailView.swift in Sources */,
 				90A48C0BDEB0AEEE44C88102 /* OpeningDetector.swift in Sources */,
 				EB5E0148A225AFF589BE912A /* OpeningFamiliarity.swift in Sources */,
+				AE9A032A685AA1908D390995 /* OpeningIndicatorBanner.swift in Sources */,
 				BB694D968E17549AC66FC86A /* OpeningPlan.swift in Sources */,
 				3178F5266616D59190419A32 /* OpeningPreviewBoard.swift in Sources */,
 				9D4FD434BB217352E32CC783 /* OpeningSettingsView.swift in Sources */,

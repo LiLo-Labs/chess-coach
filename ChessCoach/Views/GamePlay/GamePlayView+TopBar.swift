@@ -129,6 +129,12 @@ extension GamePlayView {
                 coachLoadingBar
             }
         }
+
+        OpeningIndicatorBanner(
+            whiteOpening: viewModel.holisticDetection.whiteFramework.primary?.opening.name,
+            blackOpening: viewModel.holisticDetection.blackFramework.primary?.opening.name,
+            playerColor: viewModel.mode.playerColor
+        )
     }
 
     private var coachLoadingBar: some View {
