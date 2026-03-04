@@ -15,10 +15,10 @@ struct ReplayBar: View {
     var body: some View {
         if totalPly > 0 {
             HStack(spacing: 4) {
-                navButton(icon: "backward.end.fill", action: onGoToStart)
+                navButton(icon: "backward.end.fill", label: "Go to start", action: onGoToStart)
                     .disabled(isReplaying && replayPly == 0)
 
-                navButton(icon: "chevron.left", weight: .semibold, action: onStepBack)
+                navButton(icon: "chevron.left", label: "Step back", weight: .semibold, action: onStepBack)
                     .disabled(isReplaying && replayPly == 0)
 
                 Spacer()
@@ -35,10 +35,10 @@ struct ReplayBar: View {
 
                 Spacer()
 
-                navButton(icon: "chevron.right", weight: .semibold, action: onStepForward)
+                navButton(icon: "chevron.right", label: "Step forward", weight: .semibold, action: onStepForward)
                     .disabled(!isReplaying)
 
-                navButton(icon: "forward.end.fill", action: onGoToEnd)
+                navButton(icon: "forward.end.fill", label: "Go to end", action: onGoToEnd)
                     .disabled(!isReplaying)
 
                 if isReplaying {
@@ -51,6 +51,7 @@ struct ReplayBar: View {
                             .background(.green.opacity(0.12), in: Capsule())
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Resume")
                 }
             }
             .foregroundStyle(.white.opacity(0.6))
@@ -59,12 +60,13 @@ struct ReplayBar: View {
         }
     }
 
-    private func navButton(icon: String, weight: Font.Weight = .regular, action: @escaping () -> Void) -> some View {
+    private func navButton(icon: String, label: String, weight: Font.Weight = .regular, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: icon)
                 .font(.body.weight(weight))
                 .frame(width: 44, height: 44)
                 .contentShape(Rectangle())
         }
+        .accessibilityLabel(label)
     }
 }

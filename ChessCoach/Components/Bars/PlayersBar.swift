@@ -25,7 +25,7 @@ struct PlayersBar: View {
             Spacer()
             userSide
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, AppSpacing.screenPadding)
         .padding(.vertical, 5)
         .background(AppColor.elevatedBackground)
     }
@@ -48,6 +48,8 @@ struct PlayersBar: View {
                 ProgressView().controlSize(.mini).tint(.secondary)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(opponentName), rated \(opponentELO)\(isThinking ? ", thinking" : "")")
     }
 
     private var userSide: some View {
@@ -74,5 +76,7 @@ struct PlayersBar: View {
                 .fill(userDotColor)
                 .frame(width: 8, height: 8)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(userName), rated \(userELO)\(showYourMove ? ", your move" : "")")
     }
 }

@@ -210,25 +210,18 @@ struct SessionView: View {
                     .padding(.bottom, 4)
             }
 
-            // Deviation / off-book banners (shared components)
+            // Deviation / off-book banners
             if case let .userDeviated(expected, _) = viewModel.bookStatus {
-                UserDeviationBanner(
-                    expected: expected,
-                    isUnguided: viewModel.sessionMode == .unguided
-                )
-                .padding(.horizontal, 16)
+                deviationBanner(expected: expected)
+                    .padding(.horizontal, 16)
             } else if case let .opponentDeviated(expected, playedSAN, _) = viewModel.bookStatus {
-                OpponentDeviationBanner(
-                    expected: expected,
-                    playedSAN: playedSAN,
-                    bestResponseDescription: viewModel.bestResponseDescription
-                )
-                .padding(.horizontal, 16)
+                opponentDeviationBanner(expected: expected, played: playedSAN)
+                    .padding(.horizontal, 16)
             } else if case .offBook = viewModel.bookStatus {
-                OffBookBanner(bestResponseDescription: viewModel.bestResponseDescription)
+                offBookBanner
                     .padding(.horizontal, 16)
             } else if viewModel.discoveryMode {
-                DiscoveryBanner(optionCount: viewModel.branchPointOptions?.count ?? 2)
+                discoveryBanner
                     .padding(.horizontal, 16)
             }
 
@@ -365,6 +358,75 @@ struct SessionView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+    }
+
+    // MARK: - Status Banners
+
+    private func deviationBanner(expected: OpeningMove) -> some View {
+        let isUnguided = viewModel.sessionMode == .unguided
+
+        return VStack(alignment: .leading, spacing: 4) {
+            Text(isUnguided
+                 ? "Recommended move was \(expected.friendlyName)"
+                 : "The plan plays \(expected.friendlyName) here")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.orange)
+
+            if !expected.explanation.isEmpty {
+                Text(expected.explanation)
+                    .font(.caption2)
+                    .foregroundStyle(.primary.opacity(0.6))
+            }
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private func opponentDeviationBanner(expected: OpeningMove, played: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Opponent played \(OpeningMove.friendlyName(from: played)) instead of \(expected.friendlyName)")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.mint)
+
+            if let bestMove = viewModel.bestResponseDescription {
+                Text("Try \(bestMove)")
+                    .font(.caption2.weight(.medium))
+                    .foregroundStyle(.mint.opacity(0.8))
+            }
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.mint.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private var offBookBanner: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("On your own — play your plan")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.cyan)
+
+            if let bestMove = viewModel.bestResponseDescription {
+                Text("Suggested: \(bestMove)")
+                    .font(.caption2.weight(.medium))
+                    .foregroundStyle(.cyan.opacity(0.8))
+            }
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.cyan.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    private var discoveryBanner: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            let count = viewModel.branchPointOptions?.count ?? 2
+            Text("\(count) good options here — can you find one?")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.mint)
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.mint.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
     }
 
     // MARK: - Action Buttons
