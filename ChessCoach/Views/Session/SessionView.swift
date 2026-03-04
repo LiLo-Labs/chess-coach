@@ -198,14 +198,15 @@ struct SessionView: View {
 
     /// Convert session's CoachingFeedEntry to unified FeedEntry.
     private var sessionFeedEntries: [FeedEntry] {
-        viewModel.feedEntries.flatMap { entry -> [FeedEntry] in
+        let playerIsWhite = viewModel.opening.color == .white
+        return viewModel.feedEntries.flatMap { entry -> [FeedEntry] in
             var result: [FeedEntry] = []
             if let whiteSAN = entry.whiteSAN {
                 let fe = FeedEntry(
                     ply: entry.whitePly,
                     moveNumber: entry.moveNumber,
                     moveSAN: whiteSAN,
-                    isPlayerMove: true,
+                    isPlayerMove: playerIsWhite,
                     coaching: entry.coaching ?? "",
                     isDeviation: entry.isDeviation,
                     expectedSAN: entry.expectedSAN,
@@ -222,7 +223,7 @@ struct SessionView: View {
                     ply: blackPly,
                     moveNumber: entry.moveNumber,
                     moveSAN: blackSAN,
-                    isPlayerMove: false,
+                    isPlayerMove: !playerIsWhite,
                     coaching: ""
                 )
                 fe.fen = entry.fen
@@ -236,11 +237,11 @@ struct SessionView: View {
 
     @ViewBuilder
     private var sessionLiveStatus: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: AppSpacing.xxs) {
             if let variation = viewModel.suggestedVariation {
                 sessionVariationBanner(variation: variation)
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 4)
+                    .padding(.horizontal, AppSpacing.lg)
+                    .padding(.bottom, AppSpacing.xxs)
             }
 
             if case let .userDeviated(expected, _) = viewModel.bookStatus {
@@ -248,25 +249,25 @@ struct SessionView: View {
                     expected: expected,
                     isUnguided: viewModel.sessionMode == .unguided
                 )
-                .padding(.horizontal, 16)
+                .padding(.horizontal, AppSpacing.lg)
             } else if case let .opponentDeviated(expected, playedSAN, _) = viewModel.bookStatus {
                 DeviationBanner.OpponentDeviation(
                     expected: expected,
                     playedSAN: playedSAN,
                     bestMoveDescription: viewModel.bestResponseDescription
                 )
-                .padding(.horizontal, 16)
+                .padding(.horizontal, AppSpacing.lg)
             } else if case .offBook = viewModel.bookStatus {
                 DeviationBanner.OffBook(bestMoveDescription: viewModel.bestResponseDescription)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, AppSpacing.lg)
             } else if viewModel.discoveryMode {
                 DeviationBanner.Discovery(optionCount: viewModel.branchPointOptions?.count ?? 2)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, AppSpacing.lg)
             }
 
             sessionActionButtons
-                .padding(.horizontal, 16)
-                .padding(.vertical, 4)
+                .padding(.horizontal, AppSpacing.lg)
+                .padding(.vertical, AppSpacing.xxs)
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.bookStatus)
     }
@@ -275,7 +276,7 @@ struct SessionView: View {
 
     @ViewBuilder
     private var sessionActionButtons: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: AppSpacing.sm) {
             if case .userDeviated = viewModel.bookStatus {
                 Button(action: { viewModel.retryLastMove() }) {
                     Label("Undo", systemImage: "arrow.uturn.backward")
@@ -325,7 +326,7 @@ struct SessionView: View {
     // MARK: - Variation Banner
 
     private func sessionVariationBanner(variation: OpeningLine) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: AppSpacing.sm) {
             Image(systemName: "arrow.triangle.branch")
                 .font(.caption2)
                 .foregroundStyle(.teal)
@@ -339,14 +340,14 @@ struct SessionView: View {
                 Text("Switch")
                     .font(.caption.weight(.bold))
                     .foregroundStyle(.teal)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 4)
-                    .background(.teal.opacity(0.12), in: Capsule())
+                    .padding(.horizontal, AppSpacing.md - 2)
+                    .padding(.vertical, AppSpacing.xxs)
+                    .buttonBackground(.teal.opacity(0.12))
             }
             .buttonStyle(.plain)
         }
-        .padding(10)
-        .background(Color.teal.opacity(0.06), in: RoundedRectangle(cornerRadius: 8))
+        .padding(AppSpacing.md - 2)
+        .background(Color.teal.opacity(0.06), in: RoundedRectangle(cornerRadius: AppRadius.sm))
     }
 
     // MARK: - Eval Bar
@@ -406,7 +407,7 @@ struct SessionView: View {
                 viewModel.endSession()
                 dismiss()
             },
-            onToggleChat: {
+            onChatToggle: {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
                     showChatPanel.toggle()
                 }
@@ -414,6 +415,7 @@ struct SessionView: View {
             onUndo: { viewModel.undoMove() },
             onRedo: { viewModel.redoMove() },
             onRestart: { Task { await viewModel.restartSession() } },
+            onResign: {},
             onReportBug: { showFeedbackForm = true }
         )
     }

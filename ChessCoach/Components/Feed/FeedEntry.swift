@@ -9,9 +9,7 @@ import SwiftUI
 @Observable
 @MainActor
 final class FeedEntry: Identifiable {
-    private static var counter = 0
-
-    let id: Int
+    let id: Int                 // Stable ID derived from ply
     let ply: Int                // 0-based ply index
     let moveNumber: Int         // 1-based full move number
     let moveSAN: String
@@ -61,8 +59,7 @@ final class FeedEntry: Identifiable {
         expectedUCI: String? = nil,
         playedUCI: String? = nil
     ) {
-        FeedEntry.counter += 1
-        self.id = FeedEntry.counter
+        self.id = ply
         self.ply = ply
         self.moveNumber = moveNumber
         self.moveSAN = moveSAN

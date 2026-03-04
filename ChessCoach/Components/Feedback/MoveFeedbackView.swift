@@ -16,8 +16,7 @@ struct MoveFeedbackView: View {
             Image(systemName: isCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
                 .font(.system(size: 48))
                 .foregroundStyle(isCorrect ? AppColor.success : AppColor.error)
-                .scaleEffect(appeared ? 1.0 : 0.3)
-                .opacity(appeared ? 1.0 : 0)
+                .reveal(isVisible: appeared)
 
             Text(isCorrect ? "Correct!" : "Not quite")
                 .font(.title2.weight(.bold))
@@ -49,10 +48,6 @@ struct MoveFeedbackView: View {
             .buttonStyle(ScaleButtonStyle())
             .padding(.horizontal, AppSpacing.xxl)
         }
-        .onAppear {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
-                appeared = true
-            }
-        }
+        .onAppear { appeared = true }
     }
 }

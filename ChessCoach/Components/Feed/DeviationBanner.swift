@@ -26,6 +26,7 @@ enum DeviationBanner {
             .padding(AppSpacing.md - 2)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.sm))
+            .accessibilityElement(children: .combine)
         }
     }
 
@@ -51,6 +52,7 @@ enum DeviationBanner {
             .padding(AppSpacing.md - 2)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.mint.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.sm))
+            .accessibilityElement(children: .combine)
         }
     }
 
@@ -74,6 +76,7 @@ enum DeviationBanner {
             .padding(AppSpacing.md - 2)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.cyan.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.sm))
+            .accessibilityElement(children: .combine)
         }
     }
 
@@ -91,6 +94,7 @@ enum DeviationBanner {
             .padding(AppSpacing.md - 2)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.mint.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.sm))
+            .accessibilityElement(children: .combine)
         }
     }
 }

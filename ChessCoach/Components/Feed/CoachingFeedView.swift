@@ -22,11 +22,9 @@ struct CoachingFeedView<Header: View>: View {
     /// Empty state message.
     var emptyMessage: String = "Make your move on the board"
 
-    private var movePairs: [FeedMovePair] {
-        FeedMovePair.group(entries)
-    }
-
     var body: some View {
+        let pairs = FeedMovePair.group(entries)
+
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 0) {
@@ -40,10 +38,10 @@ struct CoachingFeedView<Header: View>: View {
                             .id("loading")
                     }
 
-                    ForEach(movePairs) { pair in
+                    ForEach(pairs) { pair in
                         FeedRowCard(
                             pair: pair,
-                            isNewest: pair.id == movePairs.first?.id,
+                            isNewest: pair.id == pairs.first?.id,
                             onTap: { onTapEntry?(pair.latestPly) },
                             explainStyle: explainStyle,
                             onRequestExplanation: onRequestExplanation
