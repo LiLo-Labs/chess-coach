@@ -709,9 +709,7 @@ struct SessionView: View {
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(.green.opacity(0.15), in: Capsule())
-                        .phaseAnimator([false, true]) { content, phase in
-                            content.opacity(phase ? 1.0 : 0.6)
-                        } animation: { _ in .easeInOut(duration: 0.8) }
+                        .pulse()
                 }
                 Text("\(viewModel.userELO)")
                     .font(.caption2.monospacedDigit())
