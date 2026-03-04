@@ -351,7 +351,7 @@ struct HomeView: View {
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
-                                .background(AppColor.success, in: Capsule())
+                                .buttonBackground(AppColor.success)
                         }
                         .buttonStyle(ScaleButtonStyle())
                         .padding(AppSpacing.sm)
@@ -393,7 +393,7 @@ struct HomeView: View {
                         .foregroundStyle(AppColor.tertiaryText)
                 }
                 .padding(AppSpacing.cardPadding)
-                .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+                .cardBackground(cornerRadius: AppRadius.lg)
                 .overlay(
                     RoundedRectangle(cornerRadius: AppRadius.lg)
                         .strokeBorder(
@@ -626,7 +626,7 @@ struct HomeView: View {
             }
             .padding(.bottom, AppSpacing.sm)
         }
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+        .cardBackground(cornerRadius: AppRadius.lg)
     }
 
     private func recentGameRow(_ game: TrainerGameResult) -> some View {
@@ -769,7 +769,7 @@ struct HomeView: View {
             }
             .buttonStyle(ScaleButtonStyle())
         }
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+        .cardBackground(cornerRadius: AppRadius.lg)
     }
 
     // MARK: - Helpers
@@ -959,7 +959,7 @@ private struct TourOverlay: View {
                     }
                 }
                 .padding(AppSpacing.cardPadding)
-                .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+                .cardBackground(cornerRadius: AppRadius.lg)
                 .padding(.horizontal, AppSpacing.screenPadding)
                 .position(
                     x: geo.size.width / 2,

@@ -289,7 +289,7 @@ struct SessionCompleteView: View {
             }
         }
         .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+        .cardBackground()
     }
 
     // MARK: - Accuracy Section (legacy)
@@ -360,7 +360,7 @@ struct SessionCompleteView: View {
             }
         }
         .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+        .cardBackground()
     }
 
     // MARK: - Progress Section
@@ -424,7 +424,7 @@ struct SessionCompleteView: View {
                     }
                     .padding(.horizontal, AppSpacing.screenPadding)
                     .padding(.vertical, AppSpacing.sm + AppSpacing.xxs)
-                    .background(AppColor.info.opacity(0.1), in: Capsule())
+                    .buttonBackground(AppColor.info.opacity(0.1))
                 }
                 .buttonStyle(.plain)
             } else {
@@ -455,7 +455,7 @@ struct SessionCompleteView: View {
                     .foregroundStyle(AppColor.primaryText)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, AppSpacing.md)
-                    .background(AppColor.guided, in: Capsule())
+                    .buttonBackground(AppColor.guided)
                 }
                 .buttonStyle(.plain)
                 .padding(.horizontal, AppSpacing.screenPadding)
@@ -468,7 +468,7 @@ struct SessionCompleteView: View {
                         .foregroundStyle(AppColor.primaryText)
                         .padding(.horizontal, AppSpacing.xxl)
                         .padding(.vertical, AppSpacing.md)
-                        .background(.ultraThinMaterial, in: Capsule())
+                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: AppRadius.md))
                 }
                 .buttonStyle(.plain)
 
@@ -478,7 +478,7 @@ struct SessionCompleteView: View {
                         .foregroundStyle(AppColor.primaryText)
                         .padding(.horizontal, AppSpacing.xxl + AppSpacing.xxs)
                         .padding(.vertical, AppSpacing.md)
-                        .background(AppColor.success, in: Capsule())
+                        .buttonBackground(AppColor.success)
                 }
                 .buttonStyle(.plain)
             }
@@ -560,7 +560,7 @@ struct SessionCompleteView: View {
             Spacer(minLength: 0)
         }
         .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+        .cardBackground()
     }
 
     // MARK: - Helpers

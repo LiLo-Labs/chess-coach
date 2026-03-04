@@ -140,7 +140,7 @@ struct LineChatView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal, AppSpacing.md)
                             .padding(.vertical, AppSpacing.sm)
-                            .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.sm))
+                            .cardBackground(cornerRadius: AppRadius.sm)
                     }
                     .buttonStyle(.plain)
                 }

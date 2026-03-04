@@ -150,7 +150,7 @@ struct OpeningPreviewBoard: View {
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+        .cardBackground()
         .onAppear {
             startAutoPlay()
         }

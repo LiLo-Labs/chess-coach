@@ -178,7 +178,7 @@ struct TrainerSetupView: View {
             }
         }
         .padding(3)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md + 3))
+        .cardBackground(cornerRadius: AppRadius.md + 3)
         .padding(.horizontal, AppSpacing.xxl)
     }
 

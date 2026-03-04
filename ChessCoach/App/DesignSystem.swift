@@ -153,7 +153,7 @@ struct EmptyStateView: View {
                         .foregroundStyle(.white)
                         .padding(.horizontal, 24)
                         .padding(.vertical, 10)
-                        .background(AppColor.guided, in: Capsule())
+                        .buttonBackground(AppColor.guided)
                 }
                 .buttonStyle(.plain)
                 .padding(.top, 8)
