@@ -240,44 +240,13 @@ struct PuzzleModeView: View {
 
             Spacer()
 
-            // Feedback card
-            VStack(spacing: AppSpacing.md) {
-                Image(systemName: feedbackIsCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .font(.system(size: 40))
-                    .foregroundStyle(feedbackIsCorrect ? AppColor.success : AppColor.error)
-                    .transition(.scale(scale: 0).combined(with: .opacity))
-
-                Text(feedbackIsCorrect ? "Correct!" : "Not quite")
-                    .font(.title3.weight(.bold))
-                    .foregroundStyle(AppColor.primaryText)
-
-                if let message = feedbackMessage {
-                    Text(message)
-                        .font(.subheadline)
-                        .foregroundStyle(AppColor.secondaryText)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, AppSpacing.xxl)
-                }
-
-                if !feedbackIsCorrect {
-                    Text("The best move was \(OpeningMove.friendlyName(from: puzzle.solutionSAN)) (\(puzzle.solutionSAN))")
-                        .font(.caption)
-                        .foregroundStyle(AppColor.tertiaryText)
-                }
-
-                Button {
-                    advanceToNext()
-                } label: {
-                    Text(currentIndex + 1 < puzzles.count ? "Next Puzzle" : "See Results")
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(AppColor.info, in: RoundedRectangle(cornerRadius: AppRadius.lg))
-                }
-                .buttonStyle(ScaleButtonStyle())
-                .padding(.horizontal, AppSpacing.xxl)
-            }
+            MoveFeedbackView(
+                isCorrect: feedbackIsCorrect,
+                message: feedbackMessage,
+                solutionText: feedbackIsCorrect ? nil : "The best move was \(OpeningMove.friendlyName(from: puzzle.solutionSAN)) (\(puzzle.solutionSAN))",
+                actionLabel: currentIndex + 1 < puzzles.count ? "Next Puzzle" : "See Results",
+                onAction: { advanceToNext() }
+            )
             .padding(.bottom, AppSpacing.xxxl)
         }
     }
@@ -288,21 +257,11 @@ struct PuzzleModeView: View {
         VStack(spacing: AppSpacing.xxl) {
             Spacer()
 
-            Image(systemName: "trophy.fill")
-                .font(.system(size: 56))
-                .foregroundStyle(AppColor.gold)
-
-            Text("Session Complete")
-                .font(.title2.weight(.bold))
-                .foregroundStyle(AppColor.primaryText)
-
-            VStack(spacing: AppSpacing.md) {
-                statRow(label: "Solved", value: "\(sessionResult.solved)/\(sessionResult.total)")
-                statRow(label: "Accuracy", value: "\(Int(sessionResult.accuracy * 100))%")
-                statRow(label: "Best Streak", value: "\(sessionResult.bestStreak)")
-            }
-            .padding(AppSpacing.cardPadding)
-            .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+            SessionSummaryCard(stats: [
+                .init(label: "Solved", value: "\(sessionResult.solved)/\(sessionResult.total)"),
+                .init(label: "Accuracy", value: "\(Int(sessionResult.accuracy * 100))%"),
+                .init(label: "Best Streak", value: "\(sessionResult.bestStreak)"),
+            ])
             .padding(.horizontal, AppSpacing.xxl)
 
             VStack(spacing: AppSpacing.sm) {
@@ -333,18 +292,6 @@ struct PuzzleModeView: View {
             .padding(.horizontal, AppSpacing.xxl)
 
             Spacer()
-        }
-    }
-
-    private func statRow(label: String, value: String) -> some View {
-        HStack {
-            Text(label)
-                .font(.subheadline)
-                .foregroundStyle(AppColor.secondaryText)
-            Spacer()
-            Text(value)
-                .font(.subheadline.weight(.bold).monospacedDigit())
-                .foregroundStyle(AppColor.primaryText)
         }
     }
 

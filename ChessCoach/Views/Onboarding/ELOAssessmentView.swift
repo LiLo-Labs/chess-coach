@@ -219,10 +219,6 @@ struct ELOAssessmentView: View {
         VStack(spacing: AppSpacing.md) {
             Spacer()
 
-            Image(systemName: isCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(isCorrect ? AppColor.success : AppColor.error)
-
             GameBoardView(
                 gameState: feedbackGameState,
                 perspective: puzzlePerspective,
@@ -231,40 +227,21 @@ struct ELOAssessmentView: View {
             .aspectRatio(1, contentMode: .fit)
             .padding(.horizontal, AppSpacing.lg)
 
-            VStack(spacing: AppSpacing.sm) {
-                Text(isCorrect ? "Correct!" : "Not quite")
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(AppColor.primaryText)
-
-                if !isCorrect, let san = currentPuzzle?.solutionSAN {
-                    Text("The move was **\(san)**")
-                        .font(.subheadline)
-                        .foregroundStyle(AppColor.secondaryText)
-                }
-
-                if let explanation = currentPuzzle?.explanation {
-                    Text(explanation)
-                        .font(.caption)
-                        .foregroundStyle(AppColor.tertiaryText)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, AppSpacing.xxxl)
-                }
-            }
+            MoveFeedbackView(
+                isCorrect: isCorrect,
+                message: currentPuzzle?.explanation,
+                solutionText: {
+                    if !isCorrect, let san = currentPuzzle?.solutionSAN {
+                        return "The move was \(san)"
+                    }
+                    return nil
+                }(),
+                actionLabel: puzzlesSolved >= maxPuzzles ? "See Results" : "Next",
+                onAction: { advanceToNextPuzzle() }
+            )
 
             Spacer()
-
-            Button {
-                advanceToNextPuzzle()
-            } label: {
-                Text(puzzlesSolved >= maxPuzzles ? "See Results" : "Next")
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(AppColor.layer(.executePlan), in: RoundedRectangle(cornerRadius: AppRadius.lg))
-            }
-            .padding(.horizontal, AppSpacing.xxxl)
-            .padding(.bottom, 40)
+                .frame(height: 40)
         }
     }
 
