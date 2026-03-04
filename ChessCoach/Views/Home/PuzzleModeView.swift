@@ -254,7 +254,7 @@ struct PuzzleModeView: View {
                 statRow(label: "Best Streak", value: "\(sessionResult.bestStreak)")
             }
             .padding(AppSpacing.cardPadding)
-            .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+            .cardBackground()
             .padding(.horizontal, AppSpacing.xxl)
 
             VStack(spacing: AppSpacing.sm) {
@@ -332,7 +332,7 @@ struct PuzzleModeView: View {
                     .foregroundStyle(AppColor.primaryText)
             }
             .padding(AppSpacing.cardPadding)
-            .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+            .cardBackground()
             .padding(.horizontal, AppSpacing.xxl)
 
             HStack(spacing: AppSpacing.md) {

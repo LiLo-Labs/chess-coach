@@ -76,7 +76,7 @@ struct ImportedGameDetailView: View {
             }
         }
         .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+        .cardBackground(cornerRadius: AppRadius.lg)
     }
 
     private var outcomeLabel: some View {
@@ -121,7 +121,7 @@ struct ImportedGameDetailView: View {
             }
         }
         .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+        .cardBackground(cornerRadius: AppRadius.lg)
     }
 
     private func statItem(label: String, value: String, color: Color) -> some View {
@@ -185,7 +185,7 @@ struct ImportedGameDetailView: View {
             }
         }
         .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+        .cardBackground(cornerRadius: AppRadius.lg)
     }
 
     private func moveButton(ply: Int) -> some View {

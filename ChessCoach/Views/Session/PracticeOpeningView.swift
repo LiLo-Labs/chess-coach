@@ -351,7 +351,7 @@ struct PracticeOpeningView: View {
                             }
                         }
                         .padding(AppSpacing.cardPadding)
-                        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+                        .cardBackground()
                     }
 
                     // Done button
@@ -361,7 +361,7 @@ struct PracticeOpeningView: View {
                             .foregroundStyle(.white)
                             .padding(.horizontal, 28)
                             .padding(.vertical, 12)
-                            .background(AppColor.success, in: Capsule())
+                            .buttonBackground(AppColor.success)
                     }
                     .buttonStyle(.plain)
 

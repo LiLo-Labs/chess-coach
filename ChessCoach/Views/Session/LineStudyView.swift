@@ -257,7 +257,7 @@ struct LineStudyView: View {
                     }
                 }
                 .padding(AppSpacing.cardPadding)
-                .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+                .cardBackground()
                 .padding(.horizontal, AppSpacing.screenPadding)
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
                 .animation(.spring(response: 0.35, dampingFraction: 0.85), value: currentPly)
@@ -272,7 +272,7 @@ struct LineStudyView: View {
                         .multilineTextAlignment(.center)
                 }
                 .padding(AppSpacing.cardPadding)
-                .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+                .cardBackground()
                 .padding(.horizontal, AppSpacing.screenPadding)
             } else {
                 VStack(spacing: AppSpacing.xs) {
@@ -287,7 +287,7 @@ struct LineStudyView: View {
                         .foregroundStyle(AppColor.secondaryText)
                 }
                 .padding(AppSpacing.cardPadding)
-                .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+                .cardBackground()
                 .padding(.horizontal, AppSpacing.screenPadding)
             }
         }

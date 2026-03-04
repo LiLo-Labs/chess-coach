@@ -425,7 +425,7 @@ struct ProGateBanner: View {
                     .foregroundStyle(AppColor.gold)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
-                    .background(AppColor.gold.opacity(0.12), in: Capsule())
+                    .buttonBackground(AppColor.gold.opacity(0.12))
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 10)

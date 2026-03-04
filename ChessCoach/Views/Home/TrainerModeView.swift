@@ -209,7 +209,7 @@ struct TrainerModeView: View {
             }
         }
         .padding(3)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md + 3))
+        .cardBackground(cornerRadius: AppRadius.md + 3)
         .padding(.horizontal, AppSpacing.xxl)
     }
 
@@ -667,7 +667,7 @@ struct TrainerModeView: View {
                     .font(.subheadline)
                 }
                 .padding(AppSpacing.cardPadding)
-                .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+                .cardBackground()
                 .padding(.horizontal, AppSpacing.xxl)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Opponent: \(result.botName), rated \(result.botELO). Mode: \(engineMode.displayName). Moves: \(result.moveCount / 2).")

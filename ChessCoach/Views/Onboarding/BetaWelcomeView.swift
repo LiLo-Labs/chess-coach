@@ -163,7 +163,7 @@ struct BetaWelcomeView: View {
         }
         .padding(AppSpacing.cardPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+        .cardBackground(cornerRadius: AppRadius.lg)
     }
 
     private func bulletPoint(_ text: LocalizedStringKey) -> some View {

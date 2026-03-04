@@ -506,7 +506,7 @@ struct SessionView: View {
                     .foregroundStyle(.teal)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
-                    .background(.teal.opacity(0.12), in: Capsule())
+                    .buttonBackground(.teal.opacity(0.12))
             }
             .buttonStyle(.plain)
         }
@@ -794,7 +794,7 @@ struct SessionView: View {
                             .foregroundStyle(.green)
                             .padding(.horizontal, 14)
                             .padding(.vertical, 8)
-                            .background(.green.opacity(0.12), in: Capsule())
+                            .buttonBackground(.green.opacity(0.12))
                     }
                     .buttonStyle(.plain)
                 }

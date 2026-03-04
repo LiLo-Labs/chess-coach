@@ -66,7 +66,7 @@ extension GamePlayView {
                             .foregroundStyle(.green)
                             .padding(.horizontal, 14)
                             .padding(.vertical, 8)
-                            .background(.green.opacity(0.12), in: Capsule())
+                            .buttonBackground(.green.opacity(0.12))
                     }
                     .buttonStyle(.plain)
                 }
