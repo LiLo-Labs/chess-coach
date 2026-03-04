@@ -60,13 +60,7 @@ struct OffBookCoachingService: Sendable {
         }
 
         // 3. Build summary
-        let moveNumber = (deviationPly / 2) + 1
-        let summary: String
-        if let deviation = opponentDeviation {
-            summary = "Your opponent left the \(opening.name) at move \(moveNumber) — they played \(deviation.played) instead of the expected \(deviation.expected)."
-        } else {
-            summary = "You left the \(opening.name) at move \(moveNumber)."
-        }
+        let summary = buildSummary(opening: opening, deviationPly: deviationPly, opponentDeviation: opponentDeviation)
 
         // 4. Build plan reminder
         let planReminder = plan.summary
@@ -98,19 +92,26 @@ struct OffBookCoachingService: Sendable {
         deviationPly: Int,
         opponentDeviation: (played: String, expected: String)?
     ) -> OffBookGuidance {
-        let moveNumber = (deviationPly / 2) + 1
-        let summary: String
-        if let deviation = opponentDeviation {
-            summary = "Your opponent left the \(opening.name) at move \(moveNumber) — they played \(deviation.played) instead of the expected \(deviation.expected)."
-        } else {
-            summary = "You left the \(opening.name) at move \(moveNumber)."
-        }
+        let summary = buildSummary(opening: opening, deviationPly: deviationPly, opponentDeviation: opponentDeviation)
         return OffBookGuidance(
             summary: summary,
             planReminder: "Keep developing your pieces toward the center and castle early.",
             suggestion: "Focus on getting your knights and bishops out before moving the same piece twice.",
             relevantGoals: []
         )
+    }
+
+    private func buildSummary(
+        opening: Opening,
+        deviationPly: Int,
+        opponentDeviation: (played: String, expected: String)?
+    ) -> String {
+        let moveNumber = (deviationPly / 2) + 1
+        if let deviation = opponentDeviation {
+            return "Your opponent left the \(opening.name) at move \(moveNumber) — they played \(deviation.played) instead of the expected \(deviation.expected)."
+        } else {
+            return "You left the \(opening.name) at move \(moveNumber)."
+        }
     }
 
     /// Check whether a condition string is already met in the current position.

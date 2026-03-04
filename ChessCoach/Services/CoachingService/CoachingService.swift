@@ -4,6 +4,7 @@ actor CoachingService {
     private let llmService: any TextGenerating
     private let curriculumService: CurriculumService
     private let featureAccess: any FeatureAccessProviding
+    private let offBookService = OffBookCoachingService()
 
     init(llmService: any TextGenerating, curriculumService: CurriculumService, featureAccess: any FeatureAccessProviding) {
         self.llmService = llmService
@@ -330,7 +331,7 @@ actor CoachingService {
         if let bookStatus = context.bookStatus, let opening = context.opening {
             switch bookStatus {
             case .offBook, .userDeviated, .opponentDeviated:
-                let service = OffBookCoachingService()
+                let service = offBookService
                 let deviationPly: Int
                 switch bookStatus {
                 case .userDeviated(_, let p): deviationPly = p
