@@ -133,12 +133,6 @@ final class PersistenceService: @unchecked Sendable {
 
     // MARK: - Position Mastery (v4 — position-level spaced rep)
 
-    func loadPositionMastery(forOpening openingID: String) -> [PositionMastery] {
-        queue.sync {
-            _loadAllPositionMastery().filter { $0.openingID == openingID }
-        }
-    }
-
     func savePositionMastery(_ positions: [PositionMastery]) {
         queue.sync {
             if let data = try? encoder.encode(positions) {
@@ -353,7 +347,9 @@ final class PersistenceService: @unchecked Sendable {
         for item in reviewItems {
             let key = "\(item.openingID)/\(item.lineID ?? "main")/\(item.ply)"
             let mistakeCount = mistakeTracker.records[key]?.totalCount ?? 0
-            // Estimate correct count: repetitions is a reasonable proxy for successful reviews
+            // Rough proxy: SM-2 repetitions counts consecutive quality>=3 reviews,
+            // so it undercounts total correct attempts. Acceptable for seeding — accuracy
+            // self-corrects as the user reviews positions under the new model.
             let correctCount = max(item.repetitions, 0)
             positions.append(PositionMastery.fromReviewItem(item, mistakeCount: mistakeCount, correctCount: correctCount))
         }

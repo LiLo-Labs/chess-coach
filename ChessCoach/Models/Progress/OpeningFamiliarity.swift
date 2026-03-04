@@ -63,8 +63,15 @@ struct OpeningFamiliarity: Sendable {
 
     /// Suggested next action.
     var suggestion: LearningAction {
-        if !dueForReview.isEmpty { return .review }
-        if !weakPositions.isEmpty { return .drillWeak }
+        var hasDue = false
+        var hasWeak = false
+        for p in positions {
+            if p.isDue { hasDue = true }
+            if p.totalAttempts > 0 && p.accuracy < 0.8 { hasWeak = true }
+            if hasDue && hasWeak { break }
+        }
+        if hasDue { return .review }
+        if hasWeak { return .drillWeak }
         if progress < 0.7 { return .learnMore }
         return .play
     }

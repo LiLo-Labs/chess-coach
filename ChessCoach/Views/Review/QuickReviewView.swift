@@ -254,7 +254,9 @@ struct QuickReviewView: View {
 
     private func handleMove(from: String, to: String, item: PositionMastery) {
         let uciMove = from + to
-        if let correct = item.correctMove, uciMove == correct {
+        let isCorrect = item.correctMove.map { uciMove == $0 } ?? false
+        scheduler.recordAttempt(id: item.id, correct: isCorrect)
+        if isCorrect {
             feedbackState = .correct
             scheduler.review(itemID: item.id, quality: 4)
             consecutiveCorrect += 1
