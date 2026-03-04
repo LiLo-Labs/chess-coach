@@ -4,7 +4,7 @@ import Foundation
 /// Superset of ReviewItem: same SM-2 fields plus attempt tracking.
 /// Key: openingID + ply + lineID.
 struct PositionMastery: Codable, Identifiable, Sendable {
-    let id: UUID
+    var id: UUID
     let openingID: String
     let fen: String
     let ply: Int
@@ -119,29 +119,3 @@ struct PositionMastery: Codable, Identifiable, Sendable {
     }
 }
 
-// Allow `id` to be set during migration
-extension PositionMastery {
-    init(
-        id: UUID,
-        openingID: String,
-        fen: String,
-        ply: Int,
-        lineID: String? = nil,
-        correctMove: String? = nil,
-        playerColor: String? = nil
-    ) {
-        self.id = id
-        self.openingID = openingID
-        self.fen = fen
-        self.ply = ply
-        self.lineID = lineID
-        self.correctMove = correctMove
-        self.playerColor = playerColor
-        self.interval = 1
-        self.easeFactor = 2.5
-        self.repetitions = 0
-        self.nextReviewDate = Date()
-        self.totalAttempts = 0
-        self.correctAttempts = 0
-    }
-}
