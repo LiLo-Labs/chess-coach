@@ -21,12 +21,16 @@ struct PuzzleModeView: View {
     @State private var showHint = false
     @State private var puzzlesSolvedToday: Int = 0
     @State private var puzzlePerspective: PieceColor = .white
+    @State private var solutionArrowFrom: String?
+    @State private var solutionArrowTo: String?
+    @State private var boardSize: CGFloat = 0
 
     private let dailyFreeLimit = 5
 
     enum PuzzlePhase {
         case loading
         case solving
+        case showingSolution
         case feedback
         case complete
         case error
@@ -48,6 +52,10 @@ struct PuzzleModeView: View {
             case .solving:
                 if let gs = gameState, let puzzle = currentPuzzle {
                     solvingView(gameState: gs, puzzle: puzzle)
+                }
+            case .showingSolution:
+                if let gs = feedbackGameState, let puzzle = currentPuzzle {
+                    solutionDisplayView(gameState: gs, puzzle: puzzle)
                 }
             case .feedback:
                 if let gs = feedbackGameState, let puzzle = currentPuzzle {
@@ -173,6 +181,46 @@ struct PuzzleModeView: View {
                 }
             }
             .padding(.bottom, AppSpacing.lg)
+        }
+    }
+
+    // MARK: - Solution Display
+
+    private func solutionDisplayView(gameState: GameState, puzzle: Puzzle) -> some View {
+        VStack(spacing: 0) {
+            Text(feedbackIsCorrect ? "Correct!" : "The best move was \(OpeningMove.friendlyName(from: puzzle.solutionSAN))")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(feedbackIsCorrect ? AppColor.success : AppColor.gold)
+                .padding(.top, AppSpacing.md)
+                .padding(.bottom, AppSpacing.xs)
+
+            GeometryReader { geo in
+                ZStack {
+                    GameBoardView(
+                        gameState: gameState,
+                        perspective: puzzlePerspective,
+                        allowInteraction: false
+                    )
+                    .aspectRatio(1, contentMode: .fit)
+
+                    MoveArrowOverlay(
+                        arrowFrom: solutionArrowFrom,
+                        arrowTo: solutionArrowTo,
+                        boardSize: min(geo.size.width, geo.size.height),
+                        perspective: puzzlePerspective == .white
+                    )
+                }
+            }
+            .aspectRatio(1, contentMode: .fit)
+            .padding(.horizontal, AppSpacing.sm)
+
+            Spacer()
+        }
+        .task {
+            try? await Task.sleep(for: .seconds(AppConfig.animation.solutionDisplayDelay))
+            withAnimation {
+                phase = .feedback
+            }
         }
     }
 
@@ -399,6 +447,13 @@ struct PuzzleModeView: View {
         correctState.makeMoveUCI(puzzle.solutionUCI)
         feedbackGameState = correctState
 
+        // Set up solution arrow from the correct move's UCI
+        let solutionUCI = puzzle.solutionUCI
+        if solutionUCI.count >= 4 {
+            solutionArrowFrom = String(solutionUCI.prefix(2))
+            solutionArrowTo = String(solutionUCI.dropFirst(2).prefix(2))
+        }
+
         if isCorrect {
             SoundService.shared.play(.correct)
             SoundService.shared.hapticCorrectMove()
@@ -414,8 +469,9 @@ struct PuzzleModeView: View {
             gameState?.undoLastMove()
         }
 
+        // Show the solution on the board briefly before advancing to feedback
         withAnimation {
-            phase = .feedback
+            phase = .showingSolution
         }
     }
 
