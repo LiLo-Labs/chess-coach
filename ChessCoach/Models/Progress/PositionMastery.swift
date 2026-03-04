@@ -1,7 +1,7 @@
 import Foundation
 
 /// Per-position spaced repetition mastery.
-/// Superset of ReviewItem: same SM-2 fields plus attempt tracking.
+/// SM-2 scheduling fields plus attempt tracking.
 /// Key: openingID + ply + lineID.
 struct PositionMastery: Codable, Identifiable, Sendable {
     var id: UUID
@@ -12,7 +12,7 @@ struct PositionMastery: Codable, Identifiable, Sendable {
     var correctMove: String?
     var playerColor: String?
 
-    // SM-2 fields (from ReviewItem)
+    // SM-2 fields
     var interval: Int
     var easeFactor: Double
     var repetitions: Int
@@ -91,31 +91,5 @@ struct PositionMastery: Codable, Identifiable, Sendable {
         if correct { correctAttempts += 1 }
     }
 
-    /// Create from a legacy ReviewItem, optionally seeding accuracy from MistakeTracker.
-    static func fromReviewItem(_ item: ReviewItem, mistakeCount: Int = 0, correctCount: Int = 0) -> PositionMastery {
-        var pm = PositionMastery(
-            openingID: item.openingID,
-            fen: item.fen,
-            ply: item.ply,
-            lineID: item.lineID,
-            correctMove: item.correctMove,
-            playerColor: item.playerColor
-        )
-        pm.id = item.id
-        pm.interval = item.interval
-        pm.easeFactor = item.easeFactor
-        pm.repetitions = item.repetitions
-        pm.nextReviewDate = item.nextReviewDate
-        pm.totalAttempts = mistakeCount + correctCount
-        pm.correctAttempts = correctCount
-        return pm
-    }
-
-    // Allow overwriting id for migration
-    private enum CodingKeys: String, CodingKey {
-        case id, openingID, fen, ply, lineID, correctMove, playerColor
-        case interval, easeFactor, repetitions, nextReviewDate
-        case totalAttempts, correctAttempts
-    }
 }
 

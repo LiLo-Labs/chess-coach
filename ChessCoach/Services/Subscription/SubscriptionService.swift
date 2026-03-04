@@ -195,12 +195,6 @@ final class SubscriptionService {
         return picked == openingID
     }
 
-    /// Check if a learning layer is accessible in the current tier.
-    func isLayerAccessible(_ layer: LearningLayer) -> Bool {
-        if layer.isFreeLayer { return true }
-        return tierSatisfies(.pro)
-    }
-
     // MARK: - Tier Comparison
 
     /// Returns true if the user's current tier meets or exceeds the required tier.

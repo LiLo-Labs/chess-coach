@@ -8,13 +8,6 @@ enum MoveCategory: String, Codable, Sendable {
     case deviation
 }
 
-enum LearningPhase: String, Codable, Sendable {
-    case learningMainLine
-    case naturalDeviations
-    case widerVariations
-    case freePlay
-}
-
 struct CoachingContext: Sendable {
     let fen: String
     let lastMove: String

@@ -864,15 +864,6 @@ extension GamePlayViewModel {
         guard mode.isSession, let opening = mode.opening else { return }
         guard stats.totalUserMoves > 0 else { return }
 
-        // Practice mode: simple progress save
-        if mode.sessionMode == .practice {
-            var progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
-            progress.practiceSessionCount += 1
-            progress.practiceAccuracy = stats.accuracy
-            PersistenceService.shared.saveProgress(progress)
-            return
-        }
-
         let accuracy = stats.accuracy
         let previousFamiliarity = openingFamiliarity
 

@@ -18,7 +18,7 @@ enum TrainingNavigation: Identifiable, Equatable {
 struct OpeningDetailView: View {
     let opening: Opening
     @State private var activeNavigation: TrainingNavigation?
-    @State private var progress: OpeningProgress
+    @State private var positions: [PositionMastery] = []
     @State private var showSettings = false
     @Environment(\.dismiss) private var dismiss
     @Environment(SubscriptionService.self) private var subscriptionService
@@ -26,7 +26,6 @@ struct OpeningDetailView: View {
 
     init(opening: Opening) {
         self.opening = opening
-        self._progress = State(initialValue: PersistenceService.shared.loadProgress(forOpening: opening.id))
     }
 
     private var allLines: [OpeningLine] {
@@ -94,7 +93,7 @@ struct OpeningDetailView: View {
     }
 
     private func refreshData() {
-        progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
+        positions = PersistenceService.shared.loadAllPositionMastery().filter { $0.openingID == opening.id }
     }
 
     // MARK: - Navigation Destination
@@ -398,10 +397,9 @@ struct OpeningDetailView: View {
 
             VStack(spacing: 0) {
                 ForEach(Array(allLines.enumerated()), id: \.element.id) { index, line in
-                    let lp = progress.progress(forLine: line.id)
-                    let unlocked = progress.isLineUnlocked(line.id, parentLineID: line.parentLineID)
+                    let linePositions = positions.filter { $0.lineID == line.id }
 
-                    lineRow(line: line, lp: lp, unlocked: unlocked)
+                    lineRow(line: line, linePositions: linePositions)
 
                     if index < allLines.count - 1 {
                         Divider()
@@ -419,78 +417,41 @@ struct OpeningDetailView: View {
         }
     }
 
-    private func lineRow(line: OpeningLine, lp: LineProgress, unlocked: Bool) -> some View {
-        let coach = CoachPersonality.forOpening(opening)
-        let guidance = CoachGuidance(
-            personality: coach,
-            familiarity: .empty(openingID: opening.id),
-            openingName: opening.name
-        )
-        let parentName = allLines.first?.name ?? opening.name
-
+    private func lineRow(line: OpeningLine, linePositions: [PositionMastery]) -> some View {
         return Button {
-            if unlocked {
-                activeNavigation = .guided(lineID: line.id)
-            }
+            activeNavigation = .guided(lineID: line.id)
         } label: {
             HStack(spacing: AppSpacing.md) {
-                // Icon
                 ZStack {
                     Circle()
-                        .fill(unlocked
-                              ? AppColor.guided.opacity(0.12)
-                              : Color.white.opacity(0.05))
+                        .fill(AppColor.guided.opacity(0.12))
                         .frame(width: 32, height: 32)
-                    Image(systemName: unlocked ? "book.fill" : "lock.fill")
+                    Image(systemName: "book.fill")
                         .font(.system(size: 12))
-                        .foregroundStyle(unlocked ? AppColor.guided : AppColor.disabledText)
+                        .foregroundStyle(AppColor.guided)
                 }
 
                 VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
                     Text(line.name)
                         .font(.subheadline.weight(.medium))
-                        .foregroundStyle(unlocked ? AppColor.primaryText : AppColor.tertiaryText)
+                        .foregroundStyle(AppColor.primaryText)
 
-                    if !unlocked {
-                        Text("\(coach.humanName): \"\(guidance.lockedPathMessage(lineName: line.name, parentLineName: parentName))\"")
+                    if !linePositions.isEmpty {
+                        let mastered = linePositions.filter(\.isMastered).count
+                        Text("\(mastered)/\(linePositions.count) positions mastered")
                             .font(.caption2)
                             .foregroundStyle(AppColor.tertiaryText)
-                            .italic()
-                    } else if lp.guidedCompletions > 0 || lp.unguidedCompletions > 0 {
-                        HStack(spacing: AppSpacing.sm) {
-                            if lp.guidedCompletions > 0 {
-                                HStack(spacing: 3) {
-                                    Image(systemName: "eye.fill")
-                                        .font(.system(size: 8))
-                                    Text("\(lp.guidedCompletions) with hints")
-                                        .font(.caption2)
-                                }
-                                .foregroundStyle(AppColor.tertiaryText)
-                            }
-                            if lp.unguidedCompletions > 0 {
-                                HStack(spacing: 3) {
-                                    Image(systemName: "brain.fill")
-                                        .font(.system(size: 8))
-                                    Text("\(lp.unguidedCompletions) without hints")
-                                        .font(.caption2)
-                                }
-                                .foregroundStyle(AppColor.tertiaryText)
-                            }
-                        }
                     }
                 }
 
                 Spacer()
 
-                if unlocked {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(AppColor.tertiaryText)
-                }
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(AppColor.tertiaryText)
             }
             .padding(.horizontal, AppSpacing.cardPadding)
             .padding(.vertical, AppSpacing.md)
-            .opacity(unlocked ? 1.0 : 0.5)
         }
         .buttonStyle(.plain)
     }

@@ -38,17 +38,13 @@ struct PersistenceMigrationTests {
         service.savePositionMastery(service.loadAllPositionMastery().filter { $0.openingID != "filter_test" && $0.openingID != "other_opening" })
     }
 
-    @Test func positionMasteryFromReviewItem() {
-        let item = ReviewItem(openingID: "migrate_test", fen: "startpos", ply: 4, lineID: "migrate_test/main", correctMove: "f1c4")
-        let pm = PositionMastery.fromReviewItem(item, mistakeCount: 3, correctCount: 2)
-
-        #expect(pm.openingID == "migrate_test")
-        #expect(pm.fen == "startpos")
-        #expect(pm.ply == 4)
-        #expect(pm.lineID == "migrate_test/main")
-        #expect(pm.correctMove == "f1c4")
-        #expect(pm.totalAttempts == 5)  // 3 mistakes + 2 correct
+    @Test func positionMasteryRecordAttemptUpdatesAccuracy() {
+        var pm = PositionMastery(openingID: "acc_test", fen: "startpos", ply: 4)
+        pm.recordAttempt(correct: true)
+        pm.recordAttempt(correct: true)
+        pm.recordAttempt(correct: false)
+        #expect(pm.totalAttempts == 3)
         #expect(pm.correctAttempts == 2)
-        #expect(pm.id == item.id) // Preserves ID
+        #expect(abs(pm.accuracy - 2.0/3.0) < 0.01)
     }
 }

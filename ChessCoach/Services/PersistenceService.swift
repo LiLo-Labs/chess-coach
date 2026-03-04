@@ -12,53 +12,29 @@ final class PersistenceService: @unchecked Sendable {
     /// concurrently (C-5 fix).
     private let queue = DispatchQueue(label: "com.chesscoach.persistence", qos: .userInitiated)
 
-    private let progressKey = "chess_coach_progress"
-    private let reviewItemsKey = "chess_coach_review_items"
     private let streakKey = "chess_coach_streak"
-    private let schemaVersionKey = "chess_coach_schema_version"
     private let mistakeTrackerKey = "chess_coach_mistakes"
     private let speedRunKey = "chess_coach_speed_runs"
-    private let masteryKey = "chess_coach_mastery"
     private let importedGamesKey = "chess_coach_imported_games"
     private let positionMasteryKey = "chess_coach_position_mastery"
 
-    private static let currentSchemaVersion = 4
+    // MARK: - Position Mastery (v4 — position-level spaced rep)
 
-    init() {
-        queue.sync { migrateIfNeeded() }
-    }
-
-    // MARK: - User Progress
-
-    func loadProgress(forOpening openingID: String) -> OpeningProgress {
-        queue.sync { _loadProgress(forOpening: openingID) }
-    }
-
-    func saveProgress(_ progress: OpeningProgress) {
-        queue.sync { _saveProgress(progress) }
-    }
-
-    func loadAllProgress() -> [String: OpeningProgress] {
-        queue.sync { _loadAllProgress() }
-    }
-
-    // MARK: - Review Items
-
-    func loadReviewItems() -> [ReviewItem] {
+    func savePositionMastery(_ positions: [PositionMastery]) {
         queue.sync {
-            guard let data = defaults.data(forKey: reviewItemsKey),
-                  let items = try? decoder.decode([ReviewItem].self, from: data) else {
-                return []
+            if let data = try? encoder.encode(positions) {
+                defaults.set(data, forKey: positionMasteryKey)
             }
-            return items
         }
     }
 
-    func saveReviewItems(_ items: [ReviewItem]) {
+    func loadAllPositionMastery() -> [PositionMastery] {
         queue.sync {
-            if let data = try? encoder.encode(items) {
-                defaults.set(data, forKey: reviewItemsKey)
+            guard let data = defaults.data(forKey: positionMasteryKey),
+                  let positions = try? decoder.decode([PositionMastery].self, from: data) else {
+                return []
             }
+            return positions
         }
     }
 
@@ -82,7 +58,7 @@ final class PersistenceService: @unchecked Sendable {
         }
     }
 
-    // MARK: - Mistake Tracker (improvement 2)
+    // MARK: - Mistake Tracker
 
     func loadMistakeTracker() -> MistakeTracker {
         queue.sync {
@@ -102,7 +78,7 @@ final class PersistenceService: @unchecked Sendable {
         }
     }
 
-    // MARK: - Speed Run Records (improvement 3)
+    // MARK: - Speed Run Records
 
     func loadSpeedRunRecords() -> [String: TimeInterval] {
         queue.sync { _loadSpeedRunRecords() }
@@ -117,35 +93,7 @@ final class PersistenceService: @unchecked Sendable {
         }
     }
 
-    // MARK: - Opening Mastery (v3 — plan-first learning)
-
-    func loadMastery(forOpening openingID: String) -> OpeningMastery {
-        queue.sync { _loadMastery(forOpening: openingID) }
-    }
-
-    func saveMastery(_ mastery: OpeningMastery) {
-        queue.sync { _saveMastery(mastery) }
-    }
-
-    func loadAllMastery() -> [String: OpeningMastery] {
-        queue.sync { _loadAllMastery() }
-    }
-
-    // MARK: - Position Mastery (v4 — position-level spaced rep)
-
-    func savePositionMastery(_ positions: [PositionMastery]) {
-        queue.sync {
-            if let data = try? encoder.encode(positions) {
-                defaults.set(data, forKey: positionMasteryKey)
-            }
-        }
-    }
-
-    func loadAllPositionMastery() -> [PositionMastery] {
-        queue.sync { _loadAllPositionMastery() }
-    }
-
-    // MARK: - Session Auto-Save (improvement 27)
+    // MARK: - Session Auto-Save
 
     func saveSessionState(_ state: [String: Any]) {
         queue.sync {
@@ -202,160 +150,9 @@ final class PersistenceService: @unchecked Sendable {
         }
     }
 
-    // MARK: - Unsynchronised helpers (must only be called while already on `queue`)
-
-    private func _loadProgress(forOpening openingID: String) -> OpeningProgress {
-        let allProgress = _loadAllProgress()
-        return allProgress[openingID] ?? OpeningProgress(openingID: openingID)
-    }
-
-    private func _saveProgress(_ progress: OpeningProgress) {
-        var allProgress = _loadAllProgress()
-        allProgress[progress.openingID] = progress
-        if let data = try? encoder.encode(allProgress) {
-            defaults.set(data, forKey: progressKey)
-        }
-    }
-
-    private func _loadAllProgress() -> [String: OpeningProgress] {
-        guard let data = defaults.data(forKey: progressKey),
-              let progress = try? decoder.decode([String: OpeningProgress].self, from: data) else {
-            return [:]
-        }
-        return progress
-    }
+    // MARK: - Private
 
     private func _loadSpeedRunRecords() -> [String: TimeInterval] {
         defaults.dictionary(forKey: speedRunKey) as? [String: TimeInterval] ?? [:]
-    }
-
-    private func _loadMastery(forOpening openingID: String) -> OpeningMastery {
-        let allMastery = _loadAllMastery()
-        return allMastery[openingID] ?? OpeningMastery(openingID: openingID)
-    }
-
-    private func _saveMastery(_ mastery: OpeningMastery) {
-        var allMastery = _loadAllMastery()
-        allMastery[mastery.openingID] = mastery
-        if let data = try? encoder.encode(allMastery) {
-            defaults.set(data, forKey: masteryKey)
-        }
-    }
-
-    private func _loadAllMastery() -> [String: OpeningMastery] {
-        guard let data = defaults.data(forKey: masteryKey),
-              let mastery = try? decoder.decode([String: OpeningMastery].self, from: data) else {
-            return [:]
-        }
-        return mastery
-    }
-
-    private func _loadAllPositionMastery() -> [PositionMastery] {
-        guard let data = defaults.data(forKey: positionMasteryKey),
-              let positions = try? decoder.decode([PositionMastery].self, from: data) else {
-            return []
-        }
-        return positions
-    }
-
-    // MARK: - Migration
-
-    private func migrateIfNeeded() {
-        let currentVersion = defaults.integer(forKey: schemaVersionKey)
-
-        if currentVersion < 2 {
-            migrateV1ToV2()
-        }
-        if currentVersion < 3 {
-            migrateV2ToV3()
-        }
-        if currentVersion < 4 {
-            migrateV3ToV4()
-        }
-
-        defaults.set(Self.currentSchemaVersion, forKey: schemaVersionKey)
-    }
-
-    /// Migrate from v1 (flat per-opening progress) to v2 (per-line progress).
-    /// Existing progress becomes the "main" line entry.
-    private func migrateV1ToV2() {
-        guard let data = defaults.data(forKey: progressKey) else { return }
-
-        // Try decoding as v1 format (no lineProgress field — will default to empty)
-        guard var allProgress = try? decoder.decode([String: OpeningProgress].self, from: data) else {
-            return
-        }
-
-        for (openingID, progress) in allProgress {
-            if progress.lineProgress.isEmpty && progress.gamesPlayed > 0 {
-                // Migrate existing aggregate progress to a main line entry
-                let mainLineID = "\(openingID)/main"
-                let mainLineProgress = LineProgress(
-                    lineID: mainLineID,
-                    openingID: openingID,
-                    currentPhase: progress.currentPhase,
-                    gamesPlayed: progress.gamesPlayed,
-                    gamesWon: progress.gamesWon,
-                    accuracyHistory: progress.accuracyHistory,
-                    lastPlayed: progress.lastPlayed,
-                    isUnlocked: true
-                )
-                allProgress[openingID]?.lineProgress[mainLineID] = mainLineProgress
-            }
-        }
-
-        if let newData = try? encoder.encode(allProgress) {
-            defaults.set(newData, forKey: progressKey)
-        }
-    }
-
-    /// Migrate from v2 (LineProgress/OpeningProgress) to v3 (OpeningMastery).
-    /// Converts existing progress data to the new plan-first learning model.
-    /// Called from `init` while already on `queue`, so uses unsynchronised helpers.
-    private func migrateV2ToV3() {
-        let allProgress = _loadAllProgress()
-        guard !allProgress.isEmpty else { return }
-
-        var allMastery: [String: OpeningMastery] = [:]
-        for (openingID, progress) in allProgress {
-            allMastery[openingID] = OpeningMastery.fromLegacy(
-                openingID: openingID,
-                progress: progress
-            )
-        }
-
-        if let data = try? encoder.encode(allMastery) {
-            defaults.set(data, forKey: masteryKey)
-        }
-    }
-
-    /// Migrate from v3 (ReviewItem + MistakeTracker) to v4 (PositionMastery).
-    /// Converts ReviewItems to PositionMastery, seeding accuracy from MistakeTracker.
-    private func migrateV3ToV4() {
-        guard let data = defaults.data(forKey: reviewItemsKey),
-              let reviewItems = try? decoder.decode([ReviewItem].self, from: data),
-              !reviewItems.isEmpty else { return }
-
-        // Load mistake tracker for accuracy seeding
-        var mistakeTracker = MistakeTracker()
-        if let mtData = defaults.data(forKey: mistakeTrackerKey),
-           let decoded = try? decoder.decode(MistakeTracker.self, from: mtData) {
-            mistakeTracker = decoded
-        }
-
-        var positions: [PositionMastery] = []
-        for item in reviewItems {
-            let key = "\(item.openingID)/\(item.lineID ?? "main")/\(item.ply)"
-            let mistakeCount = mistakeTracker.records[key]?.totalCount ?? 0
-            // Rough proxy: SM-2 repetitions counts consecutive quality>=3 reviews,
-            // so it undercounts total correct attempts. Acceptable for seeding — accuracy
-            // self-corrects as the user reviews positions under the new model.
-            let correctCount = max(item.repetitions, 0)
-            positions.append(PositionMastery.fromReviewItem(item, mistakeCount: mistakeCount, correctCount: correctCount))
-        }
-
-        if let posData = try? encoder.encode(positions) {
-            defaults.set(posData, forKey: positionMasteryKey)
-        }
     }
 }

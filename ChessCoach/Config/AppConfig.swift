@@ -152,35 +152,6 @@ enum AppConfig {
     )
 
 
-    struct Learning: Sendable {
-        struct PhaseThreshold: Sendable {
-            let promotionThreshold: Double?
-            let minimumGames: Int?
-        }
-
-        let learningMainLine: PhaseThreshold
-        let naturalDeviations: PhaseThreshold
-        let widerVariations: PhaseThreshold
-        let freePlay: PhaseThreshold
-
-        func threshold(for phase: LearningPhase) -> PhaseThreshold {
-            switch phase {
-            case .learningMainLine: return learningMainLine
-            case .naturalDeviations: return naturalDeviations
-            case .widerVariations: return widerVariations
-            case .freePlay: return freePlay
-            }
-        }
-    }
-
-    static let learning = Learning(
-        learningMainLine: .init(promotionThreshold: 60, minimumGames: 3),
-        naturalDeviations: .init(promotionThreshold: 70, minimumGames: 5),
-        widerVariations: .init(promotionThreshold: 75, minimumGames: 8),
-        freePlay: .init(promotionThreshold: nil, minimumGames: nil)
-    )
-
-
     struct Pro: Sendable {
         let productID: String
         let freeOpeningIDs: Set<String>

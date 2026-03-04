@@ -2,14 +2,13 @@ import SwiftUI
 
 struct OpeningSettingsView: View {
     let opening: Opening
-    @State private var progress: OpeningProgress
+    @State private var positions: [PositionMastery] = []
     @State private var showResetAllConfirm = false
     @State private var lineToReset: OpeningLine?
     @Environment(\.dismiss) private var dismiss
 
     init(opening: Opening) {
         self.opening = opening
-        self._progress = State(initialValue: PersistenceService.shared.loadProgress(forOpening: opening.id))
     }
 
     private var allLines: [OpeningLine] {
@@ -44,13 +43,14 @@ struct OpeningSettingsView: View {
 
                 Section("Individual Paths") {
                     ForEach(allLines) { line in
-                        let lp = progress.progress(forLine: line.id)
+                        let linePositions = positions.filter { $0.lineID == line.id }
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(line.name)
                                     .font(.subheadline.weight(.medium))
-                                if lp.gamesPlayed > 0 {
-                                    Text("\(lp.gamesPlayed) games, \(Int(lp.accuracy * 100))% accuracy")
+                                if !linePositions.isEmpty {
+                                    let mastered = linePositions.filter(\.isMastered).count
+                                    Text("\(linePositions.count) positions, \(mastered) mastered")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 } else {
@@ -62,7 +62,7 @@ struct OpeningSettingsView: View {
 
                             Spacer()
 
-                            if lp.gamesPlayed > 0 || lp.hasStudied {
+                            if !linePositions.isEmpty {
                                 Button("Restart") {
                                     lineToReset = line
                                 }
@@ -81,10 +81,13 @@ struct OpeningSettingsView: View {
                     Button("Done") { dismiss() }
                 }
             }
+            .onAppear { reloadPositions() }
             .alert("Reset All Progress?", isPresented: $showResetAllConfirm) {
                 Button("Reset", role: .destructive) {
-                    progress.resetAllProgress()
-                    PersistenceService.shared.saveProgress(progress)
+                    var all = PersistenceService.shared.loadAllPositionMastery()
+                    all.removeAll { $0.openingID == opening.id }
+                    PersistenceService.shared.savePositionMastery(all)
+                    reloadPositions()
                 }
                 Button("Cancel", role: .cancel) {}
             } message: {
@@ -96,8 +99,10 @@ struct OpeningSettingsView: View {
             )) {
                 Button("Reset", role: .destructive) {
                     if let line = lineToReset {
-                        progress.resetLineProgress(lineID: line.id)
-                        PersistenceService.shared.saveProgress(progress)
+                        var all = PersistenceService.shared.loadAllPositionMastery()
+                        all.removeAll { $0.openingID == opening.id && $0.lineID == line.id }
+                        PersistenceService.shared.savePositionMastery(all)
+                        reloadPositions()
                         lineToReset = nil
                     }
                 }
@@ -109,5 +114,9 @@ struct OpeningSettingsView: View {
             }
         }
         .preferredColorScheme(.dark)
+    }
+
+    private func reloadPositions() {
+        positions = PersistenceService.shared.loadAllPositionMastery().filter { $0.openingID == opening.id }
     }
 }
