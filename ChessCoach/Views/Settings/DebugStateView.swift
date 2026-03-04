@@ -190,9 +190,9 @@ struct DebugStateView: View {
                 statusMessage = "Onboarding reset — go back to see it"
             }
 
-            Button("Clear All Mastery Data", systemImage: "trash") {
-                UserDefaults.standard.removeObject(forKey: "chess_coach_mastery")
-                statusMessage = "Mastery data cleared"
+            Button("Clear All Position Mastery", systemImage: "trash") {
+                UserDefaults.standard.removeObject(forKey: "chess_coach_position_mastery")
+                statusMessage = "Position mastery data cleared"
             }
             .foregroundStyle(.red)
 
@@ -255,61 +255,37 @@ struct DebugStateView: View {
         nuclearReset()
         settings.hasSeenOnboarding = true
         settings.userELO = 600
-
-        let mastery = OpeningMastery(openingID: "italian")
-        PersistenceService.shared.saveMastery(mastery)
-
-        applyAndDismiss("Loaded: Italian at Layer 1 (Learn the Plan)")
+        saveDebugPositions(openingID: "italian", positionCount: 10, masteredFraction: 0.0)
+        applyAndDismiss("Loaded: Italian — Learning (0%)")
     }
 
     private func loadItalianLayer2() {
         nuclearReset()
         settings.hasSeenOnboarding = true
         settings.userELO = 800
-
-        var mastery = OpeningMastery(openingID: "italian")
-        mastery.planUnderstanding = true
-        mastery.currentLayer = .executePlan
-        mastery.executionScores = [62, 68, 71, 65, 74]
-        mastery.sessionsPlayed = 5
-        mastery.lastPlayed = Date().addingTimeInterval(-3600)
-        mastery.averagePES = 68
-        PersistenceService.shared.saveMastery(mastery)
+        saveDebugPositions(openingID: "italian", positionCount: 10, masteredFraction: 0.2)
 
         var streak = StreakTracker()
         streak.recordPractice()
         PersistenceService.shared.saveStreak(streak)
 
-        applyAndDismiss("Loaded: Italian at Layer 2 (Practice the Plan)")
+        applyAndDismiss("Loaded: Italian — Learning (20%)")
     }
 
     private func loadItalianLayer3() {
         nuclearReset()
         settings.hasSeenOnboarding = true
         settings.userELO = 1000
-
-        var mastery = OpeningMastery(openingID: "italian")
-        mastery.planUnderstanding = true
-        mastery.planQuizScore = 1.0
-        mastery.currentLayer = .discoverTheory
-        mastery.executionScores = [65, 72, 78, 74, 80]
-        mastery.sessionsPlayed = 8
-        mastery.lastPlayed = Date().addingTimeInterval(-3600)
-        mastery.averagePES = 74
-        PersistenceService.shared.saveMastery(mastery)
-
-        applyAndDismiss("Loaded: Italian at Layer 3 (The Story)")
+        saveDebugPositions(openingID: "italian", positionCount: 12, masteredFraction: 0.4)
+        applyAndDismiss("Loaded: Italian — Practicing (40%)")
     }
 
     private func loadLondonLayer1() {
         nuclearReset()
         settings.hasSeenOnboarding = true
         settings.userELO = 600
-
-        let mastery = OpeningMastery(openingID: "london")
-        PersistenceService.shared.saveMastery(mastery)
-
-        applyAndDismiss("Loaded: London at Layer 1 (Learn the Plan)")
+        saveDebugPositions(openingID: "london", positionCount: 8, masteredFraction: 0.0)
+        applyAndDismiss("Loaded: London — Learning (0%)")
     }
 
     private func loadMixedProgress() {
@@ -317,30 +293,9 @@ struct DebugStateView: View {
         settings.hasSeenOnboarding = true
         settings.userELO = 1000
 
-        var italian = OpeningMastery(openingID: "italian")
-        italian.planUnderstanding = true
-        italian.currentLayer = .discoverTheory
-        italian.executionScores = [65, 72, 78, 74, 80]
-        italian.theoryCompleted = false
-        italian.sessionsPlayed = 8
-        italian.lastPlayed = Date().addingTimeInterval(-86400)
-        italian.averagePES = 74
-        PersistenceService.shared.saveMastery(italian)
-
-        var london = OpeningMastery(openingID: "london")
-        london.currentLayer = .understandPlan
-        london.sessionsPlayed = 1
-        london.lastPlayed = Date().addingTimeInterval(-3600)
-        PersistenceService.shared.saveMastery(london)
-
-        var sicilian = OpeningMastery(openingID: "sicilian")
-        sicilian.planUnderstanding = true
-        sicilian.currentLayer = .executePlan
-        sicilian.executionScores = [45, 52, 58]
-        sicilian.sessionsPlayed = 4
-        sicilian.lastPlayed = Date().addingTimeInterval(-172800)
-        sicilian.averagePES = 52
-        PersistenceService.shared.saveMastery(sicilian)
+        saveDebugPositions(openingID: "italian", positionCount: 12, masteredFraction: 0.4)
+        saveDebugPositions(openingID: "london", positionCount: 8, masteredFraction: 0.1)
+        saveDebugPositions(openingID: "sicilian", positionCount: 10, masteredFraction: 0.2)
 
         var streak = StreakTracker()
         streak.recordPractice()
@@ -348,7 +303,7 @@ struct DebugStateView: View {
 
         settings.openingViewCounts = ["italian": 12, "london": 3, "sicilian": 6]
 
-        applyAndDismiss("Loaded: 3 openings at different layers")
+        applyAndDismiss("Loaded: 3 openings at mixed familiarity")
     }
 
     private func loadFullyComplete() {
@@ -356,29 +311,8 @@ struct DebugStateView: View {
         settings.hasSeenOnboarding = true
         settings.userELO = 1400
 
-        var italian = OpeningMastery(openingID: "italian")
-        italian.planUnderstanding = true
-        italian.currentLayer = .realConditions
-        italian.executionScores = [72, 78, 82, 85, 88, 86, 90, 87, 91, 89]
-        italian.theoryCompleted = true
-        italian.responsesHandled = ["giuoco_piano", "two_knights", "hungarian"]
-        italian.realConditionScores = [82, 85, 79, 88]
-        italian.sessionsPlayed = 28
-        italian.lastPlayed = Date().addingTimeInterval(-1800)
-        italian.averagePES = 86
-        PersistenceService.shared.saveMastery(italian)
-
-        var london = OpeningMastery(openingID: "london")
-        london.planUnderstanding = true
-        london.currentLayer = .realConditions
-        london.executionScores = [68, 74, 78, 80, 83, 85, 82, 87]
-        london.theoryCompleted = true
-        london.responsesHandled = ["kings_indian_setup", "queens_gambit_declined", "slav_setup"]
-        london.realConditionScores = [78, 80, 82]
-        london.sessionsPlayed = 22
-        london.lastPlayed = Date().addingTimeInterval(-43200)
-        london.averagePES = 81
-        PersistenceService.shared.saveMastery(london)
+        saveDebugPositions(openingID: "italian", positionCount: 15, masteredFraction: 0.9)
+        saveDebugPositions(openingID: "london", positionCount: 12, masteredFraction: 0.85)
 
         var streak = StreakTracker()
         for _ in 0..<7 { streak.recordPractice() }
@@ -386,7 +320,7 @@ struct DebugStateView: View {
 
         settings.openingViewCounts = ["italian": 30, "london": 25]
 
-        applyAndDismiss("Loaded: Both openings fully mastered")
+        applyAndDismiss("Loaded: Both openings — Familiar (85-90%)")
     }
 
     // MARK: - On-Device AI Tier Presets
@@ -396,17 +330,8 @@ struct DebugStateView: View {
         enableTier(.onDeviceAI)
         settings.hasSeenOnboarding = true
         settings.userELO = 800
-
-        var mastery = OpeningMastery(openingID: "italian")
-        mastery.planUnderstanding = true
-        mastery.currentLayer = .executePlan
-        mastery.executionScores = [55, 62, 68, 72]
-        mastery.sessionsPlayed = 6
-        mastery.lastPlayed = Date().addingTimeInterval(-3600)
-        mastery.averagePES = 64
-        PersistenceService.shared.saveMastery(mastery)
-
-        applyAndDismiss("Loaded: On-Device AI, Italian Layer 2")
+        saveDebugPositions(openingID: "italian", positionCount: 10, masteredFraction: 0.2)
+        applyAndDismiss("Loaded: On-Device AI, Italian — Learning (20%)")
     }
 
     // MARK: - Cloud AI Tier Presets
@@ -416,25 +341,8 @@ struct DebugStateView: View {
         enableTier(.cloudAI)
         settings.hasSeenOnboarding = true
         settings.userELO = 1000
-
-        var italian = OpeningMastery(openingID: "italian")
-        italian.planUnderstanding = true
-        italian.currentLayer = .discoverTheory
-        italian.executionScores = [65, 72, 78, 74, 80]
-        italian.sessionsPlayed = 8
-        italian.lastPlayed = Date().addingTimeInterval(-3600)
-        italian.averagePES = 74
-        PersistenceService.shared.saveMastery(italian)
-
-        var london = OpeningMastery(openingID: "london")
-        london.planUnderstanding = true
-        london.currentLayer = .executePlan
-        london.executionScores = [50, 58, 65]
-        london.sessionsPlayed = 4
-        london.lastPlayed = Date().addingTimeInterval(-7200)
-        london.averagePES = 58
-        PersistenceService.shared.saveMastery(london)
-
+        saveDebugPositions(openingID: "italian", positionCount: 12, masteredFraction: 0.4)
+        saveDebugPositions(openingID: "london", positionCount: 8, masteredFraction: 0.15)
         applyAndDismiss("Loaded: Cloud AI, 2 openings in progress")
     }
 
@@ -446,40 +354,10 @@ struct DebugStateView: View {
         settings.hasSeenOnboarding = true
         settings.userELO = 1200
 
-        var italian = OpeningMastery(openingID: "italian")
-        italian.planUnderstanding = true
-        italian.currentLayer = .handleVariety
-        italian.executionScores = [65, 72, 78, 80, 83, 76, 85, 81]
-        italian.theoryCompleted = true
-        italian.responsesHandled = ["giuoco_piano", "two_knights"]
-        italian.sessionsPlayed = 16
-        italian.lastPlayed = Date().addingTimeInterval(-3600)
-        italian.averagePES = 78
-        PersistenceService.shared.saveMastery(italian)
-
-        var london = OpeningMastery(openingID: "london")
-        london.planUnderstanding = true
-        london.currentLayer = .executePlan
-        london.executionScores = [55, 62, 68]
-        london.sessionsPlayed = 5
-        london.lastPlayed = Date().addingTimeInterval(-7200)
-        london.averagePES = 62
-        PersistenceService.shared.saveMastery(london)
-
-        var french = OpeningMastery(openingID: "french")
-        french.currentLayer = .understandPlan
-        french.sessionsPlayed = 0
-        PersistenceService.shared.saveMastery(french)
-
-        var caroKann = OpeningMastery(openingID: "caro-kann")
-        caroKann.planUnderstanding = true
-        caroKann.currentLayer = .discoverTheory
-        caroKann.executionScores = [60, 68, 72, 75, 78]
-        caroKann.theoryCompleted = false
-        caroKann.sessionsPlayed = 7
-        caroKann.lastPlayed = Date().addingTimeInterval(-172800)
-        caroKann.averagePES = 71
-        PersistenceService.shared.saveMastery(caroKann)
+        saveDebugPositions(openingID: "italian", positionCount: 14, masteredFraction: 0.6)
+        saveDebugPositions(openingID: "london", positionCount: 10, masteredFraction: 0.2)
+        saveDebugPositions(openingID: "french", positionCount: 6, masteredFraction: 0.0)
+        saveDebugPositions(openingID: "caro-kann", positionCount: 10, masteredFraction: 0.35)
 
         var streak = StreakTracker()
         streak.recordPractice()
@@ -499,53 +377,15 @@ struct DebugStateView: View {
         settings.hasSeenOnboarding = true
         settings.userELO = 1500
 
-        let openingConfigs: [(String, LearningLayer, [Double], [Double], Set<String>, Double)] = [
-            ("italian", .realConditions,
-             [72, 78, 82, 85, 88, 86, 90, 87, 91, 89],
-             [82, 85, 88, 90],
-             ["giuoco_piano", "two_knights", "hungarian"], 87),
-            ("london", .realConditions,
-             [68, 74, 78, 80, 83, 85, 82, 87, 84],
-             [78, 80, 82, 85],
-             ["kings_indian_setup", "queens_gambit_declined", "slav_setup"], 82),
-            ("sicilian", .handleVariety,
-             [55, 62, 68, 72, 75, 78, 80, 76],
-             [],
-             ["open_sicilian", "alapin"], 73),
-            ("french", .discoverTheory,
-             [58, 65, 70, 74, 72],
-             [],
-             [], 68),
-            ("caro-kann", .realConditions,
-             [65, 72, 78, 82, 85, 80, 83, 86],
-             [80, 83, 78],
-             ["advance", "classical", "exchange"], 80),
-            ("queens-gambit", .executePlan,
-             [52, 58, 64],
-             [],
-             [], 58),
-            ("kings-indian", .handleVariety,
-             [60, 68, 72, 75, 78, 80],
-             [],
-             ["classical", "samisch", "four_pawns"], 72),
-            ("ruy-lopez", .executePlan,
-             [48, 55, 62, 66],
-             [],
-             [], 58),
+        let openingConfigs: [(String, Double)] = [
+            ("italian", 0.85), ("london", 0.85),
+            ("sicilian", 0.65), ("french", 0.45),
+            ("caro-kann", 0.85), ("queens-gambit", 0.25),
+            ("kings-indian", 0.65), ("ruy-lopez", 0.25),
         ]
 
-        for (id, layer, execScores, realScores, responses, avgPES) in openingConfigs {
-            var mastery = OpeningMastery(openingID: id)
-            mastery.planUnderstanding = true
-            mastery.currentLayer = layer
-            mastery.executionScores = execScores
-            mastery.theoryCompleted = layer.rawValue >= LearningLayer.handleVariety.rawValue
-            mastery.responsesHandled = responses
-            mastery.realConditionScores = realScores
-            mastery.sessionsPlayed = execScores.count + realScores.count + 2
-            mastery.lastPlayed = Date().addingTimeInterval(Double.random(in: -259200...(-1800)))
-            mastery.averagePES = avgPES
-            PersistenceService.shared.saveMastery(mastery)
+        for (id, famFraction) in openingConfigs {
+            saveDebugPositions(openingID: id, positionCount: 12, masteredFraction: famFraction)
         }
 
         var streak = StreakTracker()
@@ -568,15 +408,7 @@ struct DebugStateView: View {
         settings.hasSeenOnboarding = true
         settings.userELO = 1200
 
-        // Opening mastery
-        var italian = OpeningMastery(openingID: "italian")
-        italian.planUnderstanding = true
-        italian.currentLayer = .discoverTheory
-        italian.executionScores = [65, 72, 78, 74, 80]
-        italian.sessionsPlayed = 8
-        italian.lastPlayed = Date().addingTimeInterval(-3600)
-        italian.averagePES = 74
-        PersistenceService.shared.saveMastery(italian)
+        saveDebugPositions(openingID: "italian", positionCount: 12, masteredFraction: 0.4)
 
         // Player progress — simulated ELO history
         var humanELO = ELOEstimate()
@@ -641,10 +473,8 @@ struct DebugStateView: View {
     private func exportState() {
         let defaults = UserDefaults.standard
         let keysToExport = [
-            "chess_coach_mastery",
-            "chess_coach_progress",
+            "chess_coach_position_mastery",
             "chess_coach_streak",
-            "chess_coach_review_items",
             "chess_coach_mistakes",
             "chess_coach_speed_runs",
             "chess_coach_unlocked_paths",
@@ -737,10 +567,8 @@ struct DebugStateView: View {
     private func nuclearReset() {
         let defaults = UserDefaults.standard
         let allKeys = [
-            "chess_coach_mastery",
-            "chess_coach_progress",
+            "chess_coach_position_mastery",
             "chess_coach_streak",
-            "chess_coach_review_items",
             "chess_coach_mistakes",
             "chess_coach_speed_runs",
             "chess_coach_saved_session",
@@ -780,5 +608,39 @@ struct DebugStateView: View {
         let fmt = DateFormatter()
         fmt.dateFormat = "yyyy-MM-dd-HHmmss"
         return fmt.string(from: Date())
+    }
+
+    /// Generate fake PositionMastery data for debug presets.
+    /// `positionCount` total positions, `masteredFraction` of them fully mastered.
+    private func saveDebugPositions(openingID: String, positionCount: Int, masteredFraction: Double) {
+        let masteredCount = Int(Double(positionCount) * masteredFraction)
+        var positions: [PositionMastery] = []
+        for i in 0..<positionCount {
+            var pm = PositionMastery(
+                openingID: openingID,
+                fen: "debug/\(openingID)/\(i)",
+                ply: i * 2 + 1,
+                lineID: "\(openingID)/main"
+            )
+            if i < masteredCount {
+                // Mastered: repetitions >= 3, accuracy >= 0.8
+                pm.repetitions = 4
+                pm.totalAttempts = 10
+                pm.correctAttempts = 9
+                pm.interval = 30
+                pm.nextReviewDate = Date().addingTimeInterval(86400 * 30)
+            } else {
+                // Not yet mastered
+                pm.repetitions = 1
+                pm.totalAttempts = 3
+                pm.correctAttempts = 1
+                pm.interval = 1
+                pm.nextReviewDate = Date()
+            }
+            positions.append(pm)
+        }
+        var all = PersistenceService.shared.loadAllPositionMastery().filter { $0.openingID != openingID }
+        all.append(contentsOf: positions)
+        PersistenceService.shared.savePositionMastery(all)
     }
 }

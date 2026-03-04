@@ -95,7 +95,7 @@ extension GamePlayView {
     var progressBar: some View {
         let totalPlies = viewModel.activeLine?.moves.count ?? viewModel.mode.opening?.mainLine.count ?? 0
         let moveProgress: Double = totalPlies > 0 ? Double(viewModel.gameState.plyCount) / Double(totalPlies) : 0
-        let phaseColor = AppColor.phase(viewModel.currentPhase)
+        let phaseColor = AppColor.familiarityColor(progress: viewModel.familiarityProgress)
 
         ProgressView(value: moveProgress)
             .tint(phaseColor)

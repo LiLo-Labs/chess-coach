@@ -4,49 +4,42 @@ import Foundation
 @MainActor
 struct CoachGuidance {
     let personality: CoachPersonality
-    let mastery: OpeningMastery
+    let familiarity: OpeningFamiliarity
     let openingName: String
 
     // MARK: - SessionCompleteView
 
-    func sessionCompleteMessage(pes: Double, completedMilestones: [SubMilestone]) -> String {
-        if let milestone = completedMilestones.first {
+    func sessionCompleteMessage(milestone: FamiliarityMilestone?) -> String {
+        if let milestone {
             let reaction = personality.onMilestone.randomElement() ?? "Well done!"
-            return "\(reaction) You've completed \"\(milestone.title)\"!"
+            return "\(reaction) You've reached \(milestone.thresholdPercentage)% familiarity — \(milestone.tierReached.displayName)!"
         }
 
-        let layer = mastery.currentLayer
-        if let next = layer.nextMilestone(from: mastery) {
-            if next.progress > 0.7 {
-                return "\(personality.onEncouragement.randomElement() ?? "") Almost there — \(next.title) is within reach."
-            } else if pes >= 70 {
-                return personality.onEncouragement.randomElement() ?? "Keep it up!"
-            } else if pes >= 50 {
-                return "\(personality.onNextStep.randomElement() ?? "") \(next.narrative)"
-            } else {
-                return personality.onConsolation.randomElement() ?? "Keep practicing."
-            }
+        let pct = familiarity.percentage
+        if pct >= 70 {
+            return personality.onEncouragement.randomElement() ?? "Keep it up — you're doing great!"
+        } else if pct >= 30 {
+            return "\(personality.onNextStep.randomElement() ?? "") Keep practicing to build familiarity."
+        } else {
+            return personality.onConsolation.randomElement() ?? "Keep practicing — every session helps."
         }
-
-        return personality.onSessionEnd.randomElement() ?? "Good session!"
     }
 
     // MARK: - HomeView Hero Card
 
     var welcomeBackMessage: String {
         let opener = personality.onWelcomeBack.randomElement() ?? "Welcome back!"
-        let layer = mastery.currentLayer
-        guard let next = layer.nextMilestone(from: mastery) else {
-            return "\(opener) Keep pushing your \(openingName) to new heights."
-        }
+        let pct = familiarity.percentage
 
         let context: String
-        if next.progress > 0.8 {
-            context = "You're 1 session from \"\(next.title).\" Let's go!"
-        } else if next.progress > 0.5 {
-            context = "Halfway through \"\(next.title).\" Keep the momentum."
+        if pct >= 70 {
+            context = "You're familiar with the \(openingName). Keep sharpening your skills."
+        } else if pct >= 30 {
+            context = "\(pct)% familiar — keep building your repertoire."
+        } else if pct > 0 {
+            context = "Still learning the \(openingName). Let's practice!"
         } else {
-            context = "\(next.narrative)"
+            context = "Ready to start learning the \(openingName)?"
         }
 
         return "\(opener) \(context)"

@@ -9,7 +9,7 @@ struct HomeView: View {
     @State private var showResumePrompt = false
     @State private var streak = PersistenceService.shared.loadStreak()
     @State private var dueReviewCount = 0
-    @State private var allMastery: [String: OpeningMastery] = [:]
+    @State private var allFamiliarity: [String: OpeningFamiliarity] = [:]
     @State private var showTokenStore = false
     @State private var showProgressDetail = false
     @State private var importedGames: [ImportedGame] = []
@@ -35,8 +35,8 @@ struct HomeView: View {
     private var inProgressOpenings: [Opening] {
         let allOpenings = database.openings(forColor: .white) + database.openings(forColor: .black)
         return allOpenings
-            .filter { (allMastery[$0.id]?.sessionsPlayed ?? 0) > 0 }
-            .sorted { (allMastery[$0.id]?.lastPlayed ?? .distantPast) > (allMastery[$1.id]?.lastPlayed ?? .distantPast) }
+            .filter { !(allFamiliarity[$0.id]?.positions.isEmpty ?? true) }
+            .sorted { (allFamiliarity[$0.id]?.progress ?? 0) > (allFamiliarity[$1.id]?.progress ?? 0) }
     }
 
     private var totalGamesPlayed: Int {
@@ -225,7 +225,13 @@ struct HomeView: View {
     // MARK: - Data
 
     private func refreshData() {
-        allMastery = PersistenceService.shared.loadAllMastery()
+        let allPositions = PersistenceService.shared.loadAllPositionMastery()
+        var famByOpening: [String: OpeningFamiliarity] = [:]
+        let grouped = Dictionary(grouping: allPositions, by: \.openingID)
+        for (openingID, positions) in grouped {
+            famByOpening[openingID] = OpeningFamiliarity(openingID: openingID, positions: positions)
+        }
+        allFamiliarity = famByOpening
         dueReviewCount = SpacedRepScheduler().dueItems().count
         importedGames = PersistenceService.shared.loadImportedGames()
         var s = PersistenceService.shared.loadStreak()
@@ -249,8 +255,8 @@ struct HomeView: View {
     @ViewBuilder
     private var zone1Hero: some View {
         if let opening = activeOpening {
-            let mastery = allMastery[opening.id]
-            let layerColor = mastery.map { AppColor.layer($0.currentLayer) } ?? AppColor.info
+            let fam = allFamiliarity[opening.id]
+            let famColor = fam.map { AppColor.familiarity($0.tier) } ?? AppColor.info
             NavigationLink {
                 OpeningDetailView(opening: opening)
             } label: {
@@ -271,23 +277,25 @@ struct HomeView: View {
                             .multilineTextAlignment(.leading)
 
                         HStack(spacing: AppSpacing.sm) {
-                            if let mastery {
+                            if let fam, !fam.positions.isEmpty {
                                 PillBadge(
-                                    text: mastery.currentLayer.displayName.uppercased(),
-                                    color: layerColor
+                                    text: "\(fam.percentage)% — \(fam.tier.displayName)".uppercased(),
+                                    color: famColor
                                 )
                             }
-                            Text("\(mastery?.sessionsPlayed ?? 0) sessions")
-                                .font(.caption)
-                                .foregroundStyle(AppColor.secondaryText)
+                            if let fam, !fam.positions.isEmpty {
+                                Text("\(fam.positions.count) positions")
+                                    .font(.caption)
+                                    .foregroundStyle(AppColor.secondaryText)
+                            }
                         }
 
                         // Coach welcome message
-                        if let mastery {
+                        if let fam {
                             let coach = CoachPersonality.forOpening(opening)
                             let guidance = CoachGuidance(
                                 personality: coach,
-                                mastery: mastery,
+                                familiarity: fam,
                                 openingName: opening.name
                             )
                             Text("\(coach.humanName): \"\(guidance.welcomeBackMessage)\"")
@@ -301,7 +309,7 @@ struct HomeView: View {
 
                         Text("Continue")
                             .font(.caption.weight(.semibold))
-                            .foregroundStyle(layerColor)
+                            .foregroundStyle(famColor)
                             .padding(.top, AppSpacing.xxxs)
                     }
 
@@ -315,7 +323,7 @@ struct HomeView: View {
                             RoundedRectangle(cornerRadius: AppRadius.lg)
                                 .fill(
                                     LinearGradient(
-                                        colors: [layerColor.opacity(0.12), layerColor.opacity(0.03)],
+                                        colors: [famColor.opacity(0.12), famColor.opacity(0.03)],
                                         startPoint: .topLeading,
                                         endPoint: .bottomTrailing
                                     )

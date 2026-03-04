@@ -5,7 +5,7 @@ struct QuickReviewView: View {
     let openingID: String?
     @Environment(\.dismiss) private var dismiss
     @Environment(AppSettings.self) private var settings
-    @State private var items: [ReviewItem] = []
+    @State private var items: [PositionMastery] = []
     @State private var currentIndex = 0
     @State private var reviewedCount = 0
     @State private var feedbackState: FeedbackState = .waiting
@@ -26,7 +26,7 @@ struct QuickReviewView: View {
         self._gameState = State(initialValue: GameState())
     }
 
-    private var currentItem: ReviewItem? {
+    private var currentItem: PositionMastery? {
         guard currentIndex < items.count else { return nil }
         return items[currentIndex]
     }
@@ -100,7 +100,7 @@ struct QuickReviewView: View {
         }
     }
 
-    private func reviewItemView(item: ReviewItem) -> some View {
+    private func reviewItemView(item: PositionMastery) -> some View {
         VStack(spacing: AppSpacing.lg) {
             // Progress header: count + optional opening name
             VStack(spacing: AppSpacing.xs) {
@@ -252,9 +252,11 @@ struct QuickReviewView: View {
         feedbackState = .waiting
     }
 
-    private func handleMove(from: String, to: String, item: ReviewItem) {
+    private func handleMove(from: String, to: String, item: PositionMastery) {
         let uciMove = from + to
-        if let correct = item.correctMove, uciMove == correct {
+        let isCorrect = item.correctMove.map { uciMove == $0 } ?? false
+        scheduler.recordAttempt(id: item.id, correct: isCorrect)
+        if isCorrect {
             feedbackState = .correct
             scheduler.review(itemID: item.id, quality: 4)
             consecutiveCorrect += 1

@@ -84,9 +84,9 @@ extension GamePlayViewModel {
         let category: MoveCategory = isDeviation ? .mistake : .goodMove
         maybeShowQuip(for: category)
 
-        // PES
+        // PES — show for non-guided sessions when familiarity >= 30%
         if let sessionMode = mode.sessionMode, sessionMode != .guided,
-           currentLayer.rawValue >= LearningLayer.executePlan.rawValue {
+           openingFamiliarity.progress >= 0.3 {
             if let pes = await computePES(forPly: ply, move: uciMove, fenBefore: fenBeforeMove, fenAfter: fenAfterMove) {
                 lastMovePES = pes
                 stats.moveScores.append(pes)
@@ -286,11 +286,11 @@ extension GamePlayViewModel {
         // Practice mode: try varied opponent (book moves) first
         if mode.sessionMode == .practice, let variedOpponent {
             let moveHistory = gameState.moveHistory.map { $0.from + $0.to }
-            let progress = PersistenceService.shared.loadProgress(forOpening: mode.opening?.id ?? "")
+            let positions = PersistenceService.shared.loadAllPositionMastery().filter { $0.openingID == mode.opening?.id }
             if let bookMove = variedOpponent.pickOpponentMove(
                 atPly: gameState.plyCount,
                 afterMoves: moveHistory,
-                lineProgress: progress.lineProgress
+                positionMastery: positions
             ) {
                 guard gen == sessionGeneration else { return }
                 let success = gameState.makeMoveUCI(bookMove)
@@ -864,113 +864,40 @@ extension GamePlayViewModel {
         guard mode.isSession, let opening = mode.opening else { return }
         guard stats.totalUserMoves > 0 else { return }
 
-        // Practice mode: simple progress save
-        if mode.sessionMode == .practice {
-            var progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
-            progress.practiceSessionCount += 1
-            progress.practiceAccuracy = stats.accuracy
-            PersistenceService.shared.saveProgress(progress)
-            return
-        }
-
-        var progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
-        let completed = gameState.plyCount >= activeMoves.count
         let accuracy = stats.accuracy
+        let previousFamiliarity = openingFamiliarity
 
-        let previousBest: Double
-        if let lineID = activeLineID {
-            previousBest = progress.progress(forLine: lineID).bestAccuracy
-        } else {
-            previousBest = progress.bestAccuracy
-        }
-        let isPersonalBest = accuracy > previousBest && progress.gamesPlayed > 0
-
-        var phasePromotion: SessionResult.PhasePromotion?
-        var linePhasePromotion: SessionResult.PhasePromotion?
-
-        if let lineID = activeLineID {
-            let (aggOld, lineOld) = progress.recordLineGame(lineID: lineID, accuracy: accuracy, won: completed)
-            if let old = aggOld {
-                phasePromotion = SessionResult.PhasePromotion(from: old, to: progress.currentPhase)
-            }
-            if let old = lineOld {
-                linePhasePromotion = SessionResult.PhasePromotion(from: old, to: progress.progress(forLine: lineID).currentPhase)
-            }
-            if completed {
-                switch mode.sessionMode {
-                case .guided:
-                    progress.lineProgress[lineID]?.guidedCompletions += 1
-                case .unguided:
-                    progress.lineProgress[lineID]?.unguidedCompletions += 1
-                    let currentBest = progress.lineProgress[lineID]?.unguidedBestAccuracy ?? 0
-                    progress.lineProgress[lineID]?.unguidedBestAccuracy = max(currentBest, accuracy)
-                case .practice, .none:
-                    break
-                }
-            }
-        } else {
-            let old = progress.recordGame(accuracy: accuracy, won: completed)
-            if let old {
-                phasePromotion = SessionResult.PhasePromotion(from: old, to: progress.currentPhase)
+        // Update position mastery for each position played this session
+        if let scheduler = spacedRepScheduler {
+            let moves = activeMoves
+            let playerColor = opening.color.rawValue
+            for ply in stride(from: 0, to: min(gameState.plyCount, moves.count), by: 1) {
+                // Only track positions where it's the player's turn
+                let isPlayerPly = (opening.color == .white) ? (ply % 2 == 0) : (ply % 2 == 1)
+                guard isPlayerPly else { continue }
+                scheduler.addItem(
+                    openingID: opening.id,
+                    lineID: activeLineID,
+                    fen: fenAtPly(ply),
+                    ply: ply,
+                    correctMove: moves[ply].uci,
+                    playerColor: playerColor
+                )
             }
         }
 
-        PersistenceService.shared.saveProgress(progress)
+        // Reload familiarity after position updates
+        let positions = PersistenceService.shared.loadAllPositionMastery().filter { $0.openingID == opening.id }
+        let newFamiliarity = OpeningFamiliarity(openingID: opening.id, positions: positions)
+        openingFamiliarity = newFamiliarity
 
-        var mastery = PersistenceService.shared.loadMastery(forOpening: opening.id)
-        let masteryBefore = mastery
-        let sessionPES = stats.averagePES
-        switch mastery.currentLayer {
-        case .understandPlan: break
-        case .executePlan:
-            let modeStr = mode.sessionMode == .guided ? "guided" : "unguided"
-            mastery.recordExecutionSession(pes: sessionPES, mode: modeStr)
-        case .discoverTheory: break
-        case .handleVariety:
-            if let responses = opening.opponentResponses?.responses {
-                let moveHistory = gameState.moveHistory.map { $0.from + $0.to }
-                let modeStr = mode.sessionMode == .guided ? "guided" : "unguided"
-                for response in responses {
-                    if moveHistory.contains(response.move.uci) {
-                        mastery.recordResponseHandled(responseID: response.id, pes: sessionPES, mode: modeStr)
-                    }
-                }
-            }
-        case .realConditions: mastery.recordRealConditionsSession(pes: sessionPES)
-        }
-        PersistenceService.shared.saveMastery(mastery)
-        currentLayer = mastery.currentLayer
-
-        var newlyUnlockedLines: [String] = []
-        if let lines = opening.lines {
-            for line in lines {
-                if let parentID = line.parentLineID,
-                   progress.isLineUnlocked(line.id, parentLineID: parentID) {
-                    let lp = progress.progress(forLine: line.id)
-                    if lp.gamesPlayed == 0 {
-                        newlyUnlockedLines.append(line.name)
-                    }
-                }
-            }
-        }
+        // Detect familiarity milestone
+        let milestone = FamiliarityMilestone.detect(
+            from: previousFamiliarity.progress,
+            to: newFamiliarity.progress
+        )
 
         let dueReviewCount = spacedRepScheduler?.dueItems().count ?? 0
-
-        let currentComposite: Double
-        let currentPhaseVal: LearningPhase
-        if let lineID = activeLineID {
-            let lp = progress.progress(forLine: lineID)
-            currentComposite = lp.compositeScore
-            currentPhaseVal = lp.currentPhase
-        } else {
-            currentComposite = progress.compositeScore
-            currentPhaseVal = progress.currentPhase
-        }
-
-        let nextThreshold = currentPhaseVal.promotionThreshold
-        let minGames = currentPhaseVal.minimumGames
-        let gamesPlayed = activeLineID.map { progress.progress(forLine: $0).gamesPlayed } ?? progress.gamesPlayed
-        let gamesUntilMinimum: Int? = minGames.map { max(0, $0 - gamesPlayed) }
 
         var streak = PersistenceService.shared.loadStreak()
         streak.recordPractice()
@@ -981,40 +908,32 @@ extension GamePlayViewModel {
             ? Double(stats.totalUserMoves) / (timeSpent / 60.0)
             : nil
 
-        let layerAfter = mastery.currentLayer
-        let layerPromotion: SessionResult.LayerPromotion?
-        if layerAfter != currentLayer {
-            layerPromotion = SessionResult.LayerPromotion(from: currentLayer, to: layerAfter)
-        } else {
-            layerPromotion = nil
-        }
-
-        // Milestone tracking
-        let completedMilestones = OpeningMastery.newlyCompletedMilestones(before: masteryBefore, after: mastery)
-        let nextMilestone = mastery.currentLayer.nextMilestone(from: mastery)
         let coach = CoachPersonality.forOpening(opening)
-        let guidance = CoachGuidance(personality: coach, mastery: mastery, openingName: opening.name)
-        let coachMessage = guidance.sessionCompleteMessage(pes: sessionPES, completedMilestones: completedMilestones)
+        let guidance = CoachGuidance(personality: coach, familiarity: newFamiliarity, openingName: opening.name)
+        let coachMessage = guidance.sessionCompleteMessage(milestone: milestone)
 
         sessionResult = SessionResult(
             accuracy: accuracy,
-            isPersonalBest: isPersonalBest,
-            phasePromotion: phasePromotion,
-            linePhasePromotion: linePhasePromotion,
-            newlyUnlockedLines: newlyUnlockedLines,
+            isPersonalBest: false,
             dueReviewCount: dueReviewCount,
-            compositeScore: currentComposite,
-            nextPhaseThreshold: nextThreshold,
-            gamesUntilMinimum: gamesUntilMinimum,
             timeSpent: timeSpent,
             movesPerMinute: movesPerMinute,
             averagePES: stats.moveScores.isEmpty ? nil : stats.averagePES,
             pesCategory: stats.moveScores.isEmpty ? nil : stats.pesCategory,
             moveScores: stats.moveScores.isEmpty ? nil : stats.moveScores,
-            layerPromotion: layerPromotion,
-            completedMilestones: completedMilestones,
-            nextMilestone: nextMilestone,
+            familiarityMilestone: milestone,
+            familiarityPercentage: newFamiliarity.percentage,
             coachSessionMessage: coachMessage
         )
+    }
+
+    /// Reconstruct the FEN at a given ply by replaying moves.
+    private func fenAtPly(_ ply: Int) -> String {
+        let tempState = GameState()
+        for i in 0..<min(ply, gameState.moveHistory.count) {
+            let move = gameState.moveHistory[i]
+            tempState.makeMove(from: move.from, to: move.to, promotion: move.promotion)
+        }
+        return tempState.fen
     }
 }

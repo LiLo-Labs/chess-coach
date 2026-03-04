@@ -3,46 +3,50 @@ import Foundation
 final class CurriculumService: Sendable {
     let opening: Opening
     let activeLine: OpeningLine?
-    let phase: LearningPhase
+    let familiarity: Double
 
     /// The moves to check against — active line or main line.
     private var moves: [OpeningMove] {
         activeLine?.moves ?? opening.mainLine
     }
 
-    init(opening: Opening, activeLine: OpeningLine? = nil, phase: LearningPhase) {
+    init(opening: Opening, activeLine: OpeningLine? = nil, familiarity: Double) {
         self.opening = opening
         self.activeLine = activeLine
-        self.phase = phase
+        self.familiarity = familiarity
     }
 
     /// Returns the forced UCI move for the opponent at the given ply, or nil if Maia/Stockfish should play freely.
+    /// - familiarity < 0.3: force all book moves (learning)
+    /// - familiarity 0.3–0.7: force first 4 plies (practicing)
+    /// - familiarity >= 0.7: no override (familiar)
     func getMaiaOverride(atPly ply: Int) -> String? {
         let line = moves
 
-        switch phase {
-        case .learningMainLine:
-            // Always force line moves
+        if familiarity < 0.3 {
             guard ply < line.count else { return nil }
             return line[ply].uci
-
-        case .naturalDeviations:
-            // Force line for the first few moves, allow deviation after ply 6
-            if ply < 6 && ply < line.count {
+        } else if familiarity < 0.7 {
+            if ply < 4 && ply < line.count {
                 return line[ply].uci
             }
             return nil
-
-        case .widerVariations:
-            // Force only the first 2 moves, then let the engine play
-            if ply < 2 && ply < line.count {
-                return line[ply].uci
-            }
+        } else {
             return nil
+        }
+    }
 
-        case .freePlay:
-            // Never override — engine plays freely
-            return nil
+    /// Whether coaching should be shown for this move.
+    /// - familiarity < 0.3: always coach
+    /// - familiarity 0.3–0.7: coach on non-good moves
+    /// - familiarity >= 0.7: only coach on mistakes
+    func shouldCoach(moveCategory: MoveCategory) -> Bool {
+        if familiarity < 0.3 {
+            return true
+        } else if familiarity < 0.7 {
+            return moveCategory != .goodMove
+        } else {
+            return moveCategory == .mistake
         }
     }
 
@@ -50,32 +54,17 @@ final class CurriculumService: Sendable {
     func categorizeUserMove(atPly ply: Int, move: String, stockfishScore: Int) -> MoveCategory {
         let isOnLine = !isDeviation(atPly: ply, move: move)
 
-        switch phase {
-        case .learningMainLine, .naturalDeviations:
-            if isOnLine {
-                return .goodMove
-            }
-            if abs(stockfishScore) < 50 {
-                return .okayMove
-            }
+        if familiarity < 0.3 {
+            if isOnLine { return .goodMove }
+            if abs(stockfishScore) < 50 { return .okayMove }
             return .mistake
-
-        case .widerVariations:
-            if abs(stockfishScore) < 30 {
-                return .goodMove
-            }
-            if abs(stockfishScore) < 100 {
-                return .okayMove
-            }
+        } else if familiarity < 0.7 {
+            if isOnLine { return .goodMove }
+            if abs(stockfishScore) < 100 { return .okayMove }
             return .mistake
-
-        case .freePlay:
-            if abs(stockfishScore) < 30 {
-                return .goodMove
-            }
-            if abs(stockfishScore) < 100 {
-                return .okayMove
-            }
+        } else {
+            if abs(stockfishScore) < 30 { return .goodMove }
+            if abs(stockfishScore) < 100 { return .okayMove }
             return .mistake
         }
     }
@@ -87,11 +76,11 @@ final class CurriculumService: Sendable {
         return line[ply].uci != move
     }
 
-    // MARK: - Discovery Mode (Phase 6)
+    // MARK: - Discovery Mode
 
-    /// Returns true when at a multi-child node and student phase >= naturalDeviations.
+    /// Returns true when at a multi-child node and familiarity >= 0.3.
     func shouldDiscover(atPly ply: Int) -> Bool {
-        guard phase != .learningMainLine else { return false }
+        guard familiarity >= 0.3 else { return false }
         let options = allBookMoves(atPly: ply)
         return options.count > 1
     }
@@ -105,7 +94,6 @@ final class CurriculumService: Sendable {
     // MARK: - PES-Based Categorization
 
     /// Categorize a move based on its Plan Execution Score.
-    /// Used when plan data is available (v2 flow).
     func categorizeFromPES(_ pes: PlanExecutionScore) -> MoveCategory {
         switch pes.category {
         case .masterful, .strong:
@@ -114,42 +102,6 @@ final class CurriculumService: Sendable {
             return .okayMove
         case .developing, .needsWork:
             return .mistake
-        }
-    }
-
-    /// Get Maia override for the new layer-based system.
-    /// Layers 1-2: Force book moves. Layer 3+: Free play.
-    func getMaiaOverrideForLayer(atPly ply: Int, layer: LearningLayer) -> String? {
-        let line = moves
-
-        switch layer {
-        case .understandPlan:
-            // Always force line moves during plan understanding
-            guard ply < line.count else { return nil }
-            return line[ply].uci
-
-        case .executePlan:
-            // Force opponent moves for first 4 plies to set up the position
-            if ply < 4 && ply < line.count {
-                return line[ply].uci
-            }
-            return nil
-
-        case .discoverTheory:
-            // Force book moves to demonstrate the canonical order
-            guard ply < line.count else { return nil }
-            return line[ply].uci
-
-        case .handleVariety:
-            // Force first 2 plies, then use varied opponent service
-            if ply < 2 && ply < line.count {
-                return line[ply].uci
-            }
-            return nil
-
-        case .realConditions:
-            // Never override — full freedom
-            return nil
         }
     }
 }

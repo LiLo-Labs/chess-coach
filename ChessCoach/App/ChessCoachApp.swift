@@ -11,13 +11,6 @@ struct ChessCoachApp: App {
     static let isScreenshotMode = ProcessInfo.processInfo.arguments.contains("--screenshot-mode")
 
     init() {
-        // One-time migration: clear review items saved with wrong FENs (pre-fix)
-        let migrationKey = "reviewItemsFenFix_v1"
-        if !UserDefaults.standard.bool(forKey: migrationKey) {
-            PersistenceService.shared.saveReviewItems([])
-            UserDefaults.standard.set(true, forKey: migrationKey)
-        }
-
         if Self.isScreenshotMode {
             UIView.setAnimationsEnabled(false)
         }

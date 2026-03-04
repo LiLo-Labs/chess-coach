@@ -8,42 +8,46 @@ final class SpacedRepScheduler: Sendable {
     }
 
     func addItem(openingID: String, lineID: String? = nil, fen: String, ply: Int, correctMove: String? = nil, playerColor: String? = nil) {
-        var items = storage.loadReviewItems()
-        // Don't duplicate (check openingID + ply + optional lineID)
-        guard !items.contains(where: {
-            $0.openingID == openingID && $0.ply == ply && $0.lineID == lineID
-        }) else { return }
-        let item = ReviewItem(openingID: openingID, fen: fen, ply: ply, lineID: lineID, correctMove: correctMove, playerColor: playerColor)
-        items.append(item)
-        storage.saveReviewItems(items)
+        var positions = storage.loadAllPositionMastery()
+        let candidate = PositionMastery(openingID: openingID, fen: fen, ply: ply, lineID: lineID, correctMove: correctMove, playerColor: playerColor)
+        guard !positions.contains(where: { $0.positionKey == candidate.positionKey }) else { return }
+        positions.append(candidate)
+        storage.savePositionMastery(positions)
     }
 
-    func dueItems(forOpening openingID: String? = nil) -> [ReviewItem] {
-        let items = storage.loadReviewItems()
-        return items.filter { item in
-            item.isDue && (openingID == nil || item.openingID == openingID)
+    func dueItems(forOpening openingID: String? = nil) -> [PositionMastery] {
+        storage.loadAllPositionMastery().filter { p in
+            p.isDue && (openingID == nil || p.openingID == openingID)
         }
     }
 
-    /// Get due items for a specific line.
-    func dueItems(forLine lineID: String) -> [ReviewItem] {
-        let items = storage.loadReviewItems()
-        return items.filter { $0.isDue && $0.lineID == lineID }
+    func dueItems(forLine lineID: String) -> [PositionMastery] {
+        storage.loadAllPositionMastery().filter { $0.isDue && $0.lineID == lineID }
+    }
+
+    func dueItems() -> [PositionMastery] {
+        dueItems(forOpening: nil)
     }
 
     func review(itemID: UUID, quality: Int) {
-        var items = storage.loadReviewItems()
-        guard let index = items.firstIndex(where: { $0.id == itemID }) else { return }
-        items[index].review(quality: quality)
-        storage.saveReviewItems(items)
+        var positions = storage.loadAllPositionMastery()
+        guard let index = positions.firstIndex(where: { $0.id == itemID }) else { return }
+        positions[index].review(quality: quality)
+        storage.savePositionMastery(positions)
     }
 
-    /// Find a review item by opening and ply.
-    func findItem(openingID: String, ply: Int) -> ReviewItem? {
-        storage.loadReviewItems().first { $0.openingID == openingID && $0.ply == ply }
+    func recordAttempt(id: UUID, correct: Bool) {
+        var positions = storage.loadAllPositionMastery()
+        guard let index = positions.firstIndex(where: { $0.id == id }) else { return }
+        positions[index].recordAttempt(correct: correct)
+        storage.savePositionMastery(positions)
     }
 
-    func allItems(forOpening openingID: String) -> [ReviewItem] {
-        storage.loadReviewItems().filter { $0.openingID == openingID }
+    func findItem(openingID: String, ply: Int) -> PositionMastery? {
+        storage.loadAllPositionMastery().first { $0.openingID == openingID && $0.ply == ply }
+    }
+
+    func allItems(forOpening openingID: String) -> [PositionMastery] {
+        storage.loadAllPositionMastery().filter { $0.openingID == openingID }
     }
 }

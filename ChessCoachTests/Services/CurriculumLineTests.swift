@@ -19,7 +19,7 @@ struct CurriculumLineTests {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
         let line = makeItalianLine()
-        let service = CurriculumService(opening: italian, activeLine: line, phase: .learningMainLine)
+        let service = CurriculumService(opening: italian, activeLine: line, familiarity: 0.1)
 
         #expect(service.getMaiaOverride(atPly: 0) == "e2e4")
         #expect(service.getMaiaOverride(atPly: 1) == "e7e5")
@@ -29,16 +29,16 @@ struct CurriculumLineTests {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
         let line = makeItalianLine()
-        let service = CurriculumService(opening: italian, activeLine: line, phase: .learningMainLine)
+        let service = CurriculumService(opening: italian, activeLine: line, familiarity: 0.1)
 
         #expect(service.isDeviation(atPly: 0, move: "d2d4"))
         #expect(!service.isDeviation(atPly: 0, move: "e2e4"))
     }
 
-    @Test func discoveryModeNotInLearningPhase() {
+    @Test func discoveryModeNotInLowFamiliarity() {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let service = CurriculumService(opening: italian, activeLine: nil, phase: .learningMainLine)
+        let service = CurriculumService(opening: italian, activeLine: nil, familiarity: 0.1)
 
         #expect(!service.shouldDiscover(atPly: 4))
     }
@@ -46,7 +46,7 @@ struct CurriculumLineTests {
     @Test func allBookMovesReturnsMainLine() {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let service = CurriculumService(opening: italian, activeLine: nil, phase: .naturalDeviations)
+        let service = CurriculumService(opening: italian, activeLine: nil, familiarity: 0.5)
 
         let moves = service.allBookMoves(atPly: 0)
         #expect(!moves.isEmpty)
@@ -66,7 +66,7 @@ struct CurriculumLineTests {
         )
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let service = CurriculumService(opening: italian, activeLine: shortLine, phase: .learningMainLine)
+        let service = CurriculumService(opening: italian, activeLine: shortLine, familiarity: 0.1)
 
         // Beyond the line length, should return nil (free play)
         #expect(service.getMaiaOverride(atPly: 2) == nil)
@@ -78,7 +78,7 @@ struct CurriculumLineTests {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
         let line = makeItalianLine()
-        let service = CurriculumService(opening: italian, activeLine: line, phase: .learningMainLine)
+        let service = CurriculumService(opening: italian, activeLine: line, familiarity: 0.1)
 
         let category = service.categorizeUserMove(atPly: 0, move: "e2e4", stockfishScore: 20)
         #expect(category == .goodMove)

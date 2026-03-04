@@ -5,8 +5,13 @@ struct ProgressDetailView: View {
     @Environment(AppSettings.self) private var settings
     private let progressService = PlayerProgressService.shared
     private var styleProfile: StyleProfile {
-        let mastery = PersistenceService.shared.loadAllMastery()
-        return StyleProfile.compute(mastery: mastery, database: OpeningDatabase.shared)
+        let allPositions = PersistenceService.shared.loadAllPositionMastery()
+        let grouped = Dictionary(grouping: allPositions, by: \.openingID)
+        var fam: [String: OpeningFamiliarity] = [:]
+        for (id, positions) in grouped {
+            fam[id] = OpeningFamiliarity(openingID: id, positions: positions)
+        }
+        return StyleProfile.compute(familiarity: fam, database: OpeningDatabase.shared)
     }
 
     var body: some View {

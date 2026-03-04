@@ -32,8 +32,7 @@ enum ScreenshotStateLoader {
 
         case "italianLayer1":
             defaults.set(600, forKey: AppSettings.Key.userELO)
-            let mastery = OpeningMastery(openingID: "italian")
-            PersistenceService.shared.saveMastery(mastery)
+            saveDebugPositions(openingID: "italian", positionCount: 10, masteredFraction: 0.0)
 
         case "freshInstall":
             defaults.set(false, forKey: AppSettings.Key.hasSeenOnboarding)
@@ -46,8 +45,8 @@ enum ScreenshotStateLoader {
     private static func nuclearReset() {
         let defaults = UserDefaults.standard
         let allKeys = [
-            "chess_coach_mastery", "chess_coach_progress", "chess_coach_streak",
-            "chess_coach_review_items", "chess_coach_mistakes", "chess_coach_speed_runs",
+            "chess_coach_position_mastery",
+            "chess_coach_streak", "chess_coach_mistakes", "chess_coach_speed_runs",
             "chess_coach_saved_session", "chess_coach_consecutive_correct",
             "chess_coach_unlocked_paths", "has_seen_onboarding", "user_elo",
             "opponent_elo", "opening_view_counts", "daily_goal_target",
@@ -64,25 +63,8 @@ enum ScreenshotStateLoader {
     }
 
     private static func loadProMidwayMastery() {
-        var italian = OpeningMastery(openingID: "italian")
-        italian.planUnderstanding = true
-        italian.currentLayer = .handleVariety
-        italian.executionScores = [65, 72, 78, 80, 83, 76, 85, 81]
-        italian.theoryCompleted = true
-        italian.responsesHandled = ["giuoco_piano", "two_knights"]
-        italian.sessionsPlayed = 16
-        italian.lastPlayed = Date().addingTimeInterval(-3600)
-        italian.averagePES = 78
-        PersistenceService.shared.saveMastery(italian)
-
-        var london = OpeningMastery(openingID: "london")
-        london.planUnderstanding = true
-        london.currentLayer = .executePlan
-        london.executionScores = [55, 62, 68]
-        london.sessionsPlayed = 5
-        london.lastPlayed = Date().addingTimeInterval(-7200)
-        london.averagePES = 62
-        PersistenceService.shared.saveMastery(london)
+        saveDebugPositions(openingID: "italian", positionCount: 14, masteredFraction: 0.6)
+        saveDebugPositions(openingID: "london", positionCount: 10, masteredFraction: 0.2)
 
         var streak = StreakTracker()
         streak.recordPractice()
@@ -117,6 +99,25 @@ enum ScreenshotStateLoader {
         if let data = try? JSONEncoder().encode(engineELO) {
             UserDefaults.standard.set(data, forKey: "player_elo_engine")
         }
+    }
+
+    private static func saveDebugPositions(openingID: String, positionCount: Int, masteredFraction: Double) {
+        let masteredCount = Int(Double(positionCount) * masteredFraction)
+        var positions: [PositionMastery] = []
+        for i in 0..<positionCount {
+            var pm = PositionMastery(openingID: openingID, fen: "debug/\(openingID)/\(i)", ply: i * 2 + 1, lineID: "\(openingID)/main")
+            if i < masteredCount {
+                pm.repetitions = 4; pm.totalAttempts = 10; pm.correctAttempts = 9
+                pm.interval = 30; pm.nextReviewDate = Date().addingTimeInterval(86400 * 30)
+            } else {
+                pm.repetitions = 1; pm.totalAttempts = 3; pm.correctAttempts = 1
+                pm.interval = 1; pm.nextReviewDate = Date()
+            }
+            positions.append(pm)
+        }
+        var all = PersistenceService.shared.loadAllPositionMastery().filter { $0.openingID != openingID }
+        all.append(contentsOf: positions)
+        PersistenceService.shared.savePositionMastery(all)
     }
 }
 #endif

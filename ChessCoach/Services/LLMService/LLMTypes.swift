@@ -8,13 +8,6 @@ enum MoveCategory: String, Codable, Sendable {
     case deviation
 }
 
-enum LearningPhase: String, Codable, Sendable {
-    case learningMainLine
-    case naturalDeviations
-    case widerVariations
-    case freePlay
-}
-
 struct CoachingContext: Sendable {
     let fen: String
     let lastMove: String
@@ -25,7 +18,7 @@ struct CoachingContext: Sendable {
     let expectedMoveExplanation: String?
     let expectedMoveSAN: String?
     let userELO: Int
-    let phase: LearningPhase
+    let familiarityPercent: Int
     let moveCategory: MoveCategory
     let moveHistory: String
     let isUserMove: Bool

@@ -89,7 +89,7 @@ struct ContentView: View {
 
                 VStack(spacing: AppSpacing.md) {
                     ProgressView(value: loadingProgress)
-                        .tint(AppColor.layer(.executePlan))
+                        .tint(AppColor.familiarity(.learning))
                         .frame(maxWidth: 200)
 
                     Text(loadingStep)
@@ -131,7 +131,7 @@ struct ContentView: View {
 
         // Step 4: Load user progress
         updateStep("Loading your progress...", progress: 0.2)
-        _ = PersistenceService.shared.loadAllMastery()
+        _ = PersistenceService.shared.loadAllPositionMastery()
         await Task.yield()
 
         // Step 5: Start chess engine (skip in screenshot mode)

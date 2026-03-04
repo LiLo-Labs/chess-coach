@@ -8,126 +8,108 @@ struct SessionResultTests {
         let result = SessionResult(
             accuracy: 0.85,
             isPersonalBest: true,
-            phasePromotion: SessionResult.PhasePromotion(from: .learningMainLine, to: .naturalDeviations),
-            linePhasePromotion: nil,
-            newlyUnlockedLines: ["Evans Gambit"],
             dueReviewCount: 3,
-            compositeScore: 62.5,
-            nextPhaseThreshold: 70,
-            gamesUntilMinimum: 2,
             timeSpent: nil,
             movesPerMinute: nil,
             averagePES: nil,
             pesCategory: nil,
             moveScores: nil,
-            layerPromotion: nil
+            familiarityMilestone: FamiliarityMilestone(
+                previousProgress: 0.25,
+                newProgress: 0.35,
+                crossedThreshold: 0.3
+            ),
+            familiarityPercentage: 35
         )
         #expect(result.accuracy == 0.85)
         #expect(result.isPersonalBest == true)
-        #expect(result.phasePromotion?.from == .learningMainLine)
-        #expect(result.phasePromotion?.to == .naturalDeviations)
-        #expect(result.linePhasePromotion == nil)
-        #expect(result.newlyUnlockedLines == ["Evans Gambit"])
         #expect(result.dueReviewCount == 3)
-        #expect(result.compositeScore == 62.5)
-        #expect(result.nextPhaseThreshold == 70)
-        #expect(result.gamesUntilMinimum == 2)
+        #expect(result.familiarityMilestone?.crossedThreshold == 0.3)
+        #expect(result.familiarityPercentage == 35)
     }
 
-    @Test func sessionResultWithNoPromotion() {
+    @Test func sessionResultWithNoMilestone() {
         let result = SessionResult(
             accuracy: 0.6,
             isPersonalBest: false,
-            phasePromotion: nil,
-            linePhasePromotion: nil,
-            newlyUnlockedLines: [],
             dueReviewCount: 0,
-            compositeScore: 45.0,
-            nextPhaseThreshold: 60,
-            gamesUntilMinimum: 1,
             timeSpent: nil,
             movesPerMinute: nil,
             averagePES: nil,
             pesCategory: nil,
             moveScores: nil,
-            layerPromotion: nil
+            familiarityPercentage: 20
         )
-        #expect(result.phasePromotion == nil)
+        #expect(result.familiarityMilestone == nil)
         #expect(!result.isPersonalBest)
-        #expect(result.newlyUnlockedLines.isEmpty)
-    }
-
-    @Test func sessionResultAtFreePlay() {
-        let result = SessionResult(
-            accuracy: 0.95,
-            isPersonalBest: true,
-            phasePromotion: nil,
-            linePhasePromotion: nil,
-            newlyUnlockedLines: [],
-            dueReviewCount: 0,
-            compositeScore: 80.0,
-            nextPhaseThreshold: nil,
-            gamesUntilMinimum: nil,
-            timeSpent: nil,
-            movesPerMinute: nil,
-            averagePES: nil,
-            pesCategory: nil,
-            moveScores: nil,
-            layerPromotion: nil
-        )
-        #expect(result.nextPhaseThreshold == nil)
-        #expect(result.gamesUntilMinimum == nil)
+        #expect(result.familiarityPercentage == 20)
     }
 }
 
 @Suite(.serialized)
-struct RecordGameReturnTests {
-    @Test func recordGameReturnsNilWhenNoPromotion() {
-        var progress = OpeningProgress(openingID: "test")
-        let oldPhase = progress.recordGame(accuracy: 0.5, won: false)
-        #expect(oldPhase == nil)
-        #expect(progress.currentPhase == .learningMainLine)
+struct FamiliarityMilestoneTests {
+    @Test func detectCrossing30Percent() {
+        let milestone = FamiliarityMilestone.detect(from: 0.25, to: 0.35)
+        #expect(milestone != nil)
+        #expect(milestone?.crossedThreshold == 0.3)
+        #expect(milestone?.thresholdPercentage == 30)
+        #expect(milestone?.tierReached == .practicing)
     }
 
-    @Test func recordGameReturnsPreviousPhaseOnPromotion() {
-        var progress = OpeningProgress(openingID: "test")
-        var promotionResults: [LearningPhase] = []
-        for _ in 0..<5 {
-            if let oldPhase = progress.recordGame(accuracy: 0.95, won: true) {
-                promotionResults.append(oldPhase)
-            }
-        }
-        // Should have promoted at least once
-        #expect(!promotionResults.isEmpty)
-        // First promotion should be from learningMainLine
-        #expect(promotionResults.first == .learningMainLine)
+    @Test func detectCrossing70Percent() {
+        let milestone = FamiliarityMilestone.detect(from: 0.65, to: 0.75)
+        #expect(milestone != nil)
+        #expect(milestone?.crossedThreshold == 0.7)
+        #expect(milestone?.tierReached == .familiar)
     }
 
-    @Test func bestAccuracyTracked() {
-        var progress = OpeningProgress(openingID: "test")
-        progress.recordGame(accuracy: 0.7, won: true)
-        progress.recordGame(accuracy: 0.9, won: true)
-        progress.recordGame(accuracy: 0.8, won: true)
-        #expect(progress.bestAccuracy == 0.9)
+    @Test func detectCrossing100Percent() {
+        let milestone = FamiliarityMilestone.detect(from: 0.95, to: 1.0)
+        #expect(milestone != nil)
+        #expect(milestone?.crossedThreshold == 1.0)
     }
 
-    @Test func lineRecordGameReturnsPreviousPhaseOnPromotion() {
-        var lp = LineProgress(lineID: "test/main", openingID: "test")
-        var promotionResults: [LearningPhase] = []
-        for _ in 0..<5 {
-            if let oldPhase = lp.recordGame(accuracy: 0.95, won: true) {
-                promotionResults.append(oldPhase)
-            }
-        }
-        #expect(!promotionResults.isEmpty)
-        #expect(promotionResults.first == .learningMainLine)
+    @Test func noMilestoneWithinSameTier() {
+        let milestone = FamiliarityMilestone.detect(from: 0.1, to: 0.2)
+        #expect(milestone == nil)
     }
 
-    @Test func lineBestAccuracyTracked() {
-        var lp = LineProgress(lineID: "test/main", openingID: "test")
-        lp.recordGame(accuracy: 0.6, won: false)
-        lp.recordGame(accuracy: 0.85, won: true)
-        lp.recordGame(accuracy: 0.75, won: true)
-        #expect(lp.bestAccuracy == 0.85)
+    @Test func noMilestoneWhenDecreasing() {
+        let milestone = FamiliarityMilestone.detect(from: 0.8, to: 0.6)
+        #expect(milestone == nil)
+    }
+}
+
+@Suite(.serialized)
+struct OpeningFamiliarityTests {
+    @Test func emptyFamiliarityIsZero() {
+        let fam = OpeningFamiliarity.empty(openingID: "test")
+        #expect(fam.progress == 0)
+        #expect(fam.percentage == 0)
+        #expect(fam.tier == .learning)
+        #expect(fam.suggestion == .learnMore)
+    }
+
+    @Test func progressCountsMasteredPositions() {
+        var mastered = PositionMastery(openingID: "test", fen: "pos1", ply: 1)
+        mastered.repetitions = 4
+        mastered.totalAttempts = 10
+        mastered.correctAttempts = 9
+
+        let notMastered = PositionMastery(openingID: "test", fen: "pos2", ply: 3)
+
+        let fam = OpeningFamiliarity(openingID: "test", positions: [mastered, notMastered])
+        #expect(fam.progress == 0.5)
+        #expect(fam.percentage == 50)
+        #expect(fam.tier == .practicing)
+    }
+
+    @Test func tierThresholds() {
+        #expect(FamiliarityTier.from(progress: 0.0) == .learning)
+        #expect(FamiliarityTier.from(progress: 0.29) == .learning)
+        #expect(FamiliarityTier.from(progress: 0.3) == .practicing)
+        #expect(FamiliarityTier.from(progress: 0.69) == .practicing)
+        #expect(FamiliarityTier.from(progress: 0.7) == .familiar)
+        #expect(FamiliarityTier.from(progress: 1.0) == .familiar)
     }
 }

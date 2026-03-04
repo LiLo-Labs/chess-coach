@@ -6,33 +6,33 @@ struct CoachingServiceTests {
     @Test func shouldCoachAlwaysDuringLearning() async {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let curriculum = CurriculumService(opening: italian, phase: .learningMainLine)
+        let curriculum = CurriculumService(opening: italian, familiarity: 0.1)
         let llm = LLMService()
         let coaching = CoachingService(llmService: llm, curriculumService: curriculum, featureAccess: UnlockedAccess())
 
-        let should = await coaching.shouldCoach(moveCategory: .goodMove, phase: .learningMainLine)
+        let should = await coaching.shouldCoach(moveCategory: .goodMove)
         #expect(should)
     }
 
-    @Test func shouldNotCoachGoodMoveInFreePlay() async {
+    @Test func shouldNotCoachGoodMoveWhenFamiliar() async {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let curriculum = CurriculumService(opening: italian, phase: .freePlay)
+        let curriculum = CurriculumService(opening: italian, familiarity: 0.8)
         let llm = LLMService()
         let coaching = CoachingService(llmService: llm, curriculumService: curriculum, featureAccess: UnlockedAccess())
 
-        let should = await coaching.shouldCoach(moveCategory: .goodMove, phase: .freePlay)
+        let should = await coaching.shouldCoach(moveCategory: .goodMove)
         #expect(!should)
     }
 
-    @Test func shouldCoachMistakeInFreePlay() async {
+    @Test func shouldCoachMistakeWhenFamiliar() async {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let curriculum = CurriculumService(opening: italian, phase: .freePlay)
+        let curriculum = CurriculumService(opening: italian, familiarity: 0.8)
         let llm = LLMService()
         let coaching = CoachingService(llmService: llm, curriculumService: curriculum, featureAccess: UnlockedAccess())
 
-        let should = await coaching.shouldCoach(moveCategory: .mistake, phase: .freePlay)
+        let should = await coaching.shouldCoach(moveCategory: .mistake)
         #expect(should)
     }
 }
