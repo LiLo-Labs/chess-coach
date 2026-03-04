@@ -27,9 +27,12 @@ struct SessionFeedManager {
             entry.playedUCI = playedUCI
             entry.expectedSAN = expectedSAN
             entry.expectedUCI = expectedUCI
-            entries.insert(entry, at: 0)
+            // Insert in descending ply order (newest first)
+            let insertIndex = entries.firstIndex { $0.whitePly < ply } ?? entries.endIndex
+            entries.insert(entry, at: insertIndex)
         } else {
-            if let existing = entries.first, existing.moveNumber == moveNumber {
+            // Find the matching white-ply entry for this move number (not just first)
+            if let existing = entries.first(where: { $0.moveNumber == moveNumber }) {
                 existing.blackSAN = san
                 existing.blackPly = ply
                 existing.fen = fen ?? existing.fen
@@ -53,7 +56,9 @@ struct SessionFeedManager {
                 entry.playedUCI = playedUCI
                 entry.expectedSAN = expectedSAN
                 entry.expectedUCI = expectedUCI
-                entries.insert(entry, at: 0)
+                // Insert in descending ply order (newest first)
+                let insertIndex = entries.firstIndex { $0.whitePly < (ply - 1) } ?? entries.endIndex
+                entries.insert(entry, at: insertIndex)
             }
         }
     }

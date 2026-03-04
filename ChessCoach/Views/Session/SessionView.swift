@@ -180,8 +180,8 @@ struct SessionView: View {
                     liveStatus
                         .id("live")
 
-                    // Feed entries (newest first, sorted by ply) — tappable to replay board
-                    ForEach(viewModel.feedEntries.sorted { $0.whitePly > $1.whitePly }) { entry in
+                    // Feed entries (newest first) — tappable to replay board
+                    ForEach(viewModel.feedEntries) { entry in
                         feedRow(entry)
                     }
                 }
