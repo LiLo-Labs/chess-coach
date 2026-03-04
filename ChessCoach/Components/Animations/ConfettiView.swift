@@ -1,7 +1,10 @@
 import SwiftUI
 
-/// Animated confetti particles shown on line completion (improvement 18).
+/// Animated confetti particles shown on line completion, promotions, and milestones.
+/// Respects the Reduce Motion accessibility setting by showing a static burst instead.
 struct ConfettiView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var particles: [Particle] = []
     @State private var isAnimating = false
 
@@ -61,8 +64,13 @@ struct ConfettiView: View {
                     )
                 }
 
-                withAnimation(.spring(response: 1.2, dampingFraction: 0.6)) {
-                    isAnimating = true
+                if reduceMotion {
+                    // Show particles at their target positions without animation
+                    isAnimating = false
+                } else {
+                    withAnimation(.spring(response: 1.2, dampingFraction: 0.6)) {
+                        isAnimating = true
+                    }
                 }
             }
         }

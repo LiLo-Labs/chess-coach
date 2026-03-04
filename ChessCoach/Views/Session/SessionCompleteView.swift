@@ -136,8 +136,7 @@ struct SessionCompleteView: View {
             Image(systemName: "arrow.up.circle.fill")
                 .font(.system(size: 44))
                 .foregroundStyle(AppColor.phase(promo.to))
-                .scaleEffect(showPromotion ? 1.0 : 0.5)
-                .opacity(showPromotion ? 1.0 : 0)
+                .reveal(isVisible: showPromotion, delay: 0)
 
             Text("Phase Up!")
                 .font(.title2.weight(.bold))
@@ -163,8 +162,7 @@ struct SessionCompleteView: View {
             Image(systemName: AppColor.layerIcon(promo.to))
                 .font(.system(size: 44))
                 .foregroundStyle(AppColor.layer(promo.to))
-                .scaleEffect(showPromotion ? 1.0 : 0.5)
-                .opacity(showPromotion ? 1.0 : 0)
+                .reveal(isVisible: showPromotion, delay: 0)
 
             Text("Level Up!")
                 .font(.title2.weight(.bold))
@@ -219,8 +217,7 @@ struct SessionCompleteView: View {
                     Text("\(Int(averagePES))")
                         .font(.system(size: 36, weight: .bold, design: .rounded))
                         .foregroundStyle(AppColor.primaryText)
-                        .scaleEffect(showPESScore ? 1.0 : 0.5)
-                        .opacity(showPESScore ? 1.0 : 0)
+                        .reveal(isVisible: showPESScore, delay: 0)
                 }
 
                 PillBadge(text: cat.rawValue.uppercased(), color: pesColor, fontSize: 12)
