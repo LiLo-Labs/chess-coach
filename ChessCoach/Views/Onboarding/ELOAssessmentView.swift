@@ -208,6 +208,7 @@ struct ELOAssessmentView: View {
         }
         .task {
             try? await Task.sleep(for: .seconds(AppConfig.animation.solutionDisplayDelay))
+            guard !Task.isCancelled else { return }
             withAnimation { phase = .feedback(isCorrect: isCorrect) }
         }
     }

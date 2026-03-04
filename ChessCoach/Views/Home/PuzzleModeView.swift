@@ -23,7 +23,6 @@ struct PuzzleModeView: View {
     @State private var puzzlePerspective: PieceColor = .white
     @State private var solutionArrowFrom: String?
     @State private var solutionArrowTo: String?
-    @State private var boardSize: CGFloat = 0
 
     private let dailyFreeLimit = 5
 
@@ -218,6 +217,7 @@ struct PuzzleModeView: View {
         }
         .task {
             try? await Task.sleep(for: .seconds(AppConfig.animation.solutionDisplayDelay))
+            guard !Task.isCancelled else { return }
             withAnimation {
                 phase = .feedback
             }
@@ -350,8 +350,6 @@ struct PuzzleModeView: View {
 
     // MARK: - No Puzzles
 
-    @Environment(\.dismiss) private var puzzleDismiss
-
     private var errorView: some View {
         VStack(spacing: AppSpacing.lg) {
             Spacer()
@@ -391,7 +389,7 @@ struct PuzzleModeView: View {
                 .buttonStyle(.borderedProminent)
 
                 Button("Go Back") {
-                    puzzleDismiss()
+                    dismiss()
                 }
                 .buttonStyle(.bordered)
             }
