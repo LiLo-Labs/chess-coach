@@ -130,6 +130,7 @@
 		A24FB0E1A9DB8C5A87C70E6C /* BetaWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9185A76CCA23DFDCF1A426E8 /* BetaWelcomeView.swift */; };
 		A2BF1CDCF901BA3987106EA4 /* LessonStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEFF49BF6F36ADFDFF5B260 /* LessonStep.swift */; };
 		A3B6271A8771F673FA5A6914 /* TokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74ACFC1FF51C421C31619C19 /* TokenService.swift */; };
+		A5949FDC7113495618498B37 /* OffBookCoachingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926EE7B64B2172A475430164 /* OffBookCoachingService.swift */; };
 		A69BD20CA33336E911419A52 /* CoachingEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF629A861651E0D6B0F90507 /* CoachingEntry.swift */; };
 		A83EDE3FF2558974E8053DDA /* colle.json in Resources */ = {isa = PBXBuildFile; fileRef = C9E0D00426D51F255692AF98 /* colle.json */; };
 		A8709D770A6275E437B9E05B /* MoveArrowOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2D65DF5788AE7C8BDB8D95 /* MoveArrowOverlay.swift */; };
@@ -196,6 +197,7 @@
 		FB40683F90B2493DD3C10B18 /* FeedRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C704CC666FF7E1E764A83C /* FeedRowCard.swift */; };
 		FB79B4BFE016B65FB6C99F67 /* ShakeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE84EB8D6F28395CA6D20D47 /* ShakeModifier.swift */; };
 		FF125D4E0D68D791E1BF1211 /* OpponentPersonality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C7909A7C6642F8270FD00 /* OpponentPersonality.swift */; };
+		FF1C97579B3EFDE64118941E /* OffBookCoachingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316C3C4B6A21C5ECFB7412EB /* OffBookCoachingServiceTests.swift */; };
 		FF312B0A04CB97D763D063F6 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25353786D741F85FF2823848 /* GameState.swift */; };
 		FF3325E9F81F395A63999BE8 /* kings-indian.json in Resources */ = {isa = PBXBuildFile; fileRef = 80B494BD63159C166BB480D6 /* kings-indian.json */; };
 		FFD927F3EE333129D098778B /* SessionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6EE090BCC8A2BB794E7999 /* SessionResult.swift */; };
@@ -266,6 +268,7 @@
 		2F73826204613AFF30C6BE78 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
 		31123546082CDFF2D06CA159 /* ChessCoachUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ChessCoachUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		31501E26BAA6604484201596 /* french.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = french.json; sourceTree = "<group>"; };
+		316C3C4B6A21C5ECFB7412EB /* OffBookCoachingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffBookCoachingServiceTests.swift; sourceTree = "<group>"; };
 		3175B096AC5C4CC89EC1CCD5 /* ELOAssessmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ELOAssessmentView.swift; sourceTree = "<group>"; };
 		332F891136AFED8AAB292209 /* OpponentResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpponentResponse.swift; sourceTree = "<group>"; };
 		336300F72FB21993A4A91474 /* GameAnalysisService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAnalysisService.swift; sourceTree = "<group>"; };
@@ -340,6 +343,7 @@
 		9184DFCBC4771D026AF80AA2 /* reti.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = reti.json; sourceTree = "<group>"; };
 		9185A76CCA23DFDCF1A426E8 /* BetaWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaWelcomeView.swift; sourceTree = "<group>"; };
 		9214431E18C24CB2D5B9518F /* SpacedRepScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacedRepScheduler.swift; sourceTree = "<group>"; };
+		926EE7B64B2172A475430164 /* OffBookCoachingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffBookCoachingService.swift; sourceTree = "<group>"; };
 		933464258B1545E31EDF5A78 /* grunfeld.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = grunfeld.json; sourceTree = "<group>"; };
 		93F01EB13F3A5591B7E7C204 /* PlanScoringService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanScoringService.swift; sourceTree = "<group>"; };
 		94FA477EB260CEEAFC00FD0D /* kings-indian-attack.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "kings-indian-attack.json"; sourceTree = "<group>"; };
@@ -552,6 +556,7 @@
 				3F3E90E0981675812A48489A /* HolisticDetector.swift */,
 				C37CCC5EF67DA0B6FF9A4F11 /* KeychainService.swift */,
 				BD3017C504F70C847181883F /* ModelDownloadService.swift */,
+				926EE7B64B2172A475430164 /* OffBookCoachingService.swift */,
 				0861086E6D627EA6E845286A /* OpeningDetector.swift */,
 				4C2FE0FAE5C3A682629D3BBD /* PersistenceService.swift */,
 				D59F10FB0632A5493AAF263C /* PGNParser.swift */,
@@ -874,6 +879,7 @@
 				163FB854AB6EFAC989181AAF /* CurriculumLineTests.swift */,
 				DB2780834A4769F1B85115C8 /* CurriculumServiceTests.swift */,
 				B43293FAD4058537CD08C844 /* LLMServiceTests.swift */,
+				316C3C4B6A21C5ECFB7412EB /* OffBookCoachingServiceTests.swift */,
 				7AD43C08072479F064D8D2F3 /* PersistenceMigrationTests.swift */,
 			);
 			path = Services;
@@ -1212,6 +1218,7 @@
 				28AB50F1F6466F64A554476F /* CurriculumServiceTests.swift in Sources */,
 				0B07A869013B5D2B9B20A5F3 /* GameStateTests.swift in Sources */,
 				153407464C23E1214B8097CA /* LLMServiceTests.swift in Sources */,
+				FF1C97579B3EFDE64118941E /* OffBookCoachingServiceTests.swift in Sources */,
 				9088B40A68C9CAA472A56AC1 /* OpeningDatabaseTests.swift in Sources */,
 				E8EB6F8BD6792748DF4BD638 /* OpeningTests.swift in Sources */,
 				9A02F7CA0B5E5DB2D7028B52 /* PersistenceMigrationTests.swift in Sources */,
@@ -1307,6 +1314,7 @@
 				A8709D770A6275E437B9E05B /* MoveArrowOverlay.swift in Sources */,
 				42D306A93F080E0BF519FD8E /* MoveFeedbackView.swift in Sources */,
 				FA80FB61085AB7ABBFF49182 /* MultiArrowOverlay.swift in Sources */,
+				A5949FDC7113495618498B37 /* OffBookCoachingService.swift in Sources */,
 				6BBB8C92AA455B052EB164BF /* OnDeviceLLMService.swift in Sources */,
 				2D036B0A371648AB3D3A7501 /* OnboardingView.swift in Sources */,
 				769D5BF52DD2376B9A0785B4 /* Opening.swift in Sources */,
