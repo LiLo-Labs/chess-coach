@@ -173,64 +173,101 @@ struct SessionView: View {
     // MARK: - Coaching Feed
 
     private var coachingArea: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 0) {
-                    // Live status (banners, loading, actions)
-                    liveStatus
-                        .id("live")
-
-                    // Feed entries (newest first) — tappable to replay board
-                    ForEach(viewModel.feedEntries) { entry in
-                        feedRow(entry)
+        CoachingFeedView(
+            entries: sessionFeedEntries,
+            isLoading: viewModel.isCoachingLoading,
+            explainStyle: viewModel.isPro ? .iconOnly : .locked,
+            header: AnyView(sessionLiveStatus),
+            scrollAnchor: "live",
+            onTapEntry: { ply in
+                viewModel.enterReplay(ply: ply + 1)
+            },
+            onRequestExplanation: { entry in
+                if viewModel.isPro {
+                    // Bridge back to CoachingFeedEntry for explanation
+                    if let original = viewModel.feedEntries.first(where: { $0.whitePly == entry.ply || $0.blackPly == entry.ply }) {
+                        Task { await viewModel.requestExplanationForEntry(original) }
                     }
-                }
-                .padding(.top, 6)
-                .padding(.bottom, 20)
-            }
-            .scrollIndicators(.hidden)
-            .background(AppColor.background)
-            .onChange(of: viewModel.feedEntries.count) {
-                withAnimation(.easeOut(duration: 0.15)) {
-                    proxy.scrollTo("live", anchor: .top)
+                } else {
+                    showProUpgrade = true
                 }
             }
+        )
+        .background(AppColor.background)
+    }
+
+    /// Convert session's CoachingFeedEntry to unified FeedEntry.
+    private var sessionFeedEntries: [FeedEntry] {
+        viewModel.feedEntries.flatMap { entry -> [FeedEntry] in
+            var result: [FeedEntry] = []
+            if let whiteSAN = entry.whiteSAN {
+                let fe = FeedEntry(
+                    ply: entry.whitePly,
+                    moveNumber: entry.moveNumber,
+                    moveSAN: whiteSAN,
+                    isPlayerMove: true,
+                    coaching: entry.coaching ?? "",
+                    isDeviation: entry.isDeviation,
+                    expectedSAN: entry.expectedSAN,
+                    expectedUCI: entry.expectedUCI,
+                    playedUCI: entry.playedUCI
+                )
+                fe.fen = entry.fen
+                fe.explanation = entry.explanation
+                fe.isExplaining = entry.isExplaining
+                result.append(fe)
+            }
+            if let blackSAN = entry.blackSAN, let blackPly = entry.blackPly {
+                let fe = FeedEntry(
+                    ply: blackPly,
+                    moveNumber: entry.moveNumber,
+                    moveSAN: blackSAN,
+                    isPlayerMove: false,
+                    coaching: ""
+                )
+                fe.fen = entry.fen
+                result.append(fe)
+            }
+            return result
         }
     }
 
-    // MARK: - Live Status
+    // MARK: - Session Live Status
 
     @ViewBuilder
-    private var liveStatus: some View {
+    private var sessionLiveStatus: some View {
         VStack(alignment: .leading, spacing: 4) {
-            // Variation switch
             if let variation = viewModel.suggestedVariation {
-                variationBanner(variation: variation)
+                sessionVariationBanner(variation: variation)
                     .padding(.horizontal, 16)
                     .padding(.bottom, 4)
             }
 
-            // Deviation / off-book banners
             if case let .userDeviated(expected, _) = viewModel.bookStatus {
-                deviationBanner(expected: expected)
-                    .padding(.horizontal, 16)
+                DeviationBanner.UserDeviation(
+                    expected: expected,
+                    isUnguided: viewModel.sessionMode == .unguided
+                )
+                .padding(.horizontal, 16)
             } else if case let .opponentDeviated(expected, playedSAN, _) = viewModel.bookStatus {
-                opponentDeviationBanner(expected: expected, played: playedSAN)
-                    .padding(.horizontal, 16)
+                DeviationBanner.OpponentDeviation(
+                    expected: expected,
+                    playedSAN: playedSAN,
+                    bestMoveDescription: viewModel.bestResponseDescription
+                )
+                .padding(.horizontal, 16)
             } else if case .offBook = viewModel.bookStatus {
-                offBookBanner
+                DeviationBanner.OffBook(bestMoveDescription: viewModel.bestResponseDescription)
                     .padding(.horizontal, 16)
             } else if viewModel.discoveryMode {
-                discoveryBanner
+                DeviationBanner.Discovery(optionCount: viewModel.branchPointOptions?.count ?? 2)
                     .padding(.horizontal, 16)
             }
 
-            // Action buttons
-            actionButtons
+            sessionActionButtons
                 .padding(.horizontal, 16)
                 .padding(.vertical, 4)
 
-            // Empty state
             if viewModel.feedEntries.isEmpty && !viewModel.isCoachingLoading {
                 Text("Make your move on the board")
                     .font(.caption)
@@ -242,201 +279,10 @@ struct SessionView: View {
         .animation(.easeInOut(duration: 0.2), value: viewModel.bookStatus)
     }
 
-    // MARK: - Feed Row
-
-    private func feedRow(_ entry: CoachingFeedEntry) -> some View {
-        let isNewest = entry.id == viewModel.feedEntries.first?.id
-        let whiteSAN = entry.whiteSAN ?? "…"
-        let blackSAN = entry.blackSAN
-
-        // Human-friendly move descriptions
-        let whiteFriendly = OpeningMove.friendlyName(from: whiteSAN)
-        let blackFriendly = blackSAN.map { OpeningMove.friendlyName(from: $0) }
-
-        // Algebraic notation (secondary)
-        let algebraic = blackSAN.map { "\(entry.moveNumber). \(whiteSAN) \($0)" }
-            ?? "\(entry.moveNumber). \(whiteSAN)"
-
-        return Button {
-            // Tap to jump board to this position
-            let targetPly = entry.blackPly ?? entry.whitePly
-            viewModel.enterReplay(ply: targetPly + 1)
-        } label: {
-            VStack(alignment: .leading, spacing: 4) {
-                // Move header with friendly names
-                HStack(alignment: .firstTextBaseline, spacing: 6) {
-                    // White's move
-                    HStack(spacing: 3) {
-                        Circle()
-                            .fill(Color.white)
-                            .frame(width: 8, height: 8)
-                        Text(whiteFriendly)
-                            .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(entry.isDeviation ? .orange : Color.white)
-                    }
-
-                    // Black's move (if present)
-                    if let blackFriendly {
-                        Text("·")
-                            .foregroundStyle(.secondary)
-                        HStack(spacing: 3) {
-                            Circle()
-                                .fill(Color(white: 0.35))
-                                .frame(width: 8, height: 8)
-                            Text(blackFriendly)
-                                .font(.subheadline.weight(.semibold))
-                                .foregroundStyle(Color(white: 0.65))
-                        }
-                    }
-
-                    Spacer(minLength: 0)
-
-                    // Tappable AI explanation sparkle
-                    if viewModel.isPro {
-                        if entry.isExplaining {
-                            ProgressView().controlSize(.mini).tint(.purple)
-                        } else if entry.explanation != nil {
-                            Image(systemName: "sparkles")
-                                .font(.caption2)
-                                .foregroundStyle(.purple)
-                        } else {
-                            Button {
-                                Task { await viewModel.requestExplanationForEntry(entry) }
-                            } label: {
-                                Image(systemName: "sparkles")
-                                    .font(.caption2)
-                                    .foregroundStyle(.tertiary)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    } else {
-                        // Show locked sparkle that triggers paywall
-                        Button {
-                            showProUpgrade = true
-                        } label: {
-                            Image(systemName: "sparkles")
-                                .font(.caption2)
-                                .foregroundStyle(AppColor.gold.opacity(0.5))
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-
-                // Algebraic notation (secondary, smaller)
-                Text(algebraic)
-                    .font(.caption2.monospaced())
-                    .foregroundStyle(.tertiary)
-
-                // Coaching narrative
-                if let coaching = entry.coaching {
-                    Text(coaching)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .multilineTextAlignment(.leading)
-                }
-
-                // Explanation (attached to the move, shown when ready)
-                if let explanation = entry.explanation {
-                    Text(explanation)
-                        .font(.caption)
-                        .foregroundStyle(.primary.opacity(0.8))
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(8)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color.purple.opacity(0.06), in: RoundedRectangle(cornerRadius: 6))
-                        .padding(.top, 2)
-                }
-            }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(Color(white: 0.13))
-                    .opacity(isNewest ? 1.0 : 0.6)
-            )
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-    }
-
-    // MARK: - Move Name Helpers
-
-    /// Convert SAN notation (e.g. "Nf3", "e4", "O-O") to human-friendly text (e.g. "Knight to f3", "Pawn to e4", "Castle kingside")
-
-    // MARK: - Status Banners
-
-    private func deviationBanner(expected: OpeningMove) -> some View {
-        let isUnguided = viewModel.sessionMode == .unguided
-
-        return VStack(alignment: .leading, spacing: 4) {
-            Text(isUnguided
-                 ? "Recommended move was \(expected.friendlyName)"
-                 : "The plan plays \(expected.friendlyName) here")
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.orange)
-
-            if !expected.explanation.isEmpty {
-                Text(expected.explanation)
-                    .font(.caption2)
-                    .foregroundStyle(.primary.opacity(0.6))
-            }
-        }
-        .padding(10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
-    }
-
-    private func opponentDeviationBanner(expected: OpeningMove, played: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Opponent played \(OpeningMove.friendlyName(from: played)) instead of \(expected.friendlyName)")
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.mint)
-
-            if let bestMove = viewModel.bestResponseDescription {
-                Text("Try \(bestMove)")
-                    .font(.caption2.weight(.medium))
-                    .foregroundStyle(.mint.opacity(0.8))
-            }
-        }
-        .padding(10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.mint.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
-    }
-
-    private var offBookBanner: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("On your own — play your plan")
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.cyan)
-
-            if let bestMove = viewModel.bestResponseDescription {
-                Text("Suggested: \(bestMove)")
-                    .font(.caption2.weight(.medium))
-                    .foregroundStyle(.cyan.opacity(0.8))
-            }
-        }
-        .padding(10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.cyan.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
-    }
-
-    private var discoveryBanner: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            let count = viewModel.branchPointOptions?.count ?? 2
-            Text("\(count) good options here — can you find one?")
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.mint)
-        }
-        .padding(10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.mint.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
-    }
-
-    // MARK: - Action Buttons
+    // MARK: - Session Action Buttons
 
     @ViewBuilder
-    private var actionButtons: some View {
+    private var sessionActionButtons: some View {
         HStack(spacing: 8) {
             if case .userDeviated = viewModel.bookStatus {
                 Button(action: { viewModel.retryLastMove() }) {
@@ -486,18 +332,15 @@ struct SessionView: View {
 
     // MARK: - Variation Banner
 
-    private func variationBanner(variation: OpeningLine) -> some View {
+    private func sessionVariationBanner(variation: OpeningLine) -> some View {
         HStack(spacing: 8) {
             Image(systemName: "arrow.triangle.branch")
                 .font(.caption2)
                 .foregroundStyle(.teal)
-
             Text("You played into the \(variation.name)")
                 .font(.caption)
                 .foregroundStyle(.teal)
-
             Spacer()
-
             Button {
                 viewModel.switchToLine(variation)
             } label: {
