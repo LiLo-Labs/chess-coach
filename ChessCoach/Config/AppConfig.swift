@@ -277,6 +277,16 @@ enum AppConfig {
     )
 
 
+    struct Animation: Sendable {
+        /// Delay after showing the solution arrow before advancing to feedback/next puzzle.
+        let solutionDisplayDelay: Double
+    }
+
+    static let animation = Animation(
+        solutionDisplayDelay: 1.5
+    )
+
+
     struct Feedback: Sendable {
         let workerURL: String
     }
