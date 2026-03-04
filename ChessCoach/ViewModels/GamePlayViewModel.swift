@@ -105,6 +105,8 @@ final class GamePlayViewModel {
     var hintTimer: Task<Void, Never>?
     var activeLine: OpeningLine?
     var activeLineID: String?
+    let offBookCoachingService = OffBookCoachingService()
+    var offBookGuidanceLastPly: Int = -10
 
     // ELO
     var userELO: Int = UserDefaults.standard.object(forKey: AppSettings.Key.userELO) as? Int ?? 600

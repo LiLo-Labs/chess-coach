@@ -21,7 +21,9 @@ import Testing
         mainLineSoFar: "1. e4",
         matchedResponseName: nil,
         matchedResponseAdjustment: nil,
-        coachPersonalityPrompt: nil
+        coachPersonalityPrompt: nil,
+        opening: nil,
+        bookStatus: nil
     )
     let prompt = LLMService.buildPrompt(for: context)
     #expect(prompt.contains("e2e4"))
@@ -48,7 +50,9 @@ import Testing
         mainLineSoFar: "1. e4",
         matchedResponseName: nil,
         matchedResponseAdjustment: nil,
-        coachPersonalityPrompt: nil
+        coachPersonalityPrompt: nil,
+        opening: nil,
+        bookStatus: nil
     )
     let result = LLMService.buildPrompt(for: context)
     #expect(result.contains("correct"))
@@ -74,7 +78,9 @@ import Testing
         mainLineSoFar: "1. e4",
         matchedResponseName: nil,
         matchedResponseAdjustment: nil,
-        coachPersonalityPrompt: nil
+        coachPersonalityPrompt: nil,
+        opening: nil,
+        bookStatus: nil
     )
     let prompt = LLMService.buildPrompt(for: context)
     #expect(prompt.contains("e2e4"))

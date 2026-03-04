@@ -472,7 +472,8 @@ extension GamePlayViewModel {
                     isUserMove: false,
                     studentColor: studentColor,
                     matchedResponseName: responseName,
-                    matchedResponseAdjustment: responseAdjustment
+                    matchedResponseAdjustment: responseAdjustment,
+                    bookStatus: self.bookStatus
                 )
             }
         }
@@ -656,16 +657,56 @@ extension GamePlayViewModel {
 
     func showOffBookGuidance() {
         guard isUserTurn, !sessionComplete else { return }
+        guard let opening = mode.opening else {
+            userCoachingText = "You're on your own. Focus on developing pieces and keeping your king safe."
+            showOffBookArrowHint()
+            return
+        }
 
+        // Throttle: only generate new guidance every 3 plies
+        let currentPly = gameState.plyCount
+        guard currentPly - offBookGuidanceLastPly >= 3 || offBookGuidanceLastPly < 0 else {
+            showOffBookArrowHint()
+            return
+        }
+        offBookGuidanceLastPly = currentPly
+
+        let deviationPly: Int
+        switch bookStatus {
+        case .userDeviated(_, let atPly): deviationPly = atPly
+        case .opponentDeviated(_, _, let atPly): deviationPly = atPly
+        case .offBook(let since): deviationPly = since
+        default: deviationPly = currentPly
+        }
+
+        var opponentDev: (played: String, expected: String)?
+        if case .opponentDeviated(let expected, let playedSAN, _) = bookStatus {
+            opponentDev = (played: playedSAN, expected: expected.san)
+        }
+
+        let guidance = offBookCoachingService.generateGuidance(
+            fen: gameState.fen,
+            opening: opening,
+            deviationPly: deviationPly,
+            moveHistory: gameState.moveHistory.map { $0.from + $0.to },
+            opponentDeviation: opponentDev
+        )
+
+        var text = guidance.summary
+        if !guidance.planReminder.isEmpty {
+            text += " \(guidance.planReminder)"
+        }
+        if let suggestion = guidance.suggestion {
+            text += " \(suggestion)"
+        }
+        userCoachingText = text
+        showOffBookArrowHint()
+    }
+
+    private func showOffBookArrowHint() {
         if mode.showsArrows, let hint = bestResponseHint, hint.count >= 4 {
             arrowFrom = String(hint.prefix(2))
             arrowTo = String(hint.dropFirst(2).prefix(2))
-        }
-
-        if let bestMove = bestResponseDescription {
-            userCoachingText = "You're on your own. Suggested: \(bestMove) — focus on development and king safety."
-        } else {
-            userCoachingText = "You're on your own. Focus on developing pieces and keeping your king safe."
         }
     }
 
@@ -710,6 +751,7 @@ extension GamePlayViewModel {
         branchPointOptions = nil
         suggestedVariation = nil
         lastMovePES = nil
+        offBookGuidanceLastPly = -10
         undoStack.removeAll()
         redoStack.removeAll()
         feedEntries.removeAll()
@@ -869,7 +911,8 @@ extension GamePlayViewModel {
             isUserMove: isUserMove,
             studentColor: mode.opening?.color == .white ? "White" : "Black",
             matchedResponseName: responseName,
-            matchedResponseAdjustment: responseAdjustment
+            matchedResponseAdjustment: responseAdjustment,
+            bookStatus: bookStatus
         )
 
         if let text {

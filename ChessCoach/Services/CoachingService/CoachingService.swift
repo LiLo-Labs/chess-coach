@@ -29,7 +29,8 @@ actor CoachingService {
         isUserMove: Bool = true,
         studentColor: String? = nil,
         matchedResponseName: String? = nil,
-        matchedResponseAdjustment: String? = nil
+        matchedResponseAdjustment: String? = nil,
+        bookStatus: BookStatus? = nil
     ) async -> String? {
         let moveCategory = curriculumService.categorizeUserMove(
             atPly: ply,
@@ -52,9 +53,10 @@ actor CoachingService {
                 isUserMove: isUserMove, studentColor: studentColor,
                 category: isUserMove ? moveCategory : (curriculumService.isDeviation(atPly: ply, move: lastMove) ? .deviation : .opponentMove),
                 matchedResponseName: matchedResponseName,
-                matchedResponseAdjustment: matchedResponseAdjustment
+                matchedResponseAdjustment: matchedResponseAdjustment,
+                bookStatus: bookStatus
             )
-            return fallbackCoaching(for: context)
+            return freeCoaching(for: context)
         }
 
         // Use the isUserMove flag passed from SessionViewModel
@@ -74,7 +76,8 @@ actor CoachingService {
             ply: ply, userELO: userELO, moveHistory: moveHistory,
             isUserMove: isUserMove, studentColor: studentColor, category: category,
             matchedResponseName: matchedResponseName,
-            matchedResponseAdjustment: matchedResponseAdjustment
+            matchedResponseAdjustment: matchedResponseAdjustment,
+            bookStatus: bookStatus
         )
 
         do {
@@ -87,7 +90,7 @@ actor CoachingService {
                 #if DEBUG
                 print("[ChessCoach] Hallucination detected in coaching, using fallback")
                 #endif
-                return fallbackCoaching(for: context)
+                return freeCoaching(for: context)
             }
         } catch {
             #if DEBUG
@@ -110,7 +113,8 @@ actor CoachingService {
         scoreAfter: Int,
         userELO: Int,
         moveHistory: String,
-        studentColor: String?
+        studentColor: String?,
+        bookStatus: BookStatus? = nil
     ) async -> (userCoaching: String?, opponentCoaching: String?) {
         let userMoveCategory = curriculumService.categorizeUserMove(
             atPly: userPly, move: userMove, stockfishScore: scoreAfter - scoreBefore
@@ -132,31 +136,35 @@ actor CoachingService {
             let uc = buildContext(
                 fen: userFen, lastMove: userMove, scoreBefore: scoreBefore, scoreAfter: scoreAfter,
                 ply: userPly, userELO: userELO, moveHistory: moveHistory,
-                isUserMove: true, studentColor: studentColor, category: userCategory
+                isUserMove: true, studentColor: studentColor, category: userCategory,
+                bookStatus: bookStatus
             )
             let oc = buildContext(
                 fen: opponentFen, lastMove: opponentMove, scoreBefore: 0, scoreAfter: 0,
                 ply: opponentPly, userELO: userELO, moveHistory: moveHistory,
-                isUserMove: false, studentColor: studentColor, category: opponentCategory
+                isUserMove: false, studentColor: studentColor, category: opponentCategory,
+                bookStatus: bookStatus
             )
             let shouldCoachUser = shouldCoach(moveCategory: userCategory)
             let shouldCoachOpponent = shouldCoach(moveCategory: opponentCategory)
             return (
-                shouldCoachUser ? fallbackCoaching(for: uc) : nil,
-                shouldCoachOpponent ? fallbackCoaching(for: oc) : nil
+                shouldCoachUser ? freeCoaching(for: uc) : nil,
+                shouldCoachOpponent ? freeCoaching(for: oc) : nil
             )
         }
 
         let userContext = buildContext(
             fen: userFen, lastMove: userMove, scoreBefore: scoreBefore, scoreAfter: scoreAfter,
             ply: userPly, userELO: userELO, moveHistory: moveHistory,
-            isUserMove: true, studentColor: studentColor, category: userCategory
+            isUserMove: true, studentColor: studentColor, category: userCategory,
+            bookStatus: bookStatus
         )
 
         let opponentContext = buildContext(
             fen: opponentFen, lastMove: opponentMove, scoreBefore: 0, scoreAfter: 0,
             ply: opponentPly, userELO: userELO, moveHistory: moveHistory,
-            isUserMove: false, studentColor: studentColor, category: opponentCategory
+            isUserMove: false, studentColor: studentColor, category: opponentCategory,
+            bookStatus: bookStatus
         )
 
         let shouldCoachUser = shouldCoach(moveCategory: userCategory)
@@ -185,7 +193,7 @@ actor CoachingService {
                 #if DEBUG
                 print("[ChessCoach] Hallucination detected in user coaching, using fallback")
                 #endif
-                validatedUser = shouldCoachUser ? fallbackCoaching(for: userContext) : nil
+                validatedUser = shouldCoachUser ? freeCoaching(for: userContext) : nil
             }
 
             // Validate opponent coaching
@@ -197,7 +205,7 @@ actor CoachingService {
                 #if DEBUG
                 print("[ChessCoach] Hallucination detected in opponent coaching, using fallback")
                 #endif
-                validatedOpponent = shouldCoachOpponent ? fallbackCoaching(for: opponentContext) : nil
+                validatedOpponent = shouldCoachOpponent ? freeCoaching(for: opponentContext) : nil
             }
 
             return (validatedUser, validatedOpponent)
@@ -213,7 +221,7 @@ actor CoachingService {
                     let prompt = LLMService.buildPrompt(for: userContext)
                     let raw = try await llmService.generate(prompt: prompt, maxTokens: AppConfig.tokens.coaching)
                     let parsed = CoachingValidator.parse(response: raw)
-                    userResult = CoachingValidator.validate(parsed: parsed, fen: userFen) ?? fallbackCoaching(for: userContext)
+                    userResult = CoachingValidator.validate(parsed: parsed, fen: userFen) ?? freeCoaching(for: userContext)
                 } catch {
                     #if DEBUG
                     print("[ChessCoach] Single user coaching also failed: \(error)")
@@ -225,7 +233,7 @@ actor CoachingService {
                     let prompt = LLMService.buildPrompt(for: opponentContext)
                     let raw = try await llmService.generate(prompt: prompt, maxTokens: AppConfig.tokens.coaching)
                     let parsed = CoachingValidator.parse(response: raw)
-                    opponentResult = CoachingValidator.validate(parsed: parsed, fen: opponentFen) ?? fallbackCoaching(for: opponentContext)
+                    opponentResult = CoachingValidator.validate(parsed: parsed, fen: opponentFen) ?? freeCoaching(for: opponentContext)
                 } catch {
                     #if DEBUG
                     print("[ChessCoach] Single opponent coaching also failed: \(error)")
@@ -279,7 +287,8 @@ actor CoachingService {
         fen: String, lastMove: String, scoreBefore: Int, scoreAfter: Int,
         ply: Int, userELO: Int, moveHistory: String,
         isUserMove: Bool, studentColor: String?, category: MoveCategory,
-        matchedResponseName: String? = nil, matchedResponseAdjustment: String? = nil
+        matchedResponseName: String? = nil, matchedResponseAdjustment: String? = nil,
+        bookStatus: BookStatus? = nil
     ) -> CoachingContext {
         let opening = curriculumService.opening
         let expectedMove = opening.expectedMove(atPly: ply)
@@ -310,37 +319,71 @@ actor CoachingService {
             mainLineSoFar: mainLineSoFar,
             matchedResponseName: matchedResponseName,
             matchedResponseAdjustment: matchedResponseAdjustment,
-            coachPersonalityPrompt: personality.personalityPrompt
+            coachPersonalityPrompt: personality.personalityPrompt,
+            opening: opening,
+            bookStatus: bookStatus
         )
     }
 
-    private func fallbackCoaching(for context: CoachingContext) -> String? {
-        let personality = CoachPersonality.forOpening(curriculumService.opening)
+    private func freeCoaching(for context: CoachingContext) -> String? {
+        // Off-book: delegate to plan-based guidance
+        if let bookStatus = context.bookStatus, let opening = context.opening {
+            switch bookStatus {
+            case .offBook, .userDeviated, .opponentDeviated:
+                let service = OffBookCoachingService()
+                let deviationPly: Int
+                switch bookStatus {
+                case .userDeviated(_, let p): deviationPly = p
+                case .opponentDeviated(_, _, let p): deviationPly = p
+                case .offBook(let p): deviationPly = p
+                default: deviationPly = context.plyNumber
+                }
+                let guidance = service.generateGuidance(
+                    fen: context.fen,
+                    opening: opening,
+                    deviationPly: deviationPly,
+                    moveHistory: []
+                )
+                return "\(guidance.summary) \(guidance.planReminder)"
+            case .onBook:
+                break
+            }
+        }
 
+        // On-book: use opening move explanations
         if context.isUserMove {
+            if let explanation = context.expectedMoveExplanation, !explanation.isEmpty {
+                switch context.moveCategory {
+                case .goodMove:
+                    return explanation
+                case .okayMove:
+                    let expected = context.expectedMoveSAN ?? "the book move"
+                    return "The book move is \(expected). \(explanation)"
+                case .mistake:
+                    let expected = context.expectedMoveSAN ?? "the book move"
+                    return "The recommended move is \(expected). \(explanation)"
+                default:
+                    return nil
+                }
+            }
             switch context.moveCategory {
-            case .goodMove:
-                return personality.witticism(for: .goodMove)
+            case .goodMove: return "Good — that's the book move."
             case .okayMove:
                 let expected = context.expectedMoveSAN ?? "the book move"
-                let quip = personality.witticism(for: .okayMove)
-                return "\(quip) The book move is \(expected)."
+                return "The book move is \(expected)."
             case .mistake:
                 let expected = context.expectedMoveSAN ?? "the book move"
-                let quip = personality.witticism(for: .mistake)
-                return "\(quip) The recommended move here is \(expected)."
-            default:
-                return nil
+                return "The recommended move is \(expected)."
+            default: return nil
             }
         } else {
             if context.moveCategory == .deviation {
                 if let name = context.matchedResponseName, let adj = context.matchedResponseAdjustment {
                     return "Your opponent played the \(name). \(adj)"
                 }
-                return personality.witticism(for: .deviation)
-            } else {
-                return personality.witticism(for: .opponentMove)
+                return "Your opponent deviated from the main line."
             }
+            return nil
         }
     }
 }
