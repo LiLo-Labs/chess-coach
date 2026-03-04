@@ -12,7 +12,7 @@ import Testing
         expectedMoveExplanation: "Controls the center",
         expectedMoveSAN: "e4",
         userELO: 600,
-        phase: .learningMainLine,
+        familiarityPercent: 10,
         moveCategory: .okayMove,
         moveHistory: "1. e4",
         isUserMove: true,
@@ -25,7 +25,7 @@ import Testing
     )
     let prompt = LLMService.buildPrompt(for: context)
     #expect(prompt.contains("e2e4"))
-    #expect(prompt.contains("Side to move"))
+    #expect(prompt.contains("white"))
 }
 
 @Test func llmServiceGoodMoveReturnsDirectly() {
@@ -39,7 +39,7 @@ import Testing
         expectedMoveExplanation: "Controls the center",
         expectedMoveSAN: "e4",
         userELO: 600,
-        phase: .learningMainLine,
+        familiarityPercent: 10,
         moveCategory: .goodMove,
         moveHistory: "1. e4",
         isUserMove: true,
@@ -65,7 +65,7 @@ import Testing
         expectedMoveExplanation: nil,
         expectedMoveSAN: nil,
         userELO: 500,
-        phase: .learningMainLine,
+        familiarityPercent: 10,
         moveCategory: .mistake,
         moveHistory: "1. e4",
         isUserMove: true,

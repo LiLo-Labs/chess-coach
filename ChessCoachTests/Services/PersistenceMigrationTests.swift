@@ -4,36 +4,51 @@ import Foundation
 
 @Suite(.serialized)
 struct PersistenceMigrationTests {
-    @Test func saveAndLoadLineProgress() {
+    @Test func saveAndLoadPositionMastery() {
         let service = PersistenceService.shared
-        var progress = OpeningProgress(openingID: "migration_test")
-        progress.recordLineGame(lineID: "migration_test/main", accuracy: 0.85, won: true)
-        service.saveProgress(progress)
+        let pm = PositionMastery(openingID: "persist_test", fen: "startpos", ply: 2, lineID: "persist_test/main", correctMove: "e2e4")
+        service.savePositionMastery([pm])
 
-        let loaded = service.loadProgress(forOpening: "migration_test")
-        #expect(loaded.gamesPlayed == 1)
-        #expect(loaded.lineProgress["migration_test/main"]?.gamesPlayed == 1)
-        #expect(loaded.lineProgress["migration_test/main"]?.accuracy == 0.85)
+        let loaded = service.loadAllPositionMastery()
+        let found = loaded.first { $0.openingID == "persist_test" }
+        #expect(found != nil)
+        #expect(found?.ply == 2)
+        #expect(found?.correctMove == "e2e4")
+        #expect(found?.lineID == "persist_test/main")
+
+        // Cleanup
+        service.savePositionMastery(loaded.filter { $0.openingID != "persist_test" })
     }
 
-    @Test func loadProgressReturnsDefaultForUnknownOpening() {
+    @Test func loadPositionMasteryFilteredByOpening() {
         let service = PersistenceService.shared
-        let progress = service.loadProgress(forOpening: "never_played_opening_xyz")
-        #expect(progress.gamesPlayed == 0)
-        #expect(progress.currentPhase == .learningMainLine)
-        #expect(progress.lineProgress.isEmpty)
+        let pm1 = PositionMastery(openingID: "filter_test", fen: "pos1", ply: 1)
+        let pm2 = PositionMastery(openingID: "filter_test", fen: "pos2", ply: 3)
+        let pm3 = PositionMastery(openingID: "other_opening", fen: "pos3", ply: 1)
+
+        var all = service.loadAllPositionMastery().filter { $0.openingID != "filter_test" && $0.openingID != "other_opening" }
+        all.append(contentsOf: [pm1, pm2, pm3])
+        service.savePositionMastery(all)
+
+        let filtered = service.loadAllPositionMastery().filter { $0.openingID == "filter_test" }
+        #expect(filtered.count == 2)
+        #expect(filtered.allSatisfy { $0.openingID == "filter_test" })
+
+        // Cleanup
+        service.savePositionMastery(service.loadAllPositionMastery().filter { $0.openingID != "filter_test" && $0.openingID != "other_opening" })
     }
 
-    @Test func multipleLinesSavedIndependently() {
-        let service = PersistenceService.shared
-        var progress = OpeningProgress(openingID: "multi_line_test")
-        progress.recordLineGame(lineID: "multi_line_test/main", accuracy: 0.8, won: true)
-        progress.recordLineGame(lineID: "multi_line_test/evans", accuracy: 0.6, won: false)
-        service.saveProgress(progress)
+    @Test func positionMasteryFromReviewItem() {
+        let item = ReviewItem(openingID: "migrate_test", fen: "startpos", ply: 4, lineID: "migrate_test/main", correctMove: "f1c4")
+        let pm = PositionMastery.fromReviewItem(item, mistakeCount: 3, correctCount: 2)
 
-        let loaded = service.loadProgress(forOpening: "multi_line_test")
-        #expect(loaded.lineProgress.count == 2)
-        #expect(loaded.lineProgress["multi_line_test/main"]?.gamesWon == 1)
-        #expect(loaded.lineProgress["multi_line_test/evans"]?.gamesWon == 0)
+        #expect(pm.openingID == "migrate_test")
+        #expect(pm.fen == "startpos")
+        #expect(pm.ply == 4)
+        #expect(pm.lineID == "migrate_test/main")
+        #expect(pm.correctMove == "f1c4")
+        #expect(pm.totalAttempts == 5)  // 3 mistakes + 2 correct
+        #expect(pm.correctAttempts == 2)
+        #expect(pm.id == item.id) // Preserves ID
     }
 }

@@ -3,10 +3,10 @@ import Testing
 
 @Suite(.serialized)
 struct CurriculumServiceTests {
-    @Test func phase1ForcesMainLine() {
+    @Test func lowFamiliarityForcesAllMoves() {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let service = CurriculumService(opening: italian, phase: .learningMainLine)
+        let service = CurriculumService(opening: italian, familiarity: 0.1)
 
         // Should force every move in the main line
         let move0 = service.getMaiaOverride(atPly: 0)
@@ -19,24 +19,24 @@ struct CurriculumServiceTests {
         #expect(move4 == "f1c4")
     }
 
-    @Test func phase2AllowsLateDeviations() {
+    @Test func midFamiliarityForcesFirst4Plies() {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let service = CurriculumService(opening: italian, phase: .naturalDeviations)
+        let service = CurriculumService(opening: italian, familiarity: 0.5)
 
         // Early moves should be forced
         #expect(service.getMaiaOverride(atPly: 0) != nil)
-        #expect(service.getMaiaOverride(atPly: 4) != nil)
+        #expect(service.getMaiaOverride(atPly: 3) != nil)
 
-        // After ply 6, Maia plays freely
-        #expect(service.getMaiaOverride(atPly: 6) == nil)
+        // After ply 4, plays freely
+        #expect(service.getMaiaOverride(atPly: 4) == nil)
         #expect(service.getMaiaOverride(atPly: 8) == nil)
     }
 
-    @Test func phase4NeverOverrides() {
+    @Test func highFamiliarityNeverOverrides() {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let service = CurriculumService(opening: italian, phase: .freePlay)
+        let service = CurriculumService(opening: italian, familiarity: 0.8)
 
         for ply in 0..<10 {
             #expect(service.getMaiaOverride(atPly: ply) == nil)
@@ -46,7 +46,7 @@ struct CurriculumServiceTests {
     @Test func categorizesMainLineAsGood() {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let service = CurriculumService(opening: italian, phase: .learningMainLine)
+        let service = CurriculumService(opening: italian, familiarity: 0.1)
 
         let category = service.categorizeUserMove(atPly: 0, move: "e2e4", stockfishScore: 30)
         #expect(category == .goodMove)
@@ -55,17 +55,16 @@ struct CurriculumServiceTests {
     @Test func categorizesDeviationAsMistake() {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let service = CurriculumService(opening: italian, phase: .learningMainLine)
+        let service = CurriculumService(opening: italian, familiarity: 0.1)
 
-        // A bad deviation with significant score loss
         let category = service.categorizeUserMove(atPly: 0, move: "a2a3", stockfishScore: -200)
         #expect(category == .mistake)
     }
 
-    @Test func freePlayOnlyUsesScore() {
+    @Test func highFamiliarityOnlyUsesScore() {
         let db = OpeningDatabase()
         let italian = db.opening(named: "Italian Game")!
-        let service = CurriculumService(opening: italian, phase: .freePlay)
+        let service = CurriculumService(opening: italian, familiarity: 0.8)
 
         let good = service.categorizeUserMove(atPly: 0, move: "d2d4", stockfishScore: 10)
         #expect(good == .goodMove)
