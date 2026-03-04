@@ -41,7 +41,8 @@ final class SoundService {
                Bundle.main.url(forResource: sound.rawValue, withExtension: "caf") {
                 if let player = try? AVAudioPlayer(contentsOf: url) {
                     player.prepareToPlay()
-                    player.volume = 0.5
+                    // Wrong-move sound is intentionally quieter to avoid being annoying
+                    player.volume = sound == .wrong ? 0.15 : 0.5
                     players[sound] = player
                 }
             }
