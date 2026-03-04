@@ -101,7 +101,7 @@ struct TheoryExerciseView: View {
                     .foregroundStyle(AppColor.primaryText)
                     .padding(AppSpacing.cardPadding)
                     .frame(maxWidth: .infinity)
-                    .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+                    .cardBackground()
                     .padding(.horizontal, AppSpacing.screenPadding)
             }
 
@@ -205,7 +205,7 @@ struct TheoryExerciseView: View {
                         .foregroundStyle(AppColor.primaryText)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, AppSpacing.md)
-                        .background(passed ? AppColor.success : AppColor.cardBackground, in: Capsule())
+                        .buttonBackground(passed ? AppColor.success : AppColor.cardBackground)
                 }
 
                 if !passed {

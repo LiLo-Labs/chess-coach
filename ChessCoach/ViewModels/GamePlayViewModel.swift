@@ -196,25 +196,21 @@ final class GamePlayViewModel {
 
     // Trainer-specific computed
     var botPersonality: OpponentPersonality {
-        if case .trainer(let personality, let engineMode, _) = mode {
-            switch engineMode {
-            case .humanLike: return OpponentPersonality.forELO(selectedBotELO)
-            case .engine: return OpponentPersonality.engineForELO(selectedBotELO)
-            case .custom: return personality
-            }
+        if case .trainer(let personality, _, _, _) = mode {
+            return personality
         }
         return OpponentPersonality.forELO(opponentELO)
     }
 
     var selectedBotELO: Int {
-        if case .trainer(_, _, _) = mode {
-            return opponentELO
+        if case .trainer(_, _, _, let elo) = mode {
+            return elo
         }
         return 1200
     }
 
     var trainerEngineMode: TrainerEngineMode {
-        if case .trainer(_, let em, _) = mode { return em }
+        if case .trainer(_, let em, _, _) = mode { return em }
         return .humanLike
     }
 
@@ -263,9 +259,9 @@ final class GamePlayViewModel {
             self.currentLayer = mastery.currentLayer
         }
 
-        // Trainer-specific init
-        if case .trainer(_, _, _) = mode {
-            // opponentELO will be set via setTrainerConfig
+        // Trainer-specific init — capture ELO at button-press time
+        if case .trainer(_, _, _, let botELO) = mode {
+            opponentELO = botELO
         }
     }
 
@@ -535,12 +531,6 @@ final class GamePlayViewModel {
             result += " "
         }
         return result.trimmingCharacters(in: .whitespaces)
-    }
-
-    // MARK: - Trainer Config
-
-    func setTrainerConfig(botELO: Int) {
-        opponentELO = botELO
     }
 
     // MARK: - Eval

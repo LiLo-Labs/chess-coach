@@ -136,8 +136,7 @@ struct SessionCompleteView: View {
             Image(systemName: "arrow.up.circle.fill")
                 .font(.system(size: 44))
                 .foregroundStyle(AppColor.phase(promo.to))
-                .scaleEffect(showPromotion ? 1.0 : 0.5)
-                .opacity(showPromotion ? 1.0 : 0)
+                .reveal(isVisible: showPromotion, delay: 0)
 
             Text("Phase Up!")
                 .font(.title2.weight(.bold))
@@ -163,8 +162,7 @@ struct SessionCompleteView: View {
             Image(systemName: AppColor.layerIcon(promo.to))
                 .font(.system(size: 44))
                 .foregroundStyle(AppColor.layer(promo.to))
-                .scaleEffect(showPromotion ? 1.0 : 0.5)
-                .opacity(showPromotion ? 1.0 : 0)
+                .reveal(isVisible: showPromotion, delay: 0)
 
             Text("Level Up!")
                 .font(.title2.weight(.bold))
@@ -219,8 +217,7 @@ struct SessionCompleteView: View {
                     Text("\(Int(averagePES))")
                         .font(.system(size: 36, weight: .bold, design: .rounded))
                         .foregroundStyle(AppColor.primaryText)
-                        .scaleEffect(showPESScore ? 1.0 : 0.5)
-                        .opacity(showPESScore ? 1.0 : 0)
+                        .reveal(isVisible: showPESScore, delay: 0)
                 }
 
                 PillBadge(text: cat.rawValue.uppercased(), color: pesColor, fontSize: 12)
@@ -292,7 +289,7 @@ struct SessionCompleteView: View {
             }
         }
         .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+        .cardBackground()
     }
 
     // MARK: - Accuracy Section (legacy)
@@ -363,7 +360,7 @@ struct SessionCompleteView: View {
             }
         }
         .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+        .cardBackground()
     }
 
     // MARK: - Progress Section
@@ -427,7 +424,7 @@ struct SessionCompleteView: View {
                     }
                     .padding(.horizontal, AppSpacing.screenPadding)
                     .padding(.vertical, AppSpacing.sm + AppSpacing.xxs)
-                    .background(AppColor.info.opacity(0.1), in: Capsule())
+                    .buttonBackground(AppColor.info.opacity(0.1))
                 }
                 .buttonStyle(.plain)
             } else {
@@ -458,7 +455,7 @@ struct SessionCompleteView: View {
                     .foregroundStyle(AppColor.primaryText)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, AppSpacing.md)
-                    .background(AppColor.guided, in: Capsule())
+                    .buttonBackground(AppColor.guided)
                 }
                 .buttonStyle(.plain)
                 .padding(.horizontal, AppSpacing.screenPadding)
@@ -471,7 +468,7 @@ struct SessionCompleteView: View {
                         .foregroundStyle(AppColor.primaryText)
                         .padding(.horizontal, AppSpacing.xxl)
                         .padding(.vertical, AppSpacing.md)
-                        .background(.ultraThinMaterial, in: Capsule())
+                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: AppRadius.md))
                 }
                 .buttonStyle(.plain)
 
@@ -481,7 +478,7 @@ struct SessionCompleteView: View {
                         .foregroundStyle(AppColor.primaryText)
                         .padding(.horizontal, AppSpacing.xxl + AppSpacing.xxs)
                         .padding(.vertical, AppSpacing.md)
-                        .background(AppColor.success, in: Capsule())
+                        .buttonBackground(AppColor.success)
                 }
                 .buttonStyle(.plain)
             }
@@ -563,7 +560,7 @@ struct SessionCompleteView: View {
             Spacer(minLength: 0)
         }
         .padding(AppSpacing.cardPadding)
-        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+        .cardBackground()
     }
 
     // MARK: - Helpers

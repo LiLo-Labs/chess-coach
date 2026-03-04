@@ -14,6 +14,7 @@ struct ELOAssessmentView: View {
     private enum Phase: Equatable {
         case intro
         case solving
+        case showingSolution(isCorrect: Bool)
         case feedback(isCorrect: Bool)
         case result(estimatedELO: Int)
     }
@@ -28,6 +29,8 @@ struct ELOAssessmentView: View {
     @State private var gameState = GameState()
     @State private var feedbackGameState = GameState()
     @State private var puzzlePerspective: PieceColor = .white
+    @State private var solutionArrowFrom: String?
+    @State private var solutionArrowTo: String?
     @State private var showConfetti = false
     @State private var animatedELO = 0
     @State private var assessmentService: AssessmentService?
@@ -45,6 +48,8 @@ struct ELOAssessmentView: View {
                     introView
                 case .solving:
                     solvingView
+                case .showingSolution(let isCorrect):
+                    solutionDisplayView(isCorrect: isCorrect)
                 case .feedback(let isCorrect):
                     feedbackView(isCorrect: isCorrect)
                 case .result(let elo):
@@ -162,15 +167,57 @@ struct ELOAssessmentView: View {
         }
     }
 
+    // MARK: - Solution Display
+
+    private func solutionDisplayView(isCorrect: Bool) -> some View {
+        VStack(spacing: AppSpacing.md) {
+            progressDots
+                .padding(.top, AppSpacing.md)
+
+            Image(systemName: isCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
+                .font(.system(size: 48))
+                .foregroundStyle(isCorrect ? AppColor.success : AppColor.error)
+
+            GeometryReader { geo in
+                ZStack {
+                    GameBoardView(
+                        gameState: feedbackGameState,
+                        perspective: puzzlePerspective,
+                        allowInteraction: false
+                    ) { _, _ in }
+                    .aspectRatio(1, contentMode: .fit)
+
+                    MoveArrowOverlay(
+                        arrowFrom: solutionArrowFrom,
+                        arrowTo: solutionArrowTo,
+                        boardSize: min(geo.size.width, geo.size.height),
+                        perspective: puzzlePerspective == .white
+                    )
+                }
+            }
+            .aspectRatio(1, contentMode: .fit)
+            .padding(.horizontal, AppSpacing.lg)
+
+            if !isCorrect, let san = currentPuzzle?.solutionSAN {
+                Text("The move was **\(san)**")
+                    .font(.subheadline)
+                    .foregroundStyle(AppColor.secondaryText)
+            }
+
+            Spacer()
+        }
+        .task {
+            try? await Task.sleep(for: .seconds(AppConfig.animation.solutionDisplayDelay))
+            guard !Task.isCancelled else { return }
+            withAnimation { phase = .feedback(isCorrect: isCorrect) }
+        }
+    }
+
     // MARK: - Feedback
 
     private func feedbackView(isCorrect: Bool) -> some View {
         VStack(spacing: AppSpacing.md) {
             Spacer()
-
-            Image(systemName: isCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(isCorrect ? AppColor.success : AppColor.error)
 
             GameBoardView(
                 gameState: feedbackGameState,
@@ -180,40 +227,21 @@ struct ELOAssessmentView: View {
             .aspectRatio(1, contentMode: .fit)
             .padding(.horizontal, AppSpacing.lg)
 
-            VStack(spacing: AppSpacing.sm) {
-                Text(isCorrect ? "Correct!" : "Not quite")
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(AppColor.primaryText)
-
-                if !isCorrect, let san = currentPuzzle?.solutionSAN {
-                    Text("The move was **\(san)**")
-                        .font(.subheadline)
-                        .foregroundStyle(AppColor.secondaryText)
-                }
-
-                if let explanation = currentPuzzle?.explanation {
-                    Text(explanation)
-                        .font(.caption)
-                        .foregroundStyle(AppColor.tertiaryText)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, AppSpacing.xxxl)
-                }
-            }
+            MoveFeedbackView(
+                isCorrect: isCorrect,
+                message: currentPuzzle?.explanation,
+                solutionText: {
+                    if !isCorrect, let san = currentPuzzle?.solutionSAN {
+                        return "The move was \(san)"
+                    }
+                    return nil
+                }(),
+                actionLabel: puzzlesSolved >= maxPuzzles ? "See Results" : "Next",
+                onAction: { advanceToNextPuzzle() }
+            )
 
             Spacer()
-
-            Button {
-                advanceToNextPuzzle()
-            } label: {
-                Text(puzzlesSolved >= maxPuzzles ? "See Results" : "Next")
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(AppColor.layer(.executePlan), in: RoundedRectangle(cornerRadius: AppRadius.lg))
-            }
-            .padding(.horizontal, AppSpacing.xxxl)
-            .padding(.bottom, 40)
+                .frame(height: 40)
         }
     }
 
@@ -316,6 +344,13 @@ struct ELOAssessmentView: View {
         correctState.makeMoveUCI(puzzle.solutionUCI)
         feedbackGameState = correctState
 
+        // Set up solution arrow from the correct move's UCI
+        let solutionUCI = puzzle.solutionUCI
+        if solutionUCI.count >= 4 {
+            solutionArrowFrom = String(solutionUCI.prefix(2))
+            solutionArrowTo = String(solutionUCI.dropFirst(2).prefix(2))
+        }
+
         if isCorrect {
             correctCount += 1
             SoundService.shared.play(.correct)
@@ -334,7 +369,8 @@ struct ELOAssessmentView: View {
         puzzlesSolved += 1
         dotResults.append(isCorrect)
 
-        withAnimation { phase = .feedback(isCorrect: isCorrect) }
+        // Show the solution on the board briefly before advancing to feedback
+        withAnimation { phase = .showingSolution(isCorrect: isCorrect) }
     }
 
     private func advanceToNextPuzzle() {

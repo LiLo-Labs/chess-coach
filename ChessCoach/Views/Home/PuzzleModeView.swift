@@ -21,12 +21,15 @@ struct PuzzleModeView: View {
     @State private var showHint = false
     @State private var puzzlesSolvedToday: Int = 0
     @State private var puzzlePerspective: PieceColor = .white
+    @State private var solutionArrowFrom: String?
+    @State private var solutionArrowTo: String?
 
     private let dailyFreeLimit = 5
 
     enum PuzzlePhase {
         case loading
         case solving
+        case showingSolution
         case feedback
         case complete
         case error
@@ -48,6 +51,10 @@ struct PuzzleModeView: View {
             case .solving:
                 if let gs = gameState, let puzzle = currentPuzzle {
                     solvingView(gameState: gs, puzzle: puzzle)
+                }
+            case .showingSolution:
+                if let gs = feedbackGameState, let puzzle = currentPuzzle {
+                    solutionDisplayView(gameState: gs, puzzle: puzzle)
                 }
             case .feedback:
                 if let gs = feedbackGameState, let puzzle = currentPuzzle {
@@ -176,6 +183,47 @@ struct PuzzleModeView: View {
         }
     }
 
+    // MARK: - Solution Display
+
+    private func solutionDisplayView(gameState: GameState, puzzle: Puzzle) -> some View {
+        VStack(spacing: 0) {
+            Text(feedbackIsCorrect ? "Correct!" : "The best move was \(OpeningMove.friendlyName(from: puzzle.solutionSAN))")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(feedbackIsCorrect ? AppColor.success : AppColor.gold)
+                .padding(.top, AppSpacing.md)
+                .padding(.bottom, AppSpacing.xs)
+
+            GeometryReader { geo in
+                ZStack {
+                    GameBoardView(
+                        gameState: gameState,
+                        perspective: puzzlePerspective,
+                        allowInteraction: false
+                    )
+                    .aspectRatio(1, contentMode: .fit)
+
+                    MoveArrowOverlay(
+                        arrowFrom: solutionArrowFrom,
+                        arrowTo: solutionArrowTo,
+                        boardSize: min(geo.size.width, geo.size.height),
+                        perspective: puzzlePerspective == .white
+                    )
+                }
+            }
+            .aspectRatio(1, contentMode: .fit)
+            .padding(.horizontal, AppSpacing.sm)
+
+            Spacer()
+        }
+        .task {
+            try? await Task.sleep(for: .seconds(AppConfig.animation.solutionDisplayDelay))
+            guard !Task.isCancelled else { return }
+            withAnimation {
+                phase = .feedback
+            }
+        }
+    }
+
     // MARK: - Feedback
 
     private func feedbackView(gameState: GameState, puzzle: Puzzle) -> some View {
@@ -192,44 +240,13 @@ struct PuzzleModeView: View {
 
             Spacer()
 
-            // Feedback card
-            VStack(spacing: AppSpacing.md) {
-                Image(systemName: feedbackIsCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .font(.system(size: 40))
-                    .foregroundStyle(feedbackIsCorrect ? AppColor.success : AppColor.error)
-                    .transition(.scale(scale: 0).combined(with: .opacity))
-
-                Text(feedbackIsCorrect ? "Correct!" : "Not quite")
-                    .font(.title3.weight(.bold))
-                    .foregroundStyle(AppColor.primaryText)
-
-                if let message = feedbackMessage {
-                    Text(message)
-                        .font(.subheadline)
-                        .foregroundStyle(AppColor.secondaryText)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, AppSpacing.xxl)
-                }
-
-                if !feedbackIsCorrect {
-                    Text("The best move was \(OpeningMove.friendlyName(from: puzzle.solutionSAN)) (\(puzzle.solutionSAN))")
-                        .font(.caption)
-                        .foregroundStyle(AppColor.tertiaryText)
-                }
-
-                Button {
-                    advanceToNext()
-                } label: {
-                    Text(currentIndex + 1 < puzzles.count ? "Next Puzzle" : "See Results")
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(AppColor.info, in: RoundedRectangle(cornerRadius: AppRadius.lg))
-                }
-                .buttonStyle(ScaleButtonStyle())
-                .padding(.horizontal, AppSpacing.xxl)
-            }
+            MoveFeedbackView(
+                isCorrect: feedbackIsCorrect,
+                message: feedbackMessage,
+                solutionText: feedbackIsCorrect ? nil : "The best move was \(OpeningMove.friendlyName(from: puzzle.solutionSAN)) (\(puzzle.solutionSAN))",
+                actionLabel: currentIndex + 1 < puzzles.count ? "Next Puzzle" : "See Results",
+                onAction: { advanceToNext() }
+            )
             .padding(.bottom, AppSpacing.xxxl)
         }
     }
@@ -240,21 +257,11 @@ struct PuzzleModeView: View {
         VStack(spacing: AppSpacing.xxl) {
             Spacer()
 
-            Image(systemName: "trophy.fill")
-                .font(.system(size: 56))
-                .foregroundStyle(AppColor.gold)
-
-            Text("Session Complete")
-                .font(.title2.weight(.bold))
-                .foregroundStyle(AppColor.primaryText)
-
-            VStack(spacing: AppSpacing.md) {
-                statRow(label: "Solved", value: "\(sessionResult.solved)/\(sessionResult.total)")
-                statRow(label: "Accuracy", value: "\(Int(sessionResult.accuracy * 100))%")
-                statRow(label: "Best Streak", value: "\(sessionResult.bestStreak)")
-            }
-            .padding(AppSpacing.cardPadding)
-            .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+            SessionSummaryCard(stats: [
+                .init(label: "Solved", value: "\(sessionResult.solved)/\(sessionResult.total)"),
+                .init(label: "Accuracy", value: "\(Int(sessionResult.accuracy * 100))%"),
+                .init(label: "Best Streak", value: "\(sessionResult.bestStreak)"),
+            ])
             .padding(.horizontal, AppSpacing.xxl)
 
             VStack(spacing: AppSpacing.sm) {
@@ -288,21 +295,7 @@ struct PuzzleModeView: View {
         }
     }
 
-    private func statRow(label: String, value: String) -> some View {
-        HStack {
-            Text(label)
-                .font(.subheadline)
-                .foregroundStyle(AppColor.secondaryText)
-            Spacer()
-            Text(value)
-                .font(.subheadline.weight(.bold).monospacedDigit())
-                .foregroundStyle(AppColor.primaryText)
-        }
-    }
-
     // MARK: - No Puzzles
-
-    @Environment(\.dismiss) private var puzzleDismiss
 
     private var errorView: some View {
         VStack(spacing: AppSpacing.lg) {
@@ -343,7 +336,7 @@ struct PuzzleModeView: View {
                 .buttonStyle(.borderedProminent)
 
                 Button("Go Back") {
-                    puzzleDismiss()
+                    dismiss()
                 }
                 .buttonStyle(.bordered)
             }
@@ -399,6 +392,13 @@ struct PuzzleModeView: View {
         correctState.makeMoveUCI(puzzle.solutionUCI)
         feedbackGameState = correctState
 
+        // Set up solution arrow from the correct move's UCI
+        let solutionUCI = puzzle.solutionUCI
+        if solutionUCI.count >= 4 {
+            solutionArrowFrom = String(solutionUCI.prefix(2))
+            solutionArrowTo = String(solutionUCI.dropFirst(2).prefix(2))
+        }
+
         if isCorrect {
             SoundService.shared.play(.correct)
             SoundService.shared.hapticCorrectMove()
@@ -414,8 +414,9 @@ struct PuzzleModeView: View {
             gameState?.undoLastMove()
         }
 
+        // Show the solution on the board briefly before advancing to feedback
         withAnimation {
-            phase = .feedback
+            phase = .showingSolution
         }
     }
 

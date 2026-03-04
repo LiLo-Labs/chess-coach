@@ -3,7 +3,7 @@ import ChessKit
 
 /// Unified mode enum for all gameplay screens.
 enum GamePlayMode {
-    case trainer(personality: OpponentPersonality, engineMode: TrainerEngineMode, playerColor: PieceColor)
+    case trainer(personality: OpponentPersonality, engineMode: TrainerEngineMode, playerColor: PieceColor, botELO: Int)
     case guided(opening: Opening, lineID: String?)
     case unguided(opening: Opening, lineID: String?)
     case practice(opening: Opening, lineID: String?)
@@ -31,7 +31,7 @@ enum GamePlayMode {
 
     var playerColor: PieceColor {
         switch self {
-        case .trainer(_, _, let color): return color
+        case .trainer(_, _, let color, _): return color
         case .guided(let o, _), .unguided(let o, _), .practice(let o, _):
             return o.color == .white ? .white : .black
         }

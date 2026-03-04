@@ -41,7 +41,7 @@ struct ImportedGamesListView: View {
                                 .foregroundStyle(filter == f ? .white : AppColor.primaryText)
                                 .padding(.horizontal, AppSpacing.md)
                                 .padding(.vertical, AppSpacing.xs)
-                                .background(filter == f ? AppColor.info : AppColor.elevatedBackground, in: Capsule())
+                                .buttonBackground(filter == f ? AppColor.info : AppColor.elevatedBackground)
                         }
                         .buttonStyle(ScaleButtonStyle())
                     }

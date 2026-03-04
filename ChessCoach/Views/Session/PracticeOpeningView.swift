@@ -230,9 +230,7 @@ struct PracticeOpeningView: View {
                     .padding(.horizontal, AppSpacing.sm)
                     .padding(.vertical, AppSpacing.xxxs)
                     .background(AppColor.success.opacity(0.15), in: Capsule())
-                    .phaseAnimator([false, true]) { content, phase in
-                        content.opacity(phase ? 1.0 : 0.6)
-                    } animation: { _ in .easeInOut(duration: 0.8) }
+                    .pulse()
             }
         }
         .padding(.horizontal, AppSpacing.screenPadding)
@@ -351,7 +349,7 @@ struct PracticeOpeningView: View {
                             }
                         }
                         .padding(AppSpacing.cardPadding)
-                        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+                        .cardBackground()
                     }
 
                     // Done button
@@ -361,7 +359,7 @@ struct PracticeOpeningView: View {
                             .foregroundStyle(.white)
                             .padding(.horizontal, 28)
                             .padding(.vertical, 12)
-                            .background(AppColor.success, in: Capsule())
+                            .buttonBackground(AppColor.success)
                     }
                     .buttonStyle(.plain)
 

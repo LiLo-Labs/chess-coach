@@ -7,108 +7,30 @@ extension GamePlayView {
     // MARK: - Top Bar
 
     var topBar: some View {
-        HStack(spacing: 0) {
-            Button {
+        GameTopBar(
+            title: viewModel.mode.isTrainer ? "Trainer" : (viewModel.mode.opening?.name ?? ""),
+            subtitle: viewModel.mode.isTrainer ? nil : viewModel.activeLine?.name,
+            showChatToggle: viewModel.isPro && viewModel.mode.isSession,
+            isChatOpen: showChatPanel,
+            showBetaOptions: AppConfig.isBeta,
+            canUndo: viewModel.canUndo,
+            canRedo: viewModel.canRedo,
+            isTrainerMode: viewModel.mode.isTrainer,
+            onBack: {
                 if viewModel.mode.isTrainer {
                     showLeaveConfirmation = true
                 } else {
                     viewModel.endSession()
                     dismiss()
                 }
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                    .frame(width: 44, height: 44)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Back")
-
-            Spacer()
-
-            if viewModel.mode.isTrainer {
-                Text("Trainer")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.white)
-            } else if let opening = viewModel.mode.opening {
-                VStack(spacing: 1) {
-                    Text(opening.name)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(.white)
-                        .lineLimit(1)
-
-                    if let line = viewModel.activeLine {
-                        Text(line.name)
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
-                    }
-                }
-            }
-
-            Spacer()
-
-            if viewModel.isPro && viewModel.mode.isSession {
-                Button {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
-                        showChatPanel.toggle()
-                    }
-                } label: {
-                    Image(systemName: showChatPanel ? "bubble.left.and.bubble.right.fill" : "bubble.left.and.bubble.right")
-                        .font(.body)
-                        .foregroundStyle(showChatPanel ? AppColor.practice : .secondary)
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(showChatPanel ? "Close coach chat" : "Open coach chat")
-            }
-
-            Menu {
-                Button { viewModel.undoMove() } label: {
-                    Label("Undo Move", systemImage: "arrow.uturn.backward")
-                }
-                .disabled(!viewModel.canUndo)
-
-                Button { viewModel.redoMove() } label: {
-                    Label("Redo Move", systemImage: "arrow.uturn.forward")
-                }
-                .disabled(!viewModel.canRedo)
-
-                Divider()
-
-                if viewModel.mode.isTrainer {
-                    Button(role: .destructive) {
-                        viewModel.resignTrainer()
-                    } label: {
-                        Label("Resign", systemImage: "flag.fill")
-                    }
-                } else {
-                    Button {
-                        Task { await viewModel.restartSession() }
-                    } label: {
-                        Label("Restart", systemImage: "arrow.counterclockwise")
-                    }
-                }
-
-                if AppConfig.isBeta {
-                    Button { showFeedbackForm = true } label: {
-                        Label("Report Bug", systemImage: "ladybug.fill")
-                    }
-                }
-            } label: {
-                Image(systemName: "ellipsis.circle")
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
-                    .frame(width: 44, height: 44)
-                    .contentShape(Rectangle())
-            }
-            .accessibilityLabel("More options")
-        }
-        .padding(.horizontal, AppSpacing.screenPadding)
-        .padding(.top, AppSpacing.topBarSafeArea)
-        .padding(.bottom, 4)
+            },
+            onChatToggle: { showChatPanel.toggle() },
+            onUndo: { viewModel.undoMove() },
+            onRedo: { viewModel.redoMove() },
+            onRestart: { Task { await viewModel.restartSession() } },
+            onResign: { viewModel.resignTrainer() },
+            onReportBug: { showFeedbackForm = true }
+        )
     }
 
     // MARK: - Players Bar (Trainer)
@@ -151,52 +73,16 @@ extension GamePlayView {
     // MARK: - Players Bar (Session)
 
     var sessionPlayersBar: some View {
-        HStack(spacing: 0) {
-            HStack(spacing: 6) {
-                Circle()
-                    .fill(viewModel.mode.playerColor == .white ? Color(white: 0.3) : .white)
-                    .frame(width: 8, height: 8)
-                Text(OpponentPersonality.forELO(viewModel.opponentELO).name)
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                Text("\(viewModel.opponentELO)")
-                    .font(.caption2.monospacedDigit())
-                    .foregroundStyle(.secondary)
-                if viewModel.isThinking {
-                    ProgressView().controlSize(.mini).tint(.secondary)
-                }
-            }
-
-            Spacer()
-
-            HStack(spacing: 6) {
-                if isUserTurnForSession && !viewModel.isThinking && !viewModel.sessionComplete {
-                    Text("YOUR MOVE")
-                        .font(.system(size: 9, weight: .heavy))
-                        .tracking(0.3)
-                        .foregroundStyle(.green)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(.green.opacity(0.15), in: Capsule())
-                        .phaseAnimator([false, true]) { content, phase in
-                            content.opacity(phase ? 1.0 : 0.6)
-                        } animation: { _ in .easeInOut(duration: 0.8) }
-                }
-                Text("\(viewModel.userELO)")
-                    .font(.caption2.monospacedDigit())
-                    .foregroundStyle(.secondary)
-                Text("You")
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.primary)
-                Circle()
-                    .fill(viewModel.mode.playerColor == .white ? .white : Color(white: 0.3))
-                    .frame(width: 8, height: 8)
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 5)
-        .background(AppColor.elevatedBackground)
+        PlayersBar(
+            opponentName: OpponentPersonality.forELO(viewModel.opponentELO).name,
+            opponentELO: viewModel.opponentELO,
+            opponentDotColor: viewModel.mode.playerColor == .white ? Color(white: 0.3) : .white,
+            userName: "You",
+            userELO: viewModel.userELO,
+            userDotColor: viewModel.mode.playerColor == .white ? .white : Color(white: 0.3),
+            isThinking: viewModel.isThinking,
+            showYourMove: isUserTurnForSession && !viewModel.isThinking && !viewModel.sessionComplete
+        )
     }
 
     private var isUserTurnForSession: Bool {
