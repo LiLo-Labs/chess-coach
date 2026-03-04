@@ -8,30 +8,12 @@ struct RevealModifier: ViewModifier {
 
     var isVisible: Bool
     var delay: Double
-    var response: Double
-    var dampingFraction: Double
-    var initialScale: Double
 
     func body(content: Content) -> some View {
         content
-            .scaleEffect(effectiveScale)
-            .opacity(effectiveOpacity)
-            .animation(reduceMotion ? nil : springAnimation, value: isVisible)
-    }
-
-    private var effectiveScale: Double {
-        if reduceMotion { return 1.0 }
-        return isVisible ? 1.0 : initialScale
-    }
-
-    private var effectiveOpacity: Double {
-        if reduceMotion { return isVisible ? 1.0 : 0.0 }
-        return isVisible ? 1.0 : 0.0
-    }
-
-    private var springAnimation: Animation {
-        .spring(response: response, dampingFraction: dampingFraction)
-        .delay(delay)
+            .scaleEffect(reduceMotion ? 1.0 : (isVisible ? 1.0 : 0.5))
+            .opacity(isVisible ? 1.0 : 0.0)
+            .animation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.7).delay(delay), value: isVisible)
     }
 }
 
@@ -40,22 +22,13 @@ extension View {
     /// - Parameters:
     ///   - isVisible: Whether the view should be shown.
     ///   - delay: Delay before the animation starts. Default is `0.3`.
-    ///   - response: Spring response time. Default is `0.5`.
-    ///   - dampingFraction: Spring damping. Default is `0.7`.
-    ///   - initialScale: Starting scale before reveal. Default is `0.5`.
     func reveal(
         isVisible: Bool,
-        delay: Double = 0.3,
-        response: Double = 0.5,
-        dampingFraction: Double = 0.7,
-        initialScale: Double = 0.5
+        delay: Double = 0.3
     ) -> some View {
         modifier(RevealModifier(
             isVisible: isVisible,
-            delay: delay,
-            response: response,
-            dampingFraction: dampingFraction,
-            initialScale: initialScale
+            delay: delay
         ))
     }
 }

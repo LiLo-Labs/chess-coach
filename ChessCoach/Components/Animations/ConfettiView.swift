@@ -6,7 +6,7 @@ struct ConfettiView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var particles: [Particle] = []
-    @State private var isAnimating = false
+    @State private var animationProgress: Double = 0
 
     private let colors: [Color] = [.yellow, .green, .blue, .orange, .pink, .purple, .cyan]
     private let particleCount = 50
@@ -26,13 +26,14 @@ struct ConfettiView: View {
         GeometryReader { geo in
             Canvas { context, size in
                 for particle in particles {
-                    let currentX = isAnimating ? particle.targetX : particle.x
-                    let currentY = isAnimating ? particle.targetY : particle.y
-                    let opacity = isAnimating ? 0.0 : 1.0
+                    let t = animationProgress
+                    let currentX = particle.x + (particle.targetX - particle.x) * t
+                    let currentY = particle.y + (particle.targetY - particle.y) * t
+                    let opacity = reduceMotion ? 1.0 : max(1.0 - t, 0.0)
 
                     var transform = CGAffineTransform.identity
                     transform = transform.translatedBy(x: currentX, y: currentY)
-                    transform = transform.rotated(by: isAnimating ? particle.rotation * 4 : 0)
+                    transform = transform.rotated(by: particle.rotation * 4 * t)
 
                     context.opacity = opacity
                     context.fill(
@@ -65,11 +66,11 @@ struct ConfettiView: View {
                 }
 
                 if reduceMotion {
-                    // Show particles at their target positions without animation
-                    isAnimating = false
+                    // Show particles spread out at target positions, fully visible
+                    animationProgress = 1.0
                 } else {
                     withAnimation(.spring(response: 1.2, dampingFraction: 0.6)) {
-                        isAnimating = true
+                        animationProgress = 1.0
                     }
                 }
             }
