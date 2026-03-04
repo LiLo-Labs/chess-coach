@@ -78,7 +78,6 @@
 		4EECD7435103616029F2306B /* SpacedRepIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ECA2209C648214DAA115CF /* SpacedRepIntegrationTests.swift */; };
 		5009588C90BC3C56081C1727 /* SpacedRepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC6A2985336BC125CDD2FDF /* SpacedRepTests.swift */; };
 		508957B4BA3430AAFD04D348 /* nn-1111cefa1111.nnue in Resources */ = {isa = PBXBuildFile; fileRef = 76400CAAB3AE97CD17A7B765 /* nn-1111cefa1111.nnue */; };
-		50AA9CD0492AB5DA05F4B59C /* Qwen3-4B-Q4_K_M.gguf in Resources */ = {isa = PBXBuildFile; fileRef = BDCCE62F13ED6CDC63D415EA /* Qwen3-4B-Q4_K_M.gguf */; };
 		52D6C103228BC322728622FB /* ChessKitEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 111E24467C545F77B7F648BA /* ChessKitEngine */; };
 		5631F07DEDC0C264386395AE /* maia2_moves.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5AF349EACF6870397174001C /* maia2_moves.txt */; };
 		58BB6002CE1169095996ABB1 /* GamePlayViewModel+Trainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB5CFE7C0B8CD1D6F0D6540 /* GamePlayViewModel+Trainer.swift */; };
@@ -383,7 +382,6 @@
 		BCA077A7690ADAE0BE5DB48B /* ScoutReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoutReportView.swift; sourceTree = "<group>"; };
 		BCB4CCFA1910B3659A0F85D0 /* SubMilestone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubMilestone.swift; sourceTree = "<group>"; };
 		BD3017C504F70C847181883F /* ModelDownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDownloadService.swift; sourceTree = "<group>"; };
-		BDCCE62F13ED6CDC63D415EA /* Qwen3-4B-Q4_K_M.gguf */ = {isa = PBXFileReference; path = "Qwen3-4B-Q4_K_M.gguf"; sourceTree = "<group>"; };
 		BF3A08FCE3DF73D1A1E64206 /* OpeningMastery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningMastery.swift; sourceTree = "<group>"; };
 		C02CC47001BB8CA0952CF358 /* ChessCoachApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessCoachApp.swift; sourceTree = "<group>"; };
 		C091CF61CC1D1E0ACE4219A9 /* GamePlayView+Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GamePlayView+Board.swift"; sourceTree = "<group>"; };
@@ -941,7 +939,6 @@
 				38878C966F69C0C1EC11776A /* Maia2Blitz.mlpackage */,
 				AABA327DF4FE44334C2F8676 /* nn-37f18f62d772.nnue */,
 				76400CAAB3AE97CD17A7B765 /* nn-1111cefa1111.nnue */,
-				BDCCE62F13ED6CDC63D415EA /* Qwen3-4B-Q4_K_M.gguf */,
 				ECC84B93992D948FF2C86647 /* OpeningData */,
 				05DE9FD810200E877D5A83DB /* Openings */,
 			);
@@ -1136,7 +1133,6 @@
 			files = (
 				1087FFF77B8FB3ACC95ECECB /* Assets.xcassets in Resources */,
 				B5366C62CBE6D18624506D3D /* PrivacyInfo.xcprivacy in Resources */,
-				50AA9CD0492AB5DA05F4B59C /* Qwen3-4B-Q4_K_M.gguf in Resources */,
 				7306A08E29B367045E32CAF6 /* a.tsv in Resources */,
 				73628657C57D6784C80DB682 /* alekhine.json in Resources */,
 				4701FB87A46A99D2DBA6B21B /* assessment_puzzles.json in Resources */,

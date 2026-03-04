@@ -135,7 +135,8 @@ struct TrainerSetupView: View {
                 mode: .trainer(
                     personality: botPersonality,
                     engineMode: engineMode,
-                    playerColor: playerColor
+                    playerColor: playerColor,
+                    botELO: selectedBotELO
                 ),
                 isPro: subscriptionService.isPro,
                 tier: subscriptionService.currentTier
