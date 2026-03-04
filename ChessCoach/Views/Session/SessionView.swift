@@ -180,8 +180,8 @@ struct SessionView: View {
                     liveStatus
                         .id("live")
 
-                    // Feed entries (newest first) — tappable to replay board
-                    ForEach(viewModel.feedEntries) { entry in
+                    // Feed entries (newest first, sorted by ply) — tappable to replay board
+                    ForEach(viewModel.feedEntries.sorted { $0.whitePly > $1.whitePly }) { entry in
                         feedRow(entry)
                     }
                 }
@@ -359,10 +359,6 @@ struct SessionView: View {
         }
         .buttonStyle(.plain)
     }
-
-    // MARK: - Move Name Helpers
-
-    /// Convert SAN notation (e.g. "Nf3", "e4", "O-O") to human-friendly text (e.g. "Knight to f3", "Pawn to e4", "Castle kingside")
 
     // MARK: - Status Banners
 
@@ -558,91 +554,25 @@ struct SessionView: View {
     // MARK: - Top Bar
 
     private var topBar: some View {
-        HStack(spacing: 0) {
-            Button {
+        GameTopBar(
+            title: viewModel.opening.name,
+            subtitle: viewModel.activeLine?.name,
+            showChatToggle: viewModel.isPro,
+            isChatOpen: showChatPanel,
+            showBetaOptions: AppConfig.isBeta,
+            canUndo: viewModel.canUndo,
+            canRedo: viewModel.canRedo,
+            isTrainerMode: false,
+            onBack: {
                 viewModel.endSession()
                 dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.secondary)
-                    .frame(width: 44, height: 44)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Back")
-
-            Spacer()
-
-            VStack(spacing: 1) {
-                Text(viewModel.opening.name)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.white)
-                    .lineLimit(1)
-
-                if let line = viewModel.activeLine {
-                    Text(line.name)
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                }
-            }
-
-            Spacer()
-
-            // Chat panel toggle (AI tiers only)
-            if viewModel.isPro {
-                Button {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) {
-                        showChatPanel.toggle()
-                    }
-                } label: {
-                    Image(systemName: showChatPanel ? "bubble.left.and.bubble.right.fill" : "bubble.left.and.bubble.right")
-                        .font(.body)
-                        .foregroundStyle(showChatPanel ? AppColor.practice : .secondary)
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(showChatPanel ? "Close coach chat" : "Open coach chat")
-            }
-
-            Menu {
-                Button { viewModel.undoMove() } label: {
-                    Label("Undo Move", systemImage: "arrow.uturn.backward")
-                }
-                .disabled(!viewModel.canUndo)
-
-                Button { viewModel.redoMove() } label: {
-                    Label("Redo Move", systemImage: "arrow.uturn.forward")
-                }
-                .disabled(!viewModel.canRedo)
-
-                Divider()
-
-                Button {
-                    Task { await viewModel.restartSession() }
-                } label: {
-                    Label("Restart", systemImage: "arrow.counterclockwise")
-                }
-
-                if AppConfig.isBeta {
-                    Button { showFeedbackForm = true } label: {
-                        Label("Report Bug", systemImage: "ladybug.fill")
-                    }
-                }
-            } label: {
-                Image(systemName: "ellipsis.circle")
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
-                    .frame(width: 44, height: 44)
-                    .contentShape(Rectangle())
-            }
-            .accessibilityLabel("More options")
-        }
-        .padding(.horizontal, AppSpacing.screenPadding)
-        .padding(.top, AppSpacing.topBarSafeArea)
-        .padding(.bottom, 4)
+            },
+            onChatToggle: { showChatPanel.toggle() },
+            onUndo: { viewModel.undoMove() },
+            onRedo: { viewModel.redoMove() },
+            onRestart: { Task { await viewModel.restartSession() } },
+            onReportBug: { showFeedbackForm = true }
+        )
     }
 
     // MARK: - Engine Warning / Loading Bars
@@ -676,131 +606,39 @@ struct SessionView: View {
 
     // MARK: - Players Bar
 
-    private var opponentPersonality: OpponentPersonality {
-        OpponentPersonality.forELO(viewModel.opponentELO)
-    }
-
     private var playersBar: some View {
-        HStack(spacing: 0) {
-            HStack(spacing: 6) {
-                Circle()
-                    .fill(viewModel.opening.color == .white ? Color(white: 0.3) : .white)
-                    .frame(width: 8, height: 8)
-                Text(opponentPersonality.name)
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                Text("\(viewModel.opponentELO)")
-                    .font(.caption2.monospacedDigit())
-                    .foregroundStyle(.secondary)
-                if viewModel.isThinking {
-                    ProgressView().controlSize(.mini).tint(.secondary)
-                }
-            }
-
-            Spacer()
-
-            HStack(spacing: 6) {
-                if viewModel.isUserTurn && !viewModel.isThinking && !viewModel.sessionComplete {
-                    Text("YOUR MOVE")
-                        .font(.system(size: 9, weight: .heavy))
-                        .tracking(0.3)
-                        .foregroundStyle(.green)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(.green.opacity(0.15), in: Capsule())
-                        .pulse()
-                }
-                Text("\(viewModel.userELO)")
-                    .font(.caption2.monospacedDigit())
-                    .foregroundStyle(.secondary)
-                Text("You")
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.primary)
-                Circle()
-                    .fill(viewModel.opening.color == .white ? .white : Color(white: 0.3))
-                    .frame(width: 8, height: 8)
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 5)
-        .background(AppColor.elevatedBackground)
+        PlayersBar(
+            opponentName: OpponentPersonality.forELO(viewModel.opponentELO).name,
+            opponentELO: viewModel.opponentELO,
+            opponentDotColor: viewModel.opening.color == .white ? Color(white: 0.3) : .white,
+            userName: "You",
+            userELO: viewModel.userELO,
+            userDotColor: viewModel.opening.color == .white ? .white : Color(white: 0.3),
+            isThinking: viewModel.isThinking,
+            showYourMove: viewModel.isUserTurn && !viewModel.isThinking && !viewModel.sessionComplete
+        )
     }
 
     // MARK: - Replay Bar
 
     @ViewBuilder
     private var replayBar: some View {
-        if viewModel.moveCount > 0 {
-            HStack(spacing: 4) {
-                Button { viewModel.enterReplay(ply: 0) } label: {
-                    Image(systemName: "backward.end.fill")
-                        .font(.body)
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
-                }
-                .disabled(viewModel.isReplaying && viewModel.replayPly == 0)
-
-                Button {
-                    let current = viewModel.replayPly ?? viewModel.moveCount
-                    viewModel.enterReplay(ply: current - 1)
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.body.weight(.semibold))
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
-                }
-                .disabled(viewModel.isReplaying && viewModel.replayPly == 0)
-
-                Spacer()
-
-                if viewModel.isReplaying {
-                    Text("Move \(viewModel.replayPly ?? 0) of \(viewModel.moveCount)")
-                        .font(.caption.monospacedDigit().weight(.medium))
-                        .foregroundStyle(.secondary)
-                } else {
-                    Text("Ply \(viewModel.moveCount)")
-                        .font(.caption.monospacedDigit().weight(.medium))
-                        .foregroundStyle(.secondary)
-                }
-
-                Spacer()
-
-                Button {
-                    let current = viewModel.replayPly ?? viewModel.moveCount
-                    viewModel.enterReplay(ply: current + 1)
-                } label: {
-                    Image(systemName: "chevron.right")
-                        .font(.body.weight(.semibold))
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
-                }
-                .disabled(!viewModel.isReplaying)
-
-                Button { viewModel.exitReplay() } label: {
-                    Image(systemName: "forward.end.fill")
-                        .font(.body)
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
-                }
-                .disabled(!viewModel.isReplaying)
-
-                if viewModel.isReplaying {
-                    Button { viewModel.exitReplay() } label: {
-                        Text("Resume")
-                            .font(.subheadline.weight(.bold))
-                            .foregroundStyle(.green)
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 8)
-                            .background(.green.opacity(0.12), in: Capsule())
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .foregroundStyle(.white.opacity(0.6))
-            .buttonStyle(.plain)
-            .padding(.horizontal, AppSpacing.screenPadding)
-        }
+        ReplayBar(
+            totalPly: viewModel.moveCount,
+            replayPly: viewModel.replayPly,
+            isReplaying: viewModel.isReplaying,
+            onGoToStart: { viewModel.enterReplay(ply: 0) },
+            onStepBack: {
+                let current = viewModel.replayPly ?? viewModel.moveCount
+                viewModel.enterReplay(ply: current - 1)
+            },
+            onStepForward: {
+                let current = viewModel.replayPly ?? viewModel.moveCount
+                viewModel.enterReplay(ply: current + 1)
+            },
+            onGoToEnd: { viewModel.exitReplay() },
+            onResume: { viewModel.exitReplay() }
+        )
     }
 
     // MARK: - Session Complete Overlay
