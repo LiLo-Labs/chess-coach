@@ -49,7 +49,6 @@ struct MoveFeedbackView: View {
             .buttonStyle(ScaleButtonStyle())
             .padding(.horizontal, AppSpacing.xxl)
         }
-        .sensoryFeedback(isCorrect ? .success : .error, trigger: appeared)
         .onAppear {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                 appeared = true

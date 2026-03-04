@@ -249,8 +249,6 @@ struct PuzzleModeView: View {
 
     // MARK: - No Puzzles
 
-    @Environment(\.dismiss) private var puzzleDismiss
-
     private var errorView: some View {
         VStack(spacing: AppSpacing.lg) {
             Spacer()
@@ -290,7 +288,7 @@ struct PuzzleModeView: View {
                 .buttonStyle(.borderedProminent)
 
                 Button("Go Back") {
-                    puzzleDismiss()
+                    dismiss()
                 }
                 .buttonStyle(.bordered)
             }
