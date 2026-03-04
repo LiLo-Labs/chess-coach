@@ -83,7 +83,7 @@ extension GamePlayView {
                     .font(.subheadline)
                 }
                 .padding(AppSpacing.cardPadding)
-                .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: AppRadius.md))
+                .cardBackground()
                 .padding(.horizontal, AppSpacing.xxl)
 
                 // Buttons

@@ -179,7 +179,7 @@ struct CoachChatPanel: View {
                         .foregroundStyle(AppColor.secondaryText)
                         .padding(.horizontal, 10)
                         .frame(minHeight: 44)
-                        .background(AppColor.cardBackground, in: RoundedRectangle(cornerRadius: 8))
+                        .cardBackground(cornerRadius: AppRadius.sm)
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint("Fills in the text field with this question")

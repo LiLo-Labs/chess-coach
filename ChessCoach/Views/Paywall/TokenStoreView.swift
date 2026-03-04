@@ -39,7 +39,7 @@ struct TokenStoreView: View {
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 6)
-                                .background(AppColor.success, in: Capsule())
+                                .buttonBackground(AppColor.success)
                             }
                             .buttonStyle(.plain)
                         } else {
@@ -123,7 +123,7 @@ struct TokenStoreView: View {
                         .foregroundStyle(.white)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
-                        .background(AppColor.guided, in: Capsule())
+                        .buttonBackground(AppColor.guided)
                 }
                 .buttonStyle(.plain)
                 .disabled(tokenService.purchaseState == .purchasing)

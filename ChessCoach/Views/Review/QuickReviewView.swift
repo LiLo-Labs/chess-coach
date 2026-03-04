@@ -95,7 +95,7 @@ struct QuickReviewView: View {
                 .foregroundStyle(.white)
                 .padding(.horizontal, 28)
                 .padding(.vertical, 12)
-                .background(AppColor.success, in: Capsule())
+                .buttonBackground(AppColor.success)
                 .buttonStyle(.plain)
         }
     }
@@ -193,7 +193,7 @@ struct QuickReviewView: View {
                 .foregroundStyle(.white)
                 .padding(.horizontal, 24)
                 .padding(.vertical, 10)
-                .background(AppColor.guided, in: Capsule())
+                .buttonBackground(AppColor.guided)
                 .buttonStyle(.plain)
             }
         }
