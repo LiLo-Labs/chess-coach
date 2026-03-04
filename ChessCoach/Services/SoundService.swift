@@ -63,7 +63,7 @@ final class SoundService {
             case .capture: AudioServicesPlaySystemSound(1105)    // Tink
             case .check: AudioServicesPlaySystemSound(1057)      // Alert
             case .correct: AudioServicesPlaySystemSound(1025)    // Positive
-            case .wrong: AudioServicesPlaySystemSound(1073)      // Negative
+            case .wrong: AudioServicesPlaySystemSound(1003)      // Gentle thunk
             case .phaseUp: AudioServicesPlaySystemSound(1335)    // Fanfare
             }
         }
