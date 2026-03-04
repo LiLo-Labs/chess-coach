@@ -18,5 +18,8 @@ build/
 # Node
 node_modules/
 
+# Worktrees
+.worktrees/
+
 # OS files
 .DS_Store
