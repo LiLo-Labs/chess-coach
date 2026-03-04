@@ -91,6 +91,35 @@ extension GamePlayView {
                (pc == .black && !viewModel.gameState.isWhiteTurn)
     }
 
+    // MARK: - Line Status Bar (Practice)
+
+    @ViewBuilder
+    var practiceLineStatusBar: some View {
+        if viewModel.mode.sessionMode == .practice {
+            HStack(spacing: AppSpacing.sm) {
+                if let lineName = viewModel.currentLineName {
+                    Image(systemName: "book.fill")
+                        .font(.caption2)
+                        .foregroundStyle(AppColor.info)
+                    Text("You're in the \(lineName)")
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(AppColor.info)
+                } else if viewModel.moveCount > 0 {
+                    Image(systemName: "arrow.triangle.branch")
+                        .font(.caption2)
+                        .foregroundStyle(AppColor.secondaryText)
+                    Text("On your own — play freely")
+                        .font(.caption)
+                        .foregroundStyle(AppColor.secondaryText)
+                }
+                Spacer()
+            }
+            .padding(.horizontal, AppSpacing.screenPadding)
+            .padding(.vertical, AppSpacing.xxs)
+            .background(AppColor.elevatedBackground)
+        }
+    }
+
     // MARK: - Status Banners
 
     @ViewBuilder

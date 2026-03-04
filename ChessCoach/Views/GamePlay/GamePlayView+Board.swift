@@ -21,6 +21,8 @@ extension GamePlayView {
                     viewModel.clearArrowAndHint()
                     if viewModel.mode.isTrainer {
                         viewModel.trainerUserMoved(from: from, to: to)
+                    } else if viewModel.mode.sessionMode == .practice {
+                        Task { await viewModel.practiceUserMoved(from: from, to: to) }
                     } else {
                         Task { await viewModel.sessionUserMoved(from: from, to: to) }
                     }

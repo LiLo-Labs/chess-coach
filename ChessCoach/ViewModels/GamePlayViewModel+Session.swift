@@ -187,6 +187,88 @@ extension GamePlayViewModel {
         }
     }
 
+    // MARK: - Practice Mode
+
+    func practiceUserMoved(from: String, to: String) async {
+        let uciMove = from + to
+        stats.totalUserMoves += 1
+
+        SoundService.shared.play(.move)
+        SoundService.shared.hapticPiecePlaced()
+
+        // Check if move matches any known continuation
+        let moveHistory = gameState.moveHistory.map { $0.from + $0.to }
+        let continuations = opening?.continuations(afterMoves: Array(moveHistory.dropLast())) ?? []
+        let isBookMove = continuations.contains { $0.uci == uciMove }
+        if isBookMove {
+            stats.movesOnBook += 1
+        }
+
+        updateLineAccuracy(isCorrect: isBookMove)
+        updateLineDetection()
+
+        await updatePracticeEval()
+
+        // End after ~30 moves (60 plies) or no legal moves
+        if gameState.plyCount >= 60 || gameState.legalMoves.isEmpty {
+            endSession()
+            return
+        }
+
+        if !sessionComplete {
+            await makeOpponentMove()
+        }
+    }
+
+    func updateLineDetection() {
+        guard let opening = mode.opening else { return }
+        let moveHistory = gameState.moveHistory.map { $0.from + $0.to }
+        let matchingLines = opening.matchingLines(forMoveSequence: moveHistory)
+        let previousName = currentLineName
+
+        if let bestMatch = matchingLines.first {
+            currentLineName = bestMatch.name
+            if !linesEncountered.contains(bestMatch.id) {
+                linesEncountered.append(bestMatch.id)
+            }
+            if previousName != nil && previousName != bestMatch.name {
+                lineTransitionMessage = "Entering \(bestMatch.name) territory"
+                Task {
+                    try? await Task.sleep(for: .seconds(4))
+                    await MainActor.run { lineTransitionMessage = nil }
+                }
+            }
+        } else if !moveHistory.isEmpty {
+            currentLineName = nil
+            if previousName != nil {
+                lineTransitionMessage = "Off-book — play freely"
+                Task {
+                    try? await Task.sleep(for: .seconds(4))
+                    await MainActor.run { lineTransitionMessage = nil }
+                }
+            }
+        }
+    }
+
+    func updateLineAccuracy(isCorrect: Bool) {
+        guard let opening = mode.opening else { return }
+        let moveHistory = gameState.moveHistory.map { $0.from + $0.to }
+        let matchingLines = opening.matchingLines(forMoveSequence: moveHistory)
+        for line in matchingLines {
+            var entry = lineAccuracies[line.id] ?? (correct: 0, total: 0)
+            entry.total += 1
+            if isCorrect { entry.correct += 1 }
+            lineAccuracies[line.id] = entry
+        }
+    }
+
+    private func updatePracticeEval() async {
+        let fen = gameState.fen
+        if let result = await stockfish.evaluate(fen: fen, depth: AppConfig.engine.evalDepth) {
+            evalScore = result.score
+        }
+    }
+
     // MARK: - Opponent Move
 
     func makeOpponentMove() async {
@@ -200,6 +282,30 @@ extension GamePlayViewModel {
 
         var computedMove: String?
         var isForced = false
+
+        // Practice mode: try varied opponent (book moves) first
+        if mode.sessionMode == .practice, let variedOpponent {
+            let moveHistory = gameState.moveHistory.map { $0.from + $0.to }
+            let progress = PersistenceService.shared.loadProgress(forOpening: mode.opening?.id ?? "")
+            if let bookMove = variedOpponent.pickOpponentMove(
+                atPly: gameState.plyCount,
+                afterMoves: moveHistory,
+                lineProgress: progress.lineProgress
+            ) {
+                guard gen == sessionGeneration else { return }
+                let success = gameState.makeMoveUCI(bookMove)
+                if success {
+                    updateLineDetection()
+
+                    let minimumDelay = Duration.seconds(Double.random(in: 0.5...1.5))
+                    let elapsed = clock.now - start
+                    if elapsed < minimumDelay {
+                        try? await Task.sleep(for: minimumDelay - elapsed)
+                    }
+                    return
+                }
+            }
+        }
 
         if let forcedMove = curriculumService?.getMaiaOverride(atPly: ply) {
             computedMove = forcedMove
@@ -757,6 +863,16 @@ extension GamePlayViewModel {
     func saveProgress() {
         guard mode.isSession, let opening = mode.opening else { return }
         guard stats.totalUserMoves > 0 else { return }
+
+        // Practice mode: simple progress save
+        if mode.sessionMode == .practice {
+            var progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
+            progress.practiceSessionCount += 1
+            progress.practiceAccuracy = stats.accuracy
+            PersistenceService.shared.saveProgress(progress)
+            return
+        }
+
         var progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
         let completed = gameState.plyCount >= activeMoves.count
         let accuracy = stats.accuracy

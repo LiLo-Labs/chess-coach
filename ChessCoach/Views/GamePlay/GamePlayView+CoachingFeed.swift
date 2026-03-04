@@ -7,7 +7,20 @@ extension GamePlayView {
     var coachingFeed: some View {
         let feedEntries = viewModel.feedEntries.map { FeedEntry.from($0) }
 
-        if viewModel.mode.isSession {
+        if viewModel.mode.sessionMode == .practice {
+            CoachingFeedView(
+                entries: feedEntries,
+                isLoading: false,
+                explainStyle: .textAndIcon,
+                header: practiceStatus,
+                scrollAnchor: "live",
+                onTapEntry: { ply in
+                    viewModel.enterReplay(ply: ply)
+                },
+                onRequestExplanation: { _ in }
+            )
+            .background(AppColor.background)
+        } else if viewModel.mode.isSession {
             CoachingFeedView(
                 entries: feedEntries,
                 isLoading: viewModel.isEvaluating || viewModel.isCoachingLoading,
@@ -40,6 +53,51 @@ extension GamePlayView {
             )
             .background(AppColor.background)
         }
+    }
+
+    // MARK: - Practice Status
+
+    @ViewBuilder
+    private var practiceStatus: some View {
+        VStack(spacing: AppSpacing.sm) {
+            if let message = viewModel.lineTransitionMessage {
+                HStack(spacing: AppSpacing.sm) {
+                    Image(systemName: "arrow.triangle.branch")
+                        .font(.footnote)
+                        .foregroundStyle(.teal)
+                    Text(message)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(.teal)
+                    Spacer()
+                }
+                .padding(AppSpacing.md)
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: AppRadius.md))
+                .padding(.horizontal, AppSpacing.md)
+                .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+
+            if viewModel.stats.totalUserMoves == 0 {
+                VStack(spacing: AppSpacing.xs) {
+                    Image(systemName: "target")
+                        .font(.title2)
+                        .foregroundStyle(AppColor.practice)
+                    HStack(spacing: 4) {
+                        Text("Practice Mode")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(AppColor.practice)
+                        HelpButton(topic: .practiceMode)
+                    }
+                    Text("No hints — your opponent will surprise you with different responses. Show what you know!")
+                        .font(.caption)
+                        .foregroundStyle(AppColor.secondaryText)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(AppSpacing.cardPadding)
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: AppRadius.md))
+                .padding(.horizontal, AppSpacing.md)
+            }
+        }
+        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: viewModel.lineTransitionMessage)
     }
 
     // MARK: - Live Status (Session)

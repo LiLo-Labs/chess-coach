@@ -235,7 +235,7 @@ struct HomeView: View {
     }
 
     private func checkForSavedSession() {
-        guard let info = SessionViewModel.savedSessionInfo() else { return }
+        guard let info = GamePlayViewModel.savedSessionInfo() else { return }
         let allOpenings = database.openings(forColor: .white) + database.openings(forColor: .black)
         if let opening = allOpenings.first(where: { $0.id == info.openingID }) {
             resumeOpening = opening

@@ -31,6 +31,8 @@ struct GamePlayView: View {
 
                 statusBanners
 
+                practiceLineStatusBar
+
                 if viewModel.mode.isTrainer {
                     trainerPlayersBar
                 } else {
