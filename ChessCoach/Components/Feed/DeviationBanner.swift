@@ -23,9 +23,9 @@ enum DeviationBanner {
                         .foregroundStyle(.primary.opacity(0.6))
                 }
             }
-            .padding(10)
+            .padding(AppSpacing.md - 2)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+            .background(Color.orange.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.sm))
         }
     }
 
@@ -48,9 +48,9 @@ enum DeviationBanner {
                         .foregroundStyle(.mint.opacity(0.8))
                 }
             }
-            .padding(10)
+            .padding(AppSpacing.md - 2)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.mint.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+            .background(Color.mint.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.sm))
         }
     }
 
@@ -71,9 +71,9 @@ enum DeviationBanner {
                         .foregroundStyle(.cyan.opacity(0.8))
                 }
             }
-            .padding(10)
+            .padding(AppSpacing.md - 2)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.cyan.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+            .background(Color.cyan.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.sm))
         }
     }
 
@@ -88,9 +88,9 @@ enum DeviationBanner {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.mint)
             }
-            .padding(10)
+            .padding(AppSpacing.md - 2)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.mint.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+            .background(Color.mint.opacity(0.08), in: RoundedRectangle(cornerRadius: AppRadius.sm))
         }
     }
 }

@@ -13,7 +13,7 @@ struct FeedRowCard: View {
     /// Called when the user taps Explain (nil = button hidden)
     var onRequestExplanation: ((FeedEntry) -> Void)?
 
-    enum ExplainStyle {
+    enum ExplainStyle: Equatable {
         case textAndIcon      // "Explain" + sparkle icon (GamePlay, Trainer)
         case iconOnly         // sparkle icon only (Session)
         case locked           // gold locked sparkle (paywall gating)
@@ -30,17 +30,17 @@ struct FeedRowCard: View {
                 coachingText
                 openingIndicator
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
+            .padding(.horizontal, AppSpacing.md + 2)
+            .padding(.vertical, AppSpacing.sm)
             .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                RoundedRectangle(cornerRadius: AppRadius.sm, style: .continuous)
                     .fill(Color(white: isNewest ? 0.13 : 0.10))
             )
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .padding(.horizontal, AppSpacing.screenPadding)
-        .padding(.vertical, 2)
+        .padding(.vertical, AppSpacing.xxxs)
         .transition(.move(edge: .top).combined(with: .opacity))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityText)
@@ -105,51 +105,31 @@ struct FeedRowCard: View {
                 .font(.caption2)
                 .foregroundStyle(.purple)
                 .accessibilityLabel("Explanation available")
-        } else {
-            switch explainStyle {
-            case .textAndIcon:
-                if let onRequestExplanation {
-                    Button {
-                        onRequestExplanation(entry)
-                    } label: {
-                        HStack(spacing: 3) {
-                            Image(systemName: "sparkles")
-                                .font(.caption2)
-                            Text("Explain")
-                                .font(.caption2.weight(.medium))
-                        }
-                        .foregroundStyle(AppColor.info)
+        } else if explainStyle != .hidden, let onRequestExplanation {
+            Button {
+                onRequestExplanation(entry)
+            } label: {
+                HStack(spacing: 3) {
+                    Image(systemName: "sparkles")
+                        .font(.caption2)
+                    if explainStyle == .textAndIcon {
+                        Text("Explain")
+                            .font(.caption2.weight(.medium))
                     }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Get detailed explanation")
                 }
-            case .iconOnly:
-                if let onRequestExplanation {
-                    Button {
-                        onRequestExplanation(entry)
-                    } label: {
-                        Image(systemName: "sparkles")
-                            .font(.caption2)
-                            .foregroundStyle(.tertiary)
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Get detailed explanation")
-                }
-            case .locked:
-                if let onRequestExplanation {
-                    Button {
-                        onRequestExplanation(entry)
-                    } label: {
-                        Image(systemName: "sparkles")
-                            .font(.caption2)
-                            .foregroundStyle(AppColor.gold.opacity(0.5))
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Unlock detailed explanation")
-                }
-            case .hidden:
-                EmptyView()
+                .foregroundStyle(explainStyleColor)
             }
+            .buttonStyle(.plain)
+            .accessibilityLabel(explainStyle == .locked ? "Unlock detailed explanation" : "Get detailed explanation")
+        }
+    }
+
+    private var explainStyleColor: some ShapeStyle {
+        switch explainStyle {
+        case .textAndIcon: return AnyShapeStyle(AppColor.info)
+        case .iconOnly: return AnyShapeStyle(.tertiary)
+        case .locked: return AnyShapeStyle(AppColor.gold.opacity(0.5))
+        case .hidden: return AnyShapeStyle(.clear)
         }
     }
 
@@ -204,9 +184,9 @@ struct FeedRowCard: View {
                     .font(.caption)
                     .foregroundStyle(.primary.opacity(0.8))
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(8)
+                    .padding(AppSpacing.sm)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.purple.opacity(0.06), in: RoundedRectangle(cornerRadius: 6))
+                    .background(Color.purple.opacity(0.06), in: RoundedRectangle(cornerRadius: AppRadius.sm - 2))
             } else {
                 Text(primary.coaching)
                     .font(.caption)
@@ -221,9 +201,9 @@ struct FeedRowCard: View {
 
     @ViewBuilder
     private var openingIndicator: some View {
-        if let name = (pair.primaryEntry ?? pair.white ?? pair.black)?.openingName {
-            let entry = pair.primaryEntry ?? pair.white ?? pair.black
-            let inBook = entry?.isInBook ?? false
+        if let entry = pair.primaryEntry ?? pair.white ?? pair.black,
+           let name = entry.openingName {
+            let inBook = entry.isInBook
             HStack(spacing: 3) {
                 Image(systemName: "book.fill")
                     .font(.caption2)
@@ -281,8 +261,8 @@ struct FeedLoadingRow: View {
                 .font(.caption)
                 .foregroundStyle(AppColor.tertiaryText)
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
+        .padding(.horizontal, AppSpacing.md + 2)
+        .padding(.vertical, AppSpacing.sm)
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Evaluating your move")

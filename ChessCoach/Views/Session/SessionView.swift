@@ -177,7 +177,7 @@ struct SessionView: View {
             entries: sessionFeedEntries,
             isLoading: viewModel.isCoachingLoading,
             explainStyle: viewModel.isPro ? .iconOnly : .locked,
-            header: AnyView(sessionLiveStatus),
+            header: sessionLiveStatus,
             scrollAnchor: "live",
             onTapEntry: { ply in
                 viewModel.enterReplay(ply: ply + 1)
@@ -267,14 +267,6 @@ struct SessionView: View {
             sessionActionButtons
                 .padding(.horizontal, 16)
                 .padding(.vertical, 4)
-
-            if viewModel.feedEntries.isEmpty && !viewModel.isCoachingLoading {
-                Text("Make your move on the board")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-            }
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.bookStatus)
     }

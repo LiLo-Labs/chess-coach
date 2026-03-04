@@ -9,7 +9,7 @@ import SwiftUI
 @Observable
 @MainActor
 final class FeedEntry: Identifiable {
-    nonisolated(unsafe) private static var counter = 0
+    private static var counter = 0
 
     let id: Int
     let ply: Int                // 0-based ply index

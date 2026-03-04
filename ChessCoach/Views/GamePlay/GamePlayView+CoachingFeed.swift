@@ -3,37 +3,54 @@ import SwiftUI
 /// Coaching feed for GamePlayView — delegates to shared CoachingFeedView.
 extension GamePlayView {
 
+    @ViewBuilder
     var coachingFeed: some View {
         let feedEntries = viewModel.feedEntries.map { FeedEntry.from($0) }
 
-        return CoachingFeedView(
-            entries: feedEntries,
-            isLoading: viewModel.isEvaluating || viewModel.isCoachingLoading,
-            explainStyle: .textAndIcon,
-            header: viewModel.mode.isSession ? AnyView(liveStatus) : nil,
-            scrollAnchor: viewModel.mode.isSession ? "live" : "loading",
-            onTapEntry: { ply in
-                viewModel.enterReplay(ply: ply)
-            },
-            onRequestExplanation: { entry in
-                // Bridge back to CoachingEntry-based explanation via matching ply
-                if let original = viewModel.feedEntries.first(where: { $0.ply == entry.ply }) {
-                    viewModel.requestExplanation(for: original)
+        if viewModel.mode.isSession {
+            CoachingFeedView(
+                entries: feedEntries,
+                isLoading: viewModel.isEvaluating || viewModel.isCoachingLoading,
+                explainStyle: .textAndIcon,
+                header: liveStatus,
+                scrollAnchor: "live",
+                onTapEntry: { ply in
+                    viewModel.enterReplay(ply: ply)
+                },
+                onRequestExplanation: { entry in
+                    if let original = viewModel.feedEntries.first(where: { $0.ply == entry.ply }) {
+                        viewModel.requestExplanation(for: original)
+                    }
                 }
-            }
-        )
-        .background(AppColor.background)
+            )
+            .background(AppColor.background)
+        } else {
+            CoachingFeedView(
+                entries: feedEntries,
+                isLoading: viewModel.isEvaluating || viewModel.isCoachingLoading,
+                explainStyle: .textAndIcon,
+                onTapEntry: { ply in
+                    viewModel.enterReplay(ply: ply)
+                },
+                onRequestExplanation: { entry in
+                    if let original = viewModel.feedEntries.first(where: { $0.ply == entry.ply }) {
+                        viewModel.requestExplanation(for: original)
+                    }
+                }
+            )
+            .background(AppColor.background)
+        }
     }
 
     // MARK: - Live Status (Session)
 
     @ViewBuilder
     private var liveStatus: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: AppSpacing.xxs) {
             if let variation = viewModel.suggestedVariation {
                 variationBanner(variation: variation)
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 4)
+                    .padding(.horizontal, AppSpacing.lg)
+                    .padding(.bottom, AppSpacing.xxs)
             }
 
             if case let .userDeviated(expected, _) = viewModel.bookStatus {
@@ -41,25 +58,25 @@ extension GamePlayView {
                     expected: expected,
                     isUnguided: viewModel.mode.sessionMode == .unguided
                 )
-                .padding(.horizontal, 16)
+                .padding(.horizontal, AppSpacing.lg)
             } else if case let .opponentDeviated(expected, playedSAN, _) = viewModel.bookStatus {
                 DeviationBanner.OpponentDeviation(
                     expected: expected,
                     playedSAN: playedSAN,
                     bestMoveDescription: viewModel.bestResponseDescription
                 )
-                .padding(.horizontal, 16)
+                .padding(.horizontal, AppSpacing.lg)
             } else if case .offBook = viewModel.bookStatus {
                 DeviationBanner.OffBook(bestMoveDescription: viewModel.bestResponseDescription)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, AppSpacing.lg)
             } else if viewModel.discoveryMode {
                 DeviationBanner.Discovery(optionCount: viewModel.branchPointOptions?.count ?? 2)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, AppSpacing.lg)
             }
 
             sessionActionButtons
-                .padding(.horizontal, 16)
-                .padding(.vertical, 4)
+                .padding(.horizontal, AppSpacing.lg)
+                .padding(.vertical, AppSpacing.xxs)
         }
         .animation(.easeInOut(duration: 0.2), value: viewModel.bookStatus)
     }
@@ -68,7 +85,7 @@ extension GamePlayView {
 
     @ViewBuilder
     private var sessionActionButtons: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: AppSpacing.sm) {
             if case .userDeviated = viewModel.bookStatus {
                 Button(action: { viewModel.retryLastMove() }) {
                     Label("Undo", systemImage: "arrow.uturn.backward")
@@ -118,7 +135,7 @@ extension GamePlayView {
     // MARK: - Variation Banner
 
     private func variationBanner(variation: OpeningLine) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: AppSpacing.sm) {
             Image(systemName: "arrow.triangle.branch")
                 .font(.caption2)
                 .foregroundStyle(.teal)
@@ -132,13 +149,13 @@ extension GamePlayView {
                 Text("Switch")
                     .font(.caption.weight(.bold))
                     .foregroundStyle(.teal)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 4)
+                    .padding(.horizontal, AppSpacing.md - 2)
+                    .padding(.vertical, AppSpacing.xxs)
                     .background(.teal.opacity(0.12), in: Capsule())
             }
             .buttonStyle(.plain)
         }
-        .padding(10)
-        .background(Color.teal.opacity(0.06), in: RoundedRectangle(cornerRadius: 8))
+        .padding(AppSpacing.md - 2)
+        .background(Color.teal.opacity(0.06), in: RoundedRectangle(cornerRadius: AppRadius.sm))
     }
 }

@@ -2,13 +2,13 @@ import SwiftUI
 
 /// Unified coaching feed view used across GamePlay, Trainer, and Session modes.
 /// Accepts `[FeedEntry]` and renders move-pair-grouped rows with configurable callbacks.
-struct CoachingFeedView: View {
+struct CoachingFeedView<Header: View>: View {
     let entries: [FeedEntry]
     let isLoading: Bool
     var explainStyle: FeedRowCard.ExplainStyle = .textAndIcon
 
     /// Optional header content shown above the feed (e.g., session banners, action buttons).
-    var header: AnyView?
+    var header: Header?
 
     /// Scroll-to-top anchor ID (defaults to "loading").
     var scrollAnchor: String = "loading"
@@ -54,12 +54,12 @@ struct CoachingFeedView: View {
                         Text(emptyMessage)
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
+                            .padding(.horizontal, AppSpacing.lg)
+                            .padding(.vertical, AppSpacing.sm)
                     }
                 }
-                .padding(.top, 6)
-                .padding(.bottom, 12)
+                .padding(.top, AppSpacing.xs)
+                .padding(.bottom, AppSpacing.md)
             }
             .scrollIndicators(.hidden)
             .onChange(of: entries.count) {
@@ -68,5 +68,27 @@ struct CoachingFeedView: View {
                 }
             }
         }
+    }
+}
+
+/// Convenience initializer when no header is needed.
+extension CoachingFeedView where Header == EmptyView {
+    init(
+        entries: [FeedEntry],
+        isLoading: Bool,
+        explainStyle: FeedRowCard.ExplainStyle = .textAndIcon,
+        scrollAnchor: String = "loading",
+        onTapEntry: ((Int) -> Void)? = nil,
+        onRequestExplanation: ((FeedEntry) -> Void)? = nil,
+        emptyMessage: String = "Make your move on the board"
+    ) {
+        self.entries = entries
+        self.isLoading = isLoading
+        self.explainStyle = explainStyle
+        self.header = nil
+        self.scrollAnchor = scrollAnchor
+        self.onTapEntry = onTapEntry
+        self.onRequestExplanation = onRequestExplanation
+        self.emptyMessage = emptyMessage
     }
 }
