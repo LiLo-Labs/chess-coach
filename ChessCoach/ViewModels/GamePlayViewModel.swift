@@ -83,6 +83,13 @@ final class GamePlayViewModel {
     let openingDetector = OpeningDetector()
     let holisticDetector = HolisticDetector()
 
+    // Practice-specific
+    var variedOpponent: VariedOpponentService?
+    var lineAccuracies: [String: (correct: Int, total: Int)] = [:]
+    var linesEncountered: [String] = []
+    var currentLineName: String?
+    var lineTransitionMessage: String?
+
     // Session-specific
     var coachPersonality: CoachPersonality? = .defaultPersonality
     var personalityQuip: String?
@@ -257,6 +264,10 @@ final class GamePlayViewModel {
 
             let mastery = PersistenceService.shared.loadMastery(forOpening: opening.id)
             self.currentLayer = mastery.currentLayer
+
+            if mode.sessionMode == .practice {
+                self.variedOpponent = VariedOpponentService(opening: opening)
+            }
         }
 
         // Trainer-specific init — capture ELO at button-press time
@@ -283,7 +294,13 @@ final class GamePlayViewModel {
 
         await stockfish.start()
 
-        if mode.isSession, let opening = mode.opening {
+        if mode.sessionMode == .practice, let opening = mode.opening {
+            isModelLoading = false
+            if opening.color == .black {
+                await makeOpponentMove()
+            }
+            updateLineDetection()
+        } else if mode.isSession, let opening = mode.opening {
             planScoringService = PlanScoringService(llmService: llmService, stockfish: stockfish, featureAccess: featureAccess ?? UnlockedAccess())
 
             if isPro {
@@ -559,6 +576,19 @@ final class GamePlayViewModel {
         }
     }
 
+    // MARK: - Saved Session
+
+    static func hasSavedSession() -> Bool {
+        PersistenceService.shared.loadSessionState() != nil
+    }
+
+    static func savedSessionInfo() -> (openingID: String, lineID: String?)? {
+        guard let state = PersistenceService.shared.loadSessionState(),
+              let openingID = state["openingID"] as? String else { return nil }
+        let lineID = state["lineID"] as? String
+        return (openingID, lineID?.isEmpty == true ? nil : lineID)
+    }
+
     // MARK: - Line Switching
 
     func switchToLine(_ line: OpeningLine) {
@@ -571,6 +601,10 @@ final class GamePlayViewModel {
 
     func endSession() {
         if mode.isSession {
+            if mode.sessionMode == .practice {
+                let moveHistory = gameState.moveHistory.map { $0.from + $0.to }
+                variedOpponent?.recordPath(moveHistory)
+            }
             saveProgress()
             sessionComplete = true
             PersistenceService.shared.clearSessionState()

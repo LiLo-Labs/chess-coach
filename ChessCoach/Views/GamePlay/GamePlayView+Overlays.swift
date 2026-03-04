@@ -11,9 +11,115 @@ extension GamePlayView {
             trainerGameOverOverlay(result: result)
         }
 
-        // Session complete
-        if viewModel.mode.isSession && viewModel.sessionComplete {
+        // Practice complete
+        if viewModel.mode.sessionMode == .practice && viewModel.sessionComplete {
+            practiceCompleteOverlay
+        }
+
+        // Session complete (guided/unguided)
+        if viewModel.mode.isSession && viewModel.mode.sessionMode != .practice && viewModel.sessionComplete {
             sessionCompleteOverlay
+        }
+    }
+
+    // MARK: - Practice Complete
+
+    private var practiceCompleteOverlay: some View {
+        let accuracy = viewModel.stats.accuracy
+        let accuracyPct = Int(accuracy * 100)
+        let tier: AchievementTier? = accuracy >= 0.90 ? .gold : accuracy >= 0.70 ? .silver : accuracy >= 0.50 ? .bronze : nil
+
+        return ZStack {
+            Color.black.opacity(0.75)
+                .ignoresSafeArea()
+
+            VStack {
+                HStack {
+                    Spacer()
+                    Button { dismiss() } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(AppColor.secondaryText)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Close")
+                }
+                .padding(.top, AppSpacing.topBarSafeArea)
+                .padding(.trailing, AppSpacing.screenPadding)
+                Spacer()
+            }
+            .zIndex(1)
+
+            ScrollView {
+                VStack(spacing: AppSpacing.xl) {
+                    Spacer(minLength: 60)
+
+                    Image(systemName: "target")
+                        .font(.system(size: 44))
+                        .foregroundStyle(AppColor.practice)
+
+                    Text("Practice Complete!")
+                        .font(.title2.weight(.bold))
+                        .foregroundStyle(AppColor.primaryText)
+
+                    VStack(spacing: AppSpacing.xs) {
+                        Text("\(accuracyPct)%")
+                            .font(.system(size: 48, weight: .bold, design: .rounded))
+                            .foregroundStyle(AppColor.primaryText)
+                        Text("accuracy")
+                            .font(.subheadline)
+                            .foregroundStyle(AppColor.secondaryText)
+
+                        if let tier {
+                            AchievementBadge(
+                                tier: tier,
+                                label: tier == .gold ? "Excellent" : tier == .silver ? "Good" : "Passing"
+                            )
+                            .padding(.top, AppSpacing.xxs)
+                        }
+                    }
+
+                    if !viewModel.linesEncountered.isEmpty, let opening = viewModel.mode.opening {
+                        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                            Text("Paths Encountered")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(AppColor.secondaryText)
+
+                            ForEach(viewModel.linesEncountered, id: \.self) { lineID in
+                                let lineName = opening.lines?.first(where: { $0.id == lineID })?.name ?? lineID
+                                let lineAcc = viewModel.lineAccuracies[lineID]
+                                let pct = lineAcc.map { $0.total > 0 ? Int(Double($0.correct) / Double($0.total) * 100) : 0 } ?? 0
+
+                                HStack {
+                                    Text(lineName)
+                                        .font(.subheadline)
+                                        .foregroundStyle(AppColor.primaryText)
+                                    Spacer()
+                                    Text("\(pct)%")
+                                        .font(.subheadline.monospacedDigit().weight(.medium))
+                                        .foregroundStyle(pct >= 80 ? AppColor.success : pct >= 50 ? AppColor.warning : AppColor.error)
+                                }
+                            }
+                        }
+                        .padding(AppSpacing.cardPadding)
+                        .cardBackground()
+                    }
+
+                    Button(action: { dismiss() }) {
+                        Text("Done")
+                            .font(.body.weight(.semibold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 28)
+                            .padding(.vertical, 12)
+                            .buttonBackground(AppColor.success)
+                    }
+                    .buttonStyle(.plain)
+
+                    Spacer(minLength: AppSpacing.xl)
+                }
+                .padding(AppSpacing.xxxl)
+            }
         }
     }
 

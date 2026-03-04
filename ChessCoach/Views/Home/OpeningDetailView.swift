@@ -217,7 +217,8 @@ struct OpeningDetailView: View {
             GamePlayView(mode: .unguided(opening: opening, lineID: lineID), isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         case .practice:
-            PracticeOpeningView(opening: opening, stockfish: appServices.stockfish)
+            GamePlayView(mode: .practice(opening: opening, lineID: nil), isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
+                .environment(subscriptionService)
         }
     }
 
