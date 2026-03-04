@@ -96,7 +96,7 @@ final class GamePlayViewModel {
     var showPersonalityQuip = false
     var quipDismissTask: Task<Void, Never>?
     var lastMovePES: PlanExecutionScore?
-    var currentLayer: LearningLayer = .understandPlan
+    var openingFamiliarity: OpeningFamiliarity = .empty(openingID: "")
     var lastSessionMistakePlies: Set<Int> = []
     var sessionStartDate = Date()
     var consecutiveCorrectPlays: [String: Int] = [:]
@@ -140,7 +140,7 @@ final class GamePlayViewModel {
 
     var isOnBook: Bool { bookStatus == .onBook }
 
-    var currentPhase: LearningPhase { curriculumService?.phase ?? .learningMainLine }
+    var familiarityProgress: Double { openingFamiliarity.progress }
 
     var moveHistorySAN: [String] {
         gameState.moveHistory.map { $0.from + $0.to }
@@ -247,23 +247,21 @@ final class GamePlayViewModel {
             if let lineID {
                 let line = opening.lines?.first { $0.id == lineID }
                 resolvedLine = line
-                let progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
-                let linePhase = progress.progress(forLine: lineID).currentPhase
-                resolvedCurriculum = CurriculumService(opening: opening, activeLine: line, phase: linePhase)
             } else {
                 resolvedLine = nil
-                let progress = PersistenceService.shared.loadProgress(forOpening: opening.id)
-                resolvedCurriculum = CurriculumService(opening: opening, activeLine: nil, phase: progress.currentPhase)
             }
 
+            // Compute familiarity from position mastery
+            let positions = PersistenceService.shared.loadAllPositionMastery().filter { $0.openingID == opening.id }
+            let fam = OpeningFamiliarity(openingID: opening.id, positions: positions)
+            self.openingFamiliarity = fam
+
             self.activeLine = resolvedLine
+            resolvedCurriculum = CurriculumService(opening: opening, activeLine: resolvedLine, familiarity: fam.progress)
             self.curriculumService = resolvedCurriculum
             let access = featureAccess ?? UnlockedAccess()
             self.coachingService = CoachingService(llmService: self.llmService, curriculumService: resolvedCurriculum, featureAccess: access)
             self.spacedRepScheduler = SpacedRepScheduler()
-
-            let mastery = PersistenceService.shared.loadMastery(forOpening: opening.id)
-            self.currentLayer = mastery.currentLayer
 
             if mode.sessionMode == .practice {
                 self.variedOpponent = VariedOpponentService(opening: opening)

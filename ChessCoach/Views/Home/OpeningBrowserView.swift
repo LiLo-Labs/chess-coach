@@ -4,7 +4,7 @@ struct OpeningBrowserView: View {
     private let database = OpeningDatabase.shared
     @State private var selectedColor: Opening.PlayerColor = .white
     @State private var searchText = ""
-    @State private var allMastery: [String: OpeningMastery] = [:]
+    @State private var allFamiliarity: [String: OpeningFamiliarity] = [:]
     @State private var lockedOpeningToShow: Opening?
     @State private var styleProfile = StyleProfile(tagWeights: [], totalSessions: 0)
     @Environment(SubscriptionService.self) private var subscriptionService
@@ -42,7 +42,7 @@ struct OpeningBrowserView: View {
 
             // Recommended openings based on style
             if styleProfile.isReady {
-                let played = Set(allMastery.filter { $0.value.sessionsPlayed > 0 }.map(\.key))
+                let played = Set(allFamiliarity.filter { !$0.value.positions.isEmpty }.map(\.key))
                 let recommended = styleProfile.recommendedOpenings(from: database, played: played)
                     .filter { $0.color == selectedColor }
                 if !recommended.isEmpty {
@@ -100,8 +100,14 @@ struct OpeningBrowserView: View {
         .navigationTitle("Openings")
         .searchable(text: $searchText, prompt: "Search game plans")
         .onAppear {
-            allMastery = PersistenceService.shared.loadAllMastery()
-            styleProfile = StyleProfile.compute(mastery: allMastery, database: database)
+            let allPositions = PersistenceService.shared.loadAllPositionMastery()
+            let grouped = Dictionary(grouping: allPositions, by: \.openingID)
+            var fam: [String: OpeningFamiliarity] = [:]
+            for (id, positions) in grouped {
+                fam[id] = OpeningFamiliarity(openingID: id, positions: positions)
+            }
+            allFamiliarity = fam
+            styleProfile = StyleProfile.compute(familiarity: allFamiliarity, database: database)
         }
         .sheet(item: $lockedOpeningToShow) { opening in
             ProUpgradeView(lockedOpeningID: opening.id, lockedOpeningName: opening.name)
@@ -111,8 +117,8 @@ struct OpeningBrowserView: View {
     // MARK: - Opening Row
 
     private func openingRow(opening: Opening, locked: Bool) -> some View {
-        let mastery = allMastery[opening.id]
-        let sessions = mastery?.sessionsPlayed ?? 0
+        let fam = allFamiliarity[opening.id]
+        let hasPositions = !(fam?.positions.isEmpty ?? true)
 
         return HStack(spacing: AppSpacing.md) {
             Circle()
@@ -134,10 +140,10 @@ struct OpeningBrowserView: View {
                         .font(.caption)
                         .foregroundStyle(AppColor.tertiaryText)
                         .lineLimit(1)
-                } else if sessions > 0, let mastery {
-                    Text(mastery.currentLayer.displayName)
+                } else if hasPositions, let fam {
+                    Text("\(fam.percentage)% — \(fam.tier.displayName)")
                         .font(.caption)
-                        .foregroundStyle(AppColor.layer(mastery.currentLayer))
+                        .foregroundStyle(AppColor.familiarity(fam.tier))
                 } else {
                     Text(opening.description)
                         .font(.caption)

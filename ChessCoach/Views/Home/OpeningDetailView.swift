@@ -423,7 +423,7 @@ struct OpeningDetailView: View {
         let coach = CoachPersonality.forOpening(opening)
         let guidance = CoachGuidance(
             personality: coach,
-            mastery: OpeningMastery(openingID: opening.id),
+            familiarity: .empty(openingID: opening.id),
             openingName: opening.name
         )
         let parentName = allLines.first?.name ?? opening.name

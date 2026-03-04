@@ -3,36 +3,17 @@ import Foundation
 struct SessionResult {
     let accuracy: Double
     let isPersonalBest: Bool
-    let phasePromotion: PhasePromotion?
-    let linePhasePromotion: PhasePromotion?
-    let newlyUnlockedLines: [String]
     let dueReviewCount: Int
-    let compositeScore: Double
-    let nextPhaseThreshold: Double?
-    let gamesUntilMinimum: Int?
-    /// Total wall-clock seconds the session lasted (nil if not tracked).
     let timeSpent: TimeInterval?
-    /// User moves played per minute (nil if time not tracked or zero).
     let movesPerMinute: Double?
 
-    // Plan Execution Score data (v2)
+    // Plan Execution Score data
     let averagePES: Double?
     let pesCategory: ScoreCategory?
     let moveScores: [PlanExecutionScore]?
-    let layerPromotion: LayerPromotion?
 
-    // Sub-milestone tracking
-    var completedMilestones: [SubMilestone] = []
-    var nextMilestone: SubMilestone? = nil
+    // Familiarity milestone (replaces layer/phase promotions)
+    var familiarityMilestone: FamiliarityMilestone? = nil
+    var familiarityPercentage: Int = 0
     var coachSessionMessage: String? = nil
-
-    struct PhasePromotion {
-        let from: LearningPhase
-        let to: LearningPhase
-    }
-
-    struct LayerPromotion {
-        let from: LearningLayer
-        let to: LearningLayer
-    }
 }

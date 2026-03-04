@@ -17,34 +17,26 @@ enum AppColor {
     static let warning = Color.yellow
     static let info = Color.cyan
 
-    static func phase(_ phase: LearningPhase) -> Color {
-        switch phase {
-        case .learningMainLine: return guided
-        case .naturalDeviations: return .green
-        case .widerVariations: return unguided
-        case .freePlay: return practice
+    // MARK: - Familiarity Colors
+    static func familiarity(_ tier: FamiliarityTier) -> Color {
+        switch tier {
+        case .learning: return .cyan
+        case .practicing: return .blue
+        case .familiar: return .green
         }
     }
 
-    // MARK: Layer Colors (5-layer plan-first flow)
-    static func layer(_ layer: LearningLayer) -> Color {
-        switch layer {
-        case .understandPlan: return .cyan
-        case .executePlan: return .blue
-        case .discoverTheory: return .indigo
-        case .handleVariety: return .orange
-        case .realConditions: return .purple
+    static func familiarityIcon(_ tier: FamiliarityTier) -> String {
+        switch tier {
+        case .learning: return "book.fill"
+        case .practicing: return "target"
+        case .familiar: return "checkmark.seal.fill"
         }
     }
 
-    static func layerIcon(_ layer: LearningLayer) -> String {
-        switch layer {
-        case .understandPlan: return "lightbulb.fill"
-        case .executePlan: return "target"
-        case .discoverTheory: return "book.closed.fill"
-        case .handleVariety: return "person.2.fill"
-        case .realConditions: return "bolt.fill"
-        }
+    /// Interpolated familiarity color from progress 0.0–1.0.
+    static func familiarityColor(progress: Double) -> Color {
+        familiarity(FamiliarityTier.from(progress: progress))
     }
 
     static func pesColor(_ category: ScoreCategory) -> Color {

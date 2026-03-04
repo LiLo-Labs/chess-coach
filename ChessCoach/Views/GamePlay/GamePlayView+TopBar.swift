@@ -190,7 +190,7 @@ extension GamePlayView {
 
     @ViewBuilder
     func personalityQuipView(quip: String) -> some View {
-        let phaseColor = AppColor.phase(viewModel.currentPhase)
+        let phaseColor = AppColor.familiarityColor(progress: viewModel.familiarityProgress)
 
         HStack(spacing: 6) {
             Image(systemName: viewModel.coachPersonality?.displayIcon(engineMode: false) ?? "brain")

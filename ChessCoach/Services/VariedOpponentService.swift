@@ -29,12 +29,12 @@ final class VariedOpponentService: Sendable {
         UserDefaults.standard.set(paths, forKey: recentPathsKey)
     }
 
-    /// Pick an opponent move from known opening continuations, weighted by inverse practice count.
+    /// Pick an opponent move from known opening continuations, weighted by inverse mastery.
     /// Returns nil if no book moves are available (caller should use Maia).
     func pickOpponentMove(
         atPly ply: Int,
         afterMoves moves: [String],
-        lineProgress: [String: LineProgress]
+        positionMastery: [PositionMastery]
     ) -> String? {
         let continuations = opening.continuations(afterMoves: moves)
         guard !continuations.isEmpty else { return nil }
@@ -44,21 +44,21 @@ final class VariedOpponentService: Sendable {
             return continuations[0].uci
         }
 
+        // Index mastery by ply for quick lookup
+        let masteryByPly = Dictionary(grouping: positionMastery, by: \.ply)
+
         // Weight by inverse familiarity — less-practiced branches get higher weight
         var weights: [(move: String, weight: Double)] = []
         let recentMoveSequences = recentPaths
 
         for continuation in continuations {
             let testPath = moves + [continuation.uci]
-            let matchingLines = opening.matchingLines(forMoveSequence: testPath)
 
-            // Calculate practice count for lines that match this continuation
-            var practiceCount = 0
-            for line in matchingLines {
-                if let lp = lineProgress[line.id] {
-                    practiceCount += lp.guidedCompletions + lp.unguidedCompletions
-                }
-            }
+            // Calculate practice count from position mastery at this ply
+            let positionsAtPly = masteryByPly[ply + 1] ?? []
+            let practiceCount = positionsAtPly
+                .filter { $0.correctMove == continuation.uci }
+                .reduce(0) { $0 + $1.totalAttempts }
 
             // Inverse weight: less practice = higher probability
             var weight = 1.0 / Double(max(practiceCount, 1))

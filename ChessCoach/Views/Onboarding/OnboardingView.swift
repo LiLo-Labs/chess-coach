@@ -661,7 +661,7 @@ struct OnboardingView: View {
 
             Image(systemName: "person.fill.questionmark")
                 .font(.system(size: 56))
-                .foregroundStyle(AppColor.layer(.handleVariety))
+                .foregroundStyle(AppColor.familiarity(.practicing))
                 .symbolEffect(.pulse, options: .repeating.speed(0.5))
                 .scaleEffect(showIcon ? 1.0 : 0.3)
                 .opacity(showIcon ? 1 : 0)
@@ -799,7 +799,7 @@ struct OnboardingView: View {
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
-                .background(AppColor.layer(.executePlan), in: RoundedRectangle(cornerRadius: AppRadius.lg))
+                .background(AppColor.familiarity(.learning), in: RoundedRectangle(cornerRadius: AppRadius.lg))
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Go to next page")

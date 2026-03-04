@@ -322,7 +322,7 @@ struct CoachChatPanel: View {
                 )
                 let newService = CoachingService(
                     llmService: llmService,
-                    curriculumService: CurriculumService(opening: openingRef, activeLine: line, phase: .learningMainLine),
+                    curriculumService: CurriculumService(opening: openingRef, activeLine: line, familiarity: 0),
                     featureAccess: UnlockedAccess()
                 )
                 await MainActor.run { state.coachingService = newService }

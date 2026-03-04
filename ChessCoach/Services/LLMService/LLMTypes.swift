@@ -25,7 +25,7 @@ struct CoachingContext: Sendable {
     let expectedMoveExplanation: String?
     let expectedMoveSAN: String?
     let userELO: Int
-    let phase: LearningPhase
+    let familiarityPercent: Int
     let moveCategory: MoveCategory
     let moveHistory: String
     let isUserMove: Bool

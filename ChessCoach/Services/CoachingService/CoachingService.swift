@@ -12,21 +12,8 @@ actor CoachingService {
     }
 
     /// Determine whether coaching should be shown for this move.
-    func shouldCoach(moveCategory: MoveCategory, phase: LearningPhase) -> Bool {
-        switch phase {
-        case .learningMainLine:
-            // Always coach during learning phase
-            return true
-        case .naturalDeviations:
-            // Coach on all non-trivial moments
-            return true
-        case .widerVariations:
-            // Coach on mistakes and deviations
-            return moveCategory != .goodMove
-        case .freePlay:
-            // Only coach on mistakes
-            return moveCategory == .mistake
-        }
+    func shouldCoach(moveCategory: MoveCategory) -> Bool {
+        curriculumService.shouldCoach(moveCategory: moveCategory)
     }
 
     /// Get coaching text for a move.
@@ -50,9 +37,9 @@ actor CoachingService {
             stockfishScore: scoreAfter - scoreBefore
         )
 
-        let phase = curriculumService.phase
 
-        guard shouldCoach(moveCategory: moveCategory, phase: phase) else {
+
+        guard shouldCoach(moveCategory: moveCategory) else {
             return nil
         }
 
@@ -128,7 +115,7 @@ actor CoachingService {
         let userMoveCategory = curriculumService.categorizeUserMove(
             atPly: userPly, move: userMove, stockfishScore: scoreAfter - scoreBefore
         )
-        let phase = curriculumService.phase
+
 
         let userCategory: MoveCategory = userMoveCategory
 
@@ -152,8 +139,8 @@ actor CoachingService {
                 ply: opponentPly, userELO: userELO, moveHistory: moveHistory,
                 isUserMove: false, studentColor: studentColor, category: opponentCategory
             )
-            let shouldCoachUser = shouldCoach(moveCategory: userCategory, phase: phase)
-            let shouldCoachOpponent = shouldCoach(moveCategory: opponentCategory, phase: phase)
+            let shouldCoachUser = shouldCoach(moveCategory: userCategory)
+            let shouldCoachOpponent = shouldCoach(moveCategory: opponentCategory)
             return (
                 shouldCoachUser ? fallbackCoaching(for: uc) : nil,
                 shouldCoachOpponent ? fallbackCoaching(for: oc) : nil
@@ -172,8 +159,8 @@ actor CoachingService {
             isUserMove: false, studentColor: studentColor, category: opponentCategory
         )
 
-        let shouldCoachUser = shouldCoach(moveCategory: userCategory, phase: phase)
-        let shouldCoachOpponent = shouldCoach(moveCategory: opponentCategory, phase: phase)
+        let shouldCoachUser = shouldCoach(moveCategory: userCategory)
+        let shouldCoachOpponent = shouldCoach(moveCategory: opponentCategory)
 
         guard shouldCoachUser || shouldCoachOpponent else {
             return (nil, nil)
@@ -314,7 +301,7 @@ actor CoachingService {
             expectedMoveExplanation: expectedMove?.explanation,
             expectedMoveSAN: expectedMove?.san,
             userELO: userELO,
-            phase: curriculumService.phase,
+            familiarityPercent: Int(curriculumService.familiarity * 100),
             moveCategory: category,
             moveHistory: moveHistory,
             isUserMove: isUserMove,

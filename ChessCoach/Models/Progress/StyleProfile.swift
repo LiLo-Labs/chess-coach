@@ -21,22 +21,22 @@ struct StyleProfile {
     /// Whether the user has enough data for a meaningful profile (5+ sessions).
     var isReady: Bool { totalSessions >= 5 }
 
-    /// Compute a style profile from mastery data and the opening database.
-    static func compute(mastery: [String: OpeningMastery], database: OpeningDatabase) -> StyleProfile {
+    /// Compute a style profile from familiarity data and the opening database.
+    static func compute(familiarity: [String: OpeningFamiliarity], database: OpeningDatabase) -> StyleProfile {
         var tagCounts: [String: Double] = [:]
-        var totalSessions = 0
+        var totalPositions = 0
 
-        for (openingID, m) in mastery where m.sessionsPlayed > 0 {
+        for (openingID, fam) in familiarity where !fam.positions.isEmpty {
             guard let opening = database.opening(byID: openingID),
                   let tags = opening.tags else { continue }
-            let sessions = Double(m.sessionsPlayed)
-            totalSessions += m.sessionsPlayed
+            let count = fam.positions.count
+            totalPositions += count
             for tag in tags {
-                tagCounts[tag, default: 0] += sessions
+                tagCounts[tag, default: 0] += Double(count)
             }
         }
 
-        guard totalSessions > 0 else {
+        guard totalPositions > 0 else {
             return StyleProfile(tagWeights: [], totalSessions: 0)
         }
 
@@ -45,7 +45,7 @@ struct StyleProfile {
             .map { TagWeight(tag: $0.key, weight: $0.value / maxCount) }
             .sorted { $0.weight > $1.weight }
 
-        return StyleProfile(tagWeights: weights, totalSessions: totalSessions)
+        return StyleProfile(tagWeights: weights, totalSessions: totalPositions)
     }
 
     /// Returns openings matching the user's top tags that they haven't played yet.

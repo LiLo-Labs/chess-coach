@@ -15,15 +15,14 @@ struct SessionCompleteView: View {
     @State private var showPromotion = false
     @State private var showPersonalBest = false
     @State private var showPESScore = false
-    @State private var progressAnimationValue: Double = 0
 
     var body: some View {
         ZStack {
             Color.black.opacity(0.75)
                 .ignoresSafeArea()
 
-            // Confetti on layer promotion, high PES (non-guided), or high accuracy (guided)
-            if result?.layerPromotion != nil || result?.phasePromotion != nil || (sessionMode != .guided && (result?.averagePES ?? 0) >= 80) || (result?.accuracy ?? 0) >= 0.8 {
+            // Confetti on familiarity milestone or high PES/accuracy
+            if result?.familiarityMilestone != nil || (sessionMode != .guided && (result?.averagePES ?? 0) >= 80) || (result?.accuracy ?? 0) >= 0.8 {
                 ConfettiView()
                     .ignoresSafeArea()
             }
@@ -51,40 +50,31 @@ struct SessionCompleteView: View {
                 VStack(spacing: AppSpacing.xl) {
                     Spacer(minLength: AppSpacing.xxxl + AppSpacing.sm)
 
-                    // Layer Promotion Banner (new v2)
-                    if let layerPromo = result?.layerPromotion {
-                        layerPromotionBanner(promo: layerPromo)
-                    }
-                    // Legacy Phase Promotion Banner
-                    else if let promo = result?.phasePromotion ?? result?.linePhasePromotion {
-                        promotionBanner(promo: promo)
+                    // Familiarity Milestone Banner
+                    if let milestone = result?.familiarityMilestone {
+                        familiarityMilestoneBanner(milestone: milestone)
                     }
 
-                    // PES Score for Layer 2+ non-guided, accuracy for guided/Layer 1
+                    // PES Score for non-guided when familiarity >= 30%
                     if sessionMode != .guided, let pes = result?.averagePES, pes > 0 {
                         pesSection(averagePES: pes, category: result?.pesCategory)
                     } else {
                         accuracySection
                     }
 
-                    // Move score breakdown — only when PES is active
+                    // Move score breakdown
                     if sessionMode != .guided, let scores = result?.moveScores, !scores.isEmpty {
                         pesBreakdownSection(scores: scores)
                     }
 
-                    // Extra stats: time and moves per minute
+                    // Extra stats
                     if result?.timeSpent != nil || result?.movesPerMinute != nil {
                         extraStatsSection
                     }
 
-                    // Progress Toward Next Phase (legacy)
-                    if let result, result.nextPhaseThreshold != nil, result.averagePES == nil {
-                        progressSection(result: result)
-                    }
-
-                    // Newly Unlocked Lines
-                    if let result, !result.newlyUnlockedLines.isEmpty {
-                        unlockedLinesSection(lines: result.newlyUnlockedLines)
+                    // Familiarity progress indicator
+                    if let pct = result?.familiarityPercentage, pct > 0 {
+                        familiarityProgressSection(percentage: pct)
                     }
 
                     // Coach Session Message
@@ -115,61 +105,28 @@ struct SessionCompleteView: View {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.4)) {
                 showPESScore = true
             }
-            if let result, let threshold = result.nextPhaseThreshold {
-                withAnimation(.spring(response: 0.7, dampingFraction: 0.85).delay(0.6)) {
-                    progressAnimationValue = min(result.compositeScore / threshold, 1.0)
-                }
-            }
         }
     }
 
-    // MARK: - Promotion Banner
+    // MARK: - Familiarity Milestone Banner
 
-    private func promotionBanner(promo: SessionResult.PhasePromotion) -> some View {
-        VStack(spacing: AppSpacing.sm) {
-            Image(systemName: "arrow.up.circle.fill")
+    private func familiarityMilestoneBanner(milestone: FamiliarityMilestone) -> some View {
+        let tier = milestone.tierReached
+        let color = AppColor.familiarity(tier)
+
+        return VStack(spacing: AppSpacing.sm) {
+            Image(systemName: AppColor.familiarityIcon(tier))
                 .font(.system(size: 44))
-                .foregroundStyle(AppColor.phase(promo.to))
+                .foregroundStyle(color)
                 .reveal(isVisible: showPromotion, delay: 0)
 
-            Text("Phase Up!")
+            Text("\(milestone.thresholdPercentage)% Familiar!")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(AppColor.primaryText)
 
-            Text(promo.to.displayName)
+            Text(tier.displayName)
                 .font(.headline)
-                .foregroundStyle(AppColor.phase(promo.to))
-
-            Text(promo.to.phaseDescription)
-                .font(.subheadline)
-                .foregroundStyle(AppColor.secondaryText)
-                .multilineTextAlignment(.center)
-        }
-        .padding(.vertical, AppSpacing.md)
-        .sensoryFeedback(.success, trigger: showPromotion)
-    }
-
-    // MARK: - Layer Promotion Banner
-
-    private func layerPromotionBanner(promo: SessionResult.LayerPromotion) -> some View {
-        VStack(spacing: AppSpacing.sm) {
-            Image(systemName: AppColor.layerIcon(promo.to))
-                .font(.system(size: 44))
-                .foregroundStyle(AppColor.layer(promo.to))
-                .reveal(isVisible: showPromotion, delay: 0)
-
-            Text("Level Up!")
-                .font(.title2.weight(.bold))
-                .foregroundStyle(AppColor.primaryText)
-
-            Text(promo.to.displayName)
-                .font(.headline)
-                .foregroundStyle(AppColor.layer(promo.to))
-
-            Text(promo.to.layerDescription)
-                .font(.subheadline)
-                .foregroundStyle(AppColor.secondaryText)
-                .multilineTextAlignment(.center)
+                .foregroundStyle(color)
         }
         .padding(.vertical, AppSpacing.md)
         .sensoryFeedback(.success, trigger: showPromotion)
@@ -286,7 +243,7 @@ struct SessionCompleteView: View {
         .cardBackground()
     }
 
-    // MARK: - Accuracy Section (legacy)
+    // MARK: - Accuracy Section
 
     private var accuracySection: some View {
         VStack(spacing: AppSpacing.sm) {
@@ -310,22 +267,9 @@ struct SessionCompleteView: View {
                         .font(.system(size: 48, weight: .bold, design: .rounded))
                         .foregroundStyle(AppColor.primaryText)
 
-                    if result.isPersonalBest {
-                        HStack(spacing: AppSpacing.xxs) {
-                            Image(systemName: "star.fill")
-                                .foregroundStyle(AppColor.gold)
-                            Text("New Best!")
-                                .font(.subheadline.weight(.semibold))
-                                .foregroundStyle(AppColor.gold)
-                        }
-                        .scaleEffect(showPersonalBest ? 1.0 : 0.8)
-                        .opacity(showPersonalBest ? 1.0 : 0)
-                        .sensoryFeedback(.impact(weight: .medium), trigger: showPersonalBest)
-                    } else {
-                        Text("accuracy")
-                            .font(.subheadline)
-                            .foregroundStyle(AppColor.secondaryText)
-                    }
+                    Text("accuracy")
+                        .font(.subheadline)
+                        .foregroundStyle(AppColor.secondaryText)
                 }
             }
         }
@@ -357,50 +301,28 @@ struct SessionCompleteView: View {
         .cardBackground()
     }
 
-    // MARK: - Progress Section
+    // MARK: - Familiarity Progress Section
 
-    private func progressSection(result: SessionResult) -> some View {
-        VStack(spacing: AppSpacing.sm) {
-            if let threshold = result.nextPhaseThreshold {
-                ProgressView(value: progressAnimationValue)
-                    .tint(AppColor.phase(result.phasePromotion?.to ?? currentPhaseFromScore(result)))
-                    .animation(.spring(response: 0.7, dampingFraction: 0.85), value: progressAnimationValue)
+    private func familiarityProgressSection(percentage: Int) -> some View {
+        let tier = FamiliarityTier.from(progress: Double(percentage) / 100.0)
+        let color = AppColor.familiarity(tier)
 
-                // Smart hint text
-                if let gamesLeft = result.gamesUntilMinimum, gamesLeft > 0 {
-                    Text("Play \(gamesLeft) more game\(gamesLeft == 1 ? "" : "s") to qualify")
-                        .font(.caption)
-                        .foregroundStyle(AppColor.secondaryText)
-                } else if result.compositeScore >= threshold - 5 {
-                    Text("Almost there!")
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(AppColor.success)
-                } else if let nextPhase = currentPhaseFromScore(result).nextPhase {
-                    Text("\(Int(result.compositeScore))/\(Int(threshold)) to \(nextPhase.displayName)")
-                        .font(.caption)
-                        .foregroundStyle(AppColor.secondaryText)
-                }
+        return HStack(spacing: AppSpacing.md) {
+            ProgressRing(progress: Double(percentage) / 100.0, color: color, lineWidth: 4, size: 40)
+
+            VStack(alignment: .leading, spacing: AppSpacing.xxxs) {
+                Text("\(percentage)% Familiar")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(AppColor.primaryText)
+                Text(tier.displayName)
+                    .font(.caption)
+                    .foregroundStyle(color)
             }
-        }
-        .padding(.horizontal, AppSpacing.sm)
-    }
 
-    // MARK: - Unlocked Lines
-
-    private func unlockedLinesSection(lines: [String]) -> some View {
-        VStack(spacing: AppSpacing.xs) {
-            ForEach(lines, id: \.self) { name in
-                HStack(spacing: AppSpacing.xs) {
-                    Image(systemName: "lock.open.fill")
-                        .font(.caption)
-                        .foregroundStyle(AppColor.success)
-                    Text(name)
-                        .font(.subheadline)
-                        .foregroundStyle(AppColor.primaryText)
-                }
-            }
+            Spacer()
         }
-        .sensoryFeedback(.impact(weight: .light), trigger: lines.count)
+        .padding(AppSpacing.cardPadding)
+        .cardBackground()
     }
 
     // MARK: - Review Nudge
@@ -437,7 +359,7 @@ struct SessionCompleteView: View {
 
     private var buttonRow: some View {
         VStack(spacing: AppSpacing.md) {
-            // Next stage CTA (pipeline progression)
+            // Next stage CTA
             if let onNextStage, let mode = sessionMode {
                 Button(action: onNextStage) {
                     HStack(spacing: AppSpacing.xs) {
@@ -509,7 +431,6 @@ struct SessionCompleteView: View {
 
     // MARK: - Helpers
 
-    /// Format a time interval as "Xm Ys" or just "Ys" for durations under a minute.
     private func formattedDuration(_ interval: TimeInterval) -> String {
         let totalSeconds = Int(interval)
         let minutes = totalSeconds / 60
@@ -518,18 +439,5 @@ struct SessionCompleteView: View {
             return "\(minutes)m \(seconds)s"
         }
         return "\(seconds)s"
-    }
-
-    /// Infer current phase from the session result for display purposes.
-    private func currentPhaseFromScore(_ result: SessionResult) -> LearningPhase {
-        if let promo = result.phasePromotion {
-            return promo.to
-        }
-        // Infer from threshold
-        if result.nextPhaseThreshold == nil { return .freePlay }
-        if result.nextPhaseThreshold == 60 { return .learningMainLine }
-        if result.nextPhaseThreshold == 70 { return .naturalDeviations }
-        if result.nextPhaseThreshold == 75 { return .widerVariations }
-        return .learningMainLine
     }
 }
