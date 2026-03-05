@@ -83,6 +83,7 @@
 		58BB6002CE1169095996ABB1 /* GamePlayViewModel+Trainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB5CFE7C0B8CD1D6F0D6540 /* GamePlayViewModel+Trainer.swift */; };
 		58DFC4A7DD236BD5C5432FB8 /* CoachingUpgradeCTA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6309E9D0A1E27095C602DF /* CoachingUpgradeCTA.swift */; };
 		58E8E8A407F4BD8E6567E636 /* GamePlayViewModel+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED535AE485D4799B1F14DA57 /* GamePlayViewModel+Session.swift */; };
+		PUZZLE0002A1B2C3D4E5F6 /* GamePlayViewModel+Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = PUZZLE0001A1B2C3D4E5F6 /* GamePlayViewModel+Puzzle.swift */; };
 		597339265F744D8A370418CD /* nn-37f18f62d772.nnue in Resources */ = {isa = PBXBuildFile; fileRef = AABA327DF4FE44334C2F8676 /* nn-37f18f62d772.nnue */; };
 		5A5DBC756BCF86FA250B4BBF /* AssessmentPuzzleValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC42EBAD0A1EB01244063C2 /* AssessmentPuzzleValidationTests.swift */; };
 		5B85AF6EFF77D434E319985A /* OpponentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332F891136AFED8AAB292209 /* OpponentResponse.swift */; };
@@ -431,6 +432,7 @@
 		E6E5EAC549E94391E63BF305 /* PieceStylePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceStylePickerView.swift; sourceTree = "<group>"; };
 		E94CD447C46D32769CF3084C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		ED535AE485D4799B1F14DA57 /* GamePlayViewModel+Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GamePlayViewModel+Session.swift"; sourceTree = "<group>"; };
+		PUZZLE0001A1B2C3D4E5F6 /* GamePlayViewModel+Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GamePlayViewModel+Puzzle.swift"; sourceTree = "<group>"; };
 		EFCAE5777C6BE579572202A0 /* BotAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotAvatarView.swift; sourceTree = "<group>"; };
 		F0233CE2A8A4E762B9378EF3 /* TrainerCoachingEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainerCoachingEntry.swift; sourceTree = "<group>"; };
 		F1776DA363A06F2C7CC25093 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
@@ -965,6 +967,7 @@
 				5C9F0E4217BD65A78530D1A6 /* GamePlayViewModel.swift */,
 				7A98758D93F3E3471DD16D5A /* GamePlayViewModel+Coaching.swift */,
 				ED535AE485D4799B1F14DA57 /* GamePlayViewModel+Session.swift */,
+				PUZZLE0001A1B2C3D4E5F6 /* GamePlayViewModel+Puzzle.swift */,
 				9AB5CFE7C0B8CD1D6F0D6540 /* GamePlayViewModel+Trainer.swift */,
 			);
 			path = ViewModels;
@@ -1320,6 +1323,7 @@
 				4B8E3A2EEF6F83741E81E630 /* GamePlayView.swift in Sources */,
 				C2E8169F428D70F492EA15AA /* GamePlayViewModel+Coaching.swift in Sources */,
 				58E8E8A407F4BD8E6567E636 /* GamePlayViewModel+Session.swift in Sources */,
+				PUZZLE0002A1B2C3D4E5F6 /* GamePlayViewModel+Puzzle.swift in Sources */,
 				58BB6002CE1169095996ABB1 /* GamePlayViewModel+Trainer.swift in Sources */,
 				0865513F5B4A10553948F33F /* GamePlayViewModel.swift in Sources */,
 				FF312B0A04CB97D763D063F6 /* GameState.swift in Sources */,

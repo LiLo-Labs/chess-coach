@@ -595,12 +595,6 @@ final class GamePlayViewModel {
         }
     }
 
-    // MARK: - Puzzle Stubs
-
-    func loadPuzzles() async {}
-
-    func puzzleUserMoved(from: String, to: String) {}
-
     // MARK: - Saved Session
 
     static func hasSavedSession() -> Bool {
