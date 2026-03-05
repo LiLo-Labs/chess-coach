@@ -150,7 +150,8 @@ struct HomeView: View {
             .navigationDestination(item: $selectedMode) { mode in
                 switch mode {
                 case .puzzles:
-                    PuzzleModeView()
+                    GamePlayView(mode: .puzzle(opening: nil, source: .standalone), isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
+                        .environment(subscriptionService)
                 case .trainer:
                     TrainerSetupView()
                 }

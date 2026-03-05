@@ -169,6 +169,154 @@ final class PuzzleService {
         return puzzles
     }
 
+    // MARK: - Opening-Scoped Puzzles
+
+    /// Generate puzzles scoped to a specific opening, weighted toward positions
+    /// the player has encountered and needs review on.
+    func generateForOpening(_ opening: Opening, count: Int = 10) -> [Puzzle] {
+        let positions = PersistenceService.shared.loadAllPositionMastery().filter { $0.openingID == opening.id }
+        let encounteredPlies = Set(positions.map(\.ply))
+
+        var puzzles: [Puzzle] = []
+
+        // Priority 1: Due/weak positions (isDue OR accuracy < 0.8) — up to count/2
+        let dueOrWeak = positions.filter { $0.isDue || $0.accuracy < 0.8 }
+        for pos in dueOrWeak.prefix(count / 2) {
+            if let puzzle = positionToPuzzle(opening: opening, ply: pos.ply) {
+                puzzles.append(puzzle)
+            }
+        }
+
+        // Priority 2: Other encountered positions — fill remaining
+        let remaining = count - puzzles.count
+        if remaining > 0 {
+            let usedPlies = Set(puzzles.map(\.ply))
+            let dueOrWeakIDs = Set(dueOrWeak.map(\.id))
+            let otherPositions = positions.filter { pos in !dueOrWeakIDs.contains(pos.id) && !usedPlies.contains(pos.ply) }
+            for pos in otherPositions.prefix(remaining) {
+                if let puzzle = positionToPuzzle(opening: opening, ply: pos.ply) {
+                    puzzles.append(puzzle)
+                }
+            }
+        }
+
+        // Priority 3: Standard opening puzzles if not enough
+        let stillNeeded = count - puzzles.count
+        if stillNeeded > 0 {
+            let fillers = generateOpeningPuzzlesFromOpening(opening, count: stillNeeded, excludePlies: encounteredPlies)
+            puzzles.append(contentsOf: fillers)
+        }
+
+        print("[PuzzleService] generateForOpening(\(opening.id)): \(puzzles.count) puzzles (due/weak=\(dueOrWeak.count), encountered=\(encounteredPlies.count))")
+        return puzzles.shuffled()
+    }
+
+    /// Convert a position at a given ply to a puzzle using the opening's move data.
+    private func positionToPuzzle(opening: Opening, ply: Int) -> Puzzle? {
+        // Find moves that cover this ply — try lines first, then mainLine
+        let moveSets: [[OpeningMove]]
+        if let lines = opening.lines {
+            moveSets = lines.map(\.moves) + [opening.mainLine]
+        } else {
+            moveSets = [opening.mainLine]
+        }
+
+        for moves in moveSets {
+            guard ply < moves.count else { continue }
+
+            // Replay moves up to the target ply
+            let gameState = GameState()
+            var valid = true
+            for i in 0..<ply {
+                if !gameState.makeMoveUCI(moves[i].uci) {
+                    valid = false
+                    break
+                }
+            }
+            guard valid else { continue }
+
+            let solutionMove = moves[ply]
+            let fen = gameState.fen
+
+            // Verify solution is legal
+            guard gameState.makeMoveUCI(solutionMove.uci) else { continue }
+
+            let san = GameState.sanForUCI(solutionMove.uci, inFEN: fen)
+            let difficulty = min(5, max(1, opening.difficulty + (ply > 8 ? 1 : 0)))
+
+            return Puzzle(
+                id: "opening_\(opening.id)_\(ply)_\(UUID().uuidString.prefix(4))",
+                fen: fen,
+                solutionUCI: solutionMove.uci,
+                solutionSAN: san,
+                theme: .openingKnowledge,
+                difficulty: difficulty,
+                openingID: opening.id,
+                explanation: solutionMove.explanation
+            )
+        }
+
+        return nil
+    }
+
+    /// Generate puzzles from random positions within a single opening.
+    private func generateOpeningPuzzlesFromOpening(_ opening: Opening, count: Int, excludePlies: Set<Int> = []) -> [Puzzle] {
+        var puzzles: [Puzzle] = []
+
+        let moves: [OpeningMove]
+        if let lines = opening.lines, let line = lines.randomElement() {
+            moves = line.moves
+        } else {
+            moves = opening.mainLine
+        }
+        guard moves.count >= 4 else { return [] }
+
+        for _ in 0..<(count * 5) {
+            guard puzzles.count < count else { break }
+
+            let minPly = 2
+            let maxPly = moves.count - 1
+            guard minPly < maxPly else { break }
+            let plyIndex = Int.random(in: minPly...maxPly)
+
+            // Skip plies already used
+            guard !excludePlies.contains(plyIndex) else { continue }
+
+            let gameState = GameState()
+            var valid = true
+            for i in 0..<plyIndex {
+                if !gameState.makeMoveUCI(moves[i].uci) {
+                    valid = false
+                    break
+                }
+            }
+            guard valid else { continue }
+
+            let solutionMove = moves[plyIndex]
+            let fen = gameState.fen
+
+            guard gameState.makeMoveUCI(solutionMove.uci) else { continue }
+
+            let san = GameState.sanForUCI(solutionMove.uci, inFEN: fen)
+            let difficulty = min(5, max(1, opening.difficulty + (plyIndex > 8 ? 1 : 0)))
+
+            let puzzle = Puzzle(
+                id: "opening_\(opening.id)_\(plyIndex)_\(UUID().uuidString.prefix(4))",
+                fen: fen,
+                solutionUCI: solutionMove.uci,
+                solutionSAN: san,
+                theme: .openingKnowledge,
+                difficulty: difficulty,
+                openingID: opening.id,
+                explanation: solutionMove.explanation
+            )
+            puzzles.append(puzzle)
+        }
+
+        return puzzles
+    }
+
+
     // MARK: - Mistake Review Puzzles
 
     private func generateMistakePuzzles(count: Int) -> [Puzzle] {

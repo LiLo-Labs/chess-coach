@@ -83,6 +83,18 @@ final class GamePlayViewModel {
     let openingDetector = OpeningDetector()
     let holisticDetector = HolisticDetector()
 
+    // Puzzle mode
+    var puzzles: [Puzzle] = []
+    var currentPuzzleIndex = 0
+    var puzzleAttemptsRemaining = 3
+    var puzzleSessionResult = PuzzleSessionResult()
+    var isPuzzleComplete = false
+    var puzzleSolutionArrowFrom: String?
+    var puzzleSolutionArrowTo: String?
+    var isPuzzleShowingSolution = false
+    var puzzleAdvanceTask: Task<Void, Never>?
+    var puzzleEngineTask: Task<Void, Never>?
+
     // Practice-specific
     var variedOpponent: VariedOpponentService?
     var lineAccuracies: [String: (correct: Int, total: Int)] = [:]
@@ -237,8 +249,8 @@ final class GamePlayViewModel {
         self.engineStats = TrainerModeView.loadStats(mode: .engine)
         self.recentGames = TrainerModeView.loadRecentGames()
 
-        // Session-specific init
-        if let opening = mode.opening {
+        // Session-specific init (skip for puzzle mode — it only needs a scheduler)
+        if let opening = mode.opening, !mode.isPuzzle {
             self.coachPersonality = CoachPersonality.forOpening(opening)
             self.consecutiveCorrectPlays = UserDefaults.standard.dictionary(forKey: AppSettings.Key.consecutiveCorrect) as? [String: Int] ?? [:]
 
@@ -271,6 +283,11 @@ final class GamePlayViewModel {
             }
         }
 
+        // Puzzle-specific init
+        if case .puzzle = mode {
+            self.spacedRepScheduler = SpacedRepScheduler()
+        }
+
         // Trainer-specific init — capture ELO at button-press time
         if case .trainer(_, _, _, let botELO) = mode {
             opponentELO = botELO
@@ -295,7 +312,10 @@ final class GamePlayViewModel {
 
         await stockfish.start()
 
-        if mode.sessionMode == .practice, let opening = mode.opening {
+        if mode.isPuzzle {
+            isModelLoading = false
+            await loadPuzzles()
+        } else if mode.sessionMode == .practice, let opening = mode.opening {
             isModelLoading = false
             if opening.color == .black {
                 await makeOpponentMove()

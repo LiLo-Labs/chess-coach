@@ -366,4 +366,30 @@ enum PromptCatalog {
         Reply with ONLY the number (1, 2, 3, or 4) of the best plan-aligned move.
         """
     }
+
+    /// Puzzle wrong-answer coaching prompt (paid tier).
+    static func puzzleCoachingPrompt(
+        fen: String,
+        playedMove: String,
+        correctMove: String,
+        openingName: String,
+        boardSummary: String
+    ) -> String {
+        """
+        You are a friendly chess coach. The student tried \(playedMove) but the correct move is \(correctMove) in the \(openingName).
+
+        Board:
+        \(boardSummary)
+
+        In 1-2 sentences, explain:
+        1. Why \(correctMove) is the right move here
+        2. What's wrong with \(playedMove)
+
+        Be encouraging but honest. Use simple language.
+
+        Respond with ONLY:
+        REFS: none
+        COACHING: <your explanation>
+        """
+    }
 }

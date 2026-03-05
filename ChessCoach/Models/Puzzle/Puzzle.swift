@@ -2,6 +2,8 @@ import Foundation
 
 /// A chess puzzle — a position with one best move to find.
 struct Puzzle: Identifiable, Codable, Sendable {
+    static let unknownOpeningID = "unknown"
+
     let id: String
     let fen: String
     let solutionUCI: String       // e.g. "e2e4"
@@ -10,6 +12,22 @@ struct Puzzle: Identifiable, Codable, Sendable {
     let difficulty: Int            // 1-5
     let openingID: String?         // Source opening, if applicable
     let explanation: String?       // Why this move is best
+
+    /// Parse ply from puzzle ID.
+    /// Supports formats: "opening_{id}_{ply}_{uuid}", "bestmove_{id}_{depth}_{uuid}",
+    /// and "mistake_{openingID/lineID/ply}" (slash-delimited MistakeRecord.id).
+    var ply: Int {
+        // Mistake puzzles: "mistake_{openingID/lineID/ply}" — extract last slash component
+        if id.hasPrefix("mistake_"), let slashPart = id.split(separator: "/").last, let ply = Int(slashPart) {
+            return ply
+        }
+        // Opening/bestmove puzzles: "prefix_{id}_{ply}_{uuid}" — second-to-last underscore component
+        let parts = id.split(separator: "_")
+        if parts.count >= 3, let ply = Int(parts[parts.count - 2]) {
+            return ply
+        }
+        return 0
+    }
 
     enum Theme: String, Codable, Sendable, CaseIterable {
         case findTheBestMove = "Find the Best Move"
