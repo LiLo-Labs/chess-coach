@@ -10,9 +10,13 @@ extension GamePlayViewModel {
         let service = PuzzleService(stockfish: stockfish)
 
         let initial: [Puzzle]
-        if case .puzzle(let opening, .opening) = mode, opening != nil {
-            // Opening-scoped puzzles — generateForOpening not yet available, fall back to fast
-            initial = service.generateFastPuzzles(count: 10, userELO: userELO)
+        if case .puzzle(_, let source) = mode {
+            switch source {
+            case .opening(let opening):
+                initial = service.generateForOpening(opening)
+            case .standalone:
+                initial = service.generateFastPuzzles(count: 10, userELO: userELO)
+            }
         } else {
             initial = service.generateFastPuzzles(count: 10, userELO: userELO)
         }
