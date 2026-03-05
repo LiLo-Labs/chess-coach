@@ -331,27 +331,13 @@ actor CoachingService {
         if let bookStatus = context.bookStatus, let opening = context.opening {
             switch bookStatus {
             case .offBook(let p), .userDeviated(_, let p), .opponentDeviated(_, _, let p):
-                let opponentDev: (played: String, expected: String)?
-                if case .opponentDeviated(let expected, let played, _) = bookStatus {
-                    opponentDev = (played: played, expected: expected.san)
-                } else {
-                    opponentDev = nil
-                }
                 let guidance = offBookService.generateGuidance(
                     fen: context.fen,
                     opening: opening,
                     deviationPly: p,
-                    moveHistory: [],
-                    opponentDeviation: opponentDev
+                    moveHistory: []
                 )
-                var text = guidance.summary
-                if !guidance.planReminder.isEmpty {
-                    text += " \(guidance.planReminder)"
-                }
-                if let suggestion = guidance.suggestion {
-                    text += " \(suggestion)"
-                }
-                return text
+                return guidance.templateCoaching
             case .onBook:
                 break
             }

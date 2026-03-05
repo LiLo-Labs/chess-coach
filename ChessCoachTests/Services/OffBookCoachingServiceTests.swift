@@ -16,12 +16,10 @@ struct OffBookCoachingServiceTests {
             fen: fen,
             opening: italian,
             deviationPly: 6,
-            moveHistory: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5"]
+            moveHistory: [("e2","e4"), ("e7","e5"), ("g1","f3"), ("b8","c6"), ("f1","c4"), ("f8","c5")]
         )
 
-        #expect(!guidance.summary.isEmpty)
-        #expect(guidance.summary.contains("Italian Game"))
-        #expect(guidance.summary.contains("4")) // move number = (6/2)+1 = 4
+        #expect(guidance.category == .unclassified)
         #expect(!guidance.planReminder.isEmpty)
         // The plan reminder should be the opening's plan summary
         #expect(guidance.planReminder == italian.plan!.summary)
@@ -36,13 +34,10 @@ struct OffBookCoachingServiceTests {
             fen: fen,
             opening: italian,
             deviationPly: 5,
-            moveHistory: ["e4", "e5", "Nf3", "Nc6", "Bc4", "Bb4"],
-            opponentDeviation: (played: "Bb4", expected: "Bc5")
+            moveHistory: [("e2","e4"), ("e7","e5"), ("g1","f3"), ("b8","c6"), ("f1","c4"), ("f8","b4")]
         )
 
-        #expect(guidance.summary.contains("opponent"))
-        #expect(guidance.summary.contains("Bb4"))
-        #expect(guidance.summary.contains("Bc5"))
+        #expect(guidance.category == .unclassified)
     }
 
     // MARK: - relevantGoalsFiltersByCheckCondition
@@ -94,7 +89,7 @@ struct OffBookCoachingServiceTests {
             fen: fen,
             opening: opening,
             deviationPly: 6,
-            moveHistory: []
+            moveHistory: [] as [(from: String, to: String)]
         )
 
         // The bishop IS on diagonal a2g8 (c4), so that goal should be FILTERED OUT (met)
@@ -145,10 +140,10 @@ struct OffBookCoachingServiceTests {
             fen: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
             opening: opening,
             deviationPly: 2,
-            moveHistory: ["e4"]
+            moveHistory: [("e2","e4")]
         )
 
-        #expect(guidance.summary.contains("Mystery Opening"))
+        #expect(guidance.category == .unclassified)
         #expect(!guidance.planReminder.isEmpty)
         #expect(guidance.relevantGoals.isEmpty)
     }

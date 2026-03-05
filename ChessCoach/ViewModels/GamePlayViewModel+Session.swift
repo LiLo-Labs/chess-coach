@@ -680,27 +680,14 @@ extension GamePlayViewModel {
         default: deviationPly = currentPly
         }
 
-        var opponentDev: (played: String, expected: String)?
-        if case .opponentDeviated(let expected, let playedSAN, _) = bookStatus {
-            opponentDev = (played: playedSAN, expected: expected.san)
-        }
-
         let guidance = offBookCoachingService.generateGuidance(
             fen: gameState.fen,
             opening: opening,
             deviationPly: deviationPly,
-            moveHistory: gameState.moveHistory.map { $0.from + $0.to },
-            opponentDeviation: opponentDev
+            moveHistory: gameState.moveHistory.map { (from: $0.from, to: $0.to) }
         )
 
-        var text = guidance.summary
-        if !guidance.planReminder.isEmpty {
-            text += " \(guidance.planReminder)"
-        }
-        if let suggestion = guidance.suggestion {
-            text += " \(suggestion)"
-        }
-        userCoachingText = text
+        userCoachingText = guidance.templateCoaching
         showOffBookArrowHint()
     }
 

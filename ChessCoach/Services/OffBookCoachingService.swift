@@ -30,14 +30,22 @@ enum DeviationCategory: Sendable, Equatable {
 
 /// Guidance generated when a game goes off-book (deviates from known opening theory).
 struct OffBookGuidance: Sendable {
-    /// e.g. "You left the Italian Game at move 7"
-    let summary: String
-    /// e.g. "The plan is to target f7 with your bishop"
+    let category: DeviationCategory
     let planReminder: String
-    /// e.g. "Consider developing your bishop to c4"
     let suggestion: String?
-    /// Strategic goals that are still relevant given the current position
     let relevantGoals: [StrategicGoal]
+
+    /// Category-driven coaching message for free-tier users.
+    var templateCoaching: String {
+        var text = category.templateMessage
+        if !planReminder.isEmpty {
+            text += " \(planReminder)"
+        }
+        if let suggestion {
+            text += " \(suggestion)"
+        }
+        return text
+    }
 }
 
 /// Generates plan-based coaching when the game goes off-book.
@@ -53,18 +61,24 @@ struct OffBookCoachingService: Sendable {
     ///   - fen: Current board position in FEN notation
     ///   - opening: The opening the player was studying
     ///   - deviationPly: The half-move (ply) at which the game went off-book
-    ///   - moveHistory: SAN move list up to this point
-    ///   - opponentDeviation: If the *opponent* deviated, what they played vs. expected
+    ///   - moveHistory: Coordinate move pairs up to this point
     /// - Returns: Structured guidance for the coaching UI
     func generateGuidance(
         fen: String,
         opening: Opening,
         deviationPly: Int,
-        moveHistory: [String],
-        opponentDeviation: (played: String, expected: String)? = nil
+        moveHistory: [(from: String, to: String)]
     ) -> OffBookGuidance {
+        let playerIsWhite = opening.color == .white
+        let category = Self.classifyDeviation(fen: fen, moveHistory: moveHistory, playerIsWhite: playerIsWhite)
+
         guard let plan = opening.plan else {
-            return genericGuidance(opening: opening, deviationPly: deviationPly, opponentDeviation: opponentDeviation)
+            return OffBookGuidance(
+                category: category,
+                planReminder: "Keep developing your pieces toward the center and castle early.",
+                suggestion: "Focus on getting your knights and bishops out before moving the same piece twice.",
+                relevantGoals: []
+            )
         }
 
         let board = FENParser.boardString(from: fen)
@@ -87,13 +101,10 @@ struct OffBookCoachingService: Sendable {
             }
         }
 
-        // 3. Build summary
-        let summary = buildSummary(opening: opening, deviationPly: deviationPly, opponentDeviation: opponentDeviation)
-
-        // 4. Build plan reminder
+        // 3. Build plan reminder
         let planReminder = plan.summary
 
-        // 5. Build suggestion from unmet targets or top relevant goal
+        // 4. Build suggestion from unmet targets or top relevant goal
         let suggestion: String?
         if let firstUnmet = unmetTargets.first {
             let squares = firstUnmet.idealSquares.joined(separator: " or ")
@@ -105,7 +116,7 @@ struct OffBookCoachingService: Sendable {
         }
 
         return OffBookGuidance(
-            summary: summary,
+            category: category,
             planReminder: planReminder,
             suggestion: suggestion,
             relevantGoals: relevantGoals
@@ -113,34 +124,6 @@ struct OffBookCoachingService: Sendable {
     }
 
     // MARK: - Private
-
-    /// Generic guidance when the opening has no plan data.
-    private func genericGuidance(
-        opening: Opening,
-        deviationPly: Int,
-        opponentDeviation: (played: String, expected: String)?
-    ) -> OffBookGuidance {
-        let summary = buildSummary(opening: opening, deviationPly: deviationPly, opponentDeviation: opponentDeviation)
-        return OffBookGuidance(
-            summary: summary,
-            planReminder: "Keep developing your pieces toward the center and castle early.",
-            suggestion: "Focus on getting your knights and bishops out before moving the same piece twice.",
-            relevantGoals: []
-        )
-    }
-
-    private func buildSummary(
-        opening: Opening,
-        deviationPly: Int,
-        opponentDeviation: (played: String, expected: String)?
-    ) -> String {
-        let moveNumber = (deviationPly / 2) + 1
-        if let deviation = opponentDeviation {
-            return "Your opponent left the \(opening.name) at move \(moveNumber) — they played \(deviation.played) instead of the expected \(deviation.expected)."
-        } else {
-            return "You left the \(opening.name) at move \(moveNumber)."
-        }
-    }
 
     /// Check whether a condition string is already met in the current position.
     private func isConditionMet(_ condition: String, board: String, fen: String, isWhite: Bool) -> Bool {
