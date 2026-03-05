@@ -459,6 +459,7 @@ extension GamePlayViewModel {
 
             let capturedGen = gen
             let coaching = coachingService
+            let capturedBookStatus = bookStatus
             coachingTask = Task {
                 guard capturedGen == self.sessionGeneration else { return nil }
                 return await coaching.getCoaching(
@@ -473,7 +474,7 @@ extension GamePlayViewModel {
                     studentColor: studentColor,
                     matchedResponseName: responseName,
                     matchedResponseAdjustment: responseAdjustment,
-                    bookStatus: self.bookStatus
+                    bookStatus: capturedBookStatus
                 )
             }
         }

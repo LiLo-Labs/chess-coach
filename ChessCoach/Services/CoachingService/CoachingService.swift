@@ -18,7 +18,7 @@ actor CoachingService {
     }
 
     /// Get coaching text for a move.
-    /// When LLM coaching is not unlocked, returns hardcoded fallback coaching only (no LLM call).
+    /// When LLM coaching is not unlocked, returns template coaching only (no LLM call).
     func getCoaching(
         fen: String,
         lastMove: String,
@@ -102,7 +102,7 @@ actor CoachingService {
     }
 
     /// Get batched coaching for both user and opponent moves in a single LLM call.
-    /// When LLM coaching is not unlocked, returns hardcoded fallback coaching only.
+    /// When LLM coaching is not unlocked, returns template coaching only.
     func getBatchedCoaching(
         userFen: String,
         userMove: String,
@@ -330,22 +330,28 @@ actor CoachingService {
         // Off-book: delegate to plan-based guidance
         if let bookStatus = context.bookStatus, let opening = context.opening {
             switch bookStatus {
-            case .offBook, .userDeviated, .opponentDeviated:
-                let service = offBookService
-                let deviationPly: Int
-                switch bookStatus {
-                case .userDeviated(_, let p): deviationPly = p
-                case .opponentDeviated(_, _, let p): deviationPly = p
-                case .offBook(let p): deviationPly = p
-                default: deviationPly = context.plyNumber
+            case .offBook(let p), .userDeviated(_, let p), .opponentDeviated(_, _, let p):
+                let opponentDev: (played: String, expected: String)?
+                if case .opponentDeviated(let expected, let played, _) = bookStatus {
+                    opponentDev = (played: played, expected: expected.san)
+                } else {
+                    opponentDev = nil
                 }
-                let guidance = service.generateGuidance(
+                let guidance = offBookService.generateGuidance(
                     fen: context.fen,
                     opening: opening,
-                    deviationPly: deviationPly,
-                    moveHistory: []
+                    deviationPly: p,
+                    moveHistory: [],
+                    opponentDeviation: opponentDev
                 )
-                return "\(guidance.summary) \(guidance.planReminder)"
+                var text = guidance.summary
+                if !guidance.planReminder.isEmpty {
+                    text += " \(guidance.planReminder)"
+                }
+                if let suggestion = guidance.suggestion {
+                    text += " \(suggestion)"
+                }
+                return text
             case .onBook:
                 break
             }
