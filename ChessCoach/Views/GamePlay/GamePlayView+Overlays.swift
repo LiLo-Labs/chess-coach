@@ -30,25 +30,23 @@ extension GamePlayView {
     // MARK: - Puzzle Complete
 
     private var puzzleCompleteOverlay: some View {
-        ZStack {
+        let result = viewModel.puzzleSessionResult
+        let pct = result.total > 0 ? Int(result.accuracy * 100) : 0
+
+        return ZStack {
             Color.black.opacity(0.6).ignoresSafeArea()
 
             VStack(spacing: AppSpacing.md) {
-                Image(systemName: "puzzlepiece.fill")
-                    .font(.system(size: 44))
-                    .foregroundStyle(.orange)
-
-                Text("Puzzles Complete!")
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(AppColor.primaryText)
-
-                if viewModel.puzzles.count > 0 {
-                    let result = viewModel.puzzleSessionResult
-                    let pct = result.total > 0 ? Int(result.accuracy * 100) : 0
-                    Text("\(result.solved)/\(result.total) correct (\(pct)%)")
-                        .font(.subheadline)
-                        .foregroundStyle(AppColor.secondaryText)
-                }
+                SessionSummaryCard(
+                    stats: [
+                        .init(label: "Correct", value: "\(result.solved)/\(result.total)"),
+                        .init(label: "Accuracy", value: "\(pct)%"),
+                        .init(label: "Best Streak", value: "\(result.bestStreak)"),
+                    ],
+                    icon: "puzzlepiece.fill",
+                    iconColor: .orange,
+                    title: "Puzzles Complete!"
+                )
 
                 VStack(spacing: AppSpacing.md) {
                     Button("Play Again") {

@@ -2,6 +2,8 @@ import Foundation
 
 /// A chess puzzle — a position with one best move to find.
 struct Puzzle: Identifiable, Codable, Sendable {
+    static let unknownOpeningID = "unknown"
+
     let id: String
     let fen: String
     let solutionUCI: String       // e.g. "e2e4"
@@ -10,6 +12,20 @@ struct Puzzle: Identifiable, Codable, Sendable {
     let difficulty: Int            // 1-5
     let openingID: String?         // Source opening, if applicable
     let explanation: String?       // Why this move is best
+
+    /// Parse ply from puzzle ID format "opening_{id}_{ply}_{uuid}" or similar.
+    var ply: Int {
+        let parts = id.split(separator: "_")
+        if parts.count >= 3, let ply = Int(parts[parts.count - 2]) {
+            return ply
+        }
+        for part in parts.reversed() {
+            if let ply = Int(part) {
+                return ply
+            }
+        }
+        return 0
+    }
 
     enum Theme: String, Codable, Sendable, CaseIterable {
         case findTheBestMove = "Find the Best Move"

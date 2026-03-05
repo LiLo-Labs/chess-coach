@@ -190,8 +190,9 @@ final class PuzzleService {
         // Priority 2: Other encountered positions — fill remaining
         let remaining = count - puzzles.count
         if remaining > 0 {
-            let usedPlies = Set(puzzles.compactMap { extractPlyFromPuzzleID($0.id) })
-            let otherPositions = positions.filter { pos in !dueOrWeak.contains(where: { d in d.id == pos.id }) && !usedPlies.contains(pos.ply) }
+            let usedPlies = Set(puzzles.map(\.ply))
+            let dueOrWeakIDs = Set(dueOrWeak.map(\.id))
+            let otherPositions = positions.filter { pos in !dueOrWeakIDs.contains(pos.id) && !usedPlies.contains(pos.ply) }
             for pos in otherPositions.prefix(remaining) {
                 if let puzzle = positionToPuzzle(opening: opening, ply: pos.ply) {
                     puzzles.append(puzzle)
@@ -315,19 +316,6 @@ final class PuzzleService {
         return puzzles
     }
 
-    /// Parse ply from puzzle ID format "opening_{id}_{ply}_{uuid}" or similar.
-    private func extractPlyFromPuzzleID(_ id: String) -> Int? {
-        let parts = id.split(separator: "_")
-        if parts.count >= 3, let ply = Int(parts[parts.count - 2]) {
-            return ply
-        }
-        for part in parts.reversed() {
-            if let ply = Int(part) {
-                return ply
-            }
-        }
-        return nil
-    }
 
     // MARK: - Mistake Review Puzzles
 

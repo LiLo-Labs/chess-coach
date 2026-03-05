@@ -115,14 +115,13 @@ extension GamePlayViewModel {
                 coaching: "Not quite \u{2014} try again. (\(puzzleAttemptsRemaining) attempt\(puzzleAttemptsRemaining == 1 ? "" : "s") remaining)",
                 category: .mistake
             )
-            // Optionally request LLM coaching for paid users
-            requestPuzzleLLMCoaching(puzzle: puzzle, playedUCI: playedUCI)
         } else {
             // Out of attempts
             puzzleSessionResult.recordFail()
             updatePositionMastery(puzzle: puzzle, quality: 1, correct: false)
             recordPuzzleMistake(puzzle: puzzle, playedUCI: playedUCI)
             showPuzzleSolution(puzzle: puzzle)
+            requestPuzzleLLMCoaching(puzzle: puzzle, playedUCI: playedUCI)
         }
     }
 
@@ -174,38 +173,38 @@ extension GamePlayViewModel {
         isPuzzleComplete = true
 
         let result = puzzleSessionResult
-        let total = result.total
-        let pct = total > 0 ? Int(result.accuracy * 100) : 0
-        let summary = "Session complete: \(result.solved)/\(total) correct (\(pct)%). Best streak: \(result.bestStreak)."
+        let pct = result.total > 0 ? Int(result.accuracy * 100) : 0
+        let summary = "Session complete: \(result.solved)/\(result.total) correct (\(pct)%). Best streak: \(result.bestStreak)."
 
-        let entry = CoachingEntry(
+        insertFeedEntry(CoachingEntry(
             ply: 0,
             moveNumber: 0,
             moveSAN: "",
             isPlayerMove: true,
             coaching: summary,
             category: .goodMove
-        )
+        ))
+    }
+
+    // MARK: - Feed Entry Helpers
+
+    private func resolveOpeningName(for puzzle: Puzzle) -> String? {
+        puzzle.openingID.flatMap { OpeningDatabase.shared.opening(byID: $0)?.name }
+    }
+
+    private func insertFeedEntry(_ entry: CoachingEntry) {
         withAnimation(.easeInOut(duration: 0.2)) {
             feedEntries.insert(entry, at: 0)
         }
     }
 
-    // MARK: - Feed Entry Helpers
-
     private func addPuzzleContextEntry(_ puzzle: Puzzle) {
-        let openingName: String
-        if let openingID = puzzle.openingID,
-           let opening = OpeningDatabase.shared.opening(byID: openingID) {
-            openingName = opening.name
-        } else {
-            openingName = puzzle.theme.rawValue
-        }
+        let openingName = resolveOpeningName(for: puzzle) ?? puzzle.theme.rawValue
 
         let progress = "\(currentPuzzleIndex + 1)/\(puzzles.count)"
         let coaching = "Find the book move \u{2014} \(openingName) (\(progress))"
 
-        let entry = CoachingEntry(
+        insertFeedEntry(CoachingEntry(
             ply: 0,
             moveNumber: currentPuzzleIndex + 1,
             moveSAN: "",
@@ -213,21 +212,11 @@ extension GamePlayViewModel {
             coaching: coaching,
             category: .goodMove,
             openingName: openingName
-        )
-        withAnimation(.easeInOut(duration: 0.2)) {
-            feedEntries.insert(entry, at: 0)
-        }
+        ))
     }
 
     private func addPuzzleFeedEntry(puzzle: Puzzle, coaching: String, category: MoveCategory) {
-        let openingName: String?
-        if let openingID = puzzle.openingID {
-            openingName = OpeningDatabase.shared.opening(byID: openingID)?.name
-        } else {
-            openingName = nil
-        }
-
-        let entry = CoachingEntry(
+        insertFeedEntry(CoachingEntry(
             ply: currentPuzzleIndex,
             moveNumber: currentPuzzleIndex + 1,
             moveSAN: puzzle.solutionSAN,
@@ -235,61 +224,42 @@ extension GamePlayViewModel {
             isPlayerMove: true,
             coaching: coaching,
             category: category,
-            openingName: openingName
-        )
-        withAnimation(.easeInOut(duration: 0.2)) {
-            feedEntries.insert(entry, at: 0)
-        }
+            openingName: resolveOpeningName(for: puzzle)
+        ))
     }
 
     // MARK: - Mastery Integration
 
     private func updatePositionMastery(puzzle: Puzzle, quality: Int, correct: Bool) {
         guard let scheduler = spacedRepScheduler else { return }
-        let ply = extractPlyFromPuzzleID(puzzle.id)
+        let ply = puzzle.ply
 
         // Ensure item exists
         scheduler.addItem(
-            openingID: puzzle.openingID ?? "unknown",
+            openingID: puzzle.openingID ?? Puzzle.unknownOpeningID,
             fen: puzzle.fen,
             ply: ply,
             correctMove: puzzle.solutionUCI
         )
 
         // Find and review
-        if let item = scheduler.findItem(openingID: puzzle.openingID ?? "unknown", ply: ply) {
+        if let item = scheduler.findItem(openingID: puzzle.openingID ?? Puzzle.unknownOpeningID, ply: ply) {
             scheduler.review(itemID: item.id, quality: quality)
             scheduler.recordAttempt(id: item.id, correct: correct)
         }
     }
 
     private func recordPuzzleMistake(puzzle: Puzzle, playedUCI: String) {
-        let ply = extractPlyFromPuzzleID(puzzle.id)
         mistakeTracker.recordMistake(
-            openingID: puzzle.openingID ?? "unknown",
+            openingID: puzzle.openingID ?? Puzzle.unknownOpeningID,
             lineID: nil,
-            ply: ply,
+            ply: puzzle.ply,
             expectedMove: puzzle.solutionUCI,
             playedMove: playedUCI
         )
         PersistenceService.shared.saveMistakeTracker(mistakeTracker)
     }
 
-    /// Parse ply from puzzle ID format "opening_{id}_{ply}_{uuid}" or similar.
-    private func extractPlyFromPuzzleID(_ id: String) -> Int {
-        let parts = id.split(separator: "_")
-        // Try third-from-last component for formats like "opening_italian_4_AbCd"
-        if parts.count >= 3, let ply = Int(parts[parts.count - 2]) {
-            return ply
-        }
-        // Fallback: try each numeric component
-        for part in parts.reversed() {
-            if let ply = Int(part) {
-                return ply
-            }
-        }
-        return 0
-    }
 
     // MARK: - LLM Coaching (Paid Tier)
 
@@ -302,19 +272,20 @@ extension GamePlayViewModel {
             guard hasLLM else { return }
 
             let openingName = puzzle.openingID.flatMap { OpeningDatabase.shared.opening(byID: $0)?.name } ?? "this opening"
-            let prompt = """
-            The student is practicing chess opening puzzles in \(openingName).
-            Position (FEN): \(puzzle.fen)
-            The correct move is \(puzzle.solutionSAN) (\(puzzle.solutionUCI)).
-            The student played \(playedUCI) instead.
-            Give a brief, encouraging hint (1-2 sentences) about why the correct move is better, without revealing it directly.
-            """
+            let boardSummary = LLMService.boardStateSummary(fen: puzzle.fen)
+            let prompt = PromptCatalog.puzzleCoachingPrompt(
+                fen: puzzle.fen,
+                playedMove: playedUCI,
+                correctMove: puzzle.solutionSAN,
+                openingName: openingName,
+                boardSummary: boardSummary
+            )
 
             do {
                 let response = try await self.llmService.generate(prompt: prompt, maxTokens: 100)
-                // Update the latest feed entry with LLM coaching
-                if let latest = self.feedEntries.first {
-                    latest.coaching += "\n\n\(response)"
+                let parsed = CoachingValidator.parse(response: response).text
+                if !parsed.isEmpty, let latest = self.feedEntries.first {
+                    latest.coaching += "\n\n\(parsed)"
                 }
             } catch {
                 #if DEBUG

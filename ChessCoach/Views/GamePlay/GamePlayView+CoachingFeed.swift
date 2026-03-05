@@ -13,9 +13,7 @@ extension GamePlayView {
                 isLoading: false,
                 explainStyle: .textAndIcon,
                 scrollAnchor: "live",
-                onTapEntry: { ply in
-                    viewModel.enterReplay(ply: ply)
-                },
+                onTapEntry: { ply in viewModel.enterReplay(ply: ply) },
                 onRequestExplanation: { _ in }
             )
             .background(AppColor.background)
@@ -26,9 +24,7 @@ extension GamePlayView {
                 explainStyle: .textAndIcon,
                 header: practiceStatus,
                 scrollAnchor: "live",
-                onTapEntry: { ply in
-                    viewModel.enterReplay(ply: ply)
-                },
+                onTapEntry: { ply in viewModel.enterReplay(ply: ply) },
                 onRequestExplanation: { _ in }
             )
             .background(AppColor.background)

@@ -247,8 +247,8 @@ final class GamePlayViewModel {
         self.engineStats = TrainerModeView.loadStats(mode: .engine)
         self.recentGames = TrainerModeView.loadRecentGames()
 
-        // Session-specific init
-        if let opening = mode.opening {
+        // Session-specific init (skip for puzzle mode — it only needs a scheduler)
+        if let opening = mode.opening, !mode.isPuzzle {
             self.coachPersonality = CoachPersonality.forOpening(opening)
             self.consecutiveCorrectPlays = UserDefaults.standard.dictionary(forKey: AppSettings.Key.consecutiveCorrect) as? [String: Int] ?? [:]
 
