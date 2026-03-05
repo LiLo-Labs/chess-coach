@@ -80,6 +80,7 @@ extension GamePlayViewModel {
             expectedSAN: expectedSAN,
             expectedUCI: expectedUCI
         )
+        updateOpeningDetection()
 
         let category: MoveCategory = isDeviation ? .mistake : .goodMove
         maybeShowQuip(for: category)
@@ -399,6 +400,7 @@ extension GamePlayViewModel {
         )
 
         appendToFeed(ply: ply, san: opponentSan, coaching: opponentCoachingText, isDeviation: !isOnBook, fen: gameState.fen)
+        updateOpeningDetection()
 
         if isOffBookHere {
             showOffBookGuidance()
@@ -457,6 +459,7 @@ extension GamePlayViewModel {
 
             let capturedGen = gen
             let coaching = coachingService
+            let capturedBookStatus = bookStatus
             coachingTask = Task {
                 guard capturedGen == self.sessionGeneration else { return nil }
                 return await coaching.getCoaching(
@@ -470,7 +473,8 @@ extension GamePlayViewModel {
                     isUserMove: false,
                     studentColor: studentColor,
                     matchedResponseName: responseName,
-                    matchedResponseAdjustment: responseAdjustment
+                    matchedResponseAdjustment: responseAdjustment,
+                    bookStatus: capturedBookStatus
                 )
             }
         }
@@ -543,6 +547,7 @@ extension GamePlayViewModel {
         )
 
         appendToFeed(ply: opponentPly, san: batchedOpponentSan, coaching: opponentCoachingText, isDeviation: !isOnBook, fen: gameState.fen)
+        updateOpeningDetection()
 
         if gameState.plyCount >= moves.count {
             captureSnapshot()
@@ -653,16 +658,49 @@ extension GamePlayViewModel {
 
     func showOffBookGuidance() {
         guard isUserTurn, !sessionComplete else { return }
+        guard let opening = mode.opening else {
+            userCoachingText = "You're on your own. Focus on developing pieces and keeping your king safe."
+            showOffBookArrowHint()
+            return
+        }
 
+        // Throttle: only generate new guidance every 3 plies
+        let currentPly = gameState.plyCount
+        guard currentPly - offBookGuidanceLastPly >= 3 || offBookGuidanceLastPly < 0 else {
+            showOffBookArrowHint()
+            return
+        }
+        offBookGuidanceLastPly = currentPly
+
+        let deviationPly: Int
+        switch bookStatus {
+        case .userDeviated(_, let atPly): deviationPly = atPly
+        case .opponentDeviated(_, _, let atPly): deviationPly = atPly
+        case .offBook(let since): deviationPly = since
+        default: deviationPly = currentPly
+        }
+
+        let guidance = offBookCoachingService.generateGuidance(
+            fen: gameState.fen,
+            opening: opening,
+            deviationPly: deviationPly,
+            moveHistory: gameState.moveHistory.map { (from: $0.from, to: $0.to) }
+        )
+
+        userCoachingText = guidance.templateCoaching
+
+        // Show upgrade CTA once per session for free-tier users
+        if !isPro && !hasShownUpgradeCTA {
+            hasShownUpgradeCTA = true
+        }
+
+        showOffBookArrowHint()
+    }
+
+    private func showOffBookArrowHint() {
         if mode.showsArrows, let hint = bestResponseHint, hint.count >= 4 {
             arrowFrom = String(hint.prefix(2))
             arrowTo = String(hint.dropFirst(2).prefix(2))
-        }
-
-        if let bestMove = bestResponseDescription {
-            userCoachingText = "You're on your own. Suggested: \(bestMove) — focus on development and king safety."
-        } else {
-            userCoachingText = "You're on your own. Focus on developing pieces and keeping your king safe."
         }
     }
 
@@ -707,6 +745,7 @@ extension GamePlayViewModel {
         branchPointOptions = nil
         suggestedVariation = nil
         lastMovePES = nil
+        offBookGuidanceLastPly = -10
         undoStack.removeAll()
         redoStack.removeAll()
         feedEntries.removeAll()
@@ -844,7 +883,8 @@ extension GamePlayViewModel {
             isUserMove: isUserMove,
             studentColor: mode.opening?.color == .white ? "White" : "Black",
             matchedResponseName: responseName,
-            matchedResponseAdjustment: responseAdjustment
+            matchedResponseAdjustment: responseAdjustment,
+            bookStatus: bookStatus
         )
 
         if let text {

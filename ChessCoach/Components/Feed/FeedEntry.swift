@@ -30,6 +30,9 @@ final class FeedEntry: Identifiable {
     var expectedUCI: String?
     var playedUCI: String?
 
+    // Coaching tier
+    var isLLMCoaching: Bool = false
+
     // On-demand LLM explanation
     var explanation: String?
     var isExplaining: Bool = false

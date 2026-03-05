@@ -46,13 +46,30 @@ enum PromptCatalog {
         let studentColor = context.studentColor ?? "White"
         let opponentColor = studentColor == "White" ? "Black" : "White"
 
-        let guidance: String
+        var guidance: String
         if context.moveCategory == .deviation, let name = context.matchedResponseName, let adj = context.matchedResponseAdjustment {
             guidance = "The opponent played the \(name) variation (\(context.lastMove)). Plan adjustment: \(adj). Explain what this means for the student."
         } else if context.moveCategory == .deviation {
             guidance = "The opponent (\(opponentColor)) deviated from the \(context.openingName) by playing \(context.lastMove). Explain that the student is now out of book."
         } else {
             guidance = "The opponent (\(opponentColor)) played \(context.lastMove). Explain what this move means for the student (\(studentColor))."
+        }
+
+        if let category = context.deviationCategory {
+            switch category {
+            case .tempoWaste:
+                guidance += " The opponent wasted a tempo by moving the same piece twice."
+            case .centerConcession:
+                guidance += " The opponent has conceded the center — no opponent pawns on d4/d5/e4/e5."
+            case .delayedDevelopment:
+                guidance += " The opponent is behind in development with multiple minor pieces still on the back rank."
+            case .delayedCastling:
+                guidance += " The opponent has not castled and their king may be vulnerable."
+            case .knownAlternative(let name):
+                guidance += " The opponent is playing the \(name)."
+            case .unclassified:
+                break
+            }
         }
 
         let personalityNote = context.coachPersonalityPrompt.map { "Style: \($0)\n" } ?? ""
@@ -69,17 +86,18 @@ enum PromptCatalog {
         \(guidance)
 
         IMPORTANT: REFS must ONLY list squares where pieces currently sit on the board.
+        IMPORTANT: Your coaching is for the STUDENT (\(studentColor)). Tell them what THEY should do next, not what the opponent should do. Never suggest the opponent's best move as the student's move.
 
         Respond with ONLY:
         REFS: <up to 3 key squares with pieces on them>
-        COACHING: <one sentence from the student's perspective>
+        COACHING: <one sentence addressed to the student who plays \(studentColor), about what THEY should do>
         """
     }
 
     /// Wrapper prompt for coaching both user + opponent moves in a single LLM call.
     static func batchedPrompt(userPrompt: String, opponentPrompt: String) -> String {
         """
-        You will provide coaching for TWO consecutive moves. Respond with BOTH sections.
+        You will provide coaching for TWO consecutive moves. Both coaching messages are for the STUDENT — tell them what THEY should know or do.
 
         === MOVE 1 (Student's move) ===
         \(userPrompt)
@@ -90,10 +108,10 @@ enum PromptCatalog {
         IMPORTANT: Format your response EXACTLY as:
         STUDENT:
         REFS: <piece references or "none">
-        COACHING: <coaching text>
+        COACHING: <coaching text for the student about their move>
         OPPONENT:
         REFS: <piece references or "none">
-        COACHING: <coaching text>
+        COACHING: <coaching text for the student about the opponent's move — what should the STUDENT do next>
         """
     }
 

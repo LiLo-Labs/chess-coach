@@ -28,6 +28,9 @@ struct CoachingContext: Sendable {
     let matchedResponseName: String?
     let matchedResponseAdjustment: String?
     let coachPersonalityPrompt: String?
+    let opening: Opening?
+    let bookStatus: BookStatus?
+    let deviationCategory: DeviationCategory?
 }
 
 enum LLMProvider: Sendable {

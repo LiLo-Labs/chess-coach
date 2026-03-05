@@ -27,7 +27,7 @@ struct ExplainContext {
     let hasPlayed: Bool
 }
 
-enum BookStatus: Equatable {
+enum BookStatus: Equatable, Sendable {
     case onBook
     case userDeviated(expected: OpeningMove, atPly: Int)
     case opponentDeviated(expected: OpeningMove, playedSAN: String, atPly: Int)

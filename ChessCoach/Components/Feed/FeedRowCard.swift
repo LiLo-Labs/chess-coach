@@ -88,6 +88,9 @@ struct FeedRowCard: View {
             }
 
             if let primary = pair.primaryEntry {
+                if !primary.coaching.isEmpty {
+                    CoachingTierBadge(isLLM: primary.isLLMCoaching)
+                }
                 categoryBadge(primary)
             }
         }
