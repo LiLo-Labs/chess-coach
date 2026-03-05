@@ -93,6 +93,9 @@ public class ChessboardModel {
     
     public var movingPiece: (piece: Piece, from: BoardSquare, to: BoardSquare)?
 
+    /// Secondary piece animation for castling (the rook).
+    public var castlingRookMove: (piece: Piece, from: BoardSquare, to: BoardSquare)?
+
     /// Square where a capture just occurred — triggers a brief visual effect.
     public var captureSquare: BoardSquare?
 
@@ -126,11 +129,37 @@ public class ChessboardModel {
 
         // Detect captures BEFORE updating position
         captureSquare = nil
+        castlingRookMove = nil
         if let currentMove {
             let destIndex = currentMove.to.rank + currentMove.to.file * 8
             if game.position.board[destIndex] != nil {
                 // Piece on destination = capture
                 captureSquare = BoardSquare(row: currentMove.to.rank, column: currentMove.to.file)
+            }
+        }
+
+        // Detect castling BEFORE updating position:
+        // King moving 2+ squares on the same rank = castling
+        var rookMove: (piece: Piece, from: BoardSquare, to: BoardSquare)?
+        if let currentMove {
+            let fileDelta = abs(currentMove.to.file - currentMove.from.file)
+            let rankDelta = abs(currentMove.to.rank - currentMove.from.rank)
+            let sourceIndex = currentMove.from.rank + currentMove.from.file * 8
+            let isKing = game.position.board[sourceIndex]?.kind == .king
+
+            if isKing && fileDelta >= 2 && rankDelta == 0 {
+                let isKingside = currentMove.to.file > currentMove.from.file
+                let rookFromFile = isKingside ? 7 : 0
+                let rookToFile = isKingside ? 5 : 3
+                let rank = currentMove.from.rank
+                let rookIndex = rank + rookFromFile * 8
+                if let rook = game.position.board[rookIndex] {
+                    rookMove = (
+                        piece: rook,
+                        from: BoardSquare(row: rank, column: rookFromFile),
+                        to: BoardSquare(row: rank, column: rookToFile)
+                    )
+                }
             }
         }
 
@@ -149,6 +178,7 @@ public class ChessboardModel {
                 let to = BoardSquare(row: currentMove.to.rank, column: currentMove.to.file)
 
                 movingPiece = (piece: piece, from: from, to: to)
+                castlingRookMove = rookMove
             }
         }
     }
@@ -412,6 +442,38 @@ private struct MovingPieceView: View {
     }
 }
 
+/// Animated rook during castling — mirrors MovingPieceView but for the secondary piece.
+private struct CastlingRookView: View {
+    var animation: Namespace.ID
+
+    @Environment(ChessboardModel.self) var chessboardModel
+
+    @State var position: CGPoint = .zero
+
+    var body: some View {
+        Group {
+            if let rookMove = chessboardModel.castlingRookMove {
+                ChessPieceView(animation: animation,
+                               piece: rookMove.piece,
+                               square: BoardSquare(row: rookMove.from.row, column: rookMove.from.column),
+                               isMovingPiece: true)
+                .position(position)
+                .onAppear {
+                    position = CGPoint(x: chessboardModel.size / 16 + chessboardModel.size / 8 * CGFloat(chessboardModel.shouldFlipBoard ? 7 - rookMove.from.column : rookMove.from.column),
+                                       y: chessboardModel.size / 16 + chessboardModel.size / 8 * CGFloat(chessboardModel.shouldFlipBoard ? rookMove.from.row : 7 - rookMove.from.row))
+
+                    withAnimation(.spring(response: 0.55, dampingFraction: 0.78)) {
+                        position = CGPoint(x: chessboardModel.size / 16 + chessboardModel.size / 8 * CGFloat(chessboardModel.shouldFlipBoard ? 7 - rookMove.to.column : rookMove.to.column),
+                                           y: chessboardModel.size / 16 + chessboardModel.size / 8 * CGFloat(chessboardModel.shouldFlipBoard ? rookMove.to.row : 7 - rookMove.to.row))
+                    } completion: {
+                        chessboardModel.castlingRookMove = nil
+                    }
+                }
+            }
+        }
+    }
+}
+
 /// Pulsing red ring on the king's square when in check.
 private struct CheckFlashView: View {
     @Environment(ChessboardModel.self) var chessboardModel
@@ -514,6 +576,7 @@ public struct Chessboard: View {
                 legalMoveHighlightsView
                 
                 MovingPieceView(animation: animation)
+                CastlingRookView(animation: animation)
                 CaptureEffectView()
                 CheckFlashView()
 
@@ -718,8 +781,11 @@ public struct Chessboard: View {
                 let column = index / 8
                 let piece = chessboardModel.game.position.board[index]
                 
-                let isMoving = chessboardModel.movingPiece?.from == BoardSquare(row: row, column: column) ||
-                               chessboardModel.movingPiece?.to == BoardSquare(row: row, column: column)
+                let sq = BoardSquare(row: row, column: column)
+                let isMoving = chessboardModel.movingPiece?.from == sq ||
+                               chessboardModel.movingPiece?.to == sq ||
+                               chessboardModel.castlingRookMove?.from == sq ||
+                               chessboardModel.castlingRookMove?.to == sq
                 
                 ChessPieceView(animation: animation,
                                piece: piece,
