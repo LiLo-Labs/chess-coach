@@ -107,4 +107,51 @@ struct GamePlayModeTests {
         #expect(mode.isPuzzle == false)
         #expect(mode.isSession == true)
     }
+
+    // MARK: - .onboarding
+
+    @Test func onboardingIsNotTrainer() {
+        let mode = GamePlayMode.onboarding(playerELO: 800)
+        #expect(mode.isTrainer == false)
+    }
+
+    @Test func onboardingIsNotPuzzle() {
+        let mode = GamePlayMode.onboarding(playerELO: 800)
+        #expect(mode.isPuzzle == false)
+    }
+
+    @Test func onboardingIsNotSession() {
+        let mode = GamePlayMode.onboarding(playerELO: 800)
+        #expect(mode.isSession == false)
+    }
+
+    @Test func onboardingIsOnboarding() {
+        let mode = GamePlayMode.onboarding(playerELO: 800)
+        #expect(mode.isOnboarding == true)
+    }
+
+    @Test func onboardingPlayerColorIsWhite() {
+        let mode = GamePlayMode.onboarding(playerELO: 800)
+        #expect(mode.playerColor == .white)
+    }
+
+    @Test func onboardingOpeningIsNil() {
+        let mode = GamePlayMode.onboarding(playerELO: 800)
+        #expect(mode.opening == nil)
+    }
+
+    @Test func onboardingSessionModeIsNil() {
+        let mode = GamePlayMode.onboarding(playerELO: 800)
+        #expect(mode.sessionMode == nil)
+    }
+
+    @Test func onboardingShowsNoArrows() {
+        let mode = GamePlayMode.onboarding(playerELO: 800)
+        #expect(mode.showsArrows == false)
+    }
+
+    @Test func onboardingShowsNoProactiveCoaching() {
+        let mode = GamePlayMode.onboarding(playerELO: 800)
+        #expect(mode.showsProactiveCoaching == false)
+    }
 }
