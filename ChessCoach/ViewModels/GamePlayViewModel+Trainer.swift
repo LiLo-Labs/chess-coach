@@ -196,8 +196,10 @@ extension GamePlayViewModel {
             case .mistake:
                 if !isBookMove, let bm = allPreBookMoves.first {
                     coaching = "\(personality.witticism(for: .mistake)) The recommended move here is \(bm.san)."
-                } else if let bestUCI = eval?.bestMove {
-                    let san = GameState.sanForUCI(bestUCI, inFEN: fen)
+                } else if let pmFen = preMoveFen,
+                          let bestUCI = await stockfish.bestMove(fen: pmFen, depth: AppConfig.engine.evalDepth) {
+                    // Evaluate from pre-move position to find the PLAYER's best alternative
+                    let san = GameState.sanForUCI(bestUCI, inFEN: pmFen)
                     coaching = "\(personality.witticism(for: .mistake)) Better was \(san)."
                 } else {
                     coaching = personality.witticism(for: .mistake)
