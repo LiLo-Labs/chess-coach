@@ -86,17 +86,18 @@ enum PromptCatalog {
         \(guidance)
 
         IMPORTANT: REFS must ONLY list squares where pieces currently sit on the board.
+        IMPORTANT: Your coaching is for the STUDENT (\(studentColor)). Tell them what THEY should do next, not what the opponent should do. Never suggest the opponent's best move as the student's move.
 
         Respond with ONLY:
         REFS: <up to 3 key squares with pieces on them>
-        COACHING: <one sentence from the student's perspective>
+        COACHING: <one sentence addressed to the student who plays \(studentColor), about what THEY should do>
         """
     }
 
     /// Wrapper prompt for coaching both user + opponent moves in a single LLM call.
     static func batchedPrompt(userPrompt: String, opponentPrompt: String) -> String {
         """
-        You will provide coaching for TWO consecutive moves. Respond with BOTH sections.
+        You will provide coaching for TWO consecutive moves. Both coaching messages are for the STUDENT — tell them what THEY should know or do.
 
         === MOVE 1 (Student's move) ===
         \(userPrompt)
@@ -107,10 +108,10 @@ enum PromptCatalog {
         IMPORTANT: Format your response EXACTLY as:
         STUDENT:
         REFS: <piece references or "none">
-        COACHING: <coaching text>
+        COACHING: <coaching text for the student about their move>
         OPPONENT:
         REFS: <piece references or "none">
-        COACHING: <coaching text>
+        COACHING: <coaching text for the student about the opponent's move — what should the STUDENT do next>
         """
     }
 

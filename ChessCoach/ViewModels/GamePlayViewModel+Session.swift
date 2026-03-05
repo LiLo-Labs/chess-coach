@@ -80,7 +80,7 @@ extension GamePlayViewModel {
             expectedSAN: expectedSAN,
             expectedUCI: expectedUCI
         )
-        updateOpeningDetectionWithFeed()
+        updateOpeningDetection()
 
         let category: MoveCategory = isDeviation ? .mistake : .goodMove
         maybeShowQuip(for: category)
@@ -400,7 +400,7 @@ extension GamePlayViewModel {
         )
 
         appendToFeed(ply: ply, san: opponentSan, coaching: opponentCoachingText, isDeviation: !isOnBook, fen: gameState.fen)
-        updateOpeningDetectionWithFeed()
+        updateOpeningDetection()
 
         if isOffBookHere {
             showOffBookGuidance()
@@ -547,7 +547,7 @@ extension GamePlayViewModel {
         )
 
         appendToFeed(ply: opponentPly, san: batchedOpponentSan, coaching: opponentCoachingText, isDeviation: !isOnBook, fen: gameState.fen)
-        updateOpeningDetectionWithFeed()
+        updateOpeningDetection()
 
         if gameState.plyCount >= moves.count {
             captureSnapshot()
@@ -761,28 +761,6 @@ extension GamePlayViewModel {
 
         showProactiveCoaching()
         captureSnapshot()
-    }
-
-    // MARK: - Opening Detection (Session)
-
-    /// Updates holistic opening detection and appends a feed entry when a new opening is detected.
-    func updateOpeningDetectionWithFeed() {
-        let oldWhite = holisticDetection.whiteFramework.primary?.opening.name
-        let oldBlack = holisticDetection.blackFramework.primary?.opening.name
-
-        updateOpeningDetection()
-
-        let newWhite = holisticDetection.whiteFramework.primary?.opening.name
-        let newBlack = holisticDetection.blackFramework.primary?.opening.name
-
-        if let name = newWhite, name != oldWhite {
-            let ply = gameState.plyCount
-            appendToFeed(ply: ply, san: nil, coaching: "White is playing the \(name).", isDeviation: false, fen: gameState.fen)
-        }
-        if let name = newBlack, name != oldBlack {
-            let ply = gameState.plyCount
-            appendToFeed(ply: ply, san: nil, coaching: "Black is playing the \(name).", isDeviation: false, fen: gameState.fen)
-        }
     }
 
     // MARK: - Feed Management
