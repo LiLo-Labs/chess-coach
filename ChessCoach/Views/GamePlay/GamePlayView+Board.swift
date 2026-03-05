@@ -19,7 +19,9 @@ extension GamePlayView {
                     allowInteraction: isPlayerTurn && !viewModel.isThinking && !viewModel.isGameOver && !viewModel.sessionComplete && !viewModel.isReplaying
                 ) { from, to in
                     viewModel.clearArrowAndHint()
-                    if viewModel.mode.isTrainer {
+                    if viewModel.mode.isPuzzle {
+                        viewModel.puzzleUserMoved(from: from, to: to)
+                    } else if viewModel.mode.isTrainer {
                         viewModel.trainerUserMoved(from: from, to: to)
                     } else if viewModel.mode.sessionMode == .practice {
                         Task { await viewModel.practiceUserMoved(from: from, to: to) }

@@ -83,6 +83,16 @@ final class GamePlayViewModel {
     let openingDetector = OpeningDetector()
     let holisticDetector = HolisticDetector()
 
+    // Puzzle mode
+    var puzzles: [Puzzle] = []
+    var currentPuzzleIndex = 0
+    var puzzleAttemptsRemaining = 3
+    var puzzleSessionResult = PuzzleSessionResult()
+    var isPuzzleComplete = false
+    var puzzleSolutionArrowFrom: String?
+    var puzzleSolutionArrowTo: String?
+    var isPuzzleShowingSolution = false
+
     // Practice-specific
     var variedOpponent: VariedOpponentService?
     var lineAccuracies: [String: (correct: Int, total: Int)] = [:]
@@ -271,6 +281,11 @@ final class GamePlayViewModel {
             }
         }
 
+        // Puzzle-specific init
+        if case .puzzle = mode {
+            self.spacedRepScheduler = SpacedRepScheduler()
+        }
+
         // Trainer-specific init — capture ELO at button-press time
         if case .trainer(_, _, _, let botELO) = mode {
             opponentELO = botELO
@@ -295,7 +310,10 @@ final class GamePlayViewModel {
 
         await stockfish.start()
 
-        if mode.sessionMode == .practice, let opening = mode.opening {
+        if mode.isPuzzle {
+            isModelLoading = false
+            await loadPuzzles()
+        } else if mode.sessionMode == .practice, let opening = mode.opening {
             isModelLoading = false
             if opening.color == .black {
                 await makeOpponentMove()
@@ -576,6 +594,12 @@ final class GamePlayViewModel {
             evalScore = result.score
         }
     }
+
+    // MARK: - Puzzle Stubs
+
+    func loadPuzzles() async {}
+
+    func puzzleUserMoved(from: String, to: String) {}
 
     // MARK: - Saved Session
 

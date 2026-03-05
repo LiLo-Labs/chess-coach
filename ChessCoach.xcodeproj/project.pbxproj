@@ -68,6 +68,7 @@
 		449DCC65F1D994261FE9D468 /* PopularityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD76113945C7E92BAEA4F7E3 /* PopularityService.swift */; };
 		456310C901C8DB9962EAC7E4 /* slav.json in Resources */ = {isa = PBXBuildFile; fileRef = D02EB7DA27CFF167257CA7EB /* slav.json */; };
 		46EE8366FC07C18EACBEEF3F /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFED375BD95512722E070E26 /* Puzzle.swift */; };
+		B0A1C2D3E4F5A6B7C8D9E0F2 /* PuzzleSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A1C2D3E4F5A6B7C8D9E0F1 /* PuzzleSource.swift */; };
 		4701FB87A46A99D2DBA6B21B /* assessment_puzzles.json in Resources */ = {isa = PBXBuildFile; fileRef = 2A7CD82D7AF05F3BB759479B /* assessment_puzzles.json */; };
 		4980B598988D54AA473A4489 /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F73826204613AFF30C6BE78 /* ScreenshotTests.swift */; };
 		498D01D731A3EE4ADEDD2EE9 /* reti.json in Resources */ = {isa = PBXBuildFile; fileRef = 9184DFCBC4771D026AF80AA2 /* reti.json */; };
@@ -383,6 +384,7 @@
 		AF48836A2CC84BE1B57C2585 /* GamePlayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlayMode.swift; sourceTree = "<group>"; };
 		AFA4E18D85E23EC83BCF6411 /* EngineProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineProtocols.swift; sourceTree = "<group>"; };
 		AFED375BD95512722E070E26 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
+		B0A1C2D3E4F5A6B7C8D9E0F1 /* PuzzleSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleSource.swift; sourceTree = "<group>"; };
 		AFEDA5C1C4551BA5A25F9413 /* PlayerProgressService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProgressService.swift; sourceTree = "<group>"; };
 		B07C0DF8A8FA939CCB145DDF /* OpeningPreviewBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningPreviewBoard.swift; sourceTree = "<group>"; };
 		B0A65E58BA9BE1F5FDFC6B99 /* e.tsv */ = {isa = PBXFileReference; path = e.tsv; sourceTree = "<group>"; };
@@ -984,6 +986,7 @@
 			children = (
 				E51F7D63DEC4DC4F9375DEF5 /* AssessmentPuzzle.swift */,
 				AFED375BD95512722E070E26 /* Puzzle.swift */,
+				B0A1C2D3E4F5A6B7C8D9E0F1 /* PuzzleSource.swift */,
 			);
 			path = Puzzle;
 			sourceTree = "<group>";
@@ -1371,6 +1374,7 @@
 				9DE007C315CE0176CCF6A874 /* PromptCatalog.swift in Sources */,
 				0AF8442ADB8D442BFDFC45E5 /* PulseModifier.swift in Sources */,
 				46EE8366FC07C18EACBEEF3F /* Puzzle.swift in Sources */,
+				B0A1C2D3E4F5A6B7C8D9E0F2 /* PuzzleSource.swift in Sources */,
 				19C94F7D53A9777AFA4FB263 /* PuzzleModeView.swift in Sources */,
 				B2F12E1D84CC6F8C3B14F778 /* PuzzleService.swift in Sources */,
 				213ADC654DDA0B2E8165A6EB /* QuickReviewView.swift in Sources */,

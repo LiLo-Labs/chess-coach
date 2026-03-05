@@ -35,7 +35,7 @@ struct GamePlayView: View {
 
                 if viewModel.mode.isTrainer {
                     trainerPlayersBar
-                } else {
+                } else if !viewModel.mode.isPuzzle {
                     sessionPlayersBar
                 }
 
