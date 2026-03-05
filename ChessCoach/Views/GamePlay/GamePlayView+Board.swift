@@ -16,7 +16,12 @@ extension GamePlayView {
                 GameBoardView(
                     gameState: viewModel.displayGameState,
                     perspective: viewModel.mode.playerColor,
-                    allowInteraction: isPlayerTurn && !viewModel.isThinking && !viewModel.isGameOver && !viewModel.sessionComplete && !viewModel.isReplaying
+                    allowInteraction: {
+                        if viewModel.mode.isPuzzle {
+                            return !viewModel.isPuzzleShowingSolution && !viewModel.isPuzzleComplete
+                        }
+                        return isPlayerTurn && !viewModel.isThinking && !viewModel.isGameOver && !viewModel.sessionComplete && !viewModel.isReplaying
+                    }()
                 ) { from, to in
                     viewModel.clearArrowAndHint()
                     if viewModel.mode.isPuzzle {
@@ -34,6 +39,17 @@ extension GamePlayView {
                     MoveArrowOverlay(
                         arrowFrom: viewModel.arrowFrom,
                         arrowTo: viewModel.arrowTo,
+                        boardSize: boardSize,
+                        perspective: viewModel.mode.playerColor == .white
+                    )
+                }
+
+                if viewModel.mode.isPuzzle,
+                   let from = viewModel.puzzleSolutionArrowFrom,
+                   let to = viewModel.puzzleSolutionArrowTo {
+                    MoveArrowOverlay(
+                        arrowFrom: from,
+                        arrowTo: to,
                         boardSize: boardSize,
                         perspective: viewModel.mode.playerColor == .white
                     )

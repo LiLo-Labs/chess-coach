@@ -20,6 +20,54 @@ extension GamePlayView {
         if viewModel.mode.isSession && viewModel.mode.sessionMode != .practice && viewModel.sessionComplete {
             sessionCompleteOverlay
         }
+
+        // Puzzle complete
+        if viewModel.isPuzzleComplete {
+            puzzleCompleteOverlay
+        }
+    }
+
+    // MARK: - Puzzle Complete
+
+    private var puzzleCompleteOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.6).ignoresSafeArea()
+
+            VStack(spacing: AppSpacing.md) {
+                Image(systemName: "puzzlepiece.fill")
+                    .font(.system(size: 44))
+                    .foregroundStyle(.orange)
+
+                Text("Puzzles Complete!")
+                    .font(.title2.weight(.bold))
+                    .foregroundStyle(AppColor.primaryText)
+
+                if viewModel.puzzles.count > 0 {
+                    let result = viewModel.puzzleSessionResult
+                    let pct = result.total > 0 ? Int(result.accuracy * 100) : 0
+                    Text("\(result.solved)/\(result.total) correct (\(pct)%)")
+                        .font(.subheadline)
+                        .foregroundStyle(AppColor.secondaryText)
+                }
+
+                VStack(spacing: AppSpacing.md) {
+                    Button("Play Again") {
+                        viewModel.isPuzzleComplete = false
+                        Task { await viewModel.loadPuzzles() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.orange)
+
+                    Button("Done") {
+                        dismiss()
+                    }
+                    .buttonStyle(.bordered)
+                }
+                .padding(.top, AppSpacing.md)
+            }
+            .padding(AppSpacing.xl)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+        }
     }
 
     // MARK: - Practice Complete

@@ -47,11 +47,13 @@ struct GamePlayView: View {
 
                 if viewModel.mode.isTrainer {
                     trainerStatusSlot(boardSize: boardSize)
-                } else if viewModel.showPersonalityQuip, let quip = viewModel.personalityQuip {
+                } else if !viewModel.mode.isPuzzle, viewModel.showPersonalityQuip, let quip = viewModel.personalityQuip {
                     personalityQuipView(quip: quip)
                 }
 
-                replayBar
+                if !viewModel.mode.isPuzzle {
+                    replayBar
+                }
 
                 coachingFeed
             }
@@ -84,7 +86,7 @@ struct GamePlayView: View {
             }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text(viewModel.mode.isTrainer ? "The game will not count as a loss." : "Your progress will be saved.")
+            Text(viewModel.mode.isTrainer ? "The game will not count as a loss." : viewModel.mode.isPuzzle ? "Your puzzle progress will be lost." : "Your progress will be saved.")
         }
         .fullScreenCover(isPresented: $navigateToNextStage) {
             if let opening = viewModel.mode.opening {

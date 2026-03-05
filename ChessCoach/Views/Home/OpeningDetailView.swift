@@ -5,12 +5,14 @@ enum TrainingNavigation: Identifiable, Equatable {
     case guided(lineID: String?)
     case unguided(lineID: String?)
     case practice
+    case puzzles
 
     var id: String {
         switch self {
         case .guided(let id): return "guided-\(id ?? "nil")"
         case .unguided(let id): return "unguided-\(id ?? "nil")"
         case .practice: return "practice"
+        case .puzzles: return "puzzles"
         }
     }
 }
@@ -109,6 +111,9 @@ struct OpeningDetailView: View {
                 .environment(subscriptionService)
         case .practice:
             GamePlayView(mode: .practice(opening: opening, lineID: nil), isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
+                .environment(subscriptionService)
+        case .puzzles:
+            GamePlayView(mode: .puzzle(opening: opening, source: .opening(opening)), isPro: subscriptionService.isPro, tier: subscriptionService.currentTier, stockfish: appServices.stockfish, llmService: appServices.llmService)
                 .environment(subscriptionService)
         }
     }
@@ -319,6 +324,18 @@ struct OpeningDetailView: View {
                     title: "Practice",
                     subtitle: "Varied opponent responses, no hints",
                     action: { activeNavigation = .practice }
+                )
+
+                Divider()
+                    .padding(.leading, AppSpacing.cardPadding + 32 + AppSpacing.md)
+                    .opacity(0.25)
+
+                playModeRow(
+                    icon: "puzzlepiece.fill",
+                    color: .orange,
+                    title: "Practice Positions",
+                    subtitle: "Test your knowledge of key moves",
+                    action: { activeNavigation = .puzzles }
                 )
             }
             .padding(.bottom, AppSpacing.xs)
