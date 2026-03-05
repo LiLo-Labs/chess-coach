@@ -152,4 +152,78 @@ struct OffBookCoachingServiceTests {
         #expect(!guidance.planReminder.isEmpty)
         #expect(guidance.relevantGoals.isEmpty)
     }
+
+    // MARK: - Deviation Classification
+
+    @Test func classifiesTempoWaste() {
+        let fen = "rnbqkbnr/pppp1ppp/8/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3"
+        let moveHistory: [(from: String, to: String)] = [
+            (from: "e2", to: "e4"), (from: "b8", to: "c6"),
+            (from: "g1", to: "f3"), (from: "c6", to: "b8"),
+            (from: "f1", to: "c4"), (from: "e7", to: "e5"),
+        ]
+        let category = OffBookCoachingService.classifyDeviation(
+            fen: fen, moveHistory: moveHistory, playerIsWhite: true
+        )
+        #expect(category == .tempoWaste)
+    }
+
+    @Test func classifiesCenterConcession() {
+        let fen = "rnbqkb1r/pppp1ppp/5n2/8/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 4 4"
+        let moveHistory: [(from: String, to: String)] = [
+            (from: "e2", to: "e4"), (from: "g8", to: "f6"),
+            (from: "g1", to: "f3"), (from: "a7", to: "a6"),
+            (from: "f1", to: "c4"), (from: "h7", to: "h6"),
+            (from: "d2", to: "d4"), (from: "b7", to: "b6"),
+        ]
+        let category = OffBookCoachingService.classifyDeviation(
+            fen: fen, moveHistory: moveHistory, playerIsWhite: true
+        )
+        #expect(category == .centerConcession)
+    }
+
+    @Test func classifiesDelayedDevelopment() {
+        // Black has e-pawn on e5 (not center-conceded) but 3 minor pieces still home (Nb8, Bc8, Bf8)
+        let fen = "rnbqkb1r/pppp1ppp/5n2/4p3/2BPP3/5N2/PPP2PPP/RNBQK2R b KQkq - 0 4"
+        let moveHistory: [(from: String, to: String)] = [
+            (from: "e2", to: "e4"), (from: "e7", to: "e5"),
+            (from: "g1", to: "f3"), (from: "g8", to: "f6"),
+            (from: "f1", to: "c4"), (from: "a7", to: "a6"),
+            (from: "d2", to: "d4"), (from: "h7", to: "h6"),
+        ]
+        let category = OffBookCoachingService.classifyDeviation(
+            fen: fen, moveHistory: moveHistory, playerIsWhite: true
+        )
+        #expect(category == .delayedDevelopment)
+    }
+
+    @Test func classifiesDelayedCastling() {
+        let fen = "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQ1RK1 b kq - 0 6"
+        let moveHistory: [(from: String, to: String)] = [
+            (from: "e2", to: "e4"), (from: "e7", to: "e5"),
+            (from: "g1", to: "f3"), (from: "b8", to: "c6"),
+            (from: "f1", to: "c4"), (from: "f8", to: "c5"),
+            (from: "d2", to: "d3"), (from: "g8", to: "f6"),
+            (from: "e1", to: "g1"), (from: "d7", to: "d6"),
+            (from: "c1", to: "e3"), (from: "a7", to: "a6"),
+            (from: "b1", to: "d2"), (from: "h7", to: "h6"),
+        ]
+        let category = OffBookCoachingService.classifyDeviation(
+            fen: fen, moveHistory: moveHistory, playerIsWhite: true
+        )
+        #expect(category == .delayedCastling)
+    }
+
+    @Test func classifiesUnclassifiedWhenNoPatternMatches() {
+        let fen = "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4"
+        let moveHistory: [(from: String, to: String)] = [
+            (from: "e2", to: "e4"), (from: "e7", to: "e5"),
+            (from: "g1", to: "f3"), (from: "b8", to: "c6"),
+            (from: "f1", to: "c4"), (from: "f8", to: "c5"),
+        ]
+        let category = OffBookCoachingService.classifyDeviation(
+            fen: fen, moveHistory: moveHistory, playerIsWhite: true
+        )
+        #expect(category == .unclassified)
+    }
 }

@@ -1,5 +1,33 @@
 import Foundation
 
+/// Classification of how an opponent deviated from book theory.
+enum DeviationCategory: Sendable, Equatable {
+    case tempoWaste
+    case centerConcession
+    case delayedDevelopment
+    case delayedCastling
+    case knownAlternative(name: String)
+    case unclassified
+
+    /// Free-tier coaching template for this deviation type.
+    var templateMessage: String {
+        switch self {
+        case .tempoWaste:
+            return "Your opponent moved the same piece twice. Keep developing — you have a tempo advantage."
+        case .centerConcession:
+            return "Your opponent hasn't contested the center. Your central control gives you the initiative."
+        case .delayedDevelopment:
+            return "Your opponent is behind in development. Keep developing and look for opportunities to open the position."
+        case .delayedCastling:
+            return "Your opponent hasn't castled yet. Consider opening the center to exploit their exposed king."
+        case .knownAlternative(let name):
+            return "Your opponent is playing the \(name)."
+        case .unclassified:
+            return "Your opponent played a move outside of book theory."
+        }
+    }
+}
+
 /// Guidance generated when a game goes off-book (deviates from known opening theory).
 struct OffBookGuidance: Sendable {
     /// e.g. "You left the Italian Game at move 7"
@@ -165,6 +193,77 @@ struct OffBookCoachingService: Sendable {
             base = "P" // fallback
         }
         return isWhite ? base : Character(base.lowercased())
+    }
+
+    /// Classify an opponent's deviation from book using positional heuristics.
+    static func classifyDeviation(
+        fen: String,
+        moveHistory: [(from: String, to: String)],
+        playerIsWhite: Bool
+    ) -> DeviationCategory {
+        let board = FENParser.boardString(from: fen)
+        let plyCount = moveHistory.count
+        let opponentIsWhite = !playerIsWhite
+
+        // 1. Tempo waste: opponent moved a piece back to where it came from,
+        //    or moved from the same origin square twice (in first 10 plies)
+        let opponentMoves = moveHistory.enumerated()
+            .filter { opponentIsWhite ? $0.offset % 2 == 0 : $0.offset % 2 == 1 }
+            .map { $0.element }
+
+        for i in 0..<opponentMoves.count {
+            for j in (i+1)..<opponentMoves.count {
+                if opponentMoves[i].to == opponentMoves[j].from &&
+                   opponentMoves[i].from == opponentMoves[j].to {
+                    return .tempoWaste
+                }
+                if opponentMoves[i].from == opponentMoves[j].from {
+                    return .tempoWaste
+                }
+            }
+        }
+
+        // 2. Center concession: opponent has no pawns on d4/d5/e4/e5 after ply 8
+        if plyCount >= 8 {
+            let opponentPawn: Character = opponentIsWhite ? "P" : "p"
+            let centerSquares = ["d4", "d5", "e4", "e5"]
+            let hasCenterPawn = centerSquares.contains { square in
+                FENParser.isPieceOnSquare(piece: opponentPawn, square: square, board: board)
+            }
+            if !hasCenterPawn {
+                return .centerConcession
+            }
+        }
+
+        // 3. Delayed development: 3+ opponent minor pieces still on back rank after ply 8
+        if plyCount >= 8 {
+            let minorPieceTypes: [(Character, [String])] = opponentIsWhite
+                ? [("N", ["b1", "g1"]), ("B", ["c1", "f1"])]
+                : [("n", ["b8", "g8"]), ("b", ["c8", "f8"])]
+
+            var homeCount = 0
+            for (piece, homeSquares) in minorPieceTypes {
+                for square in homeSquares {
+                    if FENParser.isPieceOnSquare(piece: piece, square: square, board: board) {
+                        homeCount += 1
+                    }
+                }
+            }
+            if homeCount >= 3 {
+                return .delayedDevelopment
+            }
+        }
+
+        // 4. Delayed castling: opponent hasn't castled by ply 14
+        if plyCount >= 14 {
+            let hasCastled = FENParser.isCastled(kingside: true, fen: fen, isWhite: opponentIsWhite)
+                || FENParser.isCastled(kingside: false, fen: fen, isWhite: opponentIsWhite)
+            if !hasCastled {
+                return .delayedCastling
+            }
+        }
+
+        return .unclassified
     }
 }
 
