@@ -30,7 +30,6 @@
 		153407464C23E1214B8097CA /* LLMServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43293FAD4058537CD08C844 /* LLMServiceTests.swift */; };
 		1600D11F53255E67DB71C598 /* vienna.json in Resources */ = {isa = PBXBuildFile; fileRef = 2CD82359955074892F6D0D84 /* vienna.json */; };
 		183B67ABB65A4C2EC41B945D /* CoachingTierBadgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C137CFBA1FFE261F6FEBB1E /* CoachingTierBadgeTests.swift */; };
-		19C94F7D53A9777AFA4FB263 /* PuzzleModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1433100DC8C346D9659D68 /* PuzzleModeView.swift */; };
 		1A5406F5F565EF0BCA18C513 /* nimzo-indian.json in Resources */ = {isa = PBXBuildFile; fileRef = 0CBAC99CDFF834C696E1736D /* nimzo-indian.json */; };
 		1B2B9B24A0F296310D363E74 /* OpeningDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B4A2582942F5C8B3786338 /* OpeningDetailView.swift */; };
 		1B8B5B3C655E0E3C2850BB1C /* DebugStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2797B55324C34157D183BBB3 /* DebugStateView.swift */; };
@@ -314,7 +313,6 @@
 		51BEE1049F2990DDB40D8212 /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
 		5447FBC8446FAD0562EDDA00 /* PuzzleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleService.swift; sourceTree = "<group>"; };
 		5AF349EACF6870397174001C /* maia2_moves.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = maia2_moves.txt; sourceTree = "<group>"; };
-		5B1433100DC8C346D9659D68 /* PuzzleModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleModeView.swift; sourceTree = "<group>"; };
 		5C9F0E4217BD65A78530D1A6 /* GamePlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlayViewModel.swift; sourceTree = "<group>"; };
 		5FB0E2F8DAB6D71268CA3DC0 /* TrainerModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainerModeView.swift; sourceTree = "<group>"; };
 		5FFCFE25741ACBCE53F7DE9A /* FeedbackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackButton.swift; sourceTree = "<group>"; };
@@ -779,7 +777,6 @@
 				B07C0DF8A8FA939CCB145DDF /* OpeningPreviewBoard.swift */,
 				97D53FEC7503128FABA4EACB /* OpeningSettingsView.swift */,
 				9C35E583549E295B36B66171 /* ProgressDetailView.swift */,
-				5B1433100DC8C346D9659D68 /* PuzzleModeView.swift */,
 				8041DC780878CFEAF9F092FD /* TrainerCoachingFeedView.swift */,
 				5FB0E2F8DAB6D71268CA3DC0 /* TrainerModeView.swift */,
 				D555B7D1C5E8B0DC79C4E7EE /* TrainerSetupView.swift */,
@@ -1379,7 +1376,6 @@
 				0AF8442ADB8D442BFDFC45E5 /* PulseModifier.swift in Sources */,
 				46EE8366FC07C18EACBEEF3F /* Puzzle.swift in Sources */,
 				B0A1C2D3E4F5A6B7C8D9E0F2 /* PuzzleSource.swift in Sources */,
-				19C94F7D53A9777AFA4FB263 /* PuzzleModeView.swift in Sources */,
 				B2F12E1D84CC6F8C3B14F778 /* PuzzleService.swift in Sources */,
 				213ADC654DDA0B2E8165A6EB /* QuickReviewView.swift in Sources */,
 				5BEA4235474CF69DE1E214AE /* QuizLessonCard.swift in Sources */,
