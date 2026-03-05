@@ -23,7 +23,8 @@ import Testing
         matchedResponseAdjustment: nil,
         coachPersonalityPrompt: nil,
         opening: nil,
-        bookStatus: nil
+        bookStatus: nil,
+        deviationCategory: nil
     )
     let prompt = LLMService.buildPrompt(for: context)
     #expect(prompt.contains("e2e4"))
@@ -52,7 +53,8 @@ import Testing
         matchedResponseAdjustment: nil,
         coachPersonalityPrompt: nil,
         opening: nil,
-        bookStatus: nil
+        bookStatus: nil,
+        deviationCategory: nil
     )
     let result = LLMService.buildPrompt(for: context)
     #expect(result.contains("correct"))
@@ -80,7 +82,8 @@ import Testing
         matchedResponseAdjustment: nil,
         coachPersonalityPrompt: nil,
         opening: nil,
-        bookStatus: nil
+        bookStatus: nil,
+        deviationCategory: nil
     )
     let prompt = LLMService.buildPrompt(for: context)
     #expect(prompt.contains("e2e4"))

@@ -688,6 +688,12 @@ extension GamePlayViewModel {
         )
 
         userCoachingText = guidance.templateCoaching
+
+        // Show upgrade CTA once per session for free-tier users
+        if !isPro && !hasShownUpgradeCTA {
+            hasShownUpgradeCTA = true
+        }
+
         showOffBookArrowHint()
     }
 

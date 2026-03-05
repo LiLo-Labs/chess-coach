@@ -72,13 +72,25 @@ actor CoachingService {
             category = moveCategory
         }
 
+        var deviationCategory: DeviationCategory? = nil
+        if let bs = bookStatus {
+            switch bs {
+            case .onBook: break
+            default:
+                deviationCategory = OffBookCoachingService.classifyDeviation(
+                    fen: fen, moveHistory: [], playerIsWhite: studentColor == "White"
+                )
+            }
+        }
+
         let context = buildContext(
             fen: fen, lastMove: lastMove, scoreBefore: scoreBefore, scoreAfter: scoreAfter,
             ply: ply, userELO: userELO, moveHistory: moveHistory,
             isUserMove: isUserMove, studentColor: studentColor, category: category,
             matchedResponseName: matchedResponseName,
             matchedResponseAdjustment: matchedResponseAdjustment,
-            bookStatus: bookStatus
+            bookStatus: bookStatus,
+            deviationCategory: deviationCategory
         )
 
         do {
@@ -289,7 +301,8 @@ actor CoachingService {
         ply: Int, userELO: Int, moveHistory: String,
         isUserMove: Bool, studentColor: String?, category: MoveCategory,
         matchedResponseName: String? = nil, matchedResponseAdjustment: String? = nil,
-        bookStatus: BookStatus? = nil
+        bookStatus: BookStatus? = nil,
+        deviationCategory: DeviationCategory? = nil
     ) -> CoachingContext {
         let opening = curriculumService.opening
         let expectedMove = opening.expectedMove(atPly: ply)
@@ -322,7 +335,8 @@ actor CoachingService {
             matchedResponseAdjustment: matchedResponseAdjustment,
             coachPersonalityPrompt: personality.personalityPrompt,
             opening: opening,
-            bookStatus: bookStatus
+            bookStatus: bookStatus,
+            deviationCategory: deviationCategory
         )
     }
 

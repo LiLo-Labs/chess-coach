@@ -30,6 +30,7 @@ struct CoachingContext: Sendable {
     let coachPersonalityPrompt: String?
     let opening: Opening?
     let bookStatus: BookStatus?
+    let deviationCategory: DeviationCategory?
 }
 
 enum LLMProvider: Sendable {

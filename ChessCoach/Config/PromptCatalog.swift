@@ -46,13 +46,30 @@ enum PromptCatalog {
         let studentColor = context.studentColor ?? "White"
         let opponentColor = studentColor == "White" ? "Black" : "White"
 
-        let guidance: String
+        var guidance: String
         if context.moveCategory == .deviation, let name = context.matchedResponseName, let adj = context.matchedResponseAdjustment {
             guidance = "The opponent played the \(name) variation (\(context.lastMove)). Plan adjustment: \(adj). Explain what this means for the student."
         } else if context.moveCategory == .deviation {
             guidance = "The opponent (\(opponentColor)) deviated from the \(context.openingName) by playing \(context.lastMove). Explain that the student is now out of book."
         } else {
             guidance = "The opponent (\(opponentColor)) played \(context.lastMove). Explain what this move means for the student (\(studentColor))."
+        }
+
+        if let category = context.deviationCategory {
+            switch category {
+            case .tempoWaste:
+                guidance += " The opponent wasted a tempo by moving the same piece twice."
+            case .centerConcession:
+                guidance += " The opponent has conceded the center — no opponent pawns on d4/d5/e4/e5."
+            case .delayedDevelopment:
+                guidance += " The opponent is behind in development with multiple minor pieces still on the back rank."
+            case .delayedCastling:
+                guidance += " The opponent has not castled and their king may be vulnerable."
+            case .knownAlternative(let name):
+                guidance += " The opponent is playing the \(name)."
+            case .unclassified:
+                break
+            }
         }
 
         let personalityNote = context.coachPersonalityPrompt.map { "Style: \($0)\n" } ?? ""

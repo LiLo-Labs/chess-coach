@@ -115,6 +115,7 @@ final class GamePlayViewModel {
     // Pro status
     var isPro: Bool = true
     var showProUpgrade = false
+    var hasShownUpgradeCTA = false
 
     // Haptic trigger
     var correctMoveTrigger: Int = 0
