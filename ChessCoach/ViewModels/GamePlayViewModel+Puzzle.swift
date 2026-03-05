@@ -7,6 +7,12 @@ extension GamePlayViewModel {
     // MARK: - Load Puzzles
 
     func loadPuzzles() async {
+        // Cancel any pending tasks from previous session
+        puzzleAdvanceTask?.cancel()
+        puzzleAdvanceTask = nil
+        puzzleEngineTask?.cancel()
+        puzzleEngineTask = nil
+
         let service = PuzzleService(stockfish: stockfish)
 
         let initial: [Puzzle]
@@ -24,6 +30,7 @@ extension GamePlayViewModel {
         self.puzzles = initial
         self.currentPuzzleIndex = 0
         self.puzzleSessionResult = PuzzleSessionResult()
+        self.isPuzzleComplete = false
 
         if let first = puzzles.first {
             setupPuzzleBoard(first)
@@ -31,10 +38,10 @@ extension GamePlayViewModel {
         }
 
         // Background: append engine-evaluated puzzles
-        Task { [weak self] in
+        puzzleEngineTask = Task { @MainActor [weak self] in
             guard let self else { return }
             let enginePuzzles = await service.generateEnginePuzzles(count: 5, userELO: self.userELO)
-            guard !enginePuzzles.isEmpty else { return }
+            guard !Task.isCancelled, !enginePuzzles.isEmpty else { return }
             self.puzzles.append(contentsOf: enginePuzzles)
         }
     }
@@ -92,8 +99,10 @@ extension GamePlayViewModel {
         )
 
         // Auto-advance after delay
-        Task { @MainActor [weak self] in
+        puzzleAdvanceTask?.cancel()
+        puzzleAdvanceTask = Task { @MainActor [weak self] in
             try? await Task.sleep(for: .seconds(1.2))
+            guard !Task.isCancelled else { return }
             self?.advanceToNextPuzzle()
         }
     }
@@ -147,8 +156,10 @@ extension GamePlayViewModel {
         )
 
         // Auto-advance after longer delay
-        Task { @MainActor [weak self] in
+        puzzleAdvanceTask?.cancel()
+        puzzleAdvanceTask = Task { @MainActor [weak self] in
             try? await Task.sleep(for: .seconds(2.5))
+            guard !Task.isCancelled else { return }
             self?.advanceToNextPuzzle()
         }
     }
@@ -265,6 +276,8 @@ extension GamePlayViewModel {
 
     private func requestPuzzleLLMCoaching(puzzle: Puzzle, playedUCI: String) {
         guard let featureAccess else { return }
+        // Capture the target entry before the async gap to avoid appending to wrong entry
+        guard let targetEntry = feedEntries.first else { return }
 
         Task { @MainActor [weak self] in
             guard let self else { return }
@@ -284,8 +297,8 @@ extension GamePlayViewModel {
             do {
                 let response = try await self.llmService.generate(prompt: prompt, maxTokens: 100)
                 let parsed = CoachingValidator.parse(response: response).text
-                if !parsed.isEmpty, let latest = self.feedEntries.first {
-                    latest.coaching += "\n\n\(parsed)"
+                if !parsed.isEmpty {
+                    targetEntry.coaching += "\n\n\(parsed)"
                 }
             } catch {
                 #if DEBUG

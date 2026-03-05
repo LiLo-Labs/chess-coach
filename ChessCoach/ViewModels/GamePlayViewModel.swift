@@ -92,6 +92,8 @@ final class GamePlayViewModel {
     var puzzleSolutionArrowFrom: String?
     var puzzleSolutionArrowTo: String?
     var isPuzzleShowingSolution = false
+    var puzzleAdvanceTask: Task<Void, Never>?
+    var puzzleEngineTask: Task<Void, Never>?
 
     // Practice-specific
     var variedOpponent: VariedOpponentService?
