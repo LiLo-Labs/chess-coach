@@ -86,19 +86,19 @@ struct DebugStateView: View {
                 loadFreshInstall()
             }
 
-            Button("Italian Layer 1 — Learn the Plan", systemImage: "lightbulb") {
+            Button("Italian — Learning (10%)", systemImage: "lightbulb") {
                 loadItalianLayer1()
             }
 
-            Button("Italian Layer 2 — Practice the Plan", systemImage: "target") {
+            Button("Italian — Practicing (45%)", systemImage: "target") {
                 loadItalianLayer2()
             }
 
-            Button("Italian Layer 3 — The Story", systemImage: "book.closed") {
+            Button("Italian — Familiar (80%)", systemImage: "checkmark.seal") {
                 loadItalianLayer3()
             }
 
-            Button("London Layer 1 — Learn the Plan", systemImage: "lightbulb") {
+            Button("London — Learning (10%)", systemImage: "lightbulb") {
                 loadLondonLayer1()
             }
 
@@ -137,7 +137,7 @@ struct DebugStateView: View {
                 loadTierFresh(.onDeviceAI)
             }
 
-            Button("Italian Layer 2", systemImage: "cpu.fill") {
+            Button("Italian — Practicing (45%)", systemImage: "cpu.fill") {
                 loadOnDeviceAIMidway()
             }
         }
@@ -161,7 +161,7 @@ struct DebugStateView: View {
                 loadTierFresh(.pro)
             }
 
-            Button("Italian Layer 4 + All Openings", systemImage: "crown.fill") {
+            Button("Italian — Familiar (80%) + All Openings", systemImage: "crown.fill") {
                 loadProMidway()
             }
 
