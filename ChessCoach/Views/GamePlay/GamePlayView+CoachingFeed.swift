@@ -7,7 +7,17 @@ extension GamePlayView {
     var coachingFeed: some View {
         let feedEntries = viewModel.feedEntries.map { FeedEntry.from($0) }
 
-        if viewModel.mode.isPuzzle {
+        if viewModel.mode.isOnboarding {
+            CoachingFeedView(
+                entries: feedEntries,
+                isLoading: false,
+                explainStyle: .textAndIcon,
+                scrollAnchor: "live",
+                onTapEntry: { _ in },
+                onRequestExplanation: { _ in }
+            )
+            .background(AppColor.background)
+        } else if viewModel.mode.isPuzzle {
             CoachingFeedView(
                 entries: feedEntries,
                 isLoading: false,
