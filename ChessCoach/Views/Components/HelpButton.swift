@@ -78,7 +78,7 @@ enum HelpTopic {
         case .difficulty:
             return "Difficulty ranges from 1 (beginner-friendly) to 5 (advanced). Start with lower difficulty openings to build confidence."
         case .learningJourney:
-            return "Each opening has 5 stages. Learn the plan, practice it, discover the history, face different opponents, then play for real. Complete each stage to unlock the next."
+            return "Each opening tracks your familiarity. Play guided sessions to learn the moves, then practice on your own. As you master positions, your familiarity grows from Learning to Practicing to Familiar."
         case .moveSafety:
             return "Move Safety measures whether your move was tactically sound — did you avoid blunders and maintain a good position?"
         case .followingPlan:

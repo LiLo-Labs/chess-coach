@@ -63,7 +63,7 @@ struct TokenStoreView: View {
                 Section("What You Can Do") {
                     infoRow(icon: "book.fill", color: AppColor.info, text: "Unlock any opening — \(AppConfig.tokenEconomy.openingUnlockCost) tokens")
                     infoRow(icon: "gift.fill", color: AppColor.success, text: "Daily bonus — \(AppConfig.tokenEconomy.dailyBonusAmount) free tokens/day")
-                    infoRow(icon: "star.fill", color: AppColor.gold, text: "Complete layers — earn \(AppConfig.tokenEconomy.layerCompletionReward) tokens")
+                    infoRow(icon: "star.fill", color: AppColor.gold, text: "Reach milestones — earn \(AppConfig.tokenEconomy.milestoneReward) tokens")
                 }
                 .listRowBackground(AppColor.cardBackground)
 

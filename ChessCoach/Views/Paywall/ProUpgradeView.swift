@@ -97,7 +97,7 @@ struct ProUpgradeView: View {
                         features: [
                             "Everything in Cloud AI",
                             "All openings unlocked",
-                            "Advanced learning layers",
+                            "Full progress tracking",
                             "All future updates included"
                         ]
                     )
@@ -313,7 +313,7 @@ struct ProUpgradeView: View {
                 Image(systemName: "checkmark")
                     .font(.caption2.weight(.bold))
                     .foregroundStyle(AppColor.info.opacity(0.8))
-                Text("Full access to \(openingName) — all lessons and practice modes")
+                Text("Full access to \(openingName) — guided, practice, and review modes")
                     .font(.caption)
                     .foregroundStyle(AppColor.secondaryText)
             }

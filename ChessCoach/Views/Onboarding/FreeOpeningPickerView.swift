@@ -52,7 +52,7 @@ struct FreeOpeningPickerView: View {
                         .font(.title2.weight(.bold))
                         .foregroundStyle(AppColor.primaryText)
 
-                    Text("Pick one opening to unlock completely — all lessons, all practice modes, everything. You can always unlock more later.")
+                    Text("Pick one opening to unlock completely — guided sessions, practice, review, and more. You can always unlock more later.")
                         .font(.subheadline)
                         .foregroundStyle(AppColor.secondaryText)
                         .multilineTextAlignment(.center)

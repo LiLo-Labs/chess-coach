@@ -12,7 +12,7 @@ struct SessionResult {
     let pesCategory: ScoreCategory?
     let moveScores: [PlanExecutionScore]?
 
-    // Familiarity milestone (replaces layer/phase promotions)
+    // Familiarity milestone
     var familiarityMilestone: FamiliarityMilestone? = nil
     var familiarityPercentage: Int = 0
     var coachSessionMessage: String? = nil
