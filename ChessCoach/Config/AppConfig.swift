@@ -215,8 +215,8 @@ enum AppConfig {
         /// Daily login bonus (free tokens)
         let dailyBonusAmount: Int
 
-        /// Reward for completing a learning layer
-        let layerCompletionReward: Int
+        /// Reward for reaching a familiarity milestone
+        let milestoneReward: Int
 
         /// Token packs available for purchase (StoreKit product ID → token amount)
         let packs: [(productID: String, amount: Int, label: String)]
@@ -225,7 +225,7 @@ enum AppConfig {
     static let tokenEconomy = TokenEconomy(
         openingUnlockCost: 100,
         dailyBonusAmount: 5,
-        layerCompletionReward: 25,
+        milestoneReward: 25,
         packs: [
             (productID: "com.chesscoach.tokens.small", amount: 50, label: "50 Tokens"),
             (productID: "com.chesscoach.tokens.medium", amount: 150, label: "150 Tokens"),

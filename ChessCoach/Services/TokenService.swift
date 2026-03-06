@@ -138,10 +138,10 @@ final class TokenService {
 
     // MARK: - Rewards
 
-    /// Award tokens for completing a learning layer.
-    func rewardLayerCompletion(openingID: String, layer: String) {
-        let amount = AppConfig.tokenEconomy.layerCompletionReward
-        credit(amount, reason: .reward, detail: "\(openingID):\(layer)")
+    /// Award tokens for reaching a familiarity milestone.
+    func rewardMilestone(openingID: String, milestone: String) {
+        let amount = AppConfig.tokenEconomy.milestoneReward
+        credit(amount, reason: .reward, detail: "\(openingID):\(milestone)")
     }
 
     // MARK: - Private

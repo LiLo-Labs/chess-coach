@@ -37,9 +37,9 @@ ChessCoach/
 ├── Models/
 │   ├── Chess/GameState.swift     # @Observable game state, move history, FEN
 │   ├── Opening/                  # Opening, OpeningDatabase, OpeningPlan, LessonStep, etc.
-│   ├── Progress/                 # UserProgress, SessionResult, LineProgress, LearningPhase
+│   ├── Progress/                 # PositionMastery, OpeningFamiliarity, SessionResult, MistakeTracker
 │   ├── Scoring/                  # PlanExecutionScore, PopularityService, SoundnessCalculator
-│   ├── SpacedRep/                # ReviewItem, SpacedRepScheduler
+│   ├── SpacedRep/                # SpacedRepScheduler (uses PositionMastery)
 │   ├── Tokens/                  # TokenBalance, TokenTransaction, TokenError
 │   ├── Puzzle/                  # Puzzle model (FEN, solution, theme, difficulty)
 │   ├── Trainer/                 # TrainerGameResult, TrainerStats
@@ -181,7 +181,7 @@ Applied on: OpeningDetailView (.whatAreOpenings), PracticeOpeningView (.whatIsPr
 - `TokenService` (@Observable, @MainActor) — manages balance, purchases, rewards, daily bonus
 - `TokenBalance` — balance, totalEarned, totalSpent with credit/debit operations
 - `TokenTransaction` — audit trail with reason enum (purchase, dailyBonus, unlockOpening, reward)
-- **Earning tokens**: daily login bonus (5/day), layer completion rewards (25 tokens), StoreKit consumable packs
+- **Earning tokens**: daily login bonus (5/day), familiarity milestone rewards (25 tokens), StoreKit consumable packs
 - **Spending tokens**: unlock individual openings (100 tokens each)
 - **Token packs**: Small (50), Medium (150), Large (400) — StoreKit consumable IAP
 - `TokenStoreView` — purchase packs, claim daily bonus, view balance and transaction history

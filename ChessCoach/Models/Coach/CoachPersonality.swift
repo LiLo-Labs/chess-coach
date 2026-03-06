@@ -26,7 +26,7 @@ struct CoachPersonality: Sendable {
     let onGreeting: [String]
     let onEncouragement: [String]     // streak / improving trend
     let onConsolation: [String]       // after mistakes / declining
-    let onMilestone: [String]         // layer promotion, personal best
+    let onMilestone: [String]         // familiarity milestone, personal best
     let onSessionEnd: [String]
     let onWelcomeBack: [String]       // returning to the app
     let onNextStep: [String]          // guidance toward next milestone
