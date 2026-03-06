@@ -9,8 +9,8 @@ extension GamePlayView {
     var topBar: some View {
         GameTopBar(
             title: viewModel.mode.isOnboarding ? "Play a Game" : viewModel.mode.isTrainer ? "Trainer" : viewModel.mode.isPuzzle ? "Puzzles" : (viewModel.mode.opening?.name ?? ""),
-            subtitle: viewModel.mode.isPuzzle ? "\(viewModel.currentPuzzleIndex + 1)/\(max(viewModel.puzzles.count, 1))" : viewModel.mode.isTrainer ? nil : viewModel.mode.isOnboarding ? nil : viewModel.activeLine?.name,
-            showChatToggle: viewModel.isPro && viewModel.mode.isSession && !viewModel.mode.isOnboarding,
+            subtitle: viewModel.mode.isPuzzle ? "\(viewModel.currentPuzzleIndex + 1)/\(max(viewModel.puzzles.count, 1))" : viewModel.mode.isSession ? viewModel.activeLine?.name : nil,
+            showChatToggle: viewModel.isPro && viewModel.mode.isSession,
             isChatOpen: showChatPanel,
             showBetaOptions: AppConfig.isBeta,
             canUndo: viewModel.canUndo,

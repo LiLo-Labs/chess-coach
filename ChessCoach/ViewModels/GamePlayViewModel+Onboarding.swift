@@ -4,6 +4,17 @@ import SwiftUI
 /// Onboarding-mode logic: user plays ~8 moves, Maia responds, HolisticDetector runs silently.
 extension GamePlayViewModel {
 
+    private static let onboardingMessages = [
+        "Good start! Let\u{2019}s see how you play.",
+        "Developing your pieces \u{2014} nice.",
+        "Building your position...",
+        "You\u{2019}re finding a rhythm.",
+        "Solid play so far.",
+        "Interesting choice.",
+        "Almost there \u{2014} one more move.",
+        "Let\u{2019}s see what you\u{2019}ve got."
+    ]
+
     func onboardingUserMoved(from: String, to: String) {
         onboardingMoveCount += 1
         SoundService.shared.play(.move)
@@ -11,11 +22,7 @@ extension GamePlayViewModel {
 
         // Run opening detection silently
         updateOpeningDetection()
-
-        // Store best white opening match
-        if let best = holisticDetection.whiteFramework.primary {
-            onboardingDetectedOpening = best.opening
-        }
+        updateOnboardingDetection()
 
         // Add generic coaching entry
         addOnboardingFeedEntry()
@@ -32,7 +39,7 @@ extension GamePlayViewModel {
 
     private func makeOnboardingOpponentMove() {
         isThinking = true
-        Task { @MainActor [weak self] in
+        onboardingOpponentTask = Task { @MainActor [weak self] in
             guard let self else { return }
             let fen = self.gameState.fen
             let legalMoves = self.gameState.legalMoves.map { $0.description }
@@ -53,18 +60,20 @@ extension GamePlayViewModel {
                     fen: fen,
                     legalMoves: legalMoves,
                     eloSelf: self.opponentELO,
-                    eloOppo: self.opponentELO,
+                    eloOppo: self.userELO,
                     temperature: 1.0,
                     recentMoves: history
                 )
             }
 
+            guard !Task.isCancelled else { return }
+
             // Fallback to Stockfish
             if moveUCI == nil {
-                moveUCI = await self.stockfish.bestMove(fen: fen, depth: 8)
+                moveUCI = await self.stockfish.bestMove(fen: fen, depth: AppConfig.engine.opponentMoveDepth)
             }
 
-            guard let move = moveUCI else {
+            guard !Task.isCancelled, let move = moveUCI else {
                 self.isThinking = false
                 return
             }
@@ -73,10 +82,8 @@ extension GamePlayViewModel {
             SoundService.shared.play(.move)
             self.isThinking = false
 
-            self.updateOpeningDetection()
-            if let best = self.holisticDetection.whiteFramework.primary {
-                self.onboardingDetectedOpening = best.opening
-            }
+            // Only update detection after opponent move — skip redundant branch point computation
+            self.updateOnboardingDetection()
 
             if self.gameState.isMate || self.gameState.legalMoves.isEmpty {
                 self.completeOnboarding()
@@ -84,42 +91,42 @@ extension GamePlayViewModel {
         }
     }
 
+    /// Update onboardingDetectedOpening from latest holisticDetection.
+    private func updateOnboardingDetection() {
+        if let best = holisticDetection.whiteFramework.primary {
+            onboardingDetectedOpening = best.opening
+            onboardingMatchDepth = best.matchDepth
+        }
+    }
+
     private func addOnboardingFeedEntry() {
-        // Use generic, encouraging feedback without opening names
-        let messages = [
-            "Good start! Let's see how you play.",
-            "Developing your pieces \u{2014} nice.",
-            "Building your position...",
-            "You're finding a rhythm.",
-            "Solid play so far.",
-            "Interesting choice.",
-            "Almost there \u{2014} one more move.",
-            "Let's see what you've got."
-        ]
-        let index = min(onboardingMoveCount - 1, messages.count - 1)
-        let coaching = messages[index]
+        let index = min(onboardingMoveCount - 1, Self.onboardingMessages.count - 1)
+        let coaching = Self.onboardingMessages[index]
         let moveNumber = (gameState.plyCount + 1) / 2
 
-        let entry = CoachingEntry(
+        insertFeedEntry(CoachingEntry(
             ply: gameState.plyCount - 1,
             moveNumber: moveNumber,
             moveSAN: "",
             isPlayerMove: true,
             coaching: coaching,
             category: .goodMove
-        )
-        withAnimation(.easeInOut(duration: 0.2)) {
-            feedEntries.insert(entry, at: 0)
-        }
+        ))
     }
 
+    /// Finalize onboarding: apply fallback if needed, trigger revelation overlay.
     private func completeOnboarding() {
-        if onboardingDetectedOpening == nil || (holisticDetection.whiteFramework.primary?.matchDepth ?? 0) < 3 {
+        onboardingOpponentTask?.cancel()
+        onboardingOpponentTask = nil
+
+        if onboardingDetectedOpening == nil || onboardingMatchDepth < 3 {
             onboardingDetectedOpening = curatedFallbackOpening()
+            onboardingMatchDepth = 0
         }
         onboardingComplete = true
     }
 
+    /// Pick a curated opening based on the user's first move.
     private func curatedFallbackOpening() -> Opening? {
         let db = OpeningDatabase.shared
         let firstMove = gameState.moveHistory.first.map { "\($0.from)\($0.to)" }

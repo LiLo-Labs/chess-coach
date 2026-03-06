@@ -99,6 +99,8 @@ final class GamePlayViewModel {
     var onboardingMoveCount = 0
     var onboardingComplete = false
     var onboardingDetectedOpening: Opening?
+    var onboardingMatchDepth = 0
+    var onboardingOpponentTask: Task<Void, Never>?
 
     // Practice-specific
     var variedOpponent: VariedOpponentService?

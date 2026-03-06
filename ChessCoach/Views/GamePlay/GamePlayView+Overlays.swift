@@ -388,7 +388,7 @@ extension GamePlayView {
     private var onboardingRevelationOverlay: some View {
         let opening = viewModel.onboardingDetectedOpening
         let openingName = opening?.name ?? "an Opening"
-        let matchDepth = viewModel.holisticDetection.whiteFramework.primary?.matchDepth ?? 0
+        let matchDepth = viewModel.onboardingMatchDepth
 
         return ZStack {
             Color.black.opacity(0.85).ignoresSafeArea()
@@ -396,11 +396,6 @@ extension GamePlayView {
             ScrollView {
                 VStack(spacing: AppSpacing.xl) {
                     Spacer(minLength: 60)
-
-                    Image(systemName: "sparkles")
-                        .font(.system(size: 48))
-                        .foregroundStyle(.yellow)
-                        .symbolEffect(.pulse, options: .repeating.speed(0.5))
 
                     Text("You played the \(openingName)!")
                         .font(.title2.weight(.bold))

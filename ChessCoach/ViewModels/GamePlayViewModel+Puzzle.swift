@@ -203,7 +203,7 @@ extension GamePlayViewModel {
         puzzle.openingID.flatMap { OpeningDatabase.shared.opening(byID: $0)?.name }
     }
 
-    private func insertFeedEntry(_ entry: CoachingEntry) {
+    func insertFeedEntry(_ entry: CoachingEntry) {
         withAnimation(.easeInOut(duration: 0.2)) {
             feedEntries.insert(entry, at: 0)
         }
