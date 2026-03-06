@@ -95,6 +95,11 @@ final class GamePlayViewModel {
     var puzzleAdvanceTask: Task<Void, Never>?
     var puzzleEngineTask: Task<Void, Never>?
 
+    // Onboarding mode
+    var onboardingMoveCount = 0
+    var onboardingComplete = false
+    var onboardingDetectedOpening: Opening?
+
     // Practice-specific
     var variedOpponent: VariedOpponentService?
     var lineAccuracies: [String: (correct: Int, total: Int)] = [:]
@@ -292,6 +297,11 @@ final class GamePlayViewModel {
         if case .trainer(_, _, _, let botELO) = mode {
             opponentELO = botELO
         }
+
+        // Onboarding-specific init — set opponent ELO from player ELO
+        if case .onboarding(let playerELO) = mode {
+            opponentELO = playerELO
+        }
     }
 
     // MARK: - Core Methods
@@ -345,6 +355,9 @@ final class GamePlayViewModel {
             showProactiveCoaching()
             captureSnapshot()
             showCoachQuip(coachPersonality?.onGreeting.randomElement() ?? "Let's begin!")
+        } else if mode.isOnboarding {
+            isModelLoading = false
+            // User plays white, Maia plays black — no extra setup needed
         } else if mode.isTrainer {
             isModelLoading = false
             if mode.playerColor == .black && gameState.isWhiteTurn {
