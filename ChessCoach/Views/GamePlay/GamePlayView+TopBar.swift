@@ -20,6 +20,7 @@ extension GamePlayView {
                 if viewModel.mode.isTrainer {
                     showLeaveConfirmation = true
                 } else {
+                    viewModel.onboardingOpponentTask?.cancel()
                     viewModel.endSession()
                     dismiss()
                 }

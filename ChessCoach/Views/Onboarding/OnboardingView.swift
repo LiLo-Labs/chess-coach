@@ -5,6 +5,7 @@ import ChessKit
 struct OnboardingView: View {
     @Environment(AppSettings.self) private var settings
     @Environment(AppServices.self) private var appServices
+    @Environment(SubscriptionService.self) private var subscriptionService
     @State private var page = 0
 
     var onComplete: () -> Void = {}
@@ -78,9 +79,10 @@ struct OnboardingView: View {
             )
             .environment(settings)
             .environment(appServices)
+            .environment(subscriptionService)
         }
         .onChange(of: showOnboardingGame) { _, showing in
-            if !showing {
+            if !showing && (settings.hasPickedFreeOpening || settings.hasSeenOnboarding) {
                 onComplete()
             }
         }

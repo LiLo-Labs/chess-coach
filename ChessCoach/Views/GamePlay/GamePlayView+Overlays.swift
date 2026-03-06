@@ -414,8 +414,7 @@ extension GamePlayView {
                         stats: [
                             .init(label: "Your Level", value: "\(viewModel.userELO)"),
                             .init(label: "Moves Played", value: "\(viewModel.onboardingMoveCount)"),
-                            .init(label: "Match Depth", value: "\(matchDepth) moves"),
-                        ],
+                        ] + (matchDepth > 0 ? [.init(label: "Match Depth", value: "\(matchDepth) moves")] : []),
                         icon: "sparkles",
                         iconColor: .yellow,
                         title: "Your First Game"
@@ -449,6 +448,7 @@ extension GamePlayView {
                         }
 
                         Button {
+                            settings.hasSeenOnboarding = true
                             dismiss()
                         } label: {
                             HStack(spacing: 6) {
@@ -464,6 +464,7 @@ extension GamePlayView {
                         .buttonStyle(ScaleButtonStyle())
 
                         Button {
+                            settings.hasSeenOnboarding = true
                             dismiss()
                         } label: {
                             Text("Skip to Home")
