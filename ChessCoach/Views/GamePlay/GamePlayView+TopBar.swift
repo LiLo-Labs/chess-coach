@@ -8,8 +8,8 @@ extension GamePlayView {
 
     var topBar: some View {
         GameTopBar(
-            title: viewModel.mode.isTrainer ? "Trainer" : viewModel.mode.isPuzzle ? "Puzzles" : (viewModel.mode.opening?.name ?? ""),
-            subtitle: viewModel.mode.isPuzzle ? "\(viewModel.currentPuzzleIndex + 1)/\(max(viewModel.puzzles.count, 1))" : viewModel.mode.isTrainer ? nil : viewModel.activeLine?.name,
+            title: viewModel.mode.isOnboarding ? "Play a Game" : viewModel.mode.isTrainer ? "Trainer" : viewModel.mode.isPuzzle ? "Puzzles" : (viewModel.mode.opening?.name ?? ""),
+            subtitle: viewModel.mode.isPuzzle ? "\(viewModel.currentPuzzleIndex + 1)/\(max(viewModel.puzzles.count, 1))" : viewModel.mode.isSession ? viewModel.activeLine?.name : nil,
             showChatToggle: viewModel.isPro && viewModel.mode.isSession,
             isChatOpen: showChatPanel,
             showBetaOptions: AppConfig.isBeta,
@@ -20,6 +20,7 @@ extension GamePlayView {
                 if viewModel.mode.isTrainer {
                     showLeaveConfirmation = true
                 } else {
+                    viewModel.onboardingOpponentTask?.cancel()
                     viewModel.endSession()
                     dismiss()
                 }

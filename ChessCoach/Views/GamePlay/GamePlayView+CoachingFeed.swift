@@ -7,13 +7,15 @@ extension GamePlayView {
     var coachingFeed: some View {
         let feedEntries = viewModel.feedEntries.map { FeedEntry.from($0) }
 
-        if viewModel.mode.isPuzzle {
+        if viewModel.mode.isOnboarding || viewModel.mode.isPuzzle {
             CoachingFeedView(
                 entries: feedEntries,
                 isLoading: false,
                 explainStyle: .textAndIcon,
                 scrollAnchor: "live",
-                onTapEntry: { ply in viewModel.enterReplay(ply: ply) },
+                onTapEntry: { ply in
+                    if viewModel.mode.isPuzzle { viewModel.enterReplay(ply: ply) }
+                },
                 onRequestExplanation: { _ in }
             )
             .background(AppColor.background)

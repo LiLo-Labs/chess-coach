@@ -20,12 +20,17 @@ extension GamePlayView {
                         if viewModel.mode.isPuzzle {
                             return !viewModel.isPuzzleShowingSolution && !viewModel.isPuzzleComplete
                         }
+                        if viewModel.mode.isOnboarding {
+                            return !viewModel.onboardingComplete && !viewModel.isThinking
+                        }
                         return isPlayerTurn && !viewModel.isThinking && !viewModel.isGameOver && !viewModel.sessionComplete && !viewModel.isReplaying
                     }()
                 ) { from, to in
                     viewModel.clearArrowAndHint()
                     if viewModel.mode.isPuzzle {
                         viewModel.puzzleUserMoved(from: from, to: to)
+                    } else if viewModel.mode.isOnboarding {
+                        viewModel.onboardingUserMoved(from: from, to: to)
                     } else if viewModel.mode.isTrainer {
                         viewModel.trainerUserMoved(from: from, to: to)
                     } else if viewModel.mode.sessionMode == .practice {

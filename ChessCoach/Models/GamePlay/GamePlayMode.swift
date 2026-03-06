@@ -8,6 +8,7 @@ enum GamePlayMode {
     case unguided(opening: Opening, lineID: String?)
     case practice(opening: Opening, lineID: String?)
     case puzzle(opening: Opening?, source: PuzzleSource)
+    case onboarding(playerELO: Int)
 
     var isTrainer: Bool {
         if case .trainer = self { return true }
@@ -19,11 +20,16 @@ enum GamePlayMode {
         return false
     }
 
-    var isSession: Bool { !isTrainer && !isPuzzle }
+    var isOnboarding: Bool {
+        if case .onboarding = self { return true }
+        return false
+    }
+
+    var isSession: Bool { !isTrainer && !isPuzzle && !isOnboarding }
 
     var opening: Opening? {
         switch self {
-        case .trainer: return nil
+        case .trainer, .onboarding: return nil
         case .guided(let o, _), .unguided(let o, _), .practice(let o, _): return o
         case .puzzle(let o, _): return o
         }
@@ -31,7 +37,7 @@ enum GamePlayMode {
 
     var lineID: String? {
         switch self {
-        case .trainer: return nil
+        case .trainer, .onboarding: return nil
         case .guided(_, let id), .unguided(_, let id), .practice(_, let id): return id
         case .puzzle: return nil
         }
@@ -45,6 +51,7 @@ enum GamePlayMode {
         case .puzzle(let o, _):
             guard let o else { return .white }
             return o.color == .white ? .white : .black
+        case .onboarding: return .white
         }
     }
 
@@ -60,7 +67,7 @@ enum GamePlayMode {
 
     var sessionMode: SessionMode? {
         switch self {
-        case .trainer: return nil
+        case .trainer, .onboarding: return nil
         case .guided: return .guided
         case .unguided: return .unguided
         case .practice: return .practice

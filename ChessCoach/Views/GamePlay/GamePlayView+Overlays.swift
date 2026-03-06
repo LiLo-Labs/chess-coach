@@ -25,6 +25,11 @@ extension GamePlayView {
         if viewModel.isPuzzleComplete {
             puzzleCompleteOverlay
         }
+
+        // Onboarding revelation
+        if viewModel.onboardingComplete {
+            onboardingRevelationOverlay
+        }
     }
 
     // MARK: - Puzzle Complete
@@ -375,6 +380,105 @@ extension GamePlayView {
         case .win: return p.randomReaction(from: p.onLoss)
         case .loss, .resigned: return p.randomReaction(from: p.onWin)
         case .draw: return "Good game — evenly matched."
+        }
+    }
+
+    // MARK: - Onboarding Revelation
+
+    private var onboardingRevelationOverlay: some View {
+        let opening = viewModel.onboardingDetectedOpening
+        let openingName = opening?.name ?? "an Opening"
+        let matchDepth = viewModel.onboardingMatchDepth
+
+        return ZStack {
+            Color.black.opacity(0.85).ignoresSafeArea()
+
+            ScrollView {
+                VStack(spacing: AppSpacing.xl) {
+                    Spacer(minLength: 60)
+
+                    Text("You played the \(openingName)!")
+                        .font(.title2.weight(.bold))
+                        .foregroundStyle(AppColor.primaryText)
+                        .multilineTextAlignment(.center)
+
+                    if let desc = opening?.description, !desc.isEmpty {
+                        Text(desc)
+                            .font(.subheadline)
+                            .foregroundStyle(AppColor.secondaryText)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, AppSpacing.md)
+                    }
+
+                    SessionSummaryCard(
+                        stats: [
+                            .init(label: "Your Level", value: "\(viewModel.userELO)"),
+                            .init(label: "Moves Played", value: "\(viewModel.onboardingMoveCount)"),
+                        ] + (matchDepth > 0 ? [.init(label: "Match Depth", value: "\(matchDepth) moves")] : []),
+                        icon: "sparkles",
+                        iconColor: .yellow,
+                        title: "Your First Game"
+                    )
+
+                    Text("Every chess game starts with an opening — a set of proven moves that give you direction and purpose. You just played one naturally!")
+                        .font(.callout)
+                        .foregroundStyle(AppColor.secondaryText)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, AppSpacing.md)
+
+                    // Action buttons
+                    VStack(spacing: AppSpacing.md) {
+                        if let opening {
+                            Button {
+                                settings.pickedFreeOpeningID = opening.id
+                                settings.hasPickedFreeOpening = true
+                                dismiss()
+                            } label: {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "book.fill")
+                                    Text("Learn \(opening.name)")
+                                        .font(.body.weight(.semibold))
+                                }
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 14)
+                                .background(AppColor.guided, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+                            }
+                            .buttonStyle(ScaleButtonStyle())
+                        }
+
+                        Button {
+                            settings.hasSeenOnboarding = true
+                            dismiss()
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: "square.grid.2x2")
+                                Text("Browse All Openings")
+                                    .font(.body.weight(.medium))
+                            }
+                            .foregroundStyle(AppColor.primaryText)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: AppRadius.lg))
+                        }
+                        .buttonStyle(ScaleButtonStyle())
+
+                        Button {
+                            settings.hasSeenOnboarding = true
+                            dismiss()
+                        } label: {
+                            Text("Skip to Home")
+                                .font(.subheadline.weight(.medium))
+                                .foregroundStyle(AppColor.secondaryText)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .padding(.horizontal, AppSpacing.md)
+
+                    Spacer(minLength: AppSpacing.xl)
+                }
+                .padding(AppSpacing.xxxl)
+            }
         }
     }
 }

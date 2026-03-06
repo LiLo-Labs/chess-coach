@@ -12,6 +12,7 @@ struct GamePlayView: View {
     @State var navigateToNextStage = false
     @State var showReview = false
     @Environment(\.dismiss) var dismiss
+    @Environment(AppSettings.self) var settings
     @Environment(SubscriptionService.self) var subscriptionService
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 
@@ -29,13 +30,15 @@ struct GamePlayView: View {
             VStack(spacing: 0) {
                 topBar
 
-                statusBanners
+                if !viewModel.mode.isOnboarding {
+                    statusBanners
 
-                practiceLineStatusBar
+                    practiceLineStatusBar
+                }
 
                 if viewModel.mode.isTrainer {
                     trainerPlayersBar
-                } else if !viewModel.mode.isPuzzle {
+                } else if !viewModel.mode.isPuzzle && !viewModel.mode.isOnboarding {
                     sessionPlayersBar
                 }
 
@@ -47,11 +50,11 @@ struct GamePlayView: View {
 
                 if viewModel.mode.isTrainer {
                     trainerStatusSlot(boardSize: boardSize)
-                } else if !viewModel.mode.isPuzzle, viewModel.showPersonalityQuip, let quip = viewModel.personalityQuip {
+                } else if !viewModel.mode.isPuzzle && !viewModel.mode.isOnboarding, viewModel.showPersonalityQuip, let quip = viewModel.personalityQuip {
                     personalityQuipView(quip: quip)
                 }
 
-                if !viewModel.mode.isPuzzle {
+                if !viewModel.mode.isPuzzle && !viewModel.mode.isOnboarding {
                     replayBar
                 }
 
