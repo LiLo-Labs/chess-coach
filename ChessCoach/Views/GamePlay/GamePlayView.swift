@@ -12,6 +12,7 @@ struct GamePlayView: View {
     @State var navigateToNextStage = false
     @State var showReview = false
     @Environment(\.dismiss) var dismiss
+    @Environment(AppSettings.self) var settings
     @Environment(SubscriptionService.self) var subscriptionService
     @Environment(\.accessibilityReduceMotion) var reduceMotion
 

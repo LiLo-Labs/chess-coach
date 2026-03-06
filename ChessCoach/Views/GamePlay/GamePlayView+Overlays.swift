@@ -436,8 +436,8 @@ extension GamePlayView {
                     VStack(spacing: AppSpacing.md) {
                         if let opening {
                             Button {
-                                UserDefaults.standard.set(opening.id, forKey: AppSettings.Key.pickedFreeOpeningID)
-                                UserDefaults.standard.set(true, forKey: AppSettings.Key.hasPickedFreeOpening)
+                                settings.pickedFreeOpeningID = opening.id
+                                settings.hasPickedFreeOpening = true
                                 dismiss()
                             } label: {
                                 HStack(spacing: 6) {
